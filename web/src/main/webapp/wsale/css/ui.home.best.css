@@ -1,0 +1,102 @@
+@charset "utf-8";
+
+.bestList {
+	overflow: hidden;
+	background-color: #EEE;
+}
+.bestList .bestItem:first-child {
+	padding-top: 5px;
+}
+.bestList .bestItem {
+	position: relative;
+	margin-bottom: 5px;
+	background-color: #FFF;
+}
+.bestList .bestItem .seller {
+	height: 45px;
+	padding: 0 10px;
+	overflow: hidden;
+}
+.bestList .bestItem .seller .nickname {
+	float: left;
+	height: 45px;
+	line-height: 46px;
+	margin-left: 60px;
+	max-width: 120px;
+	font-size: 15px;
+	color: #424242;
+}
+.bestList .bestItem .seller .attentionIt {
+	float: right;
+	color: #999;
+	padding: 0 20px;
+	border: 1px solid #999;
+	font-size: 26px;
+	text-align: center;
+	height: 50px;
+	line-height: 50px;
+	margin: auto;
+	cursor: pointer;
+	border-radius: 4px;
+	transform: scale(0.5);
+	-webkit-transform: scale(0.5);
+	transform-origin: 100% 40%;
+	-webkit-transform-origin: 100% 40%;
+}
+.bestList .bestItem .seller .attentionIt span.attentioned {
+	float: left;
+}
+.bestList .bestItem:first-child .headImage {
+	top: 13px;
+}
+.bestList .bestItem .headImage {
+	position: absolute;
+	top: 8px;
+	left: 10px;
+	height: 50px;
+	width: 50px;
+	border-radius: 25px;
+	border: 2px solid #FFF;
+	box-sizing: border-box;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	z-index: 99;
+}
+.bestList .bestItem .pIcon {
+	position: relative;
+	width: 100%;
+}
+.bestList .bestItem .pIcon .pIconBox {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	z-index: 1;
+	cursor: pointer;
+}
+.bestList .bestItem .pIcon .pIconBox .pIconImg {
+	position: relative;
+	width: 100%;
+	padding-top: 75%;
+	/*margin-right: 10px;*/
+	-webkit-flex-shrink: 0;
+	-ms-flex: 0 0 auto;
+	flex-shrink: 0;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+.bestList .bestItem .readNum {
+	height: 52px;
+	line-height: 52px;
+	color: #888;
+	padding: 0 4%;
+	text-align: right;
+}
+
+.bestList .bestItem .readNum span {
+	height: 52px;
+	font-size: 14px;
+	line-height: 52px;
+	display: inline-block;
+}

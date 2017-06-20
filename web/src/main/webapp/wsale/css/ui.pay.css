@@ -1,0 +1,115 @@
+@charset "utf-8";
+
+.header{
+	background-color: #a3621b;
+	padding: 15px 12px 10px 12px;
+}
+
+.header p{
+	color: #f7f2ed;
+	padding-bottom: 5px;
+}
+
+.list{
+	background-color: #fff;
+}
+
+.list li{
+	position: relative;
+	padding: 10px 12px;
+}
+
+.list-check-box{
+	max-width: 35px;
+	min-width: 35px;
+}
+
+.list-check-box i{
+	display: block;
+	width: 16px;
+	height: 16px;
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position:center;
+	margin-top: 15px;
+}
+
+.list-check-box i.checked{
+	background-image: url(../images/hassel.png);
+}
+
+.list-check-box i.uncheck{
+	background-image: url(../images/unsel.png);
+}
+
+.list-bank{
+	max-width: 45px;
+	min-width: 45px;
+}
+
+.list-bank img{
+	display: block;
+	width: 100%;
+	margin-top: 5px;
+}
+
+.list-info{
+	padding-left: 10px;
+}
+
+.list-info h3{
+	color: #da271e;
+}
+
+.list-info p{
+	height: 14px;
+	line-height: 14px;
+	margin-top: 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: #333;
+}
+
+.line:first-child:before {
+    display: none;
+}
+
+.line:before{
+	content: " ";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 1px;
+    border-top: 1px solid #D9D9D9;
+    color: #D9D9D9;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+}
+
+.pay-btn{
+	position: fixed;
+	bottom: 60px;
+	left: 0;
+	width: 100%;
+	background-color: #F5F5F5;
+}
+
+.pay-btn a{
+	margin: 0 20px;
+	height: 44px;
+	line-height: 44px;
+	background-color: #d57c1c;
+	text-align: center;
+	color: #fff;
+	font-size: 16px;
+}
+
+.pay-btn p{
+	padding-top: 10px;
+	font-size: 12px;
+	text-align: center;
+}

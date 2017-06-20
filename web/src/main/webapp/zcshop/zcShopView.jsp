@@ -1,0 +1,90 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="jb.model.TzcShop" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<script type="text/javascript">
+	$(function() {
+		parent.$.messager.progress('close');		
+	});
+</script>
+<div class="easyui-layout" data-options="fit:true,border:false">
+	<div data-options="region:'center',border:false">
+		<table class="table table-hover table-condensed">
+				<tr>	
+					<th><%=TzcShop.ALIAS_USER_ID%></th>	
+					<td>
+						${zcShop.userId}							
+					</td>							
+					<th><%=TzcShop.ALIAS_NAME%></th>	
+					<td>
+						${zcShop.name}							
+					</td>							
+				</tr>		
+				<tr>	
+					<th><%=TzcShop.ALIAS_LOGO_URL%></th>	
+					<td>
+						${zcShop.logoUrl}							
+					</td>							
+					<th><%=TzcShop.ALIAS_NOTICE%></th>	
+					<td>
+						${zcShop.notice}							
+					</td>							
+				</tr>		
+				<tr>	
+					<th><%=TzcShop.ALIAS_INTRODUCTION%></th>	
+					<td>
+						${zcShop.introduction}							
+					</td>							
+					<th><%=TzcShop.ALIAS_PROTECTION_PRICE%></th>	
+					<td>
+						${zcShop.protectionPrice}							
+					</td>							
+				</tr>		
+				<tr>	
+					<th><%=TzcShop.ALIAS_IS_NEED_PHONE%></th>	
+					<td>
+						${zcShop.isNeedPhone}							
+					</td>							
+					<th><%=TzcShop.ALIAS_IS_NEED_REEL_ID%></th>	
+					<td>
+						${zcShop.isNeedReelId}							
+					</td>							
+				</tr>		
+				<tr>	
+					<th><%=TzcShop.ALIAS_SHOP_URL%></th>	
+					<td>
+						${zcShop.shopUrl}							
+					</td>							
+					<th><%=TzcShop.ALIAS_SHOP_QRCODE_URL%></th>	
+					<td>
+						${zcShop.shopQrcodeUrl}							
+					</td>							
+				</tr>		
+				<tr>	
+					<th><%=TzcShop.ALIAS_GRADE%></th>	
+					<td>
+						${zcShop.grade}							
+					</td>							
+					<th><%=TzcShop.ALIAS_ADD_USER_ID%></th>	
+					<td>
+						${zcShop.addUserId}							
+					</td>							
+				</tr>		
+				<tr>	
+					<th><%=TzcShop.ALIAS_ADDTIME%></th>	
+					<td>
+						${zcShop.addtime}							
+					</td>							
+					<th><%=TzcShop.ALIAS_UPDATE_USER_ID%></th>	
+					<td>
+						${zcShop.updateUserId}							
+					</td>							
+				</tr>		
+				<tr>	
+					<th><%=TzcShop.ALIAS_UPDATETIME%></th>	
+					<td>
+						${zcShop.updatetime}							
+					</td>							
+				</tr>		
+		</table>
+	</div>
+</div>

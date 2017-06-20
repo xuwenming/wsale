@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:c="http://www.springframework.org/schema/c" xmlns:cache="http://www.springframework.org/schema/cache" xmlns:context="http://www.springframework.org/schema/context" xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee" xmlns:lang="http://www.springframework.org/schema/lang" xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p" xmlns:task="http://www.springframework.org/schema/task" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<bean id="newAuctionTask" class="job.task.NewAuctionTask"></bean>
+	<bean id="productTask" class="job.task.ProductTask"></bean>
+	<bean id="orderTask" class="job.task.OrderTask"></bean>
+	<bean id="userRoleTask" class="job.task.UserRoleTask"></bean>
+	<bean id="positionExpiredTask" class="job.task.PositionExpiredTask"></bean>
+	<bean id="remindTask" class="job.task.RemindTask"></bean>
+	<bean id="autoReadTask" class="job.task.AutoReadTask"></bean>
+
+	<task:scheduled-tasks scheduler="myScheduler">
+		<!-- 每5分钟 -->
+		<task:scheduled ref="newAuctionTask" method="work" cron="0 */30 * * * ?" />
+		<!-- 每5秒 -->
+		<task:scheduled ref="productTask" method="work" cron="0/5 * * * * ?" />
+		<task:scheduled ref="orderTask" method="work" cron="0/5 * * * * ?" />
+		<task:scheduled ref="userRoleTask" method="work" cron="0 */1 * * * ?" />
+		<!-- 每天9点 -->
+		<task:scheduled ref="positionExpiredTask" method="work" cron="0 0 9 * * ?" />
+
+		<task:scheduled ref="remindTask" method="work" cron="0/1 * * * * ?" />
+
+		<!-- 每5分钟增加帖子阅读数量 -->
+		<task:scheduled ref="autoReadTask" method="work" cron="0 */5 * * * ?" />
+	</task:scheduled-tasks>
+	<task:scheduler id="myScheduler" pool-size="10"/>
+</beans>

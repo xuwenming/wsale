@@ -1,0 +1,41 @@
+package jb.util.easemob;
+
+/**
+ * 微信通用接口凭证
+ * 
+ * @author liufeng
+ * @date 2013-08-08
+ */
+public class AccessToken {
+	// 获取到的凭证
+	private String token;
+	// 凭证有效时间，单位：秒
+	private int expiresIn;
+	// 当前app的UUID值
+	private String application;
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public int getExpiresIn() {
+		return expiresIn;
+	}
+
+	public void setExpiresIn(int expiresIn) {
+		this.expiresIn = expiresIn;
+	}
+
+	public String getApplication() {
+		return application;
+	}
+
+	public void setApplication(String application) {
+		this.application = application;
+	}
+	
+}

@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="job-service:war">
+    <output-path>$PROJECT_DIR$/job-service/target</output-path>
+    <root id="archive" name="job-service.war" />
+  </artifact>
+</component>

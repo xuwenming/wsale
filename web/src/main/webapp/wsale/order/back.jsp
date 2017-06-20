@@ -45,7 +45,7 @@
                 <a style="padding: 10px;border-bottom: 1px solid #f5f5f5;">
                     <div>
                         <div style="display: -webkit-box !important;display: box !important;position:relative;">
-                            <div class="dingdan-title" style="margin-right:20px;">收货人：</div>
+                            <div class="dingdan-title" style="margin-right:10px;">收货人：</div>
                             <div class="dingdan-title" >${address.userName} ${address.telNumber}</div>
                         </div>
                         <div class="dingdan-title" style="margin-top:10px;color:#aaa;font-size:12px;">

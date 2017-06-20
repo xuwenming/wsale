@@ -6,6 +6,7 @@
 <head>
     <title>退货物流信息</title>
     <jsp:include page="../inc.jsp"></jsp:include>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.deliver.css"/>
 </head>
 <body>
     <div data-role="page" data-title="退货物流信息" class="jqm-demos">
@@ -68,6 +69,7 @@
                 <a class="faxian-link">
                     <div style="float:right;">
                         <input type="text" placeholder="请输入运单号" id="returnExpressNo"/>
+                        <img class="shaoyishao" src="${pageContext.request.contextPath}/wsale/images/saoyisao.png" alt=""/>
                     </div>
                     <div class="dingdan-title">运单号</div>
                 </a>

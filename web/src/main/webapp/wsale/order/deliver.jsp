@@ -5,6 +5,7 @@
 <html>
 <head>
     <title>发货物流信息</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.deliver.css"/>
     <jsp:include page="../inc.jsp"></jsp:include>
 </head>
 <body>
@@ -68,13 +69,14 @@
                 <a class="faxian-link">
                     <div style="float:right;">
                         <input type="text" placeholder="请输入运单号" id="expressNo"/>
+                        <img class="shaoyishao" src="${pageContext.request.contextPath}/wsale/images/saoyisao.png" alt=""/>
                     </div>
                     <div class="dingdan-title">运单号</div>
                 </a>
             </div>
 
             <div>
-                <a type="button" id="deliverBtn" style="color:#fff;font-size:14px;display:block;height:35px; line-height:35px; background-color:#dc721c; margin:20px;text-align:center">确认发货</a>
+                <a type="button" id="deliverBtn" style="color:#fff;font-size:14px;display:block;height:35px;text-align: center; line-height:35px; background-color:#dc721c; margin:20px;">确认发货</a>
             </div>
 
         </div><!-- /content -->

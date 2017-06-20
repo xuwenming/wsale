@@ -582,7 +582,7 @@ public class ApiOrderController extends BaseController {
         ZcAddress address = new ZcAddress();
         address.setUserId(product.getUserId()); // 买家
         address.setAtype(1); // 收货地址
-        address.setOrderId("-1");
+        address.setOrderId(orderId);
         address = zcAddressService.get(address);
         request.setAttribute("address", address);
 

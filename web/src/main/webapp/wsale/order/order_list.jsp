@@ -10,35 +10,43 @@
     <div data-role="page" data-title="我的订单" class="jqm-demos">
         <div role="main" class="ui-content jqm-content jqm-fullwidth">
             <div class="mask-layer-1" style=""></div>
-            <!--<div class="mask-layer" style="z-index: 1001;"></div>
-            <div class="fensi-dialog" style="z-index: 1002;bottom: 0px;">
-                <div style="font-size: 14pt;">
-                    填写发货信息
-                </div>
-                <div class="faxian-list renzheng-input">
-                    <a class="userset-list receiptAddress">
-                        <div class="normal-text adrress-text">收货信息</div>
-                        <div class="address-detail">
-                            <div class="grayright-text tuihuo-address address">
 
+            <div id="payPopup" class="weui-popup-container popup-bottom">
+                <div class="weui-popup-overlay"></div>
+                <div class="weui-popup-modal" style="height: 210px; overflow: hidden;">
+                    <div class="toolbar">
+                        <div class="toolbar-inner">
+                            <a href="javascript:;" class="picker-button close-popup" style="color: #e64340;font-size: .85rem;">关闭</a>
+                            <h1 class="title">确认收货地址</h1>
+                        </div>
+                    </div>
+                    <div class="modal-content">
+                        <a style="padding: 10px;border-bottom: 1px solid #f5f5f5;background-color: #fff;" class="receiptAddress">
+                            <div class="money-more" style="margin-top: 5px;">
+                                <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
                             </div>
+                            <div style="display: none;" class="addr-none">
+                                <div class="dingdan-title" style="color:#f6383a;font-size:14px;">
+                                    尚未设置收货地址，点击设置
+                                </div>
+                            </div>
+                            <div style="display: none;" class="addr">
+                                <div style="display: -webkit-box !important;display: box !important;position:relative;">
+                                    <div class="dingdan-title" style="margin-right:10px;">收货人：</div>
+                                    <div class="dingdan-title username">
+                                    </div>
+                                </div>
+                                <div class="dingdan-title address" style="margin-top:10px;color:#aaa;font-size:14px;">
+                                </div>
+                            </div>
+                        </a>
+                        <div style="text-align: center;">
+                            <a class="bottom-btn" style="color: #fff;font-size: 16px;" id="pay">支付</a>
                         </div>
-                    </a>
-                    <a class="faxian-link">
-                        <div class="list-right">
-                            <input type="text" placeholder="请输入承运公司" id="expressName" maxlength="18"/>
-                        </div>
-                        <div class="normal-text">承运公司</div>
-                    </a>
-                    <a class="faxian-link">
-                        <div class="list-right">
-                            <input type="text" placeholder="请输入运单编号" id="expressNo" maxlength="64"/>
-                        </div>
-                        <div class="normal-text">运单编号</div>
-                    </a>
+                    </div>
                 </div>
-                <a class="bottom-btn guanzhu-ok sp">确认发货</a>
-            </div>-->
+            </div>
+
             <div class="home-content">
                 <div class="wddd-toptab">
                     <div class="wddd-search">
@@ -78,8 +86,16 @@
 
     <script type="text/javascript">
         var type = ${type};
-        var loading = true, currPage = 1, rows = 10, nowTime = new Date().getTime(), hasAddress = false, _that, orderId;
-        var thAddressParams = {};
+        var loading = true, currPage = 1, rows = 10, nowTime = new Date().getTime(), hasAddress = true, _that, orderId;
+        var addressParams = {
+            userName : '',
+            postalCode : '',
+            provinceName : '',
+            cityName : '',
+            countyName : '',
+            detailInfo : '',
+            telNumber : ''
+        };
         $(function(){
             $('.wddd-tab li:eq('+type+')').addClass('titletab-active');
             $(document.body).on("infinite", function() {
@@ -102,35 +118,39 @@
                 drawOrders(num);
             });
 
-            /*$('.bottom-btn').click(function(){
-                if(!hasAddress) {
-                    $(".mask-layer,.fensi-dialog").hide();
-                    $.alert("买家收货地址信息不完善，请联系买家！", "系统提示！");
-                    return;
-                }
-                var expressName = $('#expressName').val(), expressNo = $('#expressNo').val();
-                if(Util.checkEmpty(expressName)) {
-                    $('#expressName').focus();
-                    return;
-                }
-                if(Util.checkEmpty(expressNo)) {
-                    $('#expressNo').focus();
-                    return;
-                }
-                var params = $.extend({}, thAddressParams);
-                params.expressName = expressName;
-                params.expressNo = expressNo;
+            $('.receiptAddress').click(function(){
+                JWEIXIN.openAddress(function(data){
+                    if(data.userName == addressParams.userName && data.postalCode == addressParams.postalCode
+                            && data.provinceName == addressParams.provinceName && data.cityName == addressParams.cityName
+                            && data.countryName == addressParams.countyName && data.detailInfo == addressParams.detailInfo
+                            && data.telNumber == addressParams.telNumber) {
+                        return;
+                    }
 
-                ajaxPost('api/apiOrder/deliver', params, function(data){
-                    $(".mask-layer,.fensi-dialog").hide();
-                    if(data.success) {
-                        $.toast("发货成功", function(){
-                            $('.wddd-tab li[class=titletab-active]').click();
+                    addressParams.userName = data.userName;
+                    addressParams.postalCode = data.postalCode;
+                    addressParams.provinceName = data.provinceName;
+                    addressParams.cityName = data.cityName;
+                    addressParams.countyName = data.countryName;
+                    addressParams.detailInfo = data.detailInfo.replace(/[\r\n]/g, "");
+                    addressParams.telNumber = data.telNumber;
+
+                    if($('.receiptAddress .addr').is(':hidden')) {
+                        $('.receiptAddress .addr').show();
+                        $('.receiptAddress .addr-none').hide();
+                    }
+                    $('.username').html(data.userName + " " + data.telNumber);
+                    $('.address').html(data.provinceName + data.cityName + data.countryName + data.detailInfo);
+
+                    if(!hasAddress) {
+                        addressParams.atype = 1; // 收货地址
+                        ajaxPost('api/apiShop/editAddress', addressParams, function(result){
                         });
                     }
-                });
 
-            });*/
+                    hasAddress = true;
+                });
+            });
 
         });
 
@@ -372,12 +392,12 @@
                 }
             }
 
-            // 跳转用户店铺
+            // 跳转用户主页
             dom.find('.nickname').click(order, function(event){
                 var order = event.data, userId;
                 if(order.isBuyer) userId = order.seller.id;
                 else userId = order.buyer.id;
-                href('api/apiShop/shop?userId=' + userId);
+                href('api/userController/homePage?userId=' + userId);
             });
             // 跳转订单详情
             dom.find('.dingdan-content').click(order.id, function(event){
@@ -519,30 +539,6 @@
         function fhFun(event) {
             var order = event.data;
             href('api/apiOrder/toDeliver?orderId=' + order.id);
-            /*ajaxPost('api/userController/getAddress', {userId:order.buyer.id, atype:1}, function(data){
-                if(data.success) {
-                    $('.mask-layer, .fensi-dialog').show();
-                    var address = data.obj;
-                    if(address) {
-                        hasAddress = true;
-                        _that = _this;
-                        orderId = order.id;
-                        thAddressParams.userName = address.userName;
-                        thAddressParams.postalCode = address.postalCode;
-                        thAddressParams.provinceName = address.provinceName;
-                        thAddressParams.cityName = address.cityName;
-                        thAddressParams.countyName = address.countyName;
-                        thAddressParams.detailInfo = address.detailInfo;
-                        thAddressParams.telNumber = address.telNumber;
-                        thAddressParams.orderId = order.id;
-                        thAddressParams.atype = 1;
-                        thAddressParams.userId = order.buyer.id;
-                        $('.address').html(address.userName + " " + address.telNumber + "<br>" + address.provinceName + " " + address.cityName + " " + address.countyName + " " + address.detailInfo);
-                    } else {
-                        $('.address').html('买家尚未设置收货地址');
-                    }
-                }
-            });*/
         }
         // 申请小二
         function sqxrFun(event) {
@@ -580,23 +576,54 @@
         }
         // 支付
         function payFun(event) {
+            var order = event.data;
             ajaxPost('api/userController/getAddress', {atype:1}, function(data){
                 if(data.success) {
                     if(data.obj) {
-                        var order = event.data;
-                        href('api/pay/toPay?objectId='+order.id+'&objectType=PO05&totalFee=' + order.product.hammerPrice + '&userId=' + order.product.addUserId);
+                        hasAddress = true;
+
+                        var address = data.obj;
+                        $('.addr').show();
+                        $('.username').html(address.userName + " " + address.telNumber);
+                        $('.address').html(address.provinceName + address.cityName + address.countyName + address.detailInfo);
+
+                        addressParams.userName = address.userName;
+                        addressParams.postalCode = address.postalCode;
+                        addressParams.provinceName = address.provinceName;
+                        addressParams.cityName = address.cityName;
+                        addressParams.countyName = address.countyName;
+                        addressParams.detailInfo = address.detailInfo.replace(/[\r\n]/g, "");
+                        addressParams.telNumber = address.telNumber;
+
                     } else {
-                        $.modal({
-                            title: "系统提示",
-                            text: "您的收货信息暂不完善，卖家无法发货！",
-                            buttons: [
-                                { text: "取消", className: "default"},
-                                { text: "去完善", onClick: function(){
-                                    href('api/userController/info');
-                                } }
-                            ]
-                        });
+                        hasAddress = false;
+                        $('.addr-none').show();
+//                        $('#pay').unbind('click').bind('click', function(){
+//                            $.toptip('请选择收货地址');
+//                        });
                     }
+
+                    $('#pay').unbind('click').bind('click', order, pay);
+                    $("#payPopup").wePopup();
+                } else {
+                    $.toptip(data.msg);
+                }
+            });
+        }
+
+        function pay(event) {
+            if(!hasAddress) {
+                $.toptip('请选择收货地址');
+                return ;
+            }
+
+            var order = event.data;
+            addressParams.orderId = order.id;
+            ajaxPost('api/apiOrder/addAddress', addressParams, function(data){
+                if(data.success) {
+                    href('api/pay/toPay?objectId='+order.id+'&objectType=PO05&totalFee=' + order.product.hammerPrice + '&userId=' + order.product.addUserId);
+                } else {
+                    $.toptip(data.msg);
                 }
             });
         }

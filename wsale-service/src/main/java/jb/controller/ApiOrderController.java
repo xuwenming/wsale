@@ -531,6 +531,40 @@ public class ApiOrderController extends BaseController {
         return j;
     }
 
+    /**
+     * 添加订单收货地址
+     * @return
+     */
+    @RequestMapping("/addAddress")
+    @ResponseBody
+    public Json addAddress(ZcAddress address, HttpServletRequest request) {
+        Json j = new Json();
+        try{
+            SessionInfo s = getSessionInfo(request);
+            ZcAddress exist = new ZcAddress();
+            exist.setUserId(s.getId());
+            exist.setAtype(1);
+            exist.setOrderId(address.getOrderId());
+            exist = zcAddressService.get(exist);
+            if(exist == null) {
+                address.setUserId(s.getId());
+                address.setAtype(1);
+                zcAddressService.add(address);
+            } else {
+                address.setId(exist.getId());
+                zcAddressService.edit(address);
+            }
+
+            j.success();
+            j.setMsg("操作成功");
+
+        }catch(Exception e){
+            j.fail();
+            e.printStackTrace();
+        }
+        return j;
+    }
+
 
     /**
      * 跳转至卖家发货页
@@ -561,13 +595,9 @@ public class ApiOrderController extends BaseController {
      */
     @RequestMapping("/deliver")
     @ResponseBody
-    public Json deliver(ZcOrder order, ZcAddress address) {
+    public Json deliver(ZcOrder order) {
         Json j = new Json();
         try{
-            // 新增订单收货地址
-            zcAddressService.add(address);
-
-            order.setId(address.getOrderId());
             order05State.handle(order);
 
             j.success();

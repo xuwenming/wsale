@@ -562,6 +562,8 @@ public class UserController extends BaseController {
 			cache.addCacheData(uuid, sessionInfo, false);
 			j.success();
 			j.setMsg("login success!");
+			response.sendRedirect(WeixinUtil.getOAuthUrl("api/apiHomeController/home"));
+			return null;
 		} else {
 			j.fail();
 			j.setMsg("Login failed, you have not yet concerned about the WeChat public number!");

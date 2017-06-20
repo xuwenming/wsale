@@ -69,7 +69,7 @@
                 <a class="faxian-link">
                     <div style="float:right;">
                         <input type="text" placeholder="请输入运单号" id="returnExpressNo"/>
-                        <img class="shaoyishao" src="${pageContext.request.contextPath}/wsale/images/saoyisao.png" alt=""/>
+                        <img class="shaoyishao scanBtn" src="${pageContext.request.contextPath}/wsale/images/saoyisao.png" alt=""/>
                     </div>
                     <div class="dingdan-title">运单号</div>
                 </a>
@@ -119,6 +119,17 @@
                         $.loading.load({type:3, msg:'正在提交...'});
                     }, -1);
                 }, function() {});
+            });
+
+            $('.scanBtn').click(function(){
+                JWEIXIN.scanQRCode(function(data){
+                    var result = data.split(',');
+                    if(result.length == 2) {
+                        $('#returnExpressNo').val(result[1]);
+                    } else {
+                        $.toast("无法识别", "text");
+                    }
+                });
             });
         });
     </script>

@@ -167,7 +167,7 @@
                                 </c:choose>
                             </span>
                         </div>
-                        <div class="normal-text" <c:choose><c:when test="${order.isBuyer}">onclick="href('api/apiShop/shop?userId=${order.seller.id}')"</c:when><c:otherwise>onclick="href('api/apiShop/shop?userId=${order.buyer.id}')"</c:otherwise></c:choose>>
+                        <div class="normal-text" <c:choose><c:when test="${order.isBuyer}">onclick="href('api/userController/homePage?userId=${order.seller.id}')"</c:when><c:otherwise>onclick="href('api/userController/homePage?userId=${order.buyer.id}')"</c:otherwise></c:choose>>
                             <img class="dianpu-icon" src="${pageContext.request.contextPath}/wsale/images/dianpu-icon.png" /> <c:choose><c:when test="${order.isBuyer}">${order.seller.nickname}</c:when><c:otherwise>${order.buyer.nickname}</c:otherwise></c:choose> <img class="more-icon" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
                         </div>
                     </div>
@@ -238,7 +238,7 @@
                         <div>货款交易号：${order.orderNo}</div>
                     </div>
                 </div>
-                <c:if test="${order.orderStatus == 'OS05' || order.orderStatus == 'OS10' || order.sendStatus == 'SS03'}">
+                <c:if test="${order.payStatus == 'PS02' and !empty address}">
                     <div class="fahuo-info">
                         <a class="faxian-link">
                             <!--<div class="dingdan-right">

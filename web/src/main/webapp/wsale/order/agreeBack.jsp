@@ -147,6 +147,12 @@
                     }
                     $('.username').html(data.userName + " " + data.telNumber);
                     $('.address').html(data.provinceName + data.cityName + data.countryName + data.detailInfo);
+
+                    if(${empty address}) {
+                        addressParams.atype = 2; // 退货地址
+                        ajaxPost('api/apiShop/editAddress', addressParams, function(result){
+                        });
+                    }
                 });
             });
 
@@ -155,16 +161,6 @@
                 var address = $.trim($('.address').html());
                 if(Util.checkEmpty(username) || Util.checkEmpty(address)) {
                     $.alert("您的退货信息尚未设置！", "系统提示！");
-                    /*$.modal({
-                        title: "系统提示",
-                        text: "您的退货信息暂不完善，您可以去统一设置！",
-                        buttons: [
-                            { text: "取消", className: "default"},
-                            { text: "去完善", onClick: function(){
-                                href('api/apiShop/myShopSet');
-                            } }
-                        ]
-                    });*/
                     return;
                 }
 

@@ -69,7 +69,7 @@
                 <a class="faxian-link">
                     <div style="float:right;">
                         <input type="text" placeholder="请输入运单号" id="expressNo"/>
-                        <img class="shaoyishao" src="${pageContext.request.contextPath}/wsale/images/saoyisao.png" alt=""/>
+                        <img class="shaoyishao scanBtn" src="${pageContext.request.contextPath}/wsale/images/saoyisao.png" alt=""/>
                     </div>
                     <div class="dingdan-title">运单号</div>
                 </a>
@@ -96,16 +96,7 @@
 
     <script type="text/javascript">
         var params = {
-            userName: '${address.userName}',
-            postalCode: '${address.postalCode}',
-            provinceName: '${address.provinceName}',
-            cityName: '${address.cityName}',
-            countyName: '${address.countyName}',
-            detailInfo: '${address.detailInfo}',
-            telNumber: '${address.telNumber}',
-            userId: '${address.userId}',
-            atype: 1,
-            orderId: '${order.id}'
+            id: '${order.id}'
         };
 
         $(function(){
@@ -133,6 +124,17 @@
                         $.loading.load({type:2, msg:'正在提交...'});
                     }, -1);
                 }, function() {});
+            });
+
+            $('.scanBtn').click(function(){
+                JWEIXIN.scanQRCode(function(data){
+                    var result = data.split(',');
+                    if(result.length == 2) {
+                        $('#expressNo').val(result[1]);
+                    } else {
+                        $.toast("无法识别", "text");
+                    }
+                });
             });
         });
     </script>

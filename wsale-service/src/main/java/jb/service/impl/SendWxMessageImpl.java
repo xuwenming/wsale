@@ -240,7 +240,7 @@ public class SendWxMessageImpl {
                     TemplateData first = new TemplateData();
                     String content = product.getContentLine();
                     content = content.length() > 20 ? content.substring(0, 20) + "..." : content;
-                    first.setValue("尊敬的『"+seller.getNickname()+"』，您的拍品\""+content+"\"在截止时间内无人出价，您可以在帮助中心查询运营推广技巧。\n");
+                    first.setValue("尊敬的『"+seller.getNickname()+"』，您的拍品\""+content+"\"在截止时间内无人出价，您可以在帮助中心查询运营推广技巧。");
                     data.put("first", first);
                     // 交易时间
                     TemplateData tradeDateTime = new TemplateData();
@@ -271,7 +271,7 @@ public class SendWxMessageImpl {
                     TemplateData first = new TemplateData();
                     String content = product.getContentLine();
                     content = content.length() > 20 ? content.substring(0, 20) + "..." : content;
-                    first.setValue("尊敬的『"+seller.getNickname()+"』，您的拍品\""+content+"\"买家三天未付款，系统已关闭交易。\n");
+                    first.setValue("尊敬的『"+seller.getNickname()+"』，您的拍品\""+content+"\"买家三天未付款，系统已关闭交易。");
                     data.put("first", first);
                     // 交易时间
                     TemplateData tradeDateTime = new TemplateData();
@@ -322,7 +322,7 @@ public class SendWxMessageImpl {
 
                 Map<String, TemplateData> data = new HashMap<String, TemplateData>();
                 TemplateData first = new TemplateData();
-                first.setValue("尊敬的『" + seller.getNickname() + "』，您的拍品\"" + content + "\"拍卖成功！拍得者『" + buyer.getNickname() + "』。\n");
+                first.setValue("尊敬的『" + seller.getNickname() + "』，您的拍品\"" + content + "\"拍卖成功！拍得者『" + buyer.getNickname() + "』。");
                 data.put("first", first);
                 // 交易时间
                 TemplateData tradeDateTime = new TemplateData();
@@ -345,7 +345,7 @@ public class SendWxMessageImpl {
                 // 推送给买家
                 temp = new WxTemplate();
                 temp.setTouser(buyer.getName());
-                temp.setUrl(PathUtil.getUrlPath("api/apiProductController/productDetail?id=" + product.getId()));
+                temp.setUrl(PathUtil.getUrlPath("api/apiOrder/myOrder?type=1"));
                 temp.setTemplate_id(WeixinUtil.DEAL_TEMPLATE_ID);
 
                 data = new HashMap<String, TemplateData>();
@@ -736,7 +736,7 @@ public class SendWxMessageImpl {
         if (type == 1) firstValue = "您的\"" + content + "\"拍品距离结束还有" + time + "，分享到微信群和朋友圈有助于成交！";
         else if (type == 2) firstValue = "您参拍的\"" + content + "\"拍品距离结束还有" + time + "。";
         else firstValue = "您围观的\"" + content + "\"拍品距离结束还有" + time + "。";
-        first.setValue("『" + user.getNickname() + "』您好，" + firstValue + "\n");
+        first.setValue("『" + user.getNickname() + "』您好，" + firstValue);
         data.put("first", first);
         // 拍卖期数
         TemplateData number = new TemplateData();
@@ -1216,7 +1216,7 @@ public class SendWxMessageImpl {
 
                 Map<String, TemplateData> data = new HashMap<String, TemplateData>();
                 TemplateData first = new TemplateData();
-                first.setValue("尊敬的『" + seller.getNickname() + "』，您的拍品\"" + content + "\"由拍得者『" + buyer.getNickname() + "』发起当面交易，请您及时处理。\n");
+                first.setValue("尊敬的『" + seller.getNickname() + "』，您的拍品\"" + content + "\"由拍得者『" + buyer.getNickname() + "』发起当面交易，请您及时处理。");
                 data.put("first", first);
                 // 交易时间
                 TemplateData tradeDateTime = new TemplateData();

@@ -176,6 +176,7 @@ public class ApiShopController extends BaseController {
 			}
 			j.success();
 			j.setMsg("操作成功");
+			j.setObj(address.getId());
 		} catch (Exception e) {
 			j.fail();
 			e.printStackTrace();

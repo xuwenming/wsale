@@ -151,6 +151,9 @@
                     if(${empty address}) {
                         addressParams.atype = 2; // 退货地址
                         ajaxPost('api/apiShop/editAddress', addressParams, function(result){
+                            if(result.success) {
+                                addressParams.id = result.obj;
+                            }
                         });
                     }
                 });

@@ -196,7 +196,7 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 				params.put("isCommented", zcOrder.getIsCommented());
 			}
 			if (!F.empty(zcOrder.getAddUserId())) {
-				whereHql += " and exists (select 1 from TzcProduct p where p.id = t.productId and (p.addUserId = :addUserId or p.userId = :addUserId))";
+				whereHql += " and exists (select 1 from TzcProduct p where p.id = t.productId and p.isDeleted = 0 and (p.addUserId = :addUserId or p.userId = :addUserId))";
 				params.put("addUserId", zcOrder.getAddUserId());
 			}
 			if(zcOrder.getAddtime() != null) {
@@ -304,7 +304,7 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 				+ " count(case when t.send_status='SS03' and t.order_status='OS05' then t.id end)  unreceipt_count, "
 				+ " count(case when t.send_status='SS01' and t.order_status='OS02' then t.id end)  undeliver_count, "
 				+ " count(case when t.isCommented=0 and t.order_status='OS10' and exists(select 1 from zc_product p1 where p1.id=t.product_id and p1.user_id = :addUserId) then t.id end)  uncomment_count "
-				+ " from zc_order t where exists (select 1 from zc_product p where p.id = t.product_id and (p.addUserId = :addUserId or p.user_id = :addUserId))";
+				+ " from zc_order t where exists (select 1 from zc_product p where p.id = t.product_id and p.isDeleted = 0 and (p.addUserId = :addUserId or p.user_id = :addUserId))";
 		List<Map> l = zcOrderDao.findBySql2Map(sql, params);
 		return l.get(0);
 	}
@@ -317,7 +317,7 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 				+ " ifnull(sum(case when t.send_status='SS03' and t.order_status='OS05' then p.current_price end), 0) unreceipt_amount, "
 				+ " ifnull(sum(case when t.send_status='SS01' and t.order_status='OS02' then p.current_price end), 0) undeliver_amount "
 				+ " from zc_product p left join zc_order t on t.product_id = p.id "
-				+ " where p.addUserId = :addUserId or p.user_id = :addUserId";
+				+ " where p.isDeleted = 0 and (p.addUserId = :addUserId or p.user_id = :addUserId)";
 		List<Map> l = zcOrderDao.findBySql2Map(sql, params);
 		return l.get(0);
 	}
@@ -329,7 +329,7 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 		String sql = "select count(case when t.order_status='OS10' and (t.face_status is null or t.face_status <> 'FS02') then t.id end) OS10, " // 信誉排除当面交易
 				+ " count(case when p.addUserId = :addUserId and t.order_status='OS15' and t.order_close_reason = 'OC002' then t.id end)  S_OS15, "
 				+ " count(case when p.user_id = :addUserId and t.order_status='OS15' and t.order_close_reason = 'OC001' then t.id end)  B_OS15 "
-				+ " from zc_order t left join zc_product p on p.id = t.product_id where p.addUserId = :addUserId or p.user_id = :addUserId";
+				+ " from zc_order t left join zc_product p on p.id = t.product_id where p.isDeleted = 0 and (p.addUserId = :addUserId or p.user_id = :addUserId)";
 		List<Map> l = zcOrderDao.findBySql2Map(sql, params);
 		return l.get(0);
 	}

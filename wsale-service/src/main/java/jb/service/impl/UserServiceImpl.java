@@ -325,7 +325,7 @@ public class UserServiceImpl implements UserServiceI {
 		//  获取用户帖子数
 		params = new HashMap<String, Object>();
 		params.put("addUserId", id);
-		u.setBbsNums(zcForumBbsDao.count("select count(*) from TzcForumBbs t where t.addUserId = :addUserId", params).intValue());
+		u.setBbsNums(zcForumBbsDao.count("select count(*) from TzcForumBbs t where t.addUserId = :addUserId and t.isDeleted = 0", params).intValue());
 
 		// 获取粉丝数
 		params = new HashMap<String, Object>();

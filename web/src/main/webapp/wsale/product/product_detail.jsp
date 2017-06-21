@@ -12,6 +12,7 @@
 <html>
 <head>
     <title>拍品详情</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.product.detail.css"/>
     <jsp:include page="../inc.jsp"></jsp:include>
     <style>
         .ui-header-fixed {
@@ -146,9 +147,11 @@
                             <img src="${pageContext.request.contextPath}/wsale/images/p-${user.positionId}.png" style="width:50%;" />
                         </div>
                         <div style="line-height:1.5; text-align:left;">
-                            <div style="color:#EF8326;font-size:12px;letter-spacing:0;">帖子：${user.bbsNums}</div>
+                            <div style="color:#EF8326;font-size:12px;text-align:center;letter-spacing:0;">帖子：${user.bbsNums}</div>
                             <c:if test="${!user.self}">
-                                <div class="tieziInfo-more" style="font-size:12px;color:#888;margin-top:5px;">更多 <img src="${pageContext.request.contextPath}/wsale/images/more-icon.png" style="height:10px; vertical-align:middle;" /></div>
+                                <%--<div class="tieziInfo-more" style="font-size:12px;color:#888;margin-top:5px;">更多 <img src="${pageContext.request.contextPath}/wsale/images/more-icon.png" style="height:10px; vertical-align:middle;" /></div>--%>
+                                <div class="guanzhu">+ 关注</div>
+                                <div class="sixin">私信</div>
                             </c:if>
                         </div>
                     </div>
@@ -171,7 +174,8 @@
                     <div class="showMore hide">全文</div>
                     <div class="images">
                         <c:forEach items="${product.files}" var="file" varStatus="vs">
-                            <img class="lazy ppxq-imglist" data-original="${file.fileHandleUrl}" />
+                            <%--<img class="lazy ppxq-imglist" data-original="${file.fileHandleUrl}" />--%>
+                            <div class="product-detail-content-img" style="background-image: url('${file.fileHandleUrl}')"></div>
                         </c:forEach>
                     </div>
                     <div style="margin-top:10px;">
@@ -382,7 +386,10 @@
                             <ul>
                                 <c:forEach items="${otherProducts}" var="otherProduct" varStatus="vs">
                                     <li>
-                                        <a href="javascript:replace('api/apiProductController/productDetail?id=${otherProduct.id}');" class="cbp-vm-image"><img class="lazy" data-original="${otherProduct.icon}"></a>
+                                        <a href="javascript:replace('api/apiProductController/productDetail?id=${otherProduct.id}');" class="cbp-vm-image">
+                                            <%--<img class="lazy" data-original="${otherProduct.icon}">--%>
+                                            <div class="product-detail-list-img" style="background-image: url('${otherProduct.icon}')"></div>
+                                        </a>
                                         <div class="cbp-vm-title">
                                             <span class="wupin-title info-xinxi" style="height: 25px;">${otherProduct.content}</span>
                                             <div>

@@ -1,0 +1,46 @@
+@charset "utf-8";
+.bbsDetailBackgroundImg{
+    width:30%;
+    height: 0;
+    background-position: center center;
+    background-size: cover;
+    padding-bottom: 30%;
+    display: inline-block;
+}
+.ui-content.jqm-content.jqm-fullwidth{
+    overflow: hidden;
+}
+.guanzhu,.sixin{
+    width:60%;
+    max-width: 100px;
+    min-width: 50px;
+    border:1px solid #aaa;
+    margin: 0 auto;
+    font-size: 0.5rem;
+    margin-top: 13px;
+    padding:2px 3px;
+    border-radius: 5px;
+    font-size: 12px;
+}
+div.reply{
+    position: relative;
+}
+div[data-name="nickname"]{
+    display: inline-block;
+    margin-bottom: 10px;
+}
+div.comment-template-at{
+    width:15%;
+    max-width: 75px;
+    min-width: 50px;
+    border:1px solid #aaa;
+    padding:2px 3px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 12px;
+    display: inline-block;
+    float:right;
+}
+.form ul li:last-child{
+    float:left
+}

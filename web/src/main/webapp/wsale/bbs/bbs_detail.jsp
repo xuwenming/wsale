@@ -11,6 +11,7 @@
     <title></title>
     <jsp:include page="../inc.jsp"></jsp:include>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/audioplayer.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.bbs.detail.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/audioplayer.js" charset="utf-8"></script>
     <c:if test="${fn:contains(sessionInfo.resourceList, 'auth_tzsc')}">
         <script type="text/javascript">
@@ -192,7 +193,9 @@
                             <div style="color:#EF8326;font-size:12px;letter-spacing:0;">帖子：${user.bbsNums}</div>
                             <c:if test="${!user.self}">
                                 <!--<span class="guanzhu-btn" style="margin-top: 5px;padding:2px 5px;">+ 关注</span>-->
-                                <div class="tieziInfo-more" style="font-size:12px;color:#888;margin-top:5px;">更多 <img src="${pageContext.request.contextPath}/wsale/images/more-icon.png" style="height:10px; vertical-align:middle;" /></div>
+                                <%--<div class="tieziInfo-more" style="font-size:12px;color:#888;margin-top:5px;">更多 <img src="${pageContext.request.contextPath}/wsale/images/more-icon.png" style="height:10px; vertical-align:middle;" /></div>--%>
+                                <div class="guanzhu">+ 关注</div>
+                                <div class="sixin">私信</div>
                             </c:if>
                         </div>
                     </div>
@@ -207,7 +210,8 @@
                     <div class="showMore hide">全文</div>
                     <div class="imageFiles">
                         <c:forEach items="${bbs.files}" var="file" varStatus="vs">
-                            <img class="lazy" data-original="${file.fileHandleUrl}" style="width:30%;height:80px;" />
+                            <%--<img class="lazy" data-original="${file.fileHandleUrl}" style="width:30%;height:80px;" />--%>
+                            <div class="bbsDetailBackgroundImg" style="background-image: url('${file.fileHandleUrl}')"></div>
                         </c:forEach>
                     </div>
                     <c:if test="${!empty bbs.lastUpdateTime}">

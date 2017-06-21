@@ -251,9 +251,11 @@
                             <div>收件人：${address.userName}</div>
                             <div>收货地址：${address.provinceName}${address.cityName}${address.countyName}${address.detailInfo}</div>
                         </div>
-                        <div class="fahuo-style">
-                            发货方式：${order.expressName}（${order.expressNo}）
-                        </div>
+                        <c:if test="${!empty order.expressName && !empty order.expressNo}">
+                            <div class="fahuo-style">
+                                发货方式：${order.expressName}（${order.expressNo}）
+                            </div>
+                        </c:if>
                     </div>
                 </c:if>
 

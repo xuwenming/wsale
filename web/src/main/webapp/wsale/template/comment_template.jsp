@@ -9,14 +9,14 @@
 	</div>
 
 	<div style="width:78%; margin-left: 21%; line-height:1.5;">
-		<a style="font-size:12px;color:#888; float:right; display: none;">更多 <img src="${pageContext.request.contextPath}/wsale/images/more-icon.png" style="height:10px; vertical-align:middle;" /></a>
+		<!--<a style="font-size:12px;color:#888; float:right; display: none;">更多 <img src="${pageContext.request.contextPath}/wsale/images/more-icon.png" style="height:10px; vertical-align:middle;" /></a>-->
 		<div class="reply">
 			<div style="color:#ff0000;font-size:13px;" name="user" data-name="nickname"></div>
-			<div class="comment-template-at">+ 关注</div>
-			<div style="font-size:13px; color:#000000;" name="comment">是不是真的和田玉呀，看着不像。是不是真的和田玉呀，看着不像。</div>
+			<div class="comment-template-at attBtn">+ 关注</div>
+			<div style="font-size:13px; color:#000000;" name="comment"></div>
 		</div>
 		<div style="float:right;margin-right:10px;display: none;" class="del"><img src="${pageContext.request.contextPath}/wsale/images/delete-icon.png" style="width:12px;" /></div>
-		<div class="comment-template-info"><span style="color:#EF8326;font-size:12px;" class="bbsNums">帖子:<font name="user" data-name="bbsNums">30</font></span>&nbsp;<span style="font-size:12px; color:#aaa;" name="addtime">2016-11-24&nbsp;2楼</span></div>
+		<div class="comment-template-info"><span style="color:#EF8326;font-size:12px;" class="bbsNums">帖子:<font name="user" data-name="bbsNums"></font></span>&nbsp;<span style="font-size:12px; color:#aaa;" name="addtime"></span></div>
 		<%--<div style="font-size:13px; color:#000000;" name="comment">是不是真的和田玉呀，看着不像。是不是真的和田玉呀，看着不像。</div>--%>
 	</div>
 </div>

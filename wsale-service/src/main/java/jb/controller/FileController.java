@@ -4,6 +4,7 @@ import jb.comparator.NameComparator;
 import jb.comparator.SizeComparator;
 import jb.comparator.TypeComparator;
 import jb.util.ConfigUtil;
+import jb.util.oss.OSSUtil;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
@@ -184,10 +185,11 @@ public class FileController extends BaseController {
 		m.put("error", 1);
 		m.put("message", "上传失败！");
 		// 文件保存目录路径
-		String savePath = session.getServletContext().getRealPath("/") + "attached/";
+//		String savePath = session.getServletContext().getRealPath("/") + "attached/";
+		String savePath = "attached/";
 
 		// 文件保存目录URL
-		String saveUrl = request.getContextPath() + "/attached/";
+//		String saveUrl = request.getContextPath() + "/attached/";
 
 		// 定义允许上传的文件扩展名
 		HashMap<String, String> extMap = new HashMap<String, String>();
@@ -205,17 +207,17 @@ public class FileController extends BaseController {
 		}
 
 		// 检查目录
-		File uploadDir = new File(savePath);
-		if (!uploadDir.isDirectory()) {
-			uploadDir.mkdirs();
-		}
+//		File uploadDir = new File(savePath);
+//		if (!uploadDir.isDirectory()) {
+//			uploadDir.mkdirs();
+//		}
 
 		// 检查目录写权限
-		if (!uploadDir.canWrite()) {
-			m.put("error", 1);
-			m.put("message", "上传目录没有写权限！");
-			return m;
-		}
+//		if (!uploadDir.canWrite()) {
+//			m.put("error", 1);
+//			m.put("message", "上传目录没有写权限！");
+//			return m;
+//		}
 
 		String dirName = request.getParameter("dir");
 		if (dirName == null) {
@@ -229,22 +231,22 @@ public class FileController extends BaseController {
 
 		// 创建文件夹
 		savePath += dirName + "/";
-		saveUrl += dirName + "/";
-		File saveDirFile = new File(savePath);
-		if (!saveDirFile.exists()) {
-			saveDirFile.mkdirs();
-		}
+//		saveUrl += dirName + "/";
+//		File saveDirFile = new File(savePath);
+//		if (!saveDirFile.exists()) {
+//			saveDirFile.mkdirs();
+//		}
 		SimpleDateFormat yearDf = new SimpleDateFormat("yyyy");
 		SimpleDateFormat monthDf = new SimpleDateFormat("MM");
 		SimpleDateFormat dateDf = new SimpleDateFormat("dd");
 		Date date = new Date();
 		String ymd = yearDf.format(date) + "/" + monthDf.format(date) + "/" + dateDf.format(date) + "/";
 		savePath += ymd;
-		saveUrl += ymd;
-		File dirFile = new File(savePath);
-		if (!dirFile.exists()) {
-			dirFile.mkdirs();
-		}
+//		saveUrl += ymd;
+//		File dirFile = new File(savePath);
+//		if (!dirFile.exists()) {
+//			dirFile.mkdirs();
+//		}
 
 		if (ServletFileUpload.isMultipartContent(request)) {// 判断表单是否存在enctype="multipart/form-data"
 			FileItemFactory factory = new DiskFileItemFactory();
@@ -269,10 +271,12 @@ public class FileController extends BaseController {
 							return m;
 						}
 
-						String newFileName = UUID.randomUUID().toString() + "." + fileExt;
+						String newFileName = jb.absx.UUID.uuid() + "." + fileExt;
+						String result = null;
 						try {
-							File uploadedFile = new File(savePath, newFileName);
-							item.write(uploadedFile);
+							result = OSSUtil.putInputStream(OSSUtil.bucketName, item.getInputStream(), savePath + newFileName);
+							//File uploadedFile = new File(savePath, newFileName);
+							//item.write(uploadedFile);
 						} catch (Exception e) {
 							m.put("error", 1);
 							m.put("message", "上传文件失败！");
@@ -280,7 +284,7 @@ public class FileController extends BaseController {
 						}
 
 						m.put("error", 0);
-						m.put("url", saveUrl + newFileName);
+						m.put("url", result);
 					}
 				}
 			} catch (FileUploadException e) {

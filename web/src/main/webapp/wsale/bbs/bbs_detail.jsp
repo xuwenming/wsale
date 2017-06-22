@@ -117,7 +117,7 @@
                 </div>
             </div>
 
-            <div class="more-dialog" style="width: 40%; z-index: 1002;">
+            <!--<div class="more-dialog" style="width: 40%; z-index: 1002;">
                 <ul class="more-content">
                     <c:choose>
                         <c:when test="${!user.attred}"><li data-value="1">关注</li></c:when>
@@ -126,7 +126,7 @@
                     <li onclick="href('api/apiChat/chat?toUserId=${user.id}&subscribe=true&bbsId=${bbs.id}');">私信</li>
                     <li>举报</li>
                 </ul>
-            </div>
+            </div>-->
 
             <div id="sharePopup" class="weui-popup-container popup-bottom">
                 <div class="weui-popup-overlay"></div>
@@ -194,8 +194,8 @@
                             <c:if test="${!user.self}">
                                 <!--<span class="guanzhu-btn" style="margin-top: 5px;padding:2px 5px;">+ 关注</span>-->
                                 <%--<div class="tieziInfo-more" style="font-size:12px;color:#888;margin-top:5px;">更多 <img src="${pageContext.request.contextPath}/wsale/images/more-icon.png" style="height:10px; vertical-align:middle;" /></div>--%>
-                                <div class="guanzhu">+ 关注</div>
-                                <div class="sixin">私信</div>
+                                <c:if test="${!user.attred}"><div class="guanzhu" data-user-id="${user.id}">+ 关注</div></c:if>
+                                <div class="sixin botton-b" onclick="href('api/apiChat/chat?toUserId=${user.id}&subscribe=true&bbsId=${bbs.id}');">私 信</div>
                             </c:if>
                         </div>
                     </div>
@@ -208,10 +208,10 @@
                         ${fn:replace(bbs.bbsContent, vEnter, '<br>')}
                     </div>
                     <div class="showMore hide">全文</div>
-                    <div class="imageFiles">
+                    <div class="imageFiles" style="margin-top: 5px;">
                         <c:forEach items="${bbs.files}" var="file" varStatus="vs">
                             <%--<img class="lazy" data-original="${file.fileHandleUrl}" style="width:30%;height:80px;" />--%>
-                            <div class="bbsDetailBackgroundImg" style="background-image: url('${file.fileHandleUrl}')"></div>
+                            <div class="bbsDetailBackgroundImg lazy" data-original="${file.fileHandleUrl}"></div>
                         </c:forEach>
                     </div>
                     <c:if test="${!empty bbs.lastUpdateTime}">
@@ -282,9 +282,9 @@
                     </div>
                 </div>
             </div>
-            <div class="comments" style="margin-bottom: 80px;">
+            <div class="comments">
             </div>
-            <div class="home-content" style="margin-top: -10px;">
+            <div class="home-content">
                 <div class="weui-infinite-scroll">
                     <div class="infinite-preloader"></div>
                     评论加载中
@@ -348,7 +348,7 @@
             $('audio').audioPlayer();
 
             document.title = '${title}';
-            $("img.lazy").lazyload({
+            $(".lazy").lazyload({
                 placeholder : base + 'wsale/images/lazyload.png'
             });
             authInit();
@@ -400,14 +400,14 @@
             }
 
             var items = [];
-            $(".imageFiles img").each(function(){
+            $(".imageFiles div").each(function(){
                 items.push($(this).attr("data-original"));
                 //items.push('${pageContext.request.contextPath}/wsale/images/jsq-list2.png');
             });
             //images = $.photoBrowser({
             //    items: items
             //});
-            $(".imageFiles img").click(function(){
+            $(".imageFiles div").click(function(){
                 if('${subscribe}' == 0) {
                     $('.mask-layer, .subscribe').show();
                     addSubscribeLog();
@@ -436,7 +436,8 @@
                 addComment();
             });
 
-            $(".more-content li").click(moreFun);
+            //$(".more-content li").click(moreFun);
+            $('.guanzhu').click('${user.id}', attrFun);
 
             $('.rewardBtn').bind('click', function(){
                 if(self) {
@@ -724,37 +725,13 @@
             });
         }
 
-        function moreFun() {
-            $('.mask-layer').hide();
-            var _this = this, num = $(this).index();
-            if(num == 0) {
-                var url = 'api/userController/addShieldorfans', attred = false;
-                if($(this).attr('data-value') == 0) {
-                    url = 'api/userController/delShieldorfans';
-                    attred = true;
-                    $.confirm("是否取消对该用户的关注?", "系统提示", function() {
-                        attrFun(_this, url, attred);
-                    }, function() {});
-                } else {
-                    attrFun(_this, url, attred);
-                }
-
-            } else if(num == 1) {
-                //$.toast('正在玩命加班！', 'forbidden');
-            } else {
-                //report();
-                $('#reportPopup').wePopup();
-            }
-        }
-
-        function attrFun(_this, url, attred) {
-            ajaxPost(url, {objectType:'FS', userId:'${user.id}'}, function(data){
+        function attrFun(event) {
+            window.event.stopPropagation();
+            var _this = this, userId = event.data;
+            ajaxPost('api/userController/addShieldorfans', {objectType:'FS', userId:userId}, function(data){
                 if(data.success) {
-                    if(attred) $(_this).attr('data-value', 1).text('关注');
-                    else {
-                        $(_this).attr('data-value', 0).text('已关注');
-                        $.toast("关注成功", "text");
-                    }
+                    $(_this).remove();
+                    $('div[data-user-id='+userId+']').remove();
                 }
             });
         }
@@ -867,6 +844,11 @@
             $(".comments").append(dom);
             if('${bbs.bbsType}' == 'BT02') {
                 dom.find('.bbsNums').remove();
+            } else {
+                if(!comment.user.attred && !comment.user.self) {
+                    dom.find('.attBtn').attr('data-user-id', comment.user.id).show();
+                    dom.find('.attBtn').click(comment.user.id, attrFun);
+                }
             }
             // dom绑定事件
             dom.find("div.del").click(comment.id, function(event){
@@ -1002,7 +984,7 @@
                 title:"${bbs.bbsTitle}",
                 desc:$('#bbsContent').val(),
                 link:removeQueDefault(location.href) + "&fromShare=1",
-                imgUrl:$(".imageFiles img:eq(0)").attr("data-original")
+                imgUrl:$(".imageFiles div:eq(0)").attr("data-original")
             };
             JWEIXIN.onMenuShareAppMessage(shareData, addShare);
             JWEIXIN.onMenuShareTimeline(shareData, addShare);

@@ -210,7 +210,7 @@ CREATE TABLE `zc_topic` (
   `topic_reward` int(11) DEFAULT '0' COMMENT '打赏数',
   `topic_praise` int(11) DEFAULT '0' COMMENT '点赞数',
   `topic_collect` int(11) DEFAULT '0' COMMENT '收藏数',
-	`seq` int(11) DEFAULT NULL COMMENT '热门排序',
+	`seq` int(11) DEFAULT '0' COMMENT '热门排序',
   `addUserId` varchar(36) DEFAULT NULL COMMENT '发布人',
   `addtime` datetime DEFAULT NULL COMMENT '发布时间',
   `updateUserId` varchar(36) DEFAULT NULL COMMENT '更新人ID',
@@ -218,5 +218,58 @@ CREATE TABLE `zc_topic` (
   `isDeleted` tinyint(1) DEFAULT '0' COMMENT '是否删除,1删除，0未删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='集专题';
+
+CREATE TABLE `zc_topic_comment` (
+  `id` varchar(36) NOT NULL COMMENT '主键',
+  `topic_id` varchar(36) DEFAULT NULL COMMENT '专题ID',
+  `comment` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '留言内容',
+  `ctype` varchar(18) DEFAULT 'TEXT' COMMENT '类型：text、image、audio',
+  `pid` varchar(36) DEFAULT NULL COMMENT '父留言ID',
+  `isDeleted` tinyint(1) DEFAULT '0' COMMENT '是否删除,1删除，0未删除',
+  `user_id` varchar(36) DEFAULT NULL COMMENT '留言人',
+  `addtime` datetime DEFAULT NULL COMMENT '留言时间',
+  `audit_status` varchar(4) DEFAULT 'AS01' COMMENT '审核状态{AS}',
+  `audit_time` datetime DEFAULT NULL COMMENT '审核时间',
+  `audit_user_id` varchar(36) DEFAULT NULL COMMENT '审核人',
+  `audit_remark` varchar(500) DEFAULT NULL COMMENT '审核备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='专题留言表';
+
+CREATE TABLE `zc_praise` (
+  `id` varchar(36) NOT NULL COMMENT '主键',
+  `object_type` varchar(36) DEFAULT NULL COMMENT '对象类型',
+  `object_id` varchar(36) DEFAULT NULL COMMENT '对象ID',
+  `user_id` varchar(36) DEFAULT NULL COMMENT '点赞人',
+  `addtime` datetime DEFAULT NULL COMMENT '点赞时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='点赞表';
+
+CREATE TABLE `zc_collect` (
+  `id` varchar(36) NOT NULL COMMENT '主键',
+  `object_type` varchar(36) DEFAULT NULL COMMENT '对象类型',
+  `object_id` varchar(36) DEFAULT NULL COMMENT '对象ID',
+  `user_id` varchar(36) DEFAULT NULL COMMENT '收藏人',
+  `addtime` datetime DEFAULT NULL COMMENT '收藏时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='收藏表';
+
+CREATE TABLE `zc_reward` (
+  `id` varchar(36) NOT NULL COMMENT '主键',
+  `object_type` varchar(36) DEFAULT NULL COMMENT '对象类型',
+  `object_id` varchar(36) DEFAULT NULL COMMENT '对象ID',
+  `reward_fee` BIGINT DEFAULT NULL COMMENT '打赏金额',
+  `user_id` varchar(36) DEFAULT NULL COMMENT '打赏人',
+  `addtime` datetime DEFAULT NULL COMMENT '打赏时间',
+  `pay_status` varchar(4) DEFAULT 'PS01' COMMENT '支付状态',
+  `paytime` datetime DEFAULT NULL COMMENT '支付时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='打赏记录表';
+
+-- -----------------------------------------------------
+-- 修改支付订单表zc_pay_order，新增字段ref_transaction_no  snow.xu 20170621
+-- -----------------------------------------------------
+ALTER TABLE `zc_pay_order`
+	ADD COLUMN `ref_transaction_no` VARCHAR(64) NULL DEFAULT NULL COMMENT '第三方支付订单号' AFTER `paytime`;
+
 
 

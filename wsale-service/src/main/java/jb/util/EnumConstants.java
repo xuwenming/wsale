@@ -10,7 +10,8 @@ public class EnumConstants {
         COMMENT("评论"),
         PRODUCT("拍品"),
         XR("小二申诉"),
-        USER("用户");
+        USER("用户"),
+        TOPIC("专题");
         private String cnName;
         OBJECT_TYPE(String name) {
             this.cnName=name;

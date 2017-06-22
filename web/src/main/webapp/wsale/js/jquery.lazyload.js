@@ -92,6 +92,8 @@
             if ($self.attr("src") === undefined || $self.attr("src") === false) {
                 if ($self.is("img")) {
                     $self.attr("src", settings.placeholder);
+                } else {
+                    $self.css("background-image", "url('" + settings.placeholder + "')");
                 }
             }
 

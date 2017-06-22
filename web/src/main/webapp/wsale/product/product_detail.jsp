@@ -40,7 +40,7 @@
         <div role="main" class="ui-content jqm-content jqm-fullwidth">
             <input type="hidden" id="bindMobile" value="${sessionInfo.mobile}" />
             <img src="${pageContext.request.contextPath}/wsale/images/subscribe/bid-icon.jpg" class="subscribe"/>
-            <div class="more-dialog" style="width: 40%; z-index: 1002;">
+            <!--<div class="more-dialog" style="width: 40%; z-index: 1002;">
                 <ul class="more-content">
                     <c:choose>
                         <c:when test="${!user.attred}"><li data-value="1">关注</li></c:when>
@@ -49,7 +49,7 @@
                     <li onclick="href('api/apiChat/chat?toUserId=${user.id}&subscribe=true&productId=${product.id}');">私信</li>
                     <li>举报</li>
                 </ul>
-            </div>
+            </div>-->
             <div class="mask-layer" style="z-index: 1001;"></div>
 
             <div id="sharePopup" class="weui-popup-container popup-bottom">
@@ -150,19 +150,20 @@
                             <div style="color:#EF8326;font-size:12px;text-align:center;letter-spacing:0;">帖子：${user.bbsNums}</div>
                             <c:if test="${!user.self}">
                                 <%--<div class="tieziInfo-more" style="font-size:12px;color:#888;margin-top:5px;">更多 <img src="${pageContext.request.contextPath}/wsale/images/more-icon.png" style="height:10px; vertical-align:middle;" /></div>--%>
-                                <%--<div class="guanzhu">+ 关注</div>--%>
-                                <div class="sixin botton-b">私信</div>
-                                <div class="jubao">举报</div>
+                                <div class="sixin botton-b" onclick="href('api/apiChat/chat?toUserId=${user.id}&subscribe=true&productId=${product.id}');">私信</div>
+                                <div class="jubao report">举报</div>
                             </c:if>
                         </div>
                     </div>
                 </div>
                 <div class="ppxq-rightinfo">
                     <div style="font-size:16px; color:#666;">
-                            ${user.nickname}
-                            <div class="product-detail-guanzhu botton-o">+ 关注</div>
+                        ${user.nickname}
+                        <c:if test="${!user.self and !user.attred}">
+                            <div class="product-detail-guanzhu attBtn">+ 关注</div>
+                        </c:if>
                     </div>
-                    <div style="margin-top:5px;">
+                    <div style="margin-top:5px;margin-bottom: -5px;">
                         <c:if test="${user.isPayBond}">
                             <img class="ppxq-smallicon" src="${pageContext.request.contextPath}/wsale/images/baozhang-icon.png" />
                         </c:if>
@@ -179,7 +180,7 @@
                     <div class="images">
                         <c:forEach items="${product.files}" var="file" varStatus="vs">
                             <%--<img class="lazy ppxq-imglist" data-original="${file.fileHandleUrl}" />--%>
-                            <div class="product-detail-content-img" style="background-image: url('${file.fileHandleUrl}')"></div>
+                            <div class="product-detail-content-img lazy" data-original="${file.fileHandleUrl}"></div>
                         </c:forEach>
                     </div>
                     <div style="margin-top:10px;">
@@ -392,7 +393,7 @@
                                     <li>
                                         <a href="javascript:replace('api/apiProductController/productDetail?id=${otherProduct.id}');" class="cbp-vm-image">
                                             <%--<img class="lazy" data-original="${otherProduct.icon}">--%>
-                                            <div class="product-detail-list-img" style="background-image: url('${otherProduct.icon}')"></div>
+                                            <div class="product-detail-list-img lazy" data-original="${otherProduct.icon}"></div>
                                         </a>
                                         <div class="cbp-vm-title">
                                             <span class="wupin-title info-xinxi" style="height: 25px;">${otherProduct.content}</span>
@@ -450,7 +451,7 @@
                 }, 200);
             });
 
-            $("img.lazy").lazyload({
+            $(".lazy").lazyload({
                 placeholder : base + 'wsale/images/lazyload.png'
             });
 
@@ -463,11 +464,11 @@
             });
 
             var items = [];
-            $(".images img").each(function(){
+            $(".images div").each(function(){
                 items.push($(this).attr("data-original"));
             });
 
-            $(".images img").click(function(){
+            $(".images div").click(function(){
                 if('${subscribe}' == 0) {
                     $('.mask-layer, .subscribe').show();
                     addSubscribeLog();
@@ -505,7 +506,11 @@
                 });
             });
 
-            $(".more-content li").click(moreFun);
+//            $(".more-content li").click(moreFun);
+            $('.report').click(function(){
+                $('#reportPopup').wePopup();
+            });
+            $('.attBtn').click(attrFun);
             $(".moreLike").click(moreLikeFun);
             $("#auction_btn").click(auction);
             $(".auto-bid").click(autoAuction);
@@ -916,37 +921,11 @@
 
         }
 
-        function moreFun() {
-            $('.mask-layer').hide();
-            var _this = this, num = $(this).index();
-            if(num == 0) {
-                var url = 'api/userController/addShieldorfans', attred = false;
-                if($(this).attr('data-value') == 0) {
-                    url = 'api/userController/delShieldorfans';
-                    attred = true;
-                    $.confirm("是否取消对该用户的关注?", "系统提示", function() {
-                        attrFun(_this, url, attred);
-                    }, function() {});
-                } else {
-                    attrFun(_this, url, attred);
-                }
-
-            } else if(num == 1) {
-                //$.toast('正在玩命加班！', 'forbidden');
-            } else {
-                //report();
-                $('#reportPopup').wePopup();
-            }
-        }
-
-        function attrFun(_this, url, attred) {
-            ajaxPost(url, {objectType:'FS', userId:'${user.id}'}, function(data){
+        function attrFun() {
+            var _this = this;
+            ajaxPost('api/userController/addShieldorfans', {objectType:'FS', userId:'${user.id}'}, function(data){
                 if(data.success) {
-                    if(attred) $(_this).attr('data-value', 1).text('关注');
-                    else {
-                        $(_this).attr('data-value', 0).text('已关注');
-                        $.toast("关注成功", "text");
-                    }
+                    $(_this).remove();
                 }
             });
         }
@@ -1056,7 +1035,7 @@
                 title:"『${sessionInfo.nickname}』发现了一件不错的集东集西拍品，快来围观！",
                 desc:$('#content').val(),
                 link:shareUrl,
-                imgUrl:$(".images img:eq(0)").attr("data-original")
+                imgUrl:$(".images div:eq(0)").attr("data-original")
             };
             JWEIXIN.onMenuShareAppMessage(shareData);
             JWEIXIN.onMenuShareTimeline(shareData);

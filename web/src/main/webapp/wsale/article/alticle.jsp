@@ -10,7 +10,6 @@
     <meta content="telephone=no" name="format-detection">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="alticle.css"/>
-    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css"/>
     <title>公众文章</title>
 </head>
 <body>

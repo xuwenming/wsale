@@ -150,14 +150,18 @@
                             <div style="color:#EF8326;font-size:12px;text-align:center;letter-spacing:0;">帖子：${user.bbsNums}</div>
                             <c:if test="${!user.self}">
                                 <%--<div class="tieziInfo-more" style="font-size:12px;color:#888;margin-top:5px;">更多 <img src="${pageContext.request.contextPath}/wsale/images/more-icon.png" style="height:10px; vertical-align:middle;" /></div>--%>
-                                <div class="guanzhu">+ 关注</div>
-                                <div class="sixin">私信</div>
+                                <%--<div class="guanzhu">+ 关注</div>--%>
+                                <div class="sixin botton-b">私信</div>
+                                <div class="jubao">举报</div>
                             </c:if>
                         </div>
                     </div>
                 </div>
                 <div class="ppxq-rightinfo">
-                    <div style="font-size:16px; color:#666;">${user.nickname}</div>
+                    <div style="font-size:16px; color:#666;">
+                            ${user.nickname}
+                            <div class="product-detail-guanzhu botton-o">+ 关注</div>
+                    </div>
                     <div style="margin-top:5px;">
                         <c:if test="${user.isPayBond}">
                             <img class="ppxq-smallicon" src="${pageContext.request.contextPath}/wsale/images/baozhang-icon.png" />

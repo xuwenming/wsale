@@ -1,15 +1,16 @@
 @charset "utf-8";
-.guanzhu,.sixin{
+.guanzhu,.sixin,.jubao{
     width:60%;
     max-width: 100px;
     min-width:50px;
-    border:1px solid #aaa;
     margin: 0 auto;
     font-size: 0.5rem;
     margin-top: 13px;
     padding:2px 3px;
     border-radius: 5px;
     text-align: center;
+    color:#999;
+    border:1px solid #999;
 }
 .product-detail-list-img{
     width:100%;
@@ -25,4 +26,25 @@
     background-position: center center;
     background-size: cover;
     display: inline-block;
+}
+.product-detail-guanzhu{
+    display: inline-block;
+    float:right;
+    width:50px;
+    min-width:50px;
+    border:1px solid #DC721C;
+    margin: 0 auto;
+    font-size: 0.5rem;
+    padding:2px 3px;
+    border-radius: 5px;
+    text-align: center;
+    color:#DC721C;
+}
+.botton-b{
+    color:rgba(0, 65, 255, 0.56);
+    border:1px solid rgba(0, 65, 255, 0.56);
+}
+.botton-o{
+    color:#DC721C;
+    border:1px solid #DC721C;
 }

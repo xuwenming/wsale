@@ -61,9 +61,20 @@
                             <c:forEach items="${rewards}" var="reward" varStatus="vs">
                                 <li><img src="${reward.user.headImage}"/></li>
                             </c:forEach>
-
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
                         </ul>
-                        <div class="gengduo" style="display: none;"><span>更多</span></div>
+                        <div class="gengduo"><span>更多</span></div>
                     </c:if>
                 </fieldset>
             </form>

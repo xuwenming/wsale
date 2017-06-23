@@ -1,25 +1,24 @@
 package jb.controller;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import jb.pageModel.Colum;
-import jb.pageModel.ZcReward;
-import jb.pageModel.DataGrid;
-import jb.pageModel.Json;
-import jb.pageModel.PageHelper;
+import com.alibaba.fastjson.JSON;
+import jb.pageModel.*;
+import jb.service.UserServiceI;
 import jb.service.ZcRewardServiceI;
-
+import jb.service.impl.CompletionFactory;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import wsale.concurrent.CacheKey;
+import wsale.concurrent.CompletionService;
+import wsale.concurrent.Task;
 
-import com.alibaba.fastjson.JSON;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 /**
  * ZcReward管理控制器
@@ -34,6 +33,8 @@ public class ZcRewardController extends BaseController {
 	@Autowired
 	private ZcRewardServiceI zcRewardService;
 
+	@Autowired
+	private UserServiceI userService;
 
 	/**
 	 * 跳转到ZcReward管理页面
@@ -48,13 +49,43 @@ public class ZcRewardController extends BaseController {
 	/**
 	 * 获取ZcReward数据表格
 	 * 
-	 * @param user
+	 * @param
 	 * @return
 	 */
 	@RequestMapping("/dataGrid")
 	@ResponseBody
 	public DataGrid dataGrid(ZcReward zcReward, PageHelper ph) {
-		return zcRewardService.dataGrid(zcReward, ph);
+		DataGrid dataGrid = zcRewardService.dataGrid(zcReward, ph);
+		List<ZcReward> list = (List<ZcReward>) dataGrid.getRows();
+		if(!CollectionUtils.isEmpty(list)) {
+			final CompletionService completionService = CompletionFactory.initCompletion();
+			for (ZcReward reward : list) {
+				completionService.submit(new Task<ZcReward, User>(new CacheKey("user", reward.getUserId()), reward) {
+					@Override
+					public User call() throws Exception {
+						User user = userService.getByZc(getD().getUserId());
+						return user;
+					}
+
+					protected void set(ZcReward d, User v) {
+						if (v != null)
+							d.setUserName(v.getNickname());
+					}
+				});
+			}
+			completionService.sync();
+		}
+		return dataGrid;
+	}
+	@RequestMapping("/dataGridByTopic")
+	@ResponseBody
+	public DataGrid dataGridByTopic(ZcReward zcReward, PageHelper ph) {
+		return dataGrid(zcReward, ph);
+	}
+	@RequestMapping("/dataGridByBbs")
+	@ResponseBody
+	public DataGrid dataGridByBbs(ZcReward zcReward, PageHelper ph) {
+		return dataGrid(zcReward, ph);
 	}
 	/**
 	 * 获取ZcReward数据表格excel

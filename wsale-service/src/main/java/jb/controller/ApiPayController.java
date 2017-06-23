@@ -8,6 +8,7 @@ import jb.service.ZcPayOrderServiceI;
 import jb.service.ZcWalletDetailServiceI;
 import jb.service.ZcWalletServiceI;
 import jb.service.impl.CompletionFactory;
+import jb.util.EnumConstants;
 import jb.util.IpUtil;
 import jb.util.Util;
 import jb.util.wx.HttpUtil;
@@ -59,11 +60,11 @@ public class ApiPayController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/toPay")
-	public String toPay(ZcPayOrder payOrder, String attachType, String userId, HttpServletRequest request) {
+	public String toPay(ZcPayOrder payOrder, String userId, HttpServletRequest request) {
 		SessionInfo s = getSessionInfo(request);
 		request.setAttribute("payOrder", payOrder);
 		// 附加参数类型
-		if(!F.empty(attachType)) request.setAttribute("attachType", attachType);
+		if(!F.empty(payOrder.getAttachType())) request.setAttribute("attachType", payOrder.getAttachType());
 
 		// 可用余额
 		ZcWallet q = new ZcWallet();
@@ -245,7 +246,14 @@ public class ApiPayController extends BaseController {
 						walletDetail.setDescription("申请首页精拍");
 					} else if("PO04".equals(getD().getObjectType())) {
 						walletDetail.setWtype("WT06"); // 打赏支出
-						walletDetail.setDescription("帖子打赏");
+						if(EnumConstants.OBJECT_TYPE.BBS.getCode().equals(getD().getAttachType())) {
+							walletDetail.setDescription("帖子打赏");
+						} else if(EnumConstants.OBJECT_TYPE.TOPIC.getCode().equals(getD().getAttachType())) {
+							walletDetail.setDescription("专题打赏");
+						} else {
+							walletDetail.setDescription("打赏");
+						}
+
 					} else if("PO05".equals(getD().getObjectType())) {
 						walletDetail.setWtype("WT03"); // 在线支付
 						String desc = "拍品订单";
@@ -410,7 +418,14 @@ public class ApiPayController extends BaseController {
 			} else if("PO03".equals(payOrder.getObjectType())){
 				body = "申请首页精拍费 - " + new DecimalFormat("#,###0.00").format(payOrder.getTotalFee()) + "元";
 			} else if("PO04".equals(payOrder.getObjectType())) {
-				body = "帖子打赏 - " + new DecimalFormat("#,###0.00").format(payOrder.getTotalFee()) + "元";
+				if(EnumConstants.OBJECT_TYPE.BBS.getCode().equals(payOrder.getAttachType())) {
+					body += "帖子打赏 - ";
+				} else if(EnumConstants.OBJECT_TYPE.TOPIC.getCode().equals(payOrder.getAttachType())) {
+					body += "专题打赏 - ";
+				} else {
+					body += "打赏 - ";
+				}
+				body += new DecimalFormat("#,###0.00").format(payOrder.getTotalFee()) + "元";
 			} else if("PO05".equals(payOrder.getObjectType())) {
 				body = "支付拍品订单 - " + new DecimalFormat("#,###0.00").format(payOrder.getTotalFee()) + "元";
 				if(payOrder.getServiceFee() > 0) {

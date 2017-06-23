@@ -1,5 +1,7 @@
 package jb.pageModel;
 
+import jb.listener.Application;
+
 import java.util.Date;
 
 @SuppressWarnings("serial")
@@ -17,10 +19,16 @@ public class ZcTopicComment implements java.io.Serializable {
 	private Date addtime;			
 	private java.lang.String auditStatus;	
 	private Date auditTime;			
-	private java.lang.String auditUserId;	
+	private java.lang.String auditUserId;
 	private java.lang.String auditRemark;	
 
-	
+	private String userName;
+	private String auditUserName;
+	private User user;
+
+	public String getAuditStatusZh() {
+		return Application.getString(this.auditStatus);
+	}
 
 	public void setId(java.lang.String value) {
 		this.id = value;
@@ -109,4 +117,27 @@ public class ZcTopicComment implements java.io.Serializable {
 		return this.auditRemark;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getAuditUserName() {
+		return auditUserName;
+	}
+
+	public void setAuditUserName(String auditUserName) {
+		this.auditUserName = auditUserName;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 }

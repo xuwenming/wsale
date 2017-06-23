@@ -48,8 +48,8 @@ public class ZcTopicServiceImpl extends BaseServiceImpl<ZcTopic> implements ZcTo
 		if (zcTopic != null) {
 			whereHql += " where t.isDeleted = 0 ";
 			if (!F.empty(zcTopic.getTitle())) {
-				whereHql += " and t.title = :title";
-				params.put("title", zcTopic.getTitle());
+				whereHql += " and t.title like :title";
+				params.put("title", "%%" + zcTopic.getTitle() + "%%");
 			}		
 			if (!F.empty(zcTopic.getIcon())) {
 				whereHql += " and t.icon = :icon";
@@ -99,7 +99,9 @@ public class ZcTopicServiceImpl extends BaseServiceImpl<ZcTopic> implements ZcTo
 
 	@Override
 	public void delete(String id) {
-		zcTopicDao.delete(zcTopicDao.get(TzcTopic.class, id));
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		zcTopicDao.executeHql("update TzcTopic t set t.isDeleted = 1 where t.id = :id", params);
 	}
 
 	@Override
@@ -124,7 +126,7 @@ public class ZcTopicServiceImpl extends BaseServiceImpl<ZcTopic> implements ZcTo
 		return get(id);
 	}
 
-	private void updateCount(String id, int count, String type) {
+	public void updateCount(String id, int count, String type) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
 		zcTopicDao.executeSql("update zc_topic t set t."+type+" = ifnull(t."+type+", 0) + "+count+" where t.id = :id", params);

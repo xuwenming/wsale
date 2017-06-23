@@ -1,20 +1,14 @@
 package jb.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import jb.absx.F;
 import jb.dao.ZcPayOrderDaoI;
-import jb.model.TdonationOrder;
 import jb.model.TzcPayOrder;
 import jb.pageModel.*;
 import jb.service.*;
-
 import jb.service.impl.order.OrderState;
-import jb.util.DateUtil;
+import jb.util.EnumConstants;
+import jb.util.MyBeanUtils;
+import jb.util.PathUtil;
 import jb.util.Util;
 import jb.util.wx.HttpUtil;
 import jb.util.wx.PayCommonUtil;
@@ -24,10 +18,10 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import jb.util.MyBeanUtils;
 
-import javax.annotation.*;
 import javax.annotation.Resource;
+import java.text.DecimalFormat;
+import java.util.*;
 
 @Service
 public class ZcPayOrderServiceImpl extends BaseServiceImpl<ZcPayOrder> implements ZcPayOrderServiceI {
@@ -45,7 +39,10 @@ public class ZcPayOrderServiceImpl extends BaseServiceImpl<ZcPayOrder> implement
 	private ZcBestProductServiceI zcBestProductService;
 
 	@Autowired
-	private ZcBbsRewardServiceI zcBbsRewardService;
+	private ZcRewardServiceI zcRewardService;
+
+	@Autowired
+	private ZcTopicServiceI zcTopicService;
 
 	@Autowired
 	private ZcForumBbsServiceI zcForumBbsService;
@@ -67,6 +64,9 @@ public class ZcPayOrderServiceImpl extends BaseServiceImpl<ZcPayOrder> implement
 
 	@Autowired
 	private SendWxMessageImpl sendWxMessage;
+
+	@Autowired
+	private UserServiceI userService;
 
 	@Override
 	public DataGrid dataGrid(ZcPayOrder zcPayOrder, PageHelper ph) {
@@ -174,29 +174,51 @@ public class ZcPayOrderServiceImpl extends BaseServiceImpl<ZcPayOrder> implement
 					bp.setPaytime(payOrder.getPaytime());
 					zcBestProductService.edit(bp);
 				} else if("PO04".equals(t.getObjectType())) {
-					ZcBbsReward reward = new ZcBbsReward();
+					ZcReward reward = new ZcReward();
 					reward.setId(t.getObjectId());
 					reward.setPayStatus(payOrder.getPayStatus());
 					reward.setPaytime(payOrder.getPaytime());
-					zcBbsRewardService.edit(reward);
-					if(!F.empty(reward.getBbsId()))
-						zcForumBbsService.updateCount(reward.getBbsId(), 1, "bbs_reward");
+					zcRewardService.edit(reward);
 
-					// 更新发帖人钱包余额
-					String userId = zcForumBbsService.get(reward.getBbsId()).getAddUserId();
-//					updateWallet(userId, t.getTotalFee());
-					// 新增钱包收支明细
-					ZcWalletDetail walletDetail = new ZcWalletDetail();
-					walletDetail.setUserId(userId);
-					walletDetail.setOrderNo(t.getOrderNo());
-					walletDetail.setAmount(t.getTotalFee());
-					walletDetail.setWtype("WT05"); // 帖子打赏收入
-					walletDetail.setDescription("帖子打赏");
-					walletDetail.setChannel(t.getChannel());
-					zcWalletDetailService.addAndUpdateWallet(walletDetail);
+					String userId = null, desc = "";
+					StringBuffer buffer = new StringBuffer();
+					if(EnumConstants.OBJECT_TYPE.BBS.getCode().equals(payOrder.getAttachType())) {
+						zcForumBbsService.updateCount(reward.getObjectId(), 1, "bbs_reward");
+						userId = zcForumBbsService.get(reward.getObjectId()).getAddUserId();
+						desc = "帖子打赏";
 
-					// 推送帖子打赏消息
-					sendWxMessage.sendCustomMessage(t.getObjectId(), "bbs_r", null);
+						User rewardUser = userService.getByZc(t.getUserId()); // 打赏人
+						buffer.append("您收到来自『" + rewardUser.getNickname() + "』的赏金\"" + new DecimalFormat("#,###0.00").format(t.getTotalFee()) + "元。\"").append("\n\n");
+						buffer.append("<a href='"+ PathUtil.getUrlPath("api/bbsController/bbsDetail?id=" + reward.getObjectId()) +"'>点击查看</a>");
+
+					} else if(EnumConstants.OBJECT_TYPE.TOPIC.getCode().equals(payOrder.getAttachType())) {
+						zcTopicService.updateCount(reward.getObjectId(), 1, "topic_reward");
+						userId = zcTopicService.get(reward.getObjectId()).getAddUserId();
+						desc = "专题打赏";
+
+						User rewardUser = userService.getByZc(t.getUserId()); // 打赏人
+						buffer.append("您收到来自『" + rewardUser.getNickname() + "』的赏金\"" + new DecimalFormat("#,###0.00").format(t.getTotalFee()) + "元。\"").append("\n\n");
+						buffer.append("<a href='"+ PathUtil.getUrlPath("api/apiTopic/topicDetail?id=" + reward.getObjectId()) +"'>点击查看</a>");
+
+					}
+
+					if(!F.empty(userId)) {
+						// 更新发帖人钱包余额
+						// 新增钱包收支明细
+						ZcWalletDetail walletDetail = new ZcWalletDetail();
+						walletDetail.setUserId(userId);
+						walletDetail.setOrderNo(t.getOrderNo());
+						walletDetail.setAmount(t.getTotalFee());
+						walletDetail.setWtype("WT05"); // 打赏收入
+						walletDetail.setDescription(desc);
+						walletDetail.setChannel(t.getChannel());
+						zcWalletDetailService.addAndUpdateWallet(walletDetail);
+
+						// 推送打赏消息
+						if(!F.empty(buffer.toString()))
+							sendWxMessage.sendCustomMessageByUserId(userId, buffer.toString());
+							//sendWxMessage.sendCustomMessage(t.getObjectId(), "bbs_r", null);
+					}
 
 				} else if("PO05".equals(t.getObjectType())) {
 					ZcOrder order = new ZcOrder();

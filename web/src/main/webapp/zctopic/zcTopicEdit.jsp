@@ -4,7 +4,18 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="jb" uri="http://www.jb.cn/jbtag"%> 
 <script type="text/javascript">
+	var editor;
 	$(function() {
+		window.setTimeout(function() {
+			editor = KindEditor.create('#content', {
+				width : '580px',
+				height : '300px',
+				items : ['undo', 'redo', '|', 'removeformat', 'hr', 'lineheight', 'link', 'unlink', '|', 'image', 'multiimage', 'media', '|', 'fullscreen', '/', 'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent'],
+				uploadJson : '${pageContext.request.contextPath}/fileController/upload',
+				fileManagerJson : '${pageContext.request.contextPath}/fileController/fileManage',
+				allowFileManager : true
+			});
+		}, 1);
 		parent.$.messager.progress('close');
 		$('#form').form({
 			url : '${pageContext.request.contextPath}/zcTopicController/edit',
@@ -14,9 +25,16 @@
 					text : '数据处理中，请稍后....'
 				});
 				var isValid = $(this).form('validate');
+
+				if($.trim(editor.html()) == '') {
+					alert("专题内容不能为空");
+					isValid = false;
+				}
 				if (!isValid) {
 					parent.$.messager.progress('close');
 				}
+
+				editor.sync();
 				return isValid;
 			},
 			success : function(result) {
@@ -30,84 +48,89 @@
 				}
 			}
 		});
+
+		function ProcessFile() {
+			var file = document.getElementById('iconFile').files[0];
+			if (file) {
+				var reader = new FileReader();
+				reader.onload = function ( event ) {
+					var txt = event.target.result;
+					$('.img-preview').show().attr({'src':txt, 'i':txt});
+				};
+			}
+			reader.readAsDataURL(file);
+		}
+		$(document).delegate('#iconFile','change',function () {
+			ProcessFile();
+		});
+	});
+
+	$('#categoryId').combotree({
+		url : '${pageContext.request.contextPath}/zcCategoryController/tree',
+		parentField : 'pid',
+		textFiled : 'name',
+		lines : true,
+		panelHeight : 'auto',
+		required:true,
+		onLoadSuccess : function() {
+			parent.$.messager.progress('close');
+			$('#categoryId').treegrid('collapseAll');
+		},
+		onBeforeSelect:function(node){
+			if(node.state){
+				$("#cc").tree("unselect");
+			}
+		},
+		value : '${zcTopic.categoryId}'
 	});
 </script>
 <div class="easyui-layout" data-options="fit:true,border:false">
 	<div data-options="region:'center',border:false" title="" style="overflow: auto;">
-		<form id="form" method="post">
-				<input type="hidden" name="id" value = "${zcTopic.id}"/>
+		<form id="form" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="id" value = "${zcTopic.id}"/>
 			<table class="table table-hover table-condensed">
-				<tr>	
-					<th><%=TzcTopic.ALIAS_TITLE%></th>	
-					<td>
-											<input class="span2" name="title" type="text" value="${zcTopic.title}"/>
-					</td>							
-					<th><%=TzcTopic.ALIAS_ICON%></th>	
-					<td>
-											<input class="span2" name="icon" type="text" value="${zcTopic.icon}"/>
-					</td>							
-			</tr>	
-				<tr>	
-					<th><%=TzcTopic.ALIAS_CONTENT%></th>	
-					<td>
-											<input class="span2" name="content" type="text" value="${zcTopic.content}"/>
-					</td>							
-					<th><%=TzcTopic.ALIAS_TOPIC_COMMENT%></th>	
-					<td>
-											<input class="span2" name="topicComment" type="text" value="${zcTopic.topicComment}"/>
-					</td>							
-			</tr>	
-				<tr>	
-					<th><%=TzcTopic.ALIAS_TOPIC_READ%></th>	
-					<td>
-											<input class="span2" name="topicRead" type="text" value="${zcTopic.topicRead}"/>
-					</td>							
-					<th><%=TzcTopic.ALIAS_TOPIC_REWARD%></th>	
-					<td>
-											<input class="span2" name="topicReward" type="text" value="${zcTopic.topicReward}"/>
-					</td>							
-			</tr>	
-				<tr>	
-					<th><%=TzcTopic.ALIAS_TOPIC_PRAISE%></th>	
-					<td>
-											<input class="span2" name="topicPraise" type="text" value="${zcTopic.topicPraise}"/>
-					</td>							
-					<th><%=TzcTopic.ALIAS_TOPIC_COLLECT%></th>	
-					<td>
-											<input class="span2" name="topicCollect" type="text" value="${zcTopic.topicCollect}"/>
-					</td>							
-			</tr>	
-				<tr>	
-					<th><%=TzcTopic.ALIAS_SEQ%></th>	
-					<td>
-											<input class="span2" name="seq" type="text" value="${zcTopic.seq}"/>
-					</td>							
-					<th><%=TzcTopic.ALIAS_ADD_USER_ID%></th>	
-					<td>
-											<input class="span2" name="addUserId" type="text" value="${zcTopic.addUserId}"/>
-					</td>							
-			</tr>	
-				<tr>	
-					<th><%=TzcTopic.ALIAS_ADDTIME%></th>	
-					<td>
-					<input class="span2" name="addtime" type="text" onclick="WdatePicker({dateFmt:'<%=TzcTopic.FORMAT_ADDTIME%>'})"   maxlength="0" value="${zcTopic.addtime}"/>
-					</td>							
-					<th><%=TzcTopic.ALIAS_UPDATE_USER_ID%></th>	
-					<td>
-											<input class="span2" name="updateUserId" type="text" value="${zcTopic.updateUserId}"/>
-					</td>							
-			</tr>	
-				<tr>	
-					<th><%=TzcTopic.ALIAS_UPDATETIME%></th>	
-					<td>
-					<input class="span2" name="updatetime" type="text" onclick="WdatePicker({dateFmt:'<%=TzcTopic.FORMAT_UPDATETIME%>'})"   maxlength="0" value="${zcTopic.updatetime}"/>
-					</td>							
-					<th><%=TzcTopic.ALIAS_IS_DELETED%></th>	
-					<td>
-											<input class="span2" name="isDeleted" type="text" value="${zcTopic.isDeleted}"/>
-					</td>							
-			</tr>	
-			</table>				
+				<tr>
+					<th><%=TzcTopic.ALIAS_TITLE%></th>
+					<td colspan="3">
+						<input class="easyui-validatebox span2" name="title" type="text" data-options="required:true" value="${zcTopic.title}" style="width: 500px;" maxlength="100"/>
+					</td>
+				</tr>
+				<!--<tr>
+					<th>所属分类</th>
+					<td colspan="3">
+						<select id="categoryId" name="categoryId" style="width: 140px; height: 29px;"></select>
+					</td>
+				</tr>-->
+				<tr>
+					<th><%=TzcTopic.ALIAS_ICON%></th>
+					<td colspan="3">
+						<img class="img-preview" src="${zcTopic.icon}" i="${zcTopic.icon}" width="80" height="80"/>
+						<input type="file" id="iconFile" name="iconFile">
+					</td>
+				</tr>
+				<c:if test="${utype == 'UT01'}">
+					<tr>
+						<th width="10%"><%=TzcTopic.ALIAS_TOPIC_READ%></th>
+						<td width="40%">
+							<input name="topicRead" value="${zcTopic.topicRead}" class="easyui-numberspinner"
+								   style="width: 140px; height: 29px;" required="required"
+								   data-options="editable:true">
+						</td>
+						<th width="10%"><%=TzcTopic.ALIAS_SEQ%></th>
+						<td width="40%">
+							<input name="seq" value="${zcTopic.seq}" class="easyui-numberspinner"
+								   style="width: 140px; height: 29px;" required="required"
+								   data-options="editable:true">
+						</td>
+					</tr>
+				</c:if>
+				<tr>
+					<th valign="top"><%=TzcTopic.ALIAS_CONTENT%></th>
+					<td colspan="3">
+						<textarea name="content" id="content" style="height:180px;visibility:hidden;">${zcTopic.content}</textarea>
+					</td>
+				</tr>
+			</table>
 		</form>
 	</div>
 </div>

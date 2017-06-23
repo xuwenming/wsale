@@ -17,6 +17,7 @@ public class ZcReward implements java.io.Serializable {
 	private Date paytime;			
 
 	private User user;
+	private String userName;
 
 	public void setId(java.lang.String value) {
 		this.id = value;
@@ -83,5 +84,13 @@ public class ZcReward implements java.io.Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 }

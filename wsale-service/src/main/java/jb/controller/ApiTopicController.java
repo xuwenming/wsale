@@ -2,9 +2,7 @@ package jb.controller;
 
 import jb.absx.F;
 import jb.pageModel.*;
-import jb.service.UserServiceI;
-import jb.service.ZcRewardServiceI;
-import jb.service.ZcTopicServiceI;
+import jb.service.*;
 import jb.service.impl.CompletionFactory;
 import jb.service.impl.TopicCommon;
 import jb.util.EnumConstants;
@@ -39,6 +37,12 @@ public class ApiTopicController extends BaseController {
 
 	@Autowired
 	private ZcRewardServiceI zcRewardService;
+
+	@Autowired
+	private ZcTopicCommentServiceI zcTopicCommentService;
+
+	@Autowired
+	private ZcPraiseServiceI zcPraiseService;
 
 	/**
 	 * 跳转专题列表
@@ -85,6 +89,14 @@ public class ApiTopicController extends BaseController {
 		ZcTopic topic = zcTopicService.addReadAndDetail(id);
 		topic.setUser(userService.get(topic.getAddUserId(), s.getId()));
 
+		// 是否点赞
+		ZcPraise praise = new ZcPraise();
+		praise.setObjectId(id);
+		praise.setObjectType(EnumConstants.OBJECT_TYPE.TOPIC.getCode());
+		praise.setUserId(s.getId());
+		praise = zcPraiseService.get(praise);
+		topic.setPraise(praise == null ? false : true);
+
 		// 打赏记录
 		ZcReward reward = new ZcReward();
 		reward.setObjectType(EnumConstants.OBJECT_TYPE.TOPIC.getCode());
@@ -113,7 +125,102 @@ public class ApiTopicController extends BaseController {
 
 		request.setAttribute("topic", topic);
 		request.setAttribute("rewards", rewards);
+		request.setAttribute("sessionInfo", s);
 		return "/wsale/topic/topic_detail";
 	}
+
+	private DataGrid commentDataGrid(PageHelper ph, ZcTopicComment comment, final String userId) {
+		ph.setSort("addtime");
+		ph.setOrder("desc");
+		comment.setIsDeleted(false);
+		DataGrid dataGrid = zcTopicCommentService.dataGrid(comment, ph);
+		List<ZcTopicComment> list = (List<ZcTopicComment>) dataGrid.getRows();
+		if(!CollectionUtils.isEmpty(list)) {
+			final CompletionService completionService = CompletionFactory.initCompletion();
+			for (ZcTopicComment c : list) {
+				completionService.submit(new Task<ZcTopicComment, User>(new CacheKey("user", c.getUserId()), c) {
+					@Override
+					public User call() throws Exception {
+						User user = userService.get(getD().getUserId(), userId);
+						return user;
+					}
+
+					protected void set(ZcTopicComment d, User v) {
+						if (v != null)
+							d.setUser(v);
+					}
+				});
+			}
+			completionService.sync();
+		}
+		return dataGrid;
+	}
+
+	/**
+	 * 帖子评论分页查
+	 * @return
+	 */
+	@RequestMapping("/topicComments")
+	@ResponseBody
+	public Json topicComments(PageHelper ph, ZcTopicComment comment, HttpServletRequest request) {
+		Json j = new Json();
+		try{
+			SessionInfo s = getSessionInfo(request);
+			j.setObj(commentDataGrid(ph, comment, s.getId()));
+			j.success();
+			j.setMsg("操作成功");
+		}catch(Exception e){
+			j.fail();
+			e.printStackTrace();
+		}
+		return j;
+	}
+
+	/**
+	 * 添加留言
+	 * @return
+	 */
+	@RequestMapping("/addComment")
+	@ResponseBody
+	public Json addComment(ZcTopicComment comment, HttpServletRequest request) {
+		Json j = new Json();
+		try {
+			SessionInfo s = getSessionInfo(request);
+			comment.setUserId(s.getId());
+			comment.setIsDeleted(false);
+			zcTopicCommentService.add(comment);
+
+			comment.setUser(userService.get(s.getId(), null));
+
+			zcTopicService.updateCount(comment.getTopicId(), 1, "topic_comment");
+
+			j.setObj(comment);
+			j.success();
+			j.setMsg("添加成功！");
+		} catch (Exception e) {
+			j.setMsg(e.getMessage());
+			j.fail();
+		}
+		return j;
+	}
+
+	/**
+	 * 删除留言
+	 * @return
+	 */
+	@RequestMapping("/delComment")
+	@ResponseBody
+	public Json delComment(ZcTopicComment comment, HttpServletRequest request) {
+		Json j = new Json();
+		try {
+			ZcTopicComment c = zcTopicCommentService.get(comment.getId());
+			zcTopicCommentService.delete(comment.getId());
+			zcTopicService.updateCount(c.getTopicId(), -1, "topic_comment");
+		} catch (Exception e) {
+			j.setMsg(e.getMessage());
+		}
+		return j;
+	}
+
 
 }

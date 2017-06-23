@@ -153,7 +153,7 @@
 			<div class="btn-con">
 				<div class="btn-con-lf">
 					<span class="jiage-operate lf sub_btn">—</span>
-					<input class="jiage-value" type="tel"/>
+					<input class="jiage-value onlyNum" type="tel" maxlength="10"/>
 					<span class="jiage-operate rg add_btn">+</span>
 				</div>
 				<div class="btn-con-rg">

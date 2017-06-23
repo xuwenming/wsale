@@ -1,25 +1,24 @@
 package jb.controller;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import jb.pageModel.Colum;
-import jb.pageModel.ZcPraise;
-import jb.pageModel.DataGrid;
-import jb.pageModel.Json;
-import jb.pageModel.PageHelper;
+import com.alibaba.fastjson.JSON;
+import jb.pageModel.*;
+import jb.service.UserServiceI;
 import jb.service.ZcPraiseServiceI;
-
+import jb.service.impl.CompletionFactory;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import wsale.concurrent.CacheKey;
+import wsale.concurrent.CompletionService;
+import wsale.concurrent.Task;
 
-import com.alibaba.fastjson.JSON;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 /**
  * ZcPraise管理控制器
@@ -34,6 +33,8 @@ public class ZcPraiseController extends BaseController {
 	@Autowired
 	private ZcPraiseServiceI zcPraiseService;
 
+	@Autowired
+	private UserServiceI userService;
 
 	/**
 	 * 跳转到ZcPraise管理页面
@@ -54,7 +55,32 @@ public class ZcPraiseController extends BaseController {
 	@RequestMapping("/dataGrid")
 	@ResponseBody
 	public DataGrid dataGrid(ZcPraise zcPraise, PageHelper ph) {
-		return zcPraiseService.dataGrid(zcPraise, ph);
+		DataGrid dataGrid = zcPraiseService.dataGrid(zcPraise, ph);
+		List<ZcPraise> list = (List<ZcPraise>) dataGrid.getRows();
+		if(!CollectionUtils.isEmpty(list)) {
+			final CompletionService completionService = CompletionFactory.initCompletion();
+			for (ZcPraise praise : list) {
+				completionService.submit(new Task<ZcPraise, User>(new CacheKey("user", praise.getUserId()), praise) {
+					@Override
+					public User call() throws Exception {
+						User user = userService.getByZc(getD().getUserId());
+						return user;
+					}
+
+					protected void set(ZcPraise d, User v) {
+						if (v != null)
+							d.setUserName(v.getNickname());
+					}
+				});
+			}
+			completionService.sync();
+		}
+		return dataGrid;
+	}
+	@RequestMapping("/dataGridByTopic")
+	@ResponseBody
+	public DataGrid dataGridByTopic(ZcPraise zcPraise, PageHelper ph) {
+		return dataGrid(zcPraise, ph);
 	}
 	/**
 	 * 获取ZcPraise数据表格excel

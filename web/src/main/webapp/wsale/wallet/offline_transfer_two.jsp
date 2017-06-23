@@ -34,7 +34,7 @@
                         <span class="ub ub-ac">金额</span>
                     </div>
                     <div class="ub-f1 list-input">
-                        <input type="tel" placeholder="请输入金额" name="transferAmount" id="transferAmount" value="${transferAmount}"/>
+                        <input type="tel" placeholder="请输入金额" name="transferAmount" id="transferAmount" value="${transferAmount.longValue()}" class="onlyNum" maxlength="10"/>
                     </div>
                 </li>
                 <li class="ub line">

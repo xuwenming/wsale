@@ -58,7 +58,7 @@
             <div  class="renzheng-input" style="border-bottom: 10px solid #f5f5f5;">
                 <a class="faxian-link">
                     <div style="float:right;">
-                        <input type="text" placeholder="请输入快递公司" id="returnExpressName"/>
+                        <input type="text" placeholder="请输入快递公司" id="returnExpressName" maxlength="10"/>
                     </div>
                     <div class="dingdan-title">快递公司</div>
                 </a>
@@ -68,7 +68,7 @@
             <div  class="renzheng-input" style="border-bottom: 10px solid #f5f5f5;">
                 <a class="faxian-link">
                     <div style="float:right;">
-                        <input type="text" placeholder="请输入运单号" id="returnExpressNo"/>
+                        <input class="onlyNum" maxlength="20" type="text" placeholder="请输入运单号" id="returnExpressNo"/>
                         <img class="shaoyishao scanBtn" src="${pageContext.request.contextPath}/wsale/images/saoyisao.png" alt=""/>
                     </div>
                     <div class="dingdan-title">运单号</div>

@@ -48,6 +48,8 @@ public class TzcTopic implements java.io.Serializable,IEntity{
 	//columns START
 	//@Length(max=36)
 	private java.lang.String id;
+	//@Length(max=36)
+	private String categoryId;
 	//@Length(max=100)
 	private java.lang.String title;
 	//@Length(max=255)
@@ -94,6 +96,15 @@ public class TzcTopic implements java.io.Serializable,IEntity{
 	@Column(name = "id", unique = true, nullable = false, length = 36)
 	public java.lang.String getId() {
 		return this.id;
+	}
+
+	@Column(name = "category_id", unique = false, nullable = true, insertable = true, updatable = true, length = 36)
+	public String getCategoryId() {
+		return this.categoryId;
+	}
+
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
 	}
 	
 	@Column(name = "title", unique = false, nullable = true, insertable = true, updatable = true, length = 100)

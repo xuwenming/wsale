@@ -163,7 +163,7 @@
                 <div class="weui-popup-overlay"></div>
                 <div class="weui-popup-modal" style="height: 180px;overflow: hidden; text-align: center;">
                     <div class="modal-content" style="padding-top: 0;overflow: hidden; ">
-                        <input style="margin:10px 0;background-color: #fff;" type="tel" maxlength="5" id="rewardFee" placeholder="请输入打赏金额(元)..."/>
+                        <input class="onlyNum" style="margin:10px 0;background-color: #fff;" type="tel" maxlength="5" id="rewardFee" placeholder="请输入打赏金额(元)..."/>
                         <a class="bottom-btn reward" style="color: #fff;font-size: 16px;">打赏</a>
                         <span class="fenlei-desc">喜欢可以赏我哦！</span>
                     </div>

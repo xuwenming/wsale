@@ -22,8 +22,8 @@
                     <span onclick="href('api/userController/info');" style="padding: 10px 0px;">取 消</span>
                 </div>
             </div>
-            <input style="margin:10px;background-color: #fff;" type="tel" maxlength="11" placeholder="请输入您的手机号码..." id="mobile"/>
-            <input style="margin:10px;background-color: #fff;" type="tel" maxlength="6" placeholder="请输入验证码..." id="vcode"/>
+            <input class="onlyNum" style="margin:10px;background-color: #fff;" type="tel" maxlength="11" placeholder="请输入您的手机号码..." id="mobile"/>
+            <input class="onlyNum" style="margin:10px;background-color: #fff;" type="tel" maxlength="6" placeholder="请输入验证码..." id="vcode"/>
             <div style="float:right;width:90px;text-align:center; margin: -45px 10px;font-size: 15px;border: 1px solid #f0f0f0;padding: 5px 10px" id="vcode-btn">
                 点击获取
             </div>

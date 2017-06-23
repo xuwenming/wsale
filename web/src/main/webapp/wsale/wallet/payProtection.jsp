@@ -30,7 +30,7 @@
                     <div class="chongzhi-value">
                         <div class="chongzhi-jine">
                             <span class="big-text" style="margin-left:10px;">金额</span>
-                            <input type="tel" placeholder="请输入缴纳金额" id="protection" <c:if test="${protection < 1000}">value="${(1000 - protection).longValue()}"</c:if>/>
+                            <input class="onlyNum" maxlength="10" type="tel" placeholder="请输入缴纳金额" id="protection" <c:if test="${protection < 1000}">value="${(1000 - protection).longValue()}"</c:if>/>
                         </div>
                     </div>
                     <div style="font-size: 12px;color: #999;text-align: right;margin: 8px;">

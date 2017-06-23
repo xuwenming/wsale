@@ -9,7 +9,7 @@
             <c:when test="${payOrder.objectType == 'PO01'}">支付申请职务费用</c:when>
             <c:when test="${payOrder.objectType == 'PO02'}">支付实名认证费用</c:when>
             <c:when test="${payOrder.objectType == 'PO03'}">支付申请首页精拍费用</c:when>
-            <c:when test="${payOrder.objectType == 'PO04'}">帖子打赏</c:when>
+            <c:when test="${payOrder.objectType == 'PO04'}">打赏</c:when>
             <c:when test="${payOrder.objectType == 'PO05'}">拍品订单支付</c:when>
             <c:when test="${payOrder.objectType == 'PO07'}">消保金缴纳</c:when>
             <c:when test="${payOrder.objectType == 'PO08'}">买家保证金</c:when>
@@ -61,7 +61,13 @@
                                 </c:choose>
                             </c:when>
                             <c:when test="${payOrder.objectType == 'PO03'}">申请首页精拍</c:when>
-                            <c:when test="${payOrder.objectType == 'PO04'}">帖子打赏</c:when>
+                            <c:when test="${payOrder.objectType == 'PO04'}">
+                                <c:choose>
+                                    <c:when test="${attachType == 'BBS'}">帖子打赏</c:when>
+                                    <c:when test="${attachType == 'TOPIC'}">专题打赏</c:when>
+                                    <c:otherwise>打赏</c:otherwise>
+                                </c:choose>
+                            </c:when>
                             <c:when test="${payOrder.objectType == 'PO05'}">拍品订单</c:when>
                             <c:when test="${payOrder.objectType == 'PO07'}">消保金</c:when>
                             <c:when test="${payOrder.objectType == 'PO08'}">保证金</c:when>
@@ -195,6 +201,7 @@
                             $('.mask-layer-2, .pwd-dialog').hide();
                             var objectType = '${payOrder.objectType}', objectId = '${payOrder.objectId}', totalFee = ${payOrder.totalFee + serviceFee}, serviceFee = ('${serviceFee}'*100).toFixed(0);
                             var params = {totalFee : totalFee,serviceFee:serviceFee,objectType:objectType,objectId:objectId, channel:'CS02'};
+                            if(${!empty attachType}) params.attachType = '${attachType}';
                             ajaxPost('api/pay/walletPay', params, function(data){
                                 if(data.success) {
                                     $.toast("支付成功", function(){
@@ -237,6 +244,7 @@
             if(index == 0) {
                 var objectType = '${payOrder.objectType}', objectId = '${payOrder.objectId}', totalFee = ${payOrder.totalFee + serviceFee}, serviceFee = ('${serviceFee}'*100).toFixed(0);
                 var params = {totalFee : totalFee,serviceFee:serviceFee,objectType:objectType,objectId:objectId, channel:'CS01'};
+                if(${!empty attachType}) params.attachType = '${attachType}';
                 wxPayCall(params, function(){
                     $.toast("支付成功", function(){
                         var url = document.referrer;

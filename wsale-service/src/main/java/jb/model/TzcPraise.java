@@ -26,7 +26,7 @@ public class TzcPraise implements java.io.Serializable,IEntity{
 	public static final String ALIAS_ID = "主键";
 	public static final String ALIAS_OBJECT_TYPE = "对象类型";
 	public static final String ALIAS_OBJECT_ID = "对象ID";
-	public static final String ALIAS_USER_ID = "点赞人";
+	public static final String ALIAS_USER_ID = "点赞用户";
 	public static final String ALIAS_ADDTIME = "点赞时间";
 	
 	//date formats

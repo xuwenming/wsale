@@ -70,8 +70,8 @@
                         </div>
                     </div>
                     <div class="modal-content">
-                        <input style="margin:10px 0;background-color: #fff;" type="tel" maxlength="11" placeholder="请输入您的手机号码..." id="mobile"/>
-                        <input style="margin:10px 0;background-color: #fff;" type="tel" maxlength="6" placeholder="请输入验证码..."  id="vcode"/>
+                        <input class="onlyNum" style="margin:10px 0;background-color: #fff;" type="tel" maxlength="11" placeholder="请输入您的手机号码..." id="mobile"/>
+                        <input class="onlyNum" style="margin:10px 0;background-color: #fff;" type="tel" maxlength="6" placeholder="请输入验证码..."  id="vcode"/>
                         <div style="float:right;width:90px;text-align:center; margin: -45px 10px;font-size: 15px;border: 1px solid #f0f0f0;padding: 5px 10px" id="vcode-btn">
                             点击获取
                         </div>
@@ -98,9 +98,9 @@
                                 <div class="jingjia-content">
                                     <c:forEach items="${ranges}" var="range" varStatus="vs">
                                         <div style="margin-bottom: 5px;">
-                                            <input type="tel" value="${range.startPrice.longValue()}" name="startPrices" maxlength="10"/> <span>元到</span>
-                                            <input type="tel" value="${range.endPrice.longValue()}" name="endPrices" maxlength="10"/> <span>元时，每次加</span>
-                                            <input type="tel" value="${range.price.longValue()}" name="prices" maxlength="10"/> <span>元</span>
+                                            <input class="onlyNum" type="tel" value="${range.startPrice.longValue()}" name="startPrices" maxlength="10"/> <span>元到</span>
+                                            <input class="onlyNum" type="tel" value="${range.endPrice.longValue()}" name="endPrices" maxlength="10"/> <span>元时，每次加</span>
+                                            <input class="onlyNum" type="tel" value="${range.price.longValue()}" name="prices" maxlength="10"/> <span>元</span>
                                         </div>
                                     </c:forEach>
                                 </div>
@@ -136,7 +136,7 @@
                         </div>
                         <div class="info-list">
                             <div style="float:right; text-align: right;" class="bzj-conent">
-                                <input type="tel" maxlength="10" id="startingPrice" name="startingPrice" value="${product.startingPrice.longValue()}">
+                                <input class="onlyNum" type="tel" maxlength="10" id="startingPrice" name="startingPrice" value="${product.startingPrice.longValue()}">
                             </div>
                             <div class="normal-text">起拍价</div>
                         </div>
@@ -177,7 +177,7 @@
                         </div>
                         <div class="info-list">
                             <div style="float:right; text-align:right;" class="bzj-conent">
-                                <input type="tel" maxlength="10" placeholder="请输入" value="0" readonly name="margin"/>
+                                <input class="onlyNum" type="tel" maxlength="10" placeholder="请输入" value="0" readonly name="margin"/>
                                 <span class="marginBtn">点击开通</span> <img class="right-iocn" src="${pageContext.request.contextPath}/wsale/images/baozhengjin-icon.png" />
                             </div>
                             <div class="normal-text">保证金</div>
@@ -236,7 +236,7 @@
                         </div>-->
                         <div class="info-list">
                             <div style="float:right;text-align: right;" class="bzj-conent">
-                                <input type="tel" maxlength="10" id="fixedPrice" name="fixedPrice" value="${product.fixedPrice.longValue()}">
+                                <input class="onlyNum" type="tel" maxlength="10" id="fixedPrice" name="fixedPrice" value="${product.fixedPrice.longValue()}">
                             </div>
                             <div class="normal-text">一口价</div>
                         </div>
@@ -245,7 +245,7 @@
                         </div>
                         <div class="info-list">
                             <div style="float:right;text-align: right;" class="bzj-conent">
-                                <input type="tel" maxlength="10" id="referencePrice" name="referencePrice" value="${product.referencePrice.longValue()}">
+                                <input class="onlyNum" type="tel" maxlength="10" id="referencePrice" name="referencePrice" value="${product.referencePrice.longValue()}">
                             </div>
                             <div class="normal-text">参考价</div>
                         </div>

@@ -91,6 +91,7 @@ public class ZcRewardServiceImpl extends BaseServiceImpl<ZcReward> implements Zc
 	public void edit(ZcReward zcReward) {
 		TzcReward t = zcRewardDao.get(TzcReward.class, zcReward.getId());
 		if (t != null) {
+			zcReward.setObjectId(t.getObjectId());
 			MyBeanUtils.copyProperties(zcReward, t, new String[] { "id" , "addtime" },true);
 		}
 	}

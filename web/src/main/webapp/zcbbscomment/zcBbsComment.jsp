@@ -62,7 +62,7 @@
 				formatter : function(value, row, index) {
 					var str = "";
 					if(value && row.ctype == 'IMAGE'){
-						str = "<img class=\"imageS\" style=\"height: 60px;width: 80px;\" src=\""+value+"\" i=\""+value+"\" />";
+						str = "<img class=\"imageS\" data-index=\""+index+"\" style=\"height: 60px;width: 80px;\" src=\""+value+"\" i=\""+value+"\" />";
 					} else str = value;
 					return str;
 				}
@@ -117,7 +117,7 @@
 
 				parent.imageSlide.initImageSlide($('.imageS'));
 				$('.imageS').click(function(){
-					parent.imageSlide.showImageSlide($(this).index());
+					parent.imageSlide.showImageSlide($(this).attr('data-index'));
 				});
 			}
 		});

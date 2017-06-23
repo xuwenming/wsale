@@ -446,7 +446,7 @@ public class SendWxMessageImpl {
                 ZcAddress address = new ZcAddress();
                 address.setUserId(product.getUserId());
                 address.setAtype(1); // 1:收货地址; 2:退货地址
-                address.setOrderId("-1");
+                address.setOrderId(order.getId());
                 address = zcAddressService.get(address);
 
                 String content = product.getContentLine();

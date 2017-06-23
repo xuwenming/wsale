@@ -30,9 +30,14 @@
 					alert("请选择封面");
 					isValid = false;
 				}
+				if($.trim(editor.html()) == '') {
+					alert("专题内容不能为空");
+					isValid = false;
+				}
 				if (!isValid) {
 					parent.$.messager.progress('close');
 				}
+
 				editor.sync();
 				return isValid;
 			},
@@ -55,7 +60,6 @@
 				reader.onload = function ( event ) {
 					var txt = event.target.result;
 					$('.img-preview').show().attr({'src':txt, 'i':txt});
-					$('.img-preview').simpleSlide();
 				};
 			}
 			reader.readAsDataURL(file);
@@ -64,10 +68,28 @@
 			ProcessFile();
 		});
 	});
+
+	$('#categoryId').combotree({
+		url : '${pageContext.request.contextPath}/zcCategoryController/tree',
+		parentField : 'pid',
+		textFiled : 'name',
+		lines : true,
+		panelHeight : 'auto',
+		required:true,
+		onLoadSuccess : function() {
+			parent.$.messager.progress('close');
+			$('#categoryId').treegrid('collapseAll');
+		},
+		onBeforeSelect:function(node){
+			if(node.state){
+				$("#cc").tree("unselect");
+			}
+		}
+	});
 </script>
 <div class="easyui-layout" data-options="fit:true,border:false">
 	<div data-options="region:'center',border:false" title="" style="overflow: auto;">	
-		<form id="form" method="post">		
+		<form id="form" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="id"/>
 			<table class="table table-hover table-condensed">
 				<tr>
@@ -76,6 +98,12 @@
 						<input class="easyui-validatebox span2" name="title" type="text" data-options="required:true" style="width: 500px;" maxlength="100"/>
 					</td>
 				</tr>
+				<!--<tr>
+					<th>所属分类</th>
+					<td colspan="3">
+						<select id="categoryId" name="categoryId" style="width: 140px; height: 29px;"></select>
+					</td>
+				</tr>-->
 				<tr>
 					<th><%=TzcTopic.ALIAS_ICON%></th>
 					<td colspan="3">

@@ -23,6 +23,7 @@ public class ZcPayOrder implements java.io.Serializable {
 	private Date addtime;			
 
 	private boolean isRefundServiceFee;
+	private String attachType;
 
 	public void setId(String value) {
 		this.id = value;
@@ -137,5 +138,13 @@ public class ZcPayOrder implements java.io.Serializable {
 
 	public void setRefundServiceFee(boolean isRefundServiceFee) {
 		this.isRefundServiceFee = isRefundServiceFee;
+	}
+
+	public String getAttachType() {
+		return attachType;
+	}
+
+	public void setAttachType(String attachType) {
+		this.attachType = attachType;
 	}
 }

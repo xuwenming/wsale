@@ -64,7 +64,7 @@
                                 </a>
                                 <a class="faxian-link" style="padding: 14px;">
                                     <div class="list-right">
-                                        <input type="tel" placeholder="请输入开户时预留手机号" id="bankPhone" value="${walletDetail.bankPhone}" maxlength="18"/>
+                                        <input type="tel" placeholder="请输入开户时预留手机号" id="bankPhone" value="${walletDetail.bankPhone}" maxlength="11" class="onlyNum"/>
                                     </div>
                                     <div class="normal-text">手机号</div>
                                 </a>
@@ -76,7 +76,7 @@
                                 </a>
                                 <a class="faxian-link" style="padding: 14px;">
                                     <div class="list-right">
-                                        <input type="tel" placeholder="请输入银行卡号" id="bankCard" value="${walletDetail.bankCard}" maxlength="36"/>
+                                        <input type="tel" placeholder="请输入银行卡号" id="bankCard" value="${walletDetail.bankCard}" maxlength="36"  class="onlyNum"/>
                                     </div>
                                     <div class="normal-text">银行卡号</div>
                                 </a>

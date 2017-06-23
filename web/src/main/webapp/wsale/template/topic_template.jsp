@@ -14,3 +14,16 @@
 	</div>
 </a>
 
+<%--专题留言列表--%>
+<div id="topic_comment_template" class="footer_item" style="display: none;">
+	<div class="footer_img">
+		<img class="lazy" name="user" data-name="headImage"/>
+	</div>
+	<div class="footer_content">
+		<span class="footer_name" name="user" data-name="nickname"></span>
+		<span class="footer_time" name="addtime"></span>
+		<p name="comment"></p>
+		<!--<span class="delete">删除</span>-->
+	</div>
+</div>
+

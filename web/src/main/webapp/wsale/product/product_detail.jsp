@@ -97,7 +97,7 @@
                         <div class="renzheng-input" style="background-color: #fff;">
                             <a class="faxian-link" style="padding: 14px;">
                                 <div class="list-right">
-                                    <input type="tel" placeholder="请输入最高价" id="maxPrice" maxlength="10"/>
+                                    <input type="tel" placeholder="请输入最高价" id="maxPrice" maxlength="10" class="onlyNum"/>
                                 </div>
                                 <div class="normal-text">最高价</div>
                             </a>
@@ -117,8 +117,8 @@
                         </div>
                     </div>
                     <div class="modal-content">
-                        <input style="margin:10px 0;background-color: #fff;" type="tel" maxlength="11" placeholder="请输入您的手机号码..." id="mobile"/>
-                        <input style="margin:10px 0;background-color: #fff;" type="tel" maxlength="6" placeholder="请输入验证码..."  id="vcode"/>
+                        <input class="onlyNum" style="margin:10px 0;background-color: #fff;" type="tel" maxlength="11" placeholder="请输入您的手机号码..." id="mobile"/>
+                        <input class="onlyNum" style="margin:10px 0;background-color: #fff;" type="tel" maxlength="6" placeholder="请输入验证码..."  id="vcode"/>
                         <div style="float:right;width:90px;text-align:center; margin: -45px 10px;font-size: 15px;border: 1px solid #f0f0f0;padding: 5px 10px" id="vcode-btn">
                             点击获取
                         </div>
@@ -280,7 +280,7 @@
                                         </c:if>
                                         <c:if test="${!user.self}">
                                             <span class="jiage-operate lf" id="sub_btn">—</span>
-                                            <input class="jiage-value" type="tel" value="${(product.currentPrice == 0 ? (product.startingPrice == 0 ? rangePrice : product.startingPrice).longValue() : (product.currentPrice + rangePrice).longValue())}"/>
+                                            <input class="jiage-value onlyNum" maxlength="10" type="tel" value="${(product.currentPrice == 0 ? (product.startingPrice == 0 ? rangePrice : product.startingPrice).longValue() : (product.currentPrice + rangePrice).longValue())}"/>
                                             <span class="jiage-operate rg" id="add_btn">+</span>
                                         </c:if>
                                     </div>

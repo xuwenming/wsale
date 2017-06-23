@@ -8,6 +8,10 @@ import  java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import  javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
@@ -98,7 +102,9 @@ public final class ImageUtils {
                     (height - height_mark) - y , width_mark, height_mark, null);
             //水印文件结束
             g.dispose();
-            String filePath = targetImg.substring(targetImg.indexOf(Constants.UPLOADFILE), targetImg.lastIndexOf("/"));
+            int index = targetImg.indexOf(Constants.UPLOADFILE);
+            if(index == -1) index = targetImg.indexOf("attached");
+            String filePath = targetImg.substring(index, targetImg.lastIndexOf("/"));
             String fileName = "handle_" + targetImg.substring(targetImg.lastIndexOf("/") + 1);
 //            FileOutputStream out = new FileOutputStream(new File(realPath + filePath, fileName));
 //            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
@@ -169,6 +175,61 @@ public final class ImageUtils {
         } catch  (Exception e) {
             System.out.println(e);
         }
+    }
+
+    public static String replaceHtmlTag(String str, String tag, String tagAttrib, String startTag, String endTag, String realPath) {
+
+        try {
+            String regxpForTag = "<\\s*" + tag + "\\s+([^>]*)\\s*" ;
+            String regxpForTagAttrib = tagAttrib + "=\\s*\"([^\"]+)\"" ;
+            Pattern patternForTag = Pattern.compile (regxpForTag,Pattern. CASE_INSENSITIVE );
+            Pattern patternForAttrib = Pattern.compile (regxpForTagAttrib,Pattern. CASE_INSENSITIVE );
+            Matcher matcherForTag = patternForTag.matcher(str);
+            StringBuffer sb = new StringBuffer();
+            boolean result = matcherForTag.find();
+            while (result) {
+                StringBuffer sbreplace = new StringBuffer( "<"+tag+" ");
+                Matcher matcherForAttrib = patternForAttrib.matcher(matcherForTag.group(1));
+                if (matcherForAttrib.find()) {
+                    String attributeStr = matcherForAttrib.group(1);
+                    if(attributeStr.indexOf(OSSUtil.cdnUrl) == -1) {
+                        String fileExt = attributeStr.substring(attributeStr.lastIndexOf(".") + 1).toLowerCase();
+                        URL url = new URL(attributeStr);
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setDoInput(true);
+                        conn.setDoOutput(true);
+                        conn.setUseCaches(false);
+                        conn.setRequestMethod("GET");
+                        conn.connect();
+                        String path = OSSUtil.putInputStream(OSSUtil.bucketName, conn.getInputStream(),  getFilePath(fileExt));
+                        path = pressImage(path, realPath);
+                        conn.disconnect();
+                        matcherForAttrib.appendReplacement(sbreplace, startTag + path + endTag);
+                    }
+                }
+                matcherForAttrib.appendTail(sbreplace);
+                matcherForTag.appendReplacement(sb, sbreplace.toString());
+                result = matcherForTag.find();
+            }
+            matcherForTag.appendTail(sb);
+            return sb.toString();
+        } catch (Exception e) {
+            String error = String.format("replaceHtmlTag失败：%s", e);
+            System.out.println(error);
+        }
+        return null;
+    }
+
+    public static String getFilePath(String fileExt) {
+        String savePath = "attached/image/";
+        SimpleDateFormat yearDf = new SimpleDateFormat("yyyy");
+        SimpleDateFormat monthDf = new SimpleDateFormat("MM");
+        SimpleDateFormat dateDf = new SimpleDateFormat("dd");
+        Date date = new Date();
+        String ymd = yearDf.format(date) + "/" + monthDf.format(date) + "/" + dateDf.format(date) + "/";
+        savePath += ymd;
+        String newFileName = jb.absx.UUID.uuid() + "." + fileExt;
+        return savePath + newFileName;
     }
 
     public static void main(String[] args) {

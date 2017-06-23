@@ -7,7 +7,8 @@ public class ZcTopic implements java.io.Serializable {
 
 	private static final long serialVersionUID = 5454155825314635342L;
 
-	private java.lang.String id;	
+	private java.lang.String id;
+	private String categoryId;
 	private java.lang.String title;	
 	private java.lang.String icon;	
 	private java.lang.String content;	
@@ -24,6 +25,10 @@ public class ZcTopic implements java.io.Serializable {
 	private java.lang.Boolean isDeleted;	
 
 	private User user;
+	private String addUserName;
+	private String categoryName;
+
+	private boolean praise;
 
 	public void setId(java.lang.String value) {
 		this.id = value;
@@ -33,7 +38,14 @@ public class ZcTopic implements java.io.Serializable {
 		return this.id;
 	}
 
-	
+	public String getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
+	}
+
 	public void setTitle(java.lang.String title) {
 		this.title = title;
 	}
@@ -139,5 +151,29 @@ public class ZcTopic implements java.io.Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getAddUserName() {
+		return addUserName;
+	}
+
+	public void setAddUserName(String addUserName) {
+		this.addUserName = addUserName;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	public boolean isPraise() {
+		return praise;
+	}
+
+	public void setPraise(boolean praise) {
+		this.praise = praise;
 	}
 }

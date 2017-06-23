@@ -91,6 +91,7 @@ public class ZcTopicCommentServiceImpl extends BaseServiceImpl<ZcTopicComment> i
 		TzcTopicComment t = new TzcTopicComment();
 		BeanUtils.copyProperties(zcTopicComment, t);
 		zcTopicCommentDao.save(t);
+		zcTopicComment.setAddtime(t.getAddtime());
 	}
 
 	@Override

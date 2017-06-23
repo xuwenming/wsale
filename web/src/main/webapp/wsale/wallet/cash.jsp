@@ -15,7 +15,7 @@
                 <div class="chongzhi-value">
                     <div class="chongzhi-jine">
                         <span class="big-text" style="margin-left:10px;">金额</span>
-                        <input type="tel" placeholder="请输入提现金额" id="amount"/>
+                        <input type="tel" placeholder="请输入提现金额" id="amount" class="onlyNum" maxlength="10"/>
                     </div>
                 </div>
                 <div style="font-size: 12px;color: #999;text-align: right;margin: 8px;">

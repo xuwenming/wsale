@@ -38,7 +38,7 @@
                         <div>*平均每天在线时长：</div>
                         <div id="day-hour">
                             <div style="float:right; height:35px; line-height:35px;">小时</div>
-                            <input type="tel" placeholder="请输入" name="onlineDuration" maxlength="4" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+                            <input type="tel" placeholder="请输入" name="onlineDuration" maxlength="2" class="onlyNum"/>
                         </div>
                         <a id="applyBtn" type="button" style="color:#fff;font-size:14px;display:block;height:40px; line-height:40px; background-color:#dc721c; text-align:center;">确定</a>
                     </div>

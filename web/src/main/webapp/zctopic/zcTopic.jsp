@@ -51,35 +51,35 @@
 				}, {
 				field : 'title',
 				title : '<%=TzcTopic.ALIAS_TITLE%>',
-				width : 50		
-				}, {
-				field : 'icon',
-				title : '<%=TzcTopic.ALIAS_ICON%>',
-				width : 50		
+				width : 100,
+				formatter : function (value, row, index) {
+					return '<a onclick="viewTopic(\'' + row.id + '\', \''+row.title+'\')">' + row.title + '</a>';
+				}
 				}, {
 				field : 'topicComment',
 				title : '<%=TzcTopic.ALIAS_TOPIC_COMMENT%>',
-				width : 50		
+				width : 30,
+				sortable:true
 				}, {
 				field : 'topicRead',
 				title : '<%=TzcTopic.ALIAS_TOPIC_READ%>',
-				width : 50		
+				width : 30,
+				sortable:true
 				}, {
 				field : 'topicReward',
 				title : '<%=TzcTopic.ALIAS_TOPIC_REWARD%>',
-				width : 50		
+				width : 30,
+				sortable:true
 				}, {
 				field : 'topicPraise',
 				title : '<%=TzcTopic.ALIAS_TOPIC_PRAISE%>',
-				width : 50		
-				}, {
-				field : 'topicCollect',
-				title : '<%=TzcTopic.ALIAS_TOPIC_COLLECT%>',
-				width : 50		
+				width : 30,
+				sortable:true
 				}, {
 				field : 'seq',
 				title : '<%=TzcTopic.ALIAS_SEQ%>',
-				width : 50		
+				width : 40,
+				sortable:true
 				}, {
 				field : 'addUserId',
 				title : '<%=TzcTopic.ALIAS_ADD_USER_ID%>',
@@ -87,35 +87,26 @@
 				}, {
 				field : 'addtime',
 				title : '<%=TzcTopic.ALIAS_ADDTIME%>',
-				width : 50		
-				}, {
-				field : 'updateUserId',
-				title : '<%=TzcTopic.ALIAS_UPDATE_USER_ID%>',
-				width : 50		
-				}, {
-				field : 'updatetime',
-				title : '<%=TzcTopic.ALIAS_UPDATETIME%>',
-				width : 50		
-				}, {
-				field : 'isDeleted',
-				title : '<%=TzcTopic.ALIAS_IS_DELETED%>',
-				width : 50		
+				width :80,
+				sortable:true
 			}, {
 				field : 'action',
 				title : '操作',
-				width : 100,
+				width : 50,
 				formatter : function(value, row, index) {
 					var str = '';
 					if ($.canEdit) {
-						str += $.formatString('<img onclick="editFun(\'{0}\');" src="{1}" title="编辑"/>', row.id, '${pageContext.request.contextPath}/style/images/extjs_icons/bug/bug_edit.png');
+						//str += $.formatString('<img onclick="editFun(\'{0}\');" src="{1}" title="编辑"/>', row.id, '${pageContext.request.contextPath}/style/images/extjs_icons/bug/bug_edit.png');
+						str += '<a onclick="editFun(\'' + row.id + '\')">编辑</a>';
 					}
 					str += '&nbsp;';
 					if ($.canDelete) {
-						str += $.formatString('<img onclick="deleteFun(\'{0}\');" src="{1}" title="删除"/>', row.id, '${pageContext.request.contextPath}/style/images/extjs_icons/bug/bug_delete.png');
+						str += '<a onclick="deleteFun(\'' + row.id + '\')">删除</a>';
+						//str += $.formatString('<img onclick="deleteFun(\'{0}\');" src="{1}" title="删除"/>', row.id, '${pageContext.request.contextPath}/style/images/extjs_icons/bug/bug_delete.png');
 					}
 					str += '&nbsp;';
 					if ($.canView) {
-						str += $.formatString('<img onclick="viewFun(\'{0}\');" src="{1}" title="查看"/>', row.id, '${pageContext.request.contextPath}/style/images/extjs_icons/bug/bug_link.png');
+						//str += $.formatString('<img onclick="viewFun(\'{0}\');" src="{1}" title="查看"/>', row.id, '${pageContext.request.contextPath}/style/images/extjs_icons/bug/bug_link.png');
 					}
 					return str;
 				}
@@ -172,6 +163,17 @@
 					f.submit();
 				}
 			} ]
+		});
+	}
+
+	function viewTopic(id, title) {
+		if(title.length > 4)
+			title = title.substr(0, 4) + "...";
+		var href = '${pageContext.request.contextPath}/zcTopicController/view?id=' + id;
+		parent.$("#index_tabs").tabs('add', {
+			title : '专题详情-' + title,
+			content : '<iframe src="' + href + '" frameborder="0" scrolling="auto" style="width:100%;height:98%;"></iframe>',
+			closable : true
 		});
 	}
 
@@ -232,75 +234,15 @@
 </head>
 <body>
 	<div class="easyui-layout" data-options="fit : true,border : false">
-		<div data-options="region:'north',title:'查询条件',border:false" style="height: 110px; overflow: hidden;">
+		<div data-options="region:'north',title:'查询条件',border:false" style="height: 70px; overflow: hidden;">
 			<form id="searchForm">
 				<table class="table table-hover table-condensed" style="display: none;">
-						<tr>	
-							<td>
-								<%=TzcTopic.ALIAS_TITLE%>：
-											<input type="text" name="title" maxlength="100" class="span2"/>
-							</td>
-							<td>
-								<%=TzcTopic.ALIAS_ICON%>：
-											<input type="text" name="icon" maxlength="100" class="span2"/>
-							</td>
-							<td>
-								<%=TzcTopic.ALIAS_CONTENT%>：
-											<input type="text" name="content" maxlength="2147483647" class="span2"/>
-							</td>
-							<td>
-								<%=TzcTopic.ALIAS_TOPIC_COMMENT%>：
-											<input type="text" name="topicComment" maxlength="10" class="span2"/>
-							</td>
-						</tr>	
-						<tr>	
-							<td>
-								<%=TzcTopic.ALIAS_TOPIC_READ%>：
-											<input type="text" name="topicRead" maxlength="10" class="span2"/>
-							</td>
-							<td>
-								<%=TzcTopic.ALIAS_TOPIC_REWARD%>：
-											<input type="text" name="topicReward" maxlength="10" class="span2"/>
-							</td>
-							<td>
-								<%=TzcTopic.ALIAS_TOPIC_PRAISE%>：
-											<input type="text" name="topicPraise" maxlength="10" class="span2"/>
-							</td>
-							<td>
-								<%=TzcTopic.ALIAS_TOPIC_COLLECT%>：
-											<input type="text" name="topicCollect" maxlength="10" class="span2"/>
-							</td>
-						</tr>	
-						<tr>	
-							<td>
-								<%=TzcTopic.ALIAS_SEQ%>：
-											<input type="text" name="seq" maxlength="10" class="span2"/>
-							</td>
-							<td>
-								<%=TzcTopic.ALIAS_ADD_USER_ID%>：
-											<input type="text" name="addUserId" maxlength="36" class="span2"/>
-							</td>
-							<td>
-								<%=TzcTopic.ALIAS_ADDTIME%>：
-								<input type="text" class="span2" onclick="WdatePicker({dateFmt:'<%=TzcTopic.FORMAT_ADDTIME%>'})" id="addtimeBegin" name="addtimeBegin"/>
-								<input type="text" class="span2" onclick="WdatePicker({dateFmt:'<%=TzcTopic.FORMAT_ADDTIME%>'})" id="addtimeEnd" name="addtimeEnd"/>
-							</td>
-							<td>
-								<%=TzcTopic.ALIAS_UPDATE_USER_ID%>：
-											<input type="text" name="updateUserId" maxlength="36" class="span2"/>
-							</td>
-						</tr>	
-						<tr>	
-							<td>
-								<%=TzcTopic.ALIAS_UPDATETIME%>：
-								<input type="text" class="span2" onclick="WdatePicker({dateFmt:'<%=TzcTopic.FORMAT_UPDATETIME%>'})" id="updatetimeBegin" name="updatetimeBegin"/>
-								<input type="text" class="span2" onclick="WdatePicker({dateFmt:'<%=TzcTopic.FORMAT_UPDATETIME%>'})" id="updatetimeEnd" name="updatetimeEnd"/>
-							</td>
-							<td>
-								<%=TzcTopic.ALIAS_IS_DELETED%>：
-											<input type="text" name="isDeleted" maxlength="0" class="span2"/>
-							</td>
-						</tr>	
+					<tr>
+						<td>
+							<%=TzcTopic.ALIAS_TITLE%>：
+							<input type="text" name="title" maxlength="100" class="span2"/>
+						</td>
+					</tr>
 				</table>
 			</form>
 		</div>
@@ -310,9 +252,9 @@
 	</div>
 	<div id="toolbar" style="display: none;">
 		<c:if test="${fn:contains(sessionInfo.resourceList, '/zcTopicController/addPage')}">
-			<a onclick="addFun();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'bug_add'">添加</a>
+			<a onclick="addFun();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'bug_add'">发布</a>
 		</c:if>
-		<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'brick_add',plain:true" onclick="searchFun();">过滤条件</a><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'brick_delete',plain:true" onclick="cleanFun();">清空条件</a>
+		<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'brick_add',plain:true" onclick="searchFun();">查询</a><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'brick_delete',plain:true" onclick="cleanFun();">清空条件</a>
 		<c:if test="${fn:contains(sessionInfo.resourceList, '/zcTopicController/download')}">
 			<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'server_go',plain:true" onclick="downloadTable();">导出</a>		
 			<form id="downloadTable" target="downloadIframe" method="post" style="display: none;">

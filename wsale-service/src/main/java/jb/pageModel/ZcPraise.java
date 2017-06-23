@@ -13,7 +13,7 @@ public class ZcPraise implements java.io.Serializable {
 	private java.lang.String userId;	
 	private Date addtime;			
 
-	
+	private String userName;
 
 	public void setId(java.lang.String value) {
 		this.id = value;
@@ -53,4 +53,11 @@ public class ZcPraise implements java.io.Serializable {
 		return this.addtime;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 }

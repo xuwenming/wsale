@@ -58,4 +58,6 @@ public interface ZcTopicServiceI {
 	public List<ZcTopic> query(ZcTopic zcTopic);
 
 	ZcTopic addReadAndDetail(String id);
+
+	void updateCount(String topicId, int i, String topic_comment);
 }

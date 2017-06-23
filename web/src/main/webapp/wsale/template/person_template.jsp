@@ -2,7 +2,7 @@
 <%--我的关注列表--%>
 <div id="my_atted_template" class="guanzhu-content" style="display: none;">
 	<img class="guanzhu-touxiang" name="headImage" />
-	<div class="guanzhu-name info-xinxi" name="nickname">品古斋</div>
+	<div class="guanzhu-name info-xinxi" name="nickname"></div>
 	<div class="guanzhu-level">
 		<img src="${pageContext.request.contextPath}/wsale/images/v2.png" class="guanzhu-vimg"  /> <span class="guanzhu-score">信誉：<scope name="credit">0</scope></span>
 	</div>

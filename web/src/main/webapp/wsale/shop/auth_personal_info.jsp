@@ -61,13 +61,13 @@
                         </a>
                         <a class="faxian-link">
                             <div class="list-right">
-                                <input type="text" placeholder="请输入" name="idNo" value="${auth.idNo}" id="idNo"/>
+                                <input type="text" maxlength="18" placeholder="请输入" name="idNo" value="${auth.idNo}" id="idNo"/>
                             </div>
                             <div class="normal-text">证件号码</div>
                         </a>
                         <a class="faxian-link">
                             <div class="list-right">
-                                <input type="tel" placeholder="请输入" name="phone" value="${auth.phone}" id="phone"/>
+                                <input class="onlyNum" type="tel" maxlength="11" placeholder="请输入" name="phone" value="${auth.phone}" id="phone"/>
                             </div>
                             <div class="normal-text">联系电话</div>
                         </a>

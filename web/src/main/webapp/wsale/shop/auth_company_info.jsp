@@ -53,7 +53,7 @@
                         </a>
                         <a class="faxian-link">
                             <div class="list-right">
-                                <input type="text" placeholder="请输入" name="legalPersonId" value="${auth.legalPersonId}" id="legalPersonId" />
+                                <input maxlength="18" type="text" placeholder="请输入" name="legalPersonId" value="${auth.legalPersonId}" id="legalPersonId" />
                             </div>
                             <div class="normal-text">证件号码</div>
                         </a>

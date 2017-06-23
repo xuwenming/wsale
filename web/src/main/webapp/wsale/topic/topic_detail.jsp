@@ -7,6 +7,7 @@
     <title>${topic.title}</title>
     <jsp:include page="../inc.jsp"></jsp:include>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.topic.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/style.css"/>
 </head>
 <body>
     <div data-role="page" class="jqm-demos" style="background-color:#f5f5f5;">
@@ -30,20 +31,41 @@
 
             <div id="rewardPopup" class="weui-popup-container popup-bottom">
                 <div class="weui-popup-overlay"></div>
-                <div class="weui-popup-modal" style="height: 300px;overflow: hidden; text-align: center;">
-                    <div class="modal-content" style="padding-top: 0;overflow: hidden; ">
+                <div class="weui-popup-modal" style="background-color:transparent;height: 380px;text-align: center;overflow: hidden;">
 
+                    <div class="modal-content" style="padding-top: 0;overflow: hidden">
+                        <div class="shang-background-a"></div>
+                        <div class="shang-active">
+                            <p>
+                                <img src="${pageContext.request.contextPath}/wsale/images/saoyisao.png" alt=""/>
+                            </p>
+                        </div>
+                        <div class="shang-background-b"></div>
+                        <div class="shang-bottom">
+                            <span>支持优美文，作者会立即收到您的赏金。</span>
+                            <div class="money-list">
+                                <div>2 <sub>元</sub></div>
+                                <div>20 <sub>元</sub></div>
+                                <div>50 <sub>元</sub></div>
+                                <div>100 <sub>元</sub></div>
+                                <div>200 <sub>元</sub></div>
+                                <div>500 <sub>元</sub></div>
+                            </div>
+                            <p style="padding-top: 20px;">任意赏金<br/>打赏无悔，概不退款</p>
+
+                        </div>
                     </div>
                 </div>
             </div>
 
             <header>
                 <h2>${topic.title}</h2>
-                <span class="header_author">${topic.user.nickname}</span>
+                <span class="header_author ">${topic.user.nickname}</span>
                 <span class="header_time"><fmt:formatDate value="${topic.addtime}" pattern="yyyy-MM-dd"/></span>
-                <a href="javascript:href('api/apiHomeController/home');">集东集西</a>
+                <span><a href="javascript:href('api/apiHomeController/home');">集东集西</a></span>
+                <div class="right button-at">+关注</div>
+                <hr>
             </header>
-            <hr/>
             <main>
                 ${topic.content}
             </main>
@@ -52,7 +74,10 @@
             </div>
             <form>
                 <fieldset>
-                    <legend>赏心悦目！赏！</legend>
+
+                    <div class="line"><hr>
+                        <div><p>赏心悦目！赏！</p></div>
+                    </div>
                     <div class="shang reward">赏</div>
 
                     <p>已有<span>${rewards.size()}</span>人打赏:</p>
@@ -61,6 +86,14 @@
                             <c:forEach items="${rewards}" var="reward" varStatus="vs">
                                 <li><img src="${reward.user.headImage}"/></li>
                             </c:forEach>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
+                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
                             <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
                             <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
                             <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
@@ -92,6 +125,7 @@
                 <span class="right comment">
                     <a href="#">写留言</a>
                     <img class="pencil" src="${pageContext.request.contextPath}/wsale/article/images/pencil.png" alt=""/>
+
                 </span>
 
                 <div class="footer_item">

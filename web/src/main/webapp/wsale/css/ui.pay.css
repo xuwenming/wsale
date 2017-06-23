@@ -96,6 +96,9 @@
 	left: 0;
 	width: 100%;
 	background-color: #F5F5F5;
+	max-width: 640px;
+	margin:0 auto;
+	right:0;
 }
 
 .pay-btn a{
@@ -112,4 +115,8 @@
 	padding-top: 10px;
 	font-size: 12px;
 	text-align: center;
+}
+div.weui_toptips.bg-danger.weui_toptips_visible{
+	max-width: 640px;
+	margin:0 auto;
 }

@@ -9,6 +9,7 @@
 <html>
 <head>
     <title>我的</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.my.order.list.css"/>
     <jsp:include page="../inc.jsp"></jsp:include>
     <style>
         .redPoint {

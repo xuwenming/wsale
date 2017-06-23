@@ -1,27 +1,56 @@
 body{
     max-width: 640px;
     margin: 0 auto;
-    padding:10px;
+}
+header,main{
+    padding:8px;
+}
+header>hr{
+    margin-top:38px;
+    clear: both;
+}
+header>span{
+    display: inline-block;
+    float:left;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+.button-at{
+    border:1px solid #aaa;
+    color:#aaa;
+    padding:2px 3px;
+    border-radius: 5px;
+    width:60px;
+    text-align: center;
 }
 img{
     width:100%;
     height: auto;
 }
 h2{
-    font-size: 1.5rem;
-    font-weight: 300;
+    font-size: 1.3rem;
+    font-weight: 100;
 }
 ul{
     list-style: none;
 }
-fieldset{
-    border:none;
-    border-top: 1px solid gray;
+.line{
+    width:96%;
+    margin: 0px auto;
     text-align: center;
-    color:gray;
-    margin-top: 20px;
     position:relative;
-    padding-bottom: 50px;
+    margin-top:20px;
+}
+.line>div{
+    font-size: 22px;
+    text-align: center;
+}
+.line>div>p{
+    width:180px;
+    margin:0 auto;
+    background-color: white;
+    position: relative;
+    top:-20px;
 }
 .shang{
     width: 80px;
@@ -31,11 +60,13 @@ fieldset{
     margin: 40px auto;
     border-radius: 50%;
     border:2px solid red;
-    font-size: 3rem;
+    font-size: 2rem;
     line-height: 80px;
+    padding:10px;
+    text-align: center;
 }
 .shang+p{
-    padding-bottom: 30px;
+    text-align: center;
 }
 form ul {
     display: flex;
@@ -44,7 +75,7 @@ form ul {
     justify-content: flex-start;
     width:85%;
     margin: 0 auto;
-    max-height: 75px;
+    max-height: 60px;
     overflow: hidden;
     padding-left: 15px;
 
@@ -66,15 +97,15 @@ form ul li img{
     width:100%;
     color:#000000;
     margin:0 auto;
+    text-align: center;
     padding:20px 0;
-    background: -webkit-linear-gradient(rgba(255,255,255,.2),rgba(255,255,255,.2)); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(rgba(255,255,255,.2),rgba(255,255,255,.2)); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(rgba(255,255,255,.2),rgba(255,255,255,.2)); /* Firefox 3.6 - 15 */
-    background: linear-gradient(rgba(255,255,255,.4),rgba(255,255,255,.4)); /* 标准的语法 */
-    position:absolute;
-    top:320px;
-    left:0;
-    z-index: 9;
+    position: relative;
+    top:0px;
+    /*background: -webkit-linear-gradient(rgba(255,255,255,.2),rgba(255,255,255,.2)); *//* Safari 5.1 - 6.0 */
+    /*background: -o-linear-gradient(rgba(255,255,255,.2),rgba(255,255,255,.2)); *//* Opera 11.1 - 12.0 */
+    /*background: -moz-linear-gradient(rgba(255,255,255,.2),rgba(255,255,255,.2)); *//* Firefox 3.6 - 15 */
+    background: linear-gradient(rgba(255,0,0,0.4),rgba(255,255,255,0));
+    /*-webkit-background-color: transparent;*/
 }
 .right{
     float: right;
@@ -104,9 +135,9 @@ footer .right{
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: flex-start;
-    margin: 20px;
+    margin: 10px;
     margin-left: 0;
-    padding:20px 0;
+    padding:10px 0;
 }
 .footer_img{
     border-radius: 10px;
@@ -130,16 +161,15 @@ footer .right{
     padding-right: 10px;
 }
 .footer_content p{
-    padding-top: 20px;
+    padding-top: 30px;
 }
 .fa-thumbs-up:before{
     display: none;
 }
 .header_author{
-    border:1px solid green;
     border-radius: 20px;
     padding:0 5px;
-    color:green;
+    color:gray;
 }
 .header_time{
     color:gray;
@@ -155,4 +185,77 @@ footer .right{
 }
 .miss{
     display: none;
+}
+.ui-page-theme-a a.ui-link{
+    display: inline-block;
+    color:gray;
+    font-size: 16px;
+}
+.pencil{
+    margin-bottom: -2px;
+    padding-right: 8px;
+}
+.shang-active{
+    text-align: center;
+    margin:0 auto;
+    position:relative;
+    width:120px;
+}
+.shang-active>p{
+    background-color: red;
+    color:white;
+    border-radius: 50%;
+    font-size: 2rem;
+    padding:10px;
+    z-index: 9;
+    width:80px;
+    height: 80px;
+    line-height: 80px;
+    position: absolute;
+    top:-50px;
+    left:10px;
+    overflow: hidden;
+}
+.shang-active>p>img{
+    width:100%;
+    height: auto;
+}
+.money-list{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    background-color: white;
+    padding-left: 6%;
+}
+.money-list>div{
+    display: inline-block;
+    border:1px solid red;
+    border-radius: 5px;
+    margin: 5px;
+    width:20%;
+    padding:5px 10px;
+}
+.money-list+p{
+    color:#3879D9;
+}
+.shang-background-a{
+    height: 60px;
+    background-color: transparent;
+}
+.shang-background-b{
+    height:100px;
+    background-color: white;
+    margin-bottom: -30px;
+}
+.shang-bottom{
+    background-color: white;
+    height: 70%;
+}
+.shang-bottom>span{
+    display: block;
+    margin-bottom: 20px;
+    text-align:center;
+}
+div.weui-popup-modal{
+    margin: 0 auto;
 }

@@ -442,7 +442,7 @@ textarea.ui-input-text{
 }
 .jingxuan-image{
 	width:100%;
-	height:160px;
+	/*height:160px;20170622注释-赵*/
 }
 .jingxuan-info{
 	float:right; 
@@ -1084,9 +1084,10 @@ textarea.ui-input-text{
 	float: right;
 	height: 24px;
 }
-#auctions .order-right-middle{
+p.order-right-middle{
 	color:red;
 	font-size: 12px;
+	margin-bottom: -16px;
 }
 .order-right-bottom{
 	height: 20px;
@@ -1208,7 +1209,8 @@ textarea.ui-input-text{
 	border-radius: 10px;
 }
 .xinpin-largeimg{
-	width:100%;height:210px;
+	width:100%;
+	/*height:160px;注释-赵*/
 }
 
 .infocenter-number{
@@ -2984,4 +2986,53 @@ textarea.ui-input-text{
 }
 .modal-content .ui-input-text{
 	margin: 0;
+}
+
+
+
+/*下面是我写的body：max-width --赵*/
+div#bottombar.ui-footer.ui-bar-a.ui-footer-fixed.slideup{
+	max-width: 640px;
+	margin:0 auto;
+}
+.ui-navbar li:last-child .ui-btn{
+	margin-right: 0;
+}
+div.jqm-demos.ui-page.ui-page-theme-a.ui-page-footer-fixed.ui-page-active{
+	max-width:640px;
+	margin:0 auto;
+	right:0;
+}
+div.ui-header.ui-bar-b.ui-header-fixed.slidedown{
+	max-width:640px;
+	margin:0 auto;
+}
+div.wddd-toptab{
+	max-width: 640px;
+	margin:0 auto;
+}
+.send-info,div.sixin-content{
+	max-width: 640px;
+	margin: 0 auto;
+}
+div#fabuinfo.comment{
+	max-width:640px;
+	margin:0 auto;
+}
+div.ui-content.jqm-content.jqm-fullwidth{
+	max-width: 640px;
+	margin:0 auto;
+}
+div.jqm-demos.ui-page.ui-page-theme-a.ui-page-active{
+	max-width:640px;
+	margin:0 auto;
+	right:0;
+}
+div.modal-content{
+	max-width: 640px;
+	margin: 0 auto;
+}
+div#commentPopup.weui-popup-container.weui-popup-container-visible{
+	max-width: 640px;
+	margin:0 auto;
 }

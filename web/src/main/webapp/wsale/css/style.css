@@ -3036,3 +3036,97 @@ div#commentPopup.weui-popup-container.weui-popup-container-visible{
 	max-width: 640px;
 	margin:0 auto;
 }
+.forum-top{
+	max-width: 640px;
+	margin:0 auto;
+}
+div.weui-popup-overlay,div.weui-popup-modal{
+	max-width: 640px;
+	margin:0 auto;
+	left:0;
+	right:0;
+}
+
+
+/*下面是打赏样式：--赵*/
+
+.shang-active{
+	text-align: center;
+	margin:0 auto;
+	position:relative;
+	width:120px;
+}
+.shang-active>p{
+	color:white;
+	border-radius: 50%;
+	font-size: 2rem;
+	padding:10px;
+	z-index: 9;
+	width:80px;
+	height: 80px;
+	line-height: 80px;
+	position: absolute;
+	top:-50px;
+	left:10px;
+	overflow: hidden;
+}
+.shang-active>p>img{
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+.money-list-pare{
+	width:80%;
+	text-align: center;
+	margin:0 auto;
+}
+.money-list{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	background-color: white;
+	margin: 0 auto;
+}
+.money-list>div{
+	display: inline-block;
+	border:1px solid red;
+	border-radius: 5px;
+	margin: 5px;
+	width:20%;
+	min-width: 53px;
+	padding:5px 10px;
+	font-size: 18px;
+	font-weight: bold;
+}
+.money-list sub{
+	font-weight: 100;
+	font-size: 12px;
+}
+.money-list-pare+p{
+	color:#6f83ec;
+}
+.shang-background-a{
+	height: 60px;
+	background-color: transparent;
+}
+.shang-background-b{
+	height:100px;
+	background-color: white;
+	margin-bottom: -30px;
+}
+.shang-bottom{
+	background-color: white;
+	height: 70%;
+}
+.shang-bottom>span{
+	display: block;
+	margin-bottom: 20px;
+	text-align:center;
+}
+div.weui-popup-modal{
+	margin: 0 auto;
+}
+/*上面是打赏样式--赵*/

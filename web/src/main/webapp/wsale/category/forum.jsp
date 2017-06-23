@@ -102,7 +102,7 @@
             </div>
 
             <div>
-                <div style="z-index:1;border-bottom:10px solid #f5f5f5;max-width: 640px;margin:0 auto; position:fixed; top:0; left:0; right:0; background-color:#fff;">
+                <div class="forum-top" style="z-index:1;border-bottom:10px solid #f5f5f5;position:fixed; top:0; left:0; right:0; background-color:#fff;">
                     <div style="float:right;margin:7px 0px;border-left:1px solid #ddd;width:15%; text-align:center;" class="cbp-vm-icon" data-view="cbp-vm-view-grid">
                         <img style="width:18px;" src="${pageContext.request.contextPath}/wsale/images/jsq-icon1.png">
                     </div>

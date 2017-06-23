@@ -37,19 +37,21 @@
                         <div class="shang-background-a"></div>
                         <div class="shang-active">
                             <p>
-                                <img src="${pageContext.request.contextPath}/wsale/images/saoyisao.png" alt=""/>
+                                <img src="${pageContext.request.contextPath}/wsale/images/shenfenzheng1-img.png" alt=""/>
                             </p>
                         </div>
                         <div class="shang-background-b"></div>
                         <div class="shang-bottom">
-                            <span>支持优美文，作者会立即收到您的赏金。</span>
-                            <div class="money-list">
-                                <div>2 <sub>元</sub></div>
-                                <div>20 <sub>元</sub></div>
-                                <div>50 <sub>元</sub></div>
-                                <div>100 <sub>元</sub></div>
-                                <div>200 <sub>元</sub></div>
-                                <div>500 <sub>元</sub></div>
+                            <span>支持优质美文，作者会立即收到您的赏金。</span>
+                            <div class="money-list-pare">
+                                <div class="money-list">
+                                    <div>2 <sub>元</sub></div>
+                                    <div>20 <sub>元</sub></div>
+                                    <div>50 <sub>元</sub></div>
+                                    <div>100 <sub>元</sub></div>
+                                    <div>200 <sub>元</sub></div>
+                                    <div>500 <sub>元</sub></div>
+                                </div>
                             </div>
                             <p style="padding-top: 20px;">任意赏金<br/>打赏无悔，概不退款</p>
 
@@ -114,12 +116,16 @@
             <div class="jilu">
                 <span>阅读</span>
                 <span>${topic.topicRead}</span>&#x3000;
-                <span>
+                <div class="main-zan">
+                    <span>
                     <img class="zan" src="${pageContext.request.contextPath}/wsale/article/images/zan_a.png" alt=""/>
                     <img class="zan miss" src="${pageContext.request.contextPath}/wsale/article/images/zan_b.png" alt=""/>
-                </span>
-                <span>${topic.topicPraise}</span>
-                <span class="right"><a href="javascript:void(0);">举报</a></span>
+                    </span>
+                    <span>${topic.topicPraise}</span>
+                </div>
+
+
+                <span class="right report"><a href="javascript:void(0);">举报</a></span>
             </div>
             <footer>
                 <span class="right comment">

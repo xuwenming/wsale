@@ -20,7 +20,7 @@
                     </ul>
                 </div>
                 <div style="width:73%;margin-top:10px; text-align:left;display:inline-block; vertical-align:top; float:right;">
-                    <div style="position: fixed; width: 73%;">
+                    <div style="position: fixed;">
                         <div id="childCategory">
                             <c:forEach items="${childCategorys}" var="childCategory" varStatus="vs">
                                 <a class="fenlei-imglist" style="display:inline-block;" categoryId="${childCategory.id}">

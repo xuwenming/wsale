@@ -200,7 +200,7 @@ header a.ui-link{
 .jilu{
     margin: 0;
 }
-div.jilu>.report.right a,.comment>.ui-link{
+div.jilu>.right a,.comment>.ui-link{
     color:#aaa;
     font-size: 16px;
     line-height: 45px;

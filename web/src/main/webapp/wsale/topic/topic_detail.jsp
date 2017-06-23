@@ -78,7 +78,7 @@
                                 <div data-fee="100">100 <sub>元</sub></div>
                                 <div data-fee="200">200 <sub>元</sub></div>
                             </div>
-                            <p style="padding-top: 20px;" class="otherAmount">其他金额</p>
+                            <p style="padding-top: 20px;color:#6f83ec;" class="otherAmount">其他金额</p>
                             <p style="margin-top: 5px; color: #aaa;">赞赏是为表示鼓励而对文章内容的无偿赠与</p>
                         </div>
                     </div>
@@ -149,15 +149,18 @@
             <div class="jilu">
                 <span>阅读</span>
                 <span>${topic.topicRead}</span>&#x3000;
-                <span>
+                <div class="main-zan">
+                     <span>
                     <c:choose>
                         <c:when test="${topic.praise}">
                             <img class="zan" src="${pageContext.request.contextPath}/wsale/images/zan_b.png"/>
                         </c:when>
                         <c:otherwise><img class="zan addPraise" src="${pageContext.request.contextPath}/wsale/images/zan_a.png"/></c:otherwise>
                     </c:choose>
-                </span>
-                <span>${topic.topicPraise}</span>
+                    </span>
+                    <span>${topic.topicPraise}</span>
+                </div>
+
                 <span class="right"><a href="javascript:void(0);">举报</a></span>
             </div>
             <footer>

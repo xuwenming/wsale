@@ -3,10 +3,7 @@ package jb.controller;
 import com.alibaba.fastjson.JSON;
 import jb.absx.F;
 import jb.pageModel.*;
-import jb.service.UserServiceI;
-import jb.service.ZcForumBbsServiceI;
-import jb.service.ZcProductServiceI;
-import jb.service.ZcReportServiceI;
+import jb.service.*;
 import jb.service.impl.CompletionFactory;
 import jb.util.EnumConstants;
 import org.apache.commons.collections.CollectionUtils;
@@ -47,7 +44,8 @@ public class ZcReportController extends BaseController {
 	@Autowired
 	private ZcProductServiceI zcProductService;
 
-
+	@Autowired
+	private ZcTopicServiceI zcTopicService;
 
 	/**
 	 * 跳转到ZcReport管理页面
@@ -84,6 +82,9 @@ public class ZcReportController extends BaseController {
 							} else if(EnumConstants.OBJECT_TYPE.PRODUCT.getCode().equals(getD().getObjectType())) {
 								ZcProduct product = zcProductService.get(getD().getObjectId());
 								if(product != null) objectName = product.getContent();
+							} else if(EnumConstants.OBJECT_TYPE.TOPIC.getCode().equals(getD().getObjectType())) {
+								ZcTopic topic = zcTopicService.get(getD().getObjectId());
+								if(topic != null) objectName = topic.getTitle();
 							}
 							return objectName;
 						}

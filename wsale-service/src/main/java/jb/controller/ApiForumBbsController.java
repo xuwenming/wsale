@@ -48,7 +48,7 @@ public class ApiForumBbsController extends BaseController {
 	private ZcShareRecordServiceI zcShareRecordService;
 
 	@Autowired
-	private ZcBbsRewardServiceI zcBbsRewardService;
+	private ZcRewardServiceI zcRewardService;
 
 	@Autowired
 	private ForumBbsCommon forumBbsCommon;
@@ -355,21 +355,22 @@ public class ApiForumBbsController extends BaseController {
 //			comment.setBbsId(bbs.getId());
 //			DataGrid comments = commentDataGrid(ph, comment, s.getId());
 
-			ZcBbsReward reward = new ZcBbsReward();
-			reward.setBbsId(bbs.getId());
+			ZcReward reward = new ZcReward();
+			reward.setObjectType(EnumConstants.OBJECT_TYPE.BBS.getCode());
+			reward.setObjectId(bbs.getId());
 			reward.setPayStatus("PS02");
-			List<ZcBbsReward> rewards = zcBbsRewardService.query(reward);
+			List<ZcReward> rewards = zcRewardService.query(reward);
 			if(!CollectionUtils.isEmpty(rewards)) {
 				final CompletionService completionService = CompletionFactory.initCompletion();
-				for(ZcBbsReward r : rewards) {
-					completionService.submit(new Task<ZcBbsReward, User>(new CacheKey("user", r.getUserId()), r) {
+				for(ZcReward r : rewards) {
+					completionService.submit(new Task<ZcReward, User>(new CacheKey("user", r.getUserId()), r) {
 						@Override
 						public User call() throws Exception {
 							User user = userService.getByZc(getD().getUserId());
 							return user;
 						}
 
-						protected void set(ZcBbsReward d, User v) {
+						protected void set(ZcReward d, User v) {
 							if (v != null)
 								d.setUser(v);
 						}
@@ -746,7 +747,7 @@ public class ApiForumBbsController extends BaseController {
 	}
 
 	/**
-	 * 转发帖子
+	 * 转发打赏-废弃
 	 * @return
 	 */
 	@RequestMapping("/reward")
@@ -755,11 +756,11 @@ public class ApiForumBbsController extends BaseController {
 		Json j = new Json();
 		try {
 			SessionInfo s = getSessionInfo(request);
-			reward.setUserId(s.getId());
-			reward.setPayStatus("PS01");
-			zcBbsRewardService.add(reward);
-			//zcForumBbsService.updateCount(reward.getBbsId(), 1, "bbs_reward");
-			j.setObj(reward.getId());
+//			reward.setUserId(s.getId());
+//			reward.setPayStatus("PS01");
+//			zcBbsRewardService.add(reward);
+//			//zcForumBbsService.updateCount(reward.getBbsId(), 1, "bbs_reward");
+//			j.setObj(reward.getId());
 			j.success();
 			j.setMsg("添加成功！");
 		} catch (Exception e) {

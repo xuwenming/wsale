@@ -385,8 +385,10 @@ public class ApiPayController extends BaseController {
 
 		// 对数据库的操作
 		String orderNo = map.get("out_trade_no").toString();
+		String transaction_id = map.get("transaction_id").toString(); // 微信支付订单号
 		ZcPayOrder payOrder = new ZcPayOrder();
 		payOrder.setOrderNo(orderNo);
+		payOrder.setRefTransactionNo(transaction_id);
 		if (map.get("result_code").toString().equalsIgnoreCase("SUCCESS")) {
 			payOrder.setPayStatus("PS02");
 		} else {

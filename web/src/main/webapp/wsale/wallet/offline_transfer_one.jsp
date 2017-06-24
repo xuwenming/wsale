@@ -33,48 +33,49 @@
 
         <!--bank list-->
         <ul class="list">
-
-            <!--item-->
-            <li class="ub line">
-                <div class="ub-f1 list-check-box">
-                    <!--选中样式为 checked 未选中 为  uncheck-->
-                    <i class="checked"></i>
-                </div>
-                <div class="ub-f1 list-bank">
-                    <img src="${pageContext.request.contextPath}/<%=bankIcon %>" onerror="this.src='${pageContext.request.contextPath}/wsale/images/gsyh-icon.png'" />
-                </div>
-                <div class="ub-f1 list-info">
-                    <h3><%=cardNo %></h3>
-                    <p><%=username %></p>
-                    <p><%=bankName %></p>
-                </div>
-            </li>
-
-            <!--item
-            <li class="ub line">
-                <div class="ub-f1 list-check-box">
-                    <i class="uncheck"></i>
-                </div>
-                <div class="ub-f1 list-bank">
-                    <img src="${pageContext.request.contextPath}/wsale/images/gsyh-icon.png" />
-                </div>
-                <div class="ub-f1 list-info">
-                    <h3>3951451444</h3>
-                    <p>义务集东集西网络科技有限公司</p>
-                    <p>中国银行义乌支行</p>
-                </div>
-            </li>-->
+            <c:forEach items="${banks}" var="bank" varStatus="vs">
+                <!--item-->
+                <li class="ub line">
+                    <div class="ub-f1 list-check-box">
+                        <!--选中样式为 checked 未选中 为  uncheck-->
+                        <i data-bank-code="${bank.bank_code}" class="uncheck"></i>
+                    </div>
+                    <div class="ub-f1 list-bank">
+                        <img src="${bank.bank_icon}" />
+                    </div>
+                    <div class="ub-f1 list-info">
+                        <h3>${bank.bank_card}</h3>
+                        <p>${bank.bank_account}</p>
+                        <p>${bank.bank_name}</p>
+                    </div>
+                </li>
+            </c:forEach>
 
         </ul>
 
         <!--bottom-->
         <div class="pay-btn">
-            <a href="javascript:href('api/apiWallet/offline_transfer_two?transferAmount=${transferAmount}');">下一步</a>
+            <a id="nextBtn">下一步</a>
             <p>我们收到您的汇款后会在1-2个工作日内处理</p>
         </div>
     </div>
 
     <script type="text/javascript">
+        $(function(){
+            $('#nextBtn').click(function(){
+                if($('.list li i.checked').length == 0) {
+                    $.toast("<font size='3pt;'>请选择汇款银行</font>", "text");
+                    return;
+                }
+
+                href('api/apiWallet/offline_transfer_two?transferAmount=${transferAmount}&bankCode=' + $('.list li i.checked').attr('data-bank-code'));
+            });
+
+            $('ul.list').on('click', '.ub', function(){
+                $('i.checked').removeClass('checked').addClass('uncheck');
+                $(this).find("i").removeClass('uncheck').addClass('checked');
+            });
+        });
     </script>
 </body>
 

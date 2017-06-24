@@ -740,10 +740,10 @@ textarea.ui-input-text{
 	text-align: left;
 	border-radius: 1px;
 }
-.showMore.hide {
+.showMore.hide, .gengduo.hide {
 	display: none;
 }
-.ppxq-desc.fullDesc, .bbs-content.fullDesc {
+.ppxq-desc.fullDesc, .bbs-content.fullDesc, .rewardUsers.fullDesc {
 	max-height: none;
 	overflow-y: auto;
 }

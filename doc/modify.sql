@@ -202,15 +202,16 @@ ALTER TABLE `zc_pay_order`
 
 CREATE TABLE `zc_topic` (
   `id` varchar(36) NOT NULL COMMENT '主键',
+  `category_id` varchar(36) DEFAULT NULL COMMENT '所属分类',
   `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '帖子标题',
-  `icon` varchar(100) DEFAULT NULL COMMENT '封面',
+  `icon` varchar(255) DEFAULT NULL COMMENT '封面',
   `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '专题内容',
   `topic_comment` int(11) DEFAULT '0' COMMENT '留言数',
   `topic_read` int(11) DEFAULT '0' COMMENT '阅读数',
   `topic_reward` int(11) DEFAULT '0' COMMENT '打赏数',
   `topic_praise` int(11) DEFAULT '0' COMMENT '点赞数',
   `topic_collect` int(11) DEFAULT '0' COMMENT '收藏数',
-	`seq` int(11) DEFAULT '0' COMMENT '热门排序',
+  `seq` int(11) DEFAULT '0' COMMENT '热门排序',
   `addUserId` varchar(36) DEFAULT NULL COMMENT '发布人',
   `addtime` datetime DEFAULT NULL COMMENT '发布时间',
   `updateUserId` varchar(36) DEFAULT NULL COMMENT '更新人ID',
@@ -257,7 +258,7 @@ CREATE TABLE `zc_reward` (
   `id` varchar(36) NOT NULL COMMENT '主键',
   `object_type` varchar(36) DEFAULT NULL COMMENT '对象类型',
   `object_id` varchar(36) DEFAULT NULL COMMENT '对象ID',
-  `reward_fee` BIGINT DEFAULT NULL COMMENT '打赏金额',
+  `reward_fee` bigint(20) DEFAULT NULL COMMENT '打赏金额',
   `user_id` varchar(36) DEFAULT NULL COMMENT '打赏人',
   `addtime` datetime DEFAULT NULL COMMENT '打赏时间',
   `pay_status` varchar(4) DEFAULT 'PS01' COMMENT '支付状态',
@@ -270,6 +271,14 @@ CREATE TABLE `zc_reward` (
 -- -----------------------------------------------------
 ALTER TABLE `zc_pay_order`
 	ADD COLUMN `ref_transaction_no` VARCHAR(64) NULL DEFAULT NULL COMMENT '第三方支付订单号' AFTER `paytime`;
+ALTER TABLE `zc_offline_transfer`
+  ADD COLUMN `bank_code`  varchar(4) NULL COMMENT '银行编码{TB}' AFTER `remark`;
+
+-- -----------------------------------------------------
+-- 废弃表zc_bbs_reward，转移数据至表zc_reward  snow.xu 20170624
+-- -----------------------------------------------------
+insert into zc_reward (id, object_type, object_id, reward_fee, user_id, addtime, pay_status, paytime)
+select t.id, 'BBS', t.bbs_id, round(t.reward_fee*100), t.user_id,t.addtime,t.pay_status, t.paytime  from zc_bbs_reward t
 
 
 

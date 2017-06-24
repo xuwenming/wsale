@@ -21,10 +21,27 @@
                                 发 表
                             </div>
                             <div style="width:80%; padding: 10px;" class="close-popup">
-                                <span style="padding: 10px 0px;">取 消</span>
+                                <span style="padding: 10px 0px;">关 闭</span>
                             </div>
                         </div>
-                        <textarea style="margin:10px 0px; background-color: #fff;" maxlength="50" placeholder="发表您的留言..." id="comment"></textarea>
+                        <textarea style="margin:10px 0px; background-color: #fff;" maxlength="100" placeholder="发表您的留言..." id="comment"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div id="reportPopup" class="weui-popup-container">
+                <div class="weui-popup-overlay"></div>
+                <div class="weui-popup-modal" style="overflow: hidden;">
+                    <div class="modal-content" style="padding-top: 0; margin-top: 0px; overflow: hidden;">
+                        <div style="background-color:#fff; padding: 0 5px;border-bottom:1px solid #ddd;">
+                            <div style="float:right;padding: 10px 0px;width:15%; text-align:center;color: green;" class="reportBtn">
+                                举 报
+                            </div>
+                            <div style="width:80%; padding: 10px;" class="close-popup">
+                                <span style="padding: 10px 0px;">关 闭</span>
+                            </div>
+                        </div>
+                        <textarea style="margin:10px 0px; background-color: #fff;" maxlength="100" placeholder="请输入您的举报理由，不得出现不和谐文字..." id="reportReason"></textarea>
                     </div>
                 </div>
             </div>
@@ -99,10 +116,12 @@
                 </c:if>
                 <span class="header_time"><fmt:formatDate value="${topic.addtime}" pattern="yyyy-MM-dd"/></span>
                 <span><a href="javascript:href('api/apiHomeController/home');">集东集西</a></span>
-                <div class="right button-at">+关注</div>
+                <c:if test="${topic.user.utype == 'UT02' and !topic.user.attred}">
+                    <div class="right button-at attBtn">+ 关注</div>
+                </c:if>
                 <hr>
             </header>
-            <main>
+            <main class="content">
                 ${topic.content}
             </main>
             <div class="erweima" style="display: none;">
@@ -115,34 +134,14 @@
                     </div>
                     <div class="shang reward">赏</div>
 
-                    <p>已有<span>${rewards.size()}</span>人打赏:</p>
+                    <p>已有<span>${rewards.size()}</span>人打赏</p>
                     <c:if test="${rewards.size() > 0}">
-                        <ul class="reward">
+                        <ul class="rewardUsers">
                             <c:forEach items="${rewards}" var="reward" varStatus="vs">
                                 <li><img src="${reward.user.headImage}"/></li>
                             </c:forEach>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
-                            <li><img src="http://image.zcys2016.cn/mmopen/ajNVdqHZLLBxXI4HfAFv6icLEqV2w3xxeEr4kO9RNnoUk31KU21Jh0Y1ic5oxwo15fic5NE3CvicPuNvZDGm3y0Pibw/0"></li>
                         </ul>
-                        <div class="gengduo"><span>更多</span></div>
+                        <div class="gengduo hide"><span>更多</span></div>
                     </c:if>
                 </fieldset>
             </form>
@@ -151,17 +150,17 @@
                 <span>${topic.topicRead}</span>&#x3000;
                 <div class="main-zan">
                      <span>
-                    <c:choose>
-                        <c:when test="${topic.praise}">
-                            <img class="zan" src="${pageContext.request.contextPath}/wsale/images/zan_b.png"/>
-                        </c:when>
-                        <c:otherwise><img class="zan addPraise" src="${pageContext.request.contextPath}/wsale/images/zan_a.png"/></c:otherwise>
-                    </c:choose>
+                        <c:choose>
+                            <c:when test="${topic.praise}">
+                                <img class="zan" src="${pageContext.request.contextPath}/wsale/images/zan_b.png"/>
+                            </c:when>
+                            <c:otherwise><img class="zan addPraise" src="${pageContext.request.contextPath}/wsale/images/zan_a.png"/></c:otherwise>
+                        </c:choose>
                     </span>
                     <span>${topic.topicPraise}</span>
                 </div>
 
-                <span class="right"><a href="javascript:void(0);">举报</a></span>
+                <span class="right report"><a href="javascript:void(0);">举报</a></span>
             </div>
             <footer>
                 <span class="right comment">
@@ -181,21 +180,50 @@
             </footer>
         </div>
     </div>
+    <jsp:include page="../template/topic_template.jsp"></jsp:include>
 
     <script type="text/javascript">
         var loading = true, currPage = 1, rows = 10;
         $(function(){
+            if($(".rewardUsers").height() == $(".rewardUsers").css('max-height').replace('px', '')) {
+                $(".gengduo").removeClass("hide");
+            }
+            $(".gengduo").click(function(e){
+                e.stopPropagation();
+                var self = $(this);
+                setTimeout(function() {
+                    $('.rewardUsers').addClass("fullDesc");
+                    self.remove();
+                }, 200);
+            });
+            var items = [];
+            $(".content img").each(function(){
+                items.push($(this).attr("src"));
+            });
+
+            $(".content img").click(function(){
+                JWEIXIN.previewImage(items, items.indexOf($(this).attr("src")));
+            });
             $('.comment').click(function(){
                 $('#comment').val('');
                 $('#commentPopup').wePopup();
             });
 
             $('.reward').click(function(){
+                if(${topic.user.self}) {
+                    $.toast("<font size='2'>不可以对自己打赏哟</font>", "text");
+                    return;
+                }
                 $('#rewardPopup').wePopup();
             });
 
             $('#addComment').bind('click', addComment);
-            $('.addPraise').bind('click', addPraise);
+            $('.main-zan').bind('click', addPraise);
+            $('.attBtn').bind('click', attrFun);
+            $('.report').click(function(){
+                $('#reportPopup').wePopup();
+            });
+            $('.reportBtn').bind('click', report);
 
             $('.otherAmount').click(function(){
                 $.closePopup();
@@ -210,6 +238,7 @@
             $('.payReward').click(function(){
                 var rewardFee = $('#rewardFee').val();
                 if(rewardFee) payReward(rewardFee);
+                else $('#rewardFee').focus();
             });
 
             $(document.body).infinite().on("infinite", function() {
@@ -251,6 +280,7 @@
         function buildComment(comment, isNew) {
             var viewData = Util.cloneJson(comment);
             viewData.addtime = Util.getTime(comment.addtime);
+            viewData.comment = viewData.comment.replace(/[\r\n]/g, "<br/>");
 
             var dom = Util.cloneDom("topic_comment_template", comment, viewData);
             if(isNew) $(".comments").prepend(dom)
@@ -284,10 +314,13 @@
 
         function addPraise() {
             var params = {objectId : '${topic.id}', objectType:'TOPIC'}, _this = this;
+            if(!$(_this).find('img').hasClass('addPraise')) {
+                return;
+            }
             ajaxPost('api/apiPoint/addPraise', params, function(data){
                 if(data.success) {
-                    $(_this).unbind('click').removeClass('addPraise').attr('src', base + 'wsale/images/zan_b.png');
-                    var $num = $(_this).parent().next();
+                    $(_this).unbind('click').find('img').removeClass('addPraise').attr('src', base + 'wsale/images/zan_b.png');
+                    var $num = $(_this).find('span:eq(1)');
                     $num.text(parseInt($num.text()) + 1);
                 }
             });
@@ -297,6 +330,31 @@
             ajaxPost('api/apiReward/reward', {objectId : '${topic.id}',objectType:'TOPIC', rewardFee:rewardFee*100}, function(data){
                 if(data.success) {
                     href('api/pay/toPay?objectId=' + data.obj + '&objectType=PO04&attachType=TOPIC&totalFee=' + rewardFee);
+                }
+            });
+        }
+
+        function attrFun() {
+            var _this = this;
+            ajaxPost('api/userController/addShieldorfans', {objectType:'FS', userId:'${topic.addUserId}'}, function(data){
+                if(data.success) {
+                    $(_this).remove();
+                }
+            });
+        }
+
+        function report() {
+            var reportReason = $('#reportReason').val();
+            if(Util.checkEmpty(reportReason)) {
+                $('#reportReason').focus();
+                return;
+            }
+            ajaxPost('api/reportController/report', {objectType:'TOPIC', objectId:'${topic.id}', reportReason:reportReason}, function(data){
+                $.closePopup();
+                if(data.success) {
+                    $.toast("举报成功");
+                } else {
+                    $.toast("<font size='1'>"+data.msg+"</font>", "text");
                 }
             });
         }

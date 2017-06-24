@@ -1,5 +1,7 @@
 package jb.pageModel;
 
+import jb.util.EnumConstants;
+
 import java.util.Date;
 
 @SuppressWarnings("serial")
@@ -17,7 +19,16 @@ public class ZcReward implements java.io.Serializable {
 	private Date paytime;			
 
 	private User user;
-	private String userName;
+	private String objectName;
+	private String userName; // 打赏人姓名
+	private String byUserId; // 被打赏人ID
+	private String byUserName; // 被打赏人姓名
+
+	private Boolean auth; // 前端数据权限控制
+
+	public String getObjectTypeZh() {
+		return EnumConstants.OBJECT_TYPE.getCnName(this.objectType);
+	}
 
 	public void setId(java.lang.String value) {
 		this.id = value;
@@ -92,5 +103,37 @@ public class ZcReward implements java.io.Serializable {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getObjectName() {
+		return objectName;
+	}
+
+	public void setObjectName(String objectName) {
+		this.objectName = objectName;
+	}
+
+	public String getByUserId() {
+		return byUserId;
+	}
+
+	public void setByUserId(String byUserId) {
+		this.byUserId = byUserId;
+	}
+
+	public String getByUserName() {
+		return byUserName;
+	}
+
+	public void setByUserName(String byUserName) {
+		this.byUserName = byUserName;
+	}
+
+	public Boolean getAuth() {
+		return auth;
+	}
+
+	public void setAuth(Boolean auth) {
+		this.auth = auth;
 	}
 }

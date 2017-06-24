@@ -17,6 +17,7 @@ public class ZcPayOrder implements java.io.Serializable {
 	private String userId;
 	private String payStatus;
 	private Date paytime;
+	private String refTransactionNo;
 	private String refundNo;
 	private Long refundFee;
 	private Date refundtime;
@@ -98,6 +99,14 @@ public class ZcPayOrder implements java.io.Serializable {
 	
 	public Date getPaytime() {
 		return this.paytime;
+	}
+
+	public String getRefTransactionNo() {
+		return refTransactionNo;
+	}
+
+	public void setRefTransactionNo(String refTransactionNo) {
+		this.refTransactionNo = refTransactionNo;
 	}
 
 	public String getRefundNo() {

@@ -51,7 +51,7 @@
 				}, {
 				field : 'nickname',
 				title : '转账用户',
-				width : 50,
+				width : 80,
 				formatter : function(value, row, index) {
 					var user = row.user;
 					return user.nickname;
@@ -65,6 +65,10 @@
 					return user.mobile;
 				}
 				}, {
+				field : 'bankCodeZh',
+				title : '银行',
+				width : 80
+				}, {
 				field : 'transferUserName',
 				title : '<%=TzcOfflineTransfer.ALIAS_TRANSFER_USER_NAME%>',
 				width : 50
@@ -75,12 +79,12 @@
 				}, {
 				field : 'transferTime',
 				title : '<%=TzcOfflineTransfer.ALIAS_TRANSFER_TIME%>',
-				width : 100,
+				width : 80,
 				sortable : true
 				}, {
 				field : 'remark',
 				title : '<%=TzcOfflineTransfer.ALIAS_REMARK%>',
-				width : 100
+				width : 80
 				}, {
 				field : 'handleStatusZh',
 				title : '<%=TzcOfflineTransfer.ALIAS_HANDLE_STATUS%>',
@@ -96,15 +100,6 @@
 				field : 'handleUserName',
 				title : '<%=TzcOfflineTransfer.ALIAS_HANDLE_USER_ID%>',
 				width : 50
-				}, {
-				field : 'handleRemark',
-				title : '<%=TzcOfflineTransfer.ALIAS_HANDLE_REMARK%>',
-				width : 100
-				}, {
-				field : 'handleTime',
-				title : '<%=TzcOfflineTransfer.ALIAS_HANDLE_TIME%>',
-				width : 100,
-				sortable : true
 				}, {
 				field : 'addtime',
 				title : '<%=TzcOfflineTransfer.ALIAS_ADDTIME%>',

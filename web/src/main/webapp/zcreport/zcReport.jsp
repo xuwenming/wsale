@@ -304,6 +304,7 @@
 								<option value="">全部</option>
 								<option value="BBS">帖子</option>
 								<option value="PRODUCT">拍品</option>
+								<option value="TOPIC">专题</option>
 							</select>
 						</td>
 						<td>

@@ -159,23 +159,75 @@
                 </div>
             </div>
 
-            <div id="rewordPopup" class="weui-popup-container popup-bottom">
+            <div id="reportPopup" class="weui-popup-container">
+                <div class="weui-popup-overlay"></div>
+                <div class="weui-popup-modal" style="overflow: hidden;">
+                    <div class="modal-content" style="padding-top: 0; margin-top: 0px; overflow: hidden;">
+                        <div style="background-color:#fff; padding: 0 5px;border-bottom:1px solid #ddd;">
+                            <div style="float:right;padding: 10px 0px;width:15%; text-align:center;color: green;" class="reportBtn">
+                                举 报
+                            </div>
+                            <div style="width:80%; padding: 10px;" class="close-popup">
+                                <span style="padding: 10px 0px;">关 闭</span>
+                            </div>
+                        </div>
+                        <textarea style="margin:10px 0px; background-color: #fff;" maxlength="100" placeholder="请输入您的举报理由，不得出现不和谐文字..." id="reportReason"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div id="rewardOtherPopup" class="weui-popup-container popup-bottom">
                 <div class="weui-popup-overlay"></div>
                 <div class="weui-popup-modal" style="height: 180px;overflow: hidden; text-align: center;">
                     <div class="modal-content" style="padding-top: 0;overflow: hidden; ">
                         <input class="onlyNum" style="margin:10px 0;background-color: #fff;" type="tel" maxlength="5" id="rewardFee" placeholder="请输入打赏金额(元)..."/>
                         <a class="bottom-btn reward" style="color: #fff;font-size: 16px;">打赏</a>
-                        <span class="fenlei-desc">喜欢可以赏我哦！</span>
+                        <span class="fenlei-desc">赞赏是为表示鼓励而对帖子的无偿赠与</span>
                     </div>
                 </div>
             </div>
 
-            <div id="reportPopup" class="weui-popup-container popup-bottom">
+            <div id="rewardPopup" class="weui-popup-container popup-bottom">
                 <div class="weui-popup-overlay"></div>
-                <div class="weui-popup-modal" style="height: 190px;overflow: hidden; text-align: center;">
-                    <div class="modal-content" style="padding-top: 0;overflow: hidden; ">
-                        <textarea style="background-color: #fff;resize: none;" maxlength="100" placeholder="请输入您的举报理由，不得出现不和谐文字..." id="reportReason"></textarea>
-                        <a class="bottom-btn reportBtn" style="color: #fff;font-size: 16px;">举报</a>
+                <div class="weui-popup-modal" style="background-color:transparent;height: 380px;text-align: center;overflow: hidden;">
+
+                    <div class="modal-content" style="padding-top: 0;overflow: hidden">
+                        <div class="shang-background-a"></div>
+                        <div class="shang-active">
+                            <p>
+                                <c:choose>
+                                    <c:when test="${user.utype == 'UT02'}">
+                                        <img src="${user.headImage}"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img src="${pageContext.request.contextPath}/wsale/images/logo.png"/>
+                                    </c:otherwise>
+                                </c:choose>
+                            </p>
+                        </div>
+                        <div class="shang-background-b"></div>
+                        <div class="shang-bottom">
+                            <span>
+                                <c:choose>
+                                    <c:when test="${user.utype == 'UT02'}">
+                                        ${user.nickname}
+                                    </c:when>
+                                    <c:otherwise>
+                                        集东集西
+                                    </c:otherwise>
+                                </c:choose>
+                            </span>
+                            <div class="money-list">
+                                <div data-fee="2">2 <sub>元</sub></div>
+                                <div data-fee="5">5 <sub>元</sub></div>
+                                <div data-fee="20">20 <sub>元</sub></div>
+                                <div data-fee="50">50 <sub>元</sub></div>
+                                <div data-fee="100">100 <sub>元</sub></div>
+                                <div data-fee="200">200 <sub>元</sub></div>
+                            </div>
+                            <p style="padding-top: 20px;color:#6f83ec;" class="otherAmount">其他金额</p>
+                            <p style="margin-top: 5px; color: #aaa;">赞赏是为表示鼓励而对文章内容的无偿赠与</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -445,9 +497,21 @@
                     return;
                 }
                 //$(".mask-layer,.fensi-dialog").show();
-                $('#rewordPopup').wePopup();
+                $('#rewardPopup').wePopup();
             });
-            $('.reward').bind('click', reward);
+            $('.otherAmount').click(function(){
+                $.closePopup();
+                $('#rewardOtherPopup').wePopup();
+            });
+            $('.money-list div').click(function(){
+                var rewardFee = $(this).attr('data-fee');
+                if(rewardFee) reward(rewardFee);
+            });
+            $('.reward').bind('click', function(){
+                var rewardFee = $('#rewardFee').val();
+                if(rewardFee) reward(rewardFee);
+                else $('#rewardFee').focus();
+            });
             $('.reportBtn').bind('click', report);
 
             $('.msgDiv').bind('click', function(){
@@ -935,15 +999,15 @@
         }
 
         var reg = /^[0-9]*(\.[0-9]{1,2})?$/;
-        function reward() {
-            var rewardFee = $('#rewardFee').val();
-            if(Util.checkEmpty(rewardFee) || !reg.test(rewardFee)) {
-                $.toptip("金额格式不正确");
-                return;
-            }
-            ajaxPost('api/bbsController/reward', {bbsId : '${bbs.id}', rewardFee:rewardFee}, function(data){
+        function reward(rewardFee) {
+//            var rewardFee = $('#rewardFee').val();
+//            if(Util.checkEmpty(rewardFee) || !reg.test(rewardFee)) {
+//                $.toptip("金额格式不正确");
+//                return;
+//            }
+            ajaxPost('api/apiReward/reward', {objectId : '${bbs.id}',objectType:'BBS', rewardFee:rewardFee*100}, function(data){
                 if(data.success) {
-                    href('api/pay/toPay?objectId=' + data.obj + '&objectType=PO04&totalFee=' + rewardFee);
+                    href('api/pay/toPay?objectId=' + data.obj + '&objectType=PO04&attachType=BBS&totalFee=' + rewardFee);
                 }
             });
         }

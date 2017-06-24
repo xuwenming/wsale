@@ -81,7 +81,7 @@
 				width : 40,
 				sortable:true
 				}, {
-				field : 'addUserId',
+				field : 'addUserName',
 				title : '<%=TzcTopic.ALIAS_ADD_USER_ID%>',
 				width : 50		
 				}, {

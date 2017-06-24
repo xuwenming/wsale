@@ -60,6 +60,7 @@ public class TzcPayOrder implements java.io.Serializable,IEntity{
 	private String payStatus;
 	//
 	private Date paytime;
+	private String refTransactionNo;
 	//@Length(max=64)
 	private String refundNo;
 	private java.lang.Long refundFee;
@@ -165,6 +166,15 @@ public class TzcPayOrder implements java.io.Serializable,IEntity{
 	
 	public void setPaytime(Date paytime) {
 		this.paytime = paytime;
+	}
+
+	@Column(name = "ref_transaction_no", unique = false, nullable = true, insertable = true, updatable = true, length = 64)
+	public String getRefTransactionNo() {
+		return refTransactionNo;
+	}
+
+	public void setRefTransactionNo(String refTransactionNo) {
+		this.refTransactionNo = refTransactionNo;
 	}
 
 	@Column(name = "refund_no", unique = false, nullable = true, insertable = true, updatable = true, length = 64)

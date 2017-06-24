@@ -1,10 +1,12 @@
 package jb.controller;
 
 import com.alibaba.fastjson.JSON;
+import jb.absx.F;
 import jb.pageModel.*;
 import jb.service.UserServiceI;
 import jb.service.ZcRewardServiceI;
 import jb.service.impl.CompletionFactory;
+import jb.util.ConfigUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import wsale.concurrent.Task;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -54,7 +57,33 @@ public class ZcRewardController extends BaseController {
 	 */
 	@RequestMapping("/dataGrid")
 	@ResponseBody
-	public DataGrid dataGrid(ZcReward zcReward, PageHelper ph) {
+	public DataGrid dataGrid(ZcReward zcReward, PageHelper ph, HttpSession session) {
+		if(F.empty(zcReward.getByUserId())) {
+			// 前端人员只查询自己相关的数据
+			SessionInfo sessionInfo = (SessionInfo) session.getAttribute(ConfigUtil.getSessionInfoName());
+			User user = userService.getByZc(sessionInfo.getId());
+			if("UT02".equals(user.getUtype())) {
+				zcReward.setAuth(true);
+				zcReward.setByUserId(user.getId());
+			}
+		}
+		// 已支付
+		zcReward.setPayStatus("PS02");
+		return zcRewardService.dataGridComplex(zcReward, ph);
+	}
+
+	@RequestMapping("/dataGridByTopic")
+	@ResponseBody
+	public DataGrid dataGridByTopic(ZcReward zcReward, PageHelper ph) {
+		return dataGridBy(zcReward, ph);
+	}
+	@RequestMapping("/dataGridByBbs")
+	@ResponseBody
+	public DataGrid dataGridByBbs(ZcReward zcReward, PageHelper ph) {
+		return dataGridBy(zcReward, ph);
+	}
+
+	private DataGrid dataGridBy(ZcReward zcReward, PageHelper ph) {
 		DataGrid dataGrid = zcRewardService.dataGrid(zcReward, ph);
 		List<ZcReward> list = (List<ZcReward>) dataGrid.getRows();
 		if(!CollectionUtils.isEmpty(list)) {
@@ -77,16 +106,6 @@ public class ZcRewardController extends BaseController {
 		}
 		return dataGrid;
 	}
-	@RequestMapping("/dataGridByTopic")
-	@ResponseBody
-	public DataGrid dataGridByTopic(ZcReward zcReward, PageHelper ph) {
-		return dataGrid(zcReward, ph);
-	}
-	@RequestMapping("/dataGridByBbs")
-	@ResponseBody
-	public DataGrid dataGridByBbs(ZcReward zcReward, PageHelper ph) {
-		return dataGrid(zcReward, ph);
-	}
 	/**
 	 * 获取ZcReward数据表格excel
 	 * 
@@ -100,8 +119,8 @@ public class ZcRewardController extends BaseController {
 	 * @throws IOException 
 	 */
 	@RequestMapping("/download")
-	public void download(ZcReward zcReward, PageHelper ph,String downloadFields,HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
-		DataGrid dg = dataGrid(zcReward,ph);		
+	public void download(ZcReward zcReward, PageHelper ph,String downloadFields,HttpServletResponse response, HttpSession session) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
+		DataGrid dg = dataGrid(zcReward,ph, session);
 		downloadFields = downloadFields.replace("&quot;", "\"");
 		downloadFields = downloadFields.substring(1,downloadFields.length()-1);
 		List<Colum> colums = JSON.parseArray(downloadFields, Colum.class);

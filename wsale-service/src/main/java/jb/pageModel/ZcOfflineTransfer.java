@@ -16,6 +16,7 @@ public class ZcOfflineTransfer implements java.io.Serializable {
 	private Double transferAmount;
 	private Date transferTime;			
 	private String remark;
+	private String bankCode;
 	private String handleStatus;
 	private String handleUserId;
 	private String handleRemark;
@@ -26,6 +27,9 @@ public class ZcOfflineTransfer implements java.io.Serializable {
 	private User user; // 汇款人
 	private String handleUserName; // 处理人
 
+	public String getBankCodeZh() {
+		return Application.getString(this.bankCode);
+	}
 	public String getHandleStatusZh() {
 		return Application.getString(this.handleStatus);
 	}
@@ -81,6 +85,15 @@ public class ZcOfflineTransfer implements java.io.Serializable {
 	public String getRemark() {
 		return this.remark;
 	}
+
+	public String getBankCode() {
+		return bankCode;
+	}
+
+	public void setBankCode(String bankCode) {
+		this.bankCode = bankCode;
+	}
+
 	public void setHandleStatus(String handleStatus) {
 		this.handleStatus = handleStatus;
 	}

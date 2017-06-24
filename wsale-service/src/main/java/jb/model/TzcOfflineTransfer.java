@@ -56,6 +56,7 @@ public class TzcOfflineTransfer implements java.io.Serializable,IEntity{
 	private Date transferTime;
 	//@Length(max=128)
 	private String remark;
+	private String bankCode;
 	//@Length(max=4)
 	private String handleStatus;
 	//@Length(max=36)
@@ -141,7 +142,16 @@ public class TzcOfflineTransfer implements java.io.Serializable,IEntity{
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	
+
+	@Column(name = "bank_code", unique = false, nullable = true, insertable = true, updatable = true, length = 4)
+	public String getBankCode() {
+		return bankCode;
+	}
+
+	public void setBankCode(String bankCode) {
+		this.bankCode = bankCode;
+	}
+
 	@Column(name = "handle_status", unique = false, nullable = true, insertable = true, updatable = true, length = 4)
 	public String getHandleStatus() {
 		return this.handleStatus;

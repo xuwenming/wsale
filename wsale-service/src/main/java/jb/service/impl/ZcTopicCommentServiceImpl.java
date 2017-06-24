@@ -1,24 +1,22 @@
 package jb.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import jb.absx.F;
 import jb.dao.ZcTopicCommentDaoI;
 import jb.model.TzcTopicComment;
-import jb.pageModel.ZcTopicComment;
 import jb.pageModel.DataGrid;
 import jb.pageModel.PageHelper;
+import jb.pageModel.ZcTopicComment;
 import jb.service.ZcTopicCommentServiceI;
-
+import jb.util.MyBeanUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import jb.util.MyBeanUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ZcTopicCommentServiceImpl extends BaseServiceImpl<ZcTopicComment> implements ZcTopicCommentServiceI {
@@ -114,7 +112,10 @@ public class ZcTopicCommentServiceImpl extends BaseServiceImpl<ZcTopicComment> i
 
 	@Override
 	public void delete(String id) {
-		zcTopicCommentDao.delete(zcTopicCommentDao.get(TzcTopicComment.class, id));
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		zcTopicCommentDao.executeHql("update TzcTopicComment t set t.isDeleted = 1 where t.id = :id", params);
+//		zcTopicCommentDao.delete(zcTopicCommentDao.get(TzcTopicComment.class, id));
 	}
 
 	@Override

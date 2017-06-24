@@ -20,6 +20,7 @@
         </div>
 
         <form method="post" id="transfer_form">
+            <input type="hidden" name="bankCode" value="${bankCode}">
             <ul class="list">
                 <li class="ub line">
                     <div class="ub-f1 list-text">

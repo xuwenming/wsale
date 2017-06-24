@@ -189,7 +189,7 @@
 							<td colspan="3">
 								${zcTopic.title}
 							</td>
-							<th width="5%">封面icon</th>
+							<th width="8%">封面icon</th>
 							<td align="left" rowspan="5" class="imageSlide">
 								<img src="${zcTopic.icon}" i="${zcTopic.icon}" width="100" height="100"/>
 							</td>

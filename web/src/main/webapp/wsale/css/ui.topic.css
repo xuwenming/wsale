@@ -158,10 +158,12 @@ footer .right{
 }
 .footer_name{
     float: left;
+    color: #aaa;
 }
 .footer_time{
     float:right;
     padding-right: 10px;
+    color: #aaa;
 }
 .footer_content p{
     padding-top: 30px;
@@ -188,7 +190,7 @@ footer .right{
 .miss{
     display: none;
 }
-header a.ui-link{
+header a.ui-link, .comment a.ui-link{
     display: inline-block;
     font-size: 16px;
     color:#6f83ec;

@@ -95,12 +95,12 @@
 						<input class="easyui-validatebox span2" name="title" type="text" data-options="required:true" value="${zcTopic.title}" style="width: 500px;" maxlength="100"/>
 					</td>
 				</tr>
-				<!--<tr>
+				<tr>
 					<th>所属分类</th>
 					<td colspan="3">
 						<select id="categoryId" name="categoryId" style="width: 140px; height: 29px;"></select>
 					</td>
-				</tr>-->
+				</tr>
 				<tr>
 					<th><%=TzcTopic.ALIAS_ICON%></th>
 					<td colspan="3">

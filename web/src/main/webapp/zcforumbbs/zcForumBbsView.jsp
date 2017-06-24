@@ -117,7 +117,7 @@
 		}
 		function loadRewardDataGrid() {
 			return $('#rewardDataGrid').datagrid({
-				url : '${pageContext.request.contextPath}/zcBbsRewardController/dataGridByBbs?bbsId=${zcForumBbs.id}',
+				url : '${pageContext.request.contextPath}/zcRewardController/dataGridByBbs?objectId=${zcForumBbs.id}&objectType=BBS',
 				fit : true,
 				fitColumns : true,
 				border : false,
@@ -151,7 +151,10 @@
 					field : 'rewardFee',
 					title : '<%=TzcBbsReward.ALIAS_REWARD_FEE%>',
 					width : 50,
-					sortable:true
+					sortable:true,
+					formatter:function(value){
+						return $.fenToYuan(value);
+					}
 				} ] ]
 			});
 		}

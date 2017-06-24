@@ -1,10 +1,12 @@
 package jb.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import jb.absx.F;
 import jb.pageModel.*;
 import jb.service.*;
 import jb.service.impl.RedisUserServiceImpl;
 import jb.util.*;
+import net.sf.json.JSON;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,9 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.*;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 我的-钱包余额管理
@@ -42,6 +42,9 @@ public class ApiWalletController extends BaseController {
 
 	@javax.annotation.Resource
 	private RedisUserServiceImpl redisUserService;
+
+	@Autowired
+	private BasedataServiceI basedataService;
 
 	/**
 	 * 跳转我的余额
@@ -138,6 +141,23 @@ public class ApiWalletController extends BaseController {
 	@RequestMapping("/offline_transfer_one")
 	public String offline_transfer_one(double transferAmount, HttpServletRequest request) {
 		request.setAttribute("transferAmount", transferAmount);
+		BaseData baseData = new BaseData();
+		baseData.setBasetypeCode("OT");
+		List<BaseData> bds = basedataService.getBaseDatas(baseData);
+		List<Map> banks = new ArrayList<Map>();
+		if(CollectionUtils.isNotEmpty(bds)) {
+			for(BaseData bd : bds) {
+				String desc = bd.getDescription();
+				Map m = new HashMap();
+				if(!F.empty(desc)) m = JSONObject.parseObject(desc, Map.class);
+				if(m.get("isdeleted") == null || (Integer)m.get("isdeleted") == 1) continue;
+				m.put("bank_code", bd.getId());
+				m.put("bank_icon", bd.getIcon());
+				m.put("bank_name", bd.getName());
+				banks.add(m);
+			}
+		}
+		request.setAttribute("banks", banks);
 		return "/wsale/wallet/offline_transfer_one";
 	}
 
@@ -146,8 +166,9 @@ public class ApiWalletController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/offline_transfer_two")
-	public String offline_transfer_two(double transferAmount, HttpServletRequest request) {
+	public String offline_transfer_two(double transferAmount,String bankCode, HttpServletRequest request) {
 		request.setAttribute("transferAmount", transferAmount);
+		request.setAttribute("bankCode", bankCode);
 		return "/wsale/wallet/offline_transfer_two";
 	}
 

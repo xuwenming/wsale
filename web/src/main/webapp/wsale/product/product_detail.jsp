@@ -129,12 +129,19 @@
                 </div>
             </div>
 
-            <div id="reportPopup" class="weui-popup-container popup-bottom">
+            <div id="reportPopup" class="weui-popup-container">
                 <div class="weui-popup-overlay"></div>
-                <div class="weui-popup-modal" style="height: 190px;overflow: hidden; text-align: center;">
-                    <div class="modal-content" style="padding-top: 0;overflow: hidden; ">
-                        <textarea style="background-color: #fff;resize: none;" maxlength="100" placeholder="请输入您的举报理由，不得出现不和谐文字..." id="reportReason"></textarea>
-                        <a class="bottom-btn reportBtn" style="color: #fff;font-size: 16px;">举报</a>
+                <div class="weui-popup-modal" style="overflow: hidden;">
+                    <div class="modal-content" style="padding-top: 0; margin-top: 0px; overflow: hidden;">
+                        <div style="background-color:#fff; padding: 0 5px;border-bottom:1px solid #ddd;">
+                            <div style="float:right;padding: 10px 0px;width:15%; text-align:center;color: green;" class="reportBtn">
+                                举 报
+                            </div>
+                            <div style="width:80%; padding: 10px;" class="close-popup">
+                                <span style="padding: 10px 0px;">关 闭</span>
+                            </div>
+                        </div>
+                        <textarea style="margin:10px 0px; background-color: #fff;" maxlength="100" placeholder="请输入您的举报理由，不得出现不和谐文字..." id="reportReason"></textarea>
                     </div>
                 </div>
             </div>

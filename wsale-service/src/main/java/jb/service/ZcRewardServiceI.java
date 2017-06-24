@@ -24,6 +24,8 @@ public interface ZcRewardServiceI {
 	 */
 	public DataGrid dataGrid(ZcReward zcReward, PageHelper ph);
 
+	DataGrid dataGridComplex(ZcReward zcReward, PageHelper ph);
+
 	/**
 	 * 添加ZcReward
 	 * 

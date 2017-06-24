@@ -58,7 +58,7 @@ ul{
     height: 80px;
     background-color: white;
     color:red;
-    margin: 40px auto;
+    margin: 5px auto 25px;
     border-radius: 50%;
     border:2px solid red;
     font-size: 2rem;
@@ -120,12 +120,12 @@ a{
 .jilu{
     margin: 20px 0;
     color:gray;
-    padding:0 20px;
+    padding:0 10px;
     opacity: 0.7;
 }
 footer{
     background-color:#f5f5f5;
-    padding:20px 10px;
+    padding:0px 5px;
 }
 footer .right{
     margin: 20px 0;
@@ -162,11 +162,16 @@ footer .right{
 }
 .footer_time{
     float:right;
-    padding-right: 10px;
     color: #aaa;
+    font-size: 14px;
+    line-height: 30px;
+    position: relative;
+    right:-15px;
 }
 .footer_content p{
-    padding-top: 30px;
+    word-wrap: break-word;
+    width:100%;
+    float:right;
 }
 .fa-thumbs-up:before{
     display: none;
@@ -187,6 +192,10 @@ footer .right{
     width:15px;
     height: 15px;
 }
+.zan{
+    position: relative;
+    top: 2px;
+}
 .miss{
     display: none;
 }
@@ -205,11 +214,13 @@ header a.ui-link, .comment a.ui-link{
 div.jilu>.right a,.comment>.ui-link{
     color:#aaa;
     font-size: 16px;
-    line-height: 45px;
     display: inline-block;
 }
 .main-zan{
     display: inline-block;
     width:60px;
     padding:10px;
+}
+.font-black{
+    color:#333;
 }

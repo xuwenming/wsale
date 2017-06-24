@@ -1335,9 +1335,12 @@ p.order-right-middle{
 .paipin-guanli li{
 	list-style:none;
 	display:inline-block;
-	width:20%;
 	text-align:center;
-	margin:10px 0px 5px ;
+	margin:10px 5px 5px ;
+	border: 1px solid #aaa;
+	padding: 3px 15px;
+	border-radius: 5px;
+	color: #555;
 }
 
 
@@ -3097,10 +3100,14 @@ div.weui-popup-overlay,div.weui-popup-modal{
 	border-radius: 5px;
 	margin: 5px;
 	width:20%;
-	min-width: 53px;
 	padding:5px 10px;
 	font-size: 18px;
 	font-weight: bold;
+}
+@media (min-width: 768px){
+	.money-list>div{
+		min-width: 25%;
+	}
 }
 .money-list sub{
 	font-weight: 100;
@@ -3139,3 +3146,21 @@ div.weui-popup-modal{
 	margin-right: 8px;
 	color:#555;
 }
+
+/*下面是论坛列表图片样式*/
+.img-parent>.bbs-list-img,.topic-list-img{
+	width:70px;
+	height: 0;
+	padding-bottom: 70px;
+	background-position: center center;
+	background-size: cover;
+}
+.product-list-img{
+	width:100%;
+	height:0;
+	padding-bottom: 100%;
+	background-position: center center;
+	background-size: cover;
+}
+
+/*下面是我的拍品竞拍功能按钮*/

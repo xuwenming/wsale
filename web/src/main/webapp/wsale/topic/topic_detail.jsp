@@ -103,7 +103,7 @@
             </div>
 
             <header>
-                <h2>${topic.title}</h2>
+                <h2 class="font-black">${topic.title}</h2>
                 <c:if test="${topic.user.utype == 'UT02'}">
                     <span class="header_author ">
                         <c:choose>
@@ -146,7 +146,7 @@
             </form>
             <div class="jilu">
                 <span>阅读</span>
-                <span>${topic.topicRead}</span>&#x3000;
+                <span>${topic.topicRead}</span>
                 <div class="main-zan">
                      <span>
                         <c:choose>

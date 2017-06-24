@@ -116,7 +116,7 @@
                 </c:if>
                 <span class="header_time"><fmt:formatDate value="${topic.addtime}" pattern="yyyy-MM-dd"/></span>
                 <span><a href="javascript:href('api/apiHomeController/home');">集东集西</a></span>
-                <c:if test="${topic.user.utype == 'UT02' and !topic.user.attred}">
+                <c:if test="${topic.user.utype == 'UT02' and !topic.user.attred and !topic.user.self}">
                     <div class="right button-at attBtn">+ 关注</div>
                 </c:if>
                 <hr>

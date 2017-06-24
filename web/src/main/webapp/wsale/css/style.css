@@ -1088,6 +1088,7 @@ p.order-right-middle{
 	color:red;
 	font-size: 12px;
 	margin-bottom: -16px;
+	display: none;
 }
 .order-right-bottom{
 	height: 20px;

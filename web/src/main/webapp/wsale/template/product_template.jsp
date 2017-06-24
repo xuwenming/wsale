@@ -55,7 +55,7 @@
 			<b name="user" data-name="nickname"></b>
 			<img class="order-flag" src="${pageContext.request.contextPath}/wsale/images/chuju-icon.png" />
 		</div>
-		<p class="order-right-middle">这里写一些说明</p>
+		<p class="order-right-middle">(自动出价)</p>
 		<div class="order-right-bottom">
 			<span name="bid"></span>
 			<b name="addtime"></b>

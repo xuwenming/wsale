@@ -135,14 +135,13 @@
                     <div class="shang reward">赏</div>
 
                     <p>已有<span>${rewards.size()}</span>人打赏</p>
-                    <c:if test="${rewards.size() > 0}">
-                        <ul class="rewardUsers">
-                            <c:forEach items="${rewards}" var="reward" varStatus="vs">
-                                <li><img src="${reward.user.headImage}"/></li>
-                            </c:forEach>
-                        </ul>
-                        <div class="gengduo hide"><span>更多</span></div>
-                    </c:if>
+
+                    <ul class="rewardUsers">
+                        <c:forEach items="${rewards}" var="reward" varStatus="vs">
+                            <li><img src="${reward.user.headImage}"/></li>
+                        </c:forEach>
+                    </ul>
+                    <div class="gengduo hide"><span>更多</span></div>
                 </fieldset>
             </form>
             <div class="jilu">

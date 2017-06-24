@@ -996,6 +996,7 @@
             viewData.bid = '￥' + auction.bid;
             var dom = Util.cloneDom("auction_template", auction, viewData);
             dom.find('div.avatr').attr('userId', auction.user.id).css('background-image', 'url('+auction.user.headImage+')');
+            if(auction.isAuto) dom.find('.order-right-middle').show();
             $("#auctions").append(dom);
             if(isClick)
                 dom.find("div.avatr").click(auction.user.id, function(event){

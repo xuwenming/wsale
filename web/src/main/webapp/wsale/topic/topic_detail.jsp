@@ -362,7 +362,7 @@
             JWEIXIN.showOptionMenu();
             var shareData = {
                 title:"${topic.title}",
-                desc:'${topic.contentLine}',
+                desc:$('.content').html().replace(/\r\n|<[^>]+>|&nbsp;/g, ''),
                 link:removeQueDefault(location.href),
                 imgUrl:"${topic.icon}"
             };

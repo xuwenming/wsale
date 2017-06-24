@@ -2,9 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%
-    request.setAttribute("vEnter", "\n");
-%>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -365,7 +362,7 @@
             JWEIXIN.showOptionMenu();
             var shareData = {
                 title:"${topic.title}",
-                desc:"${fn:replace(topic.content, vEnter, '')}",
+                desc:'${topic.contentLine}',
                 link:removeQueDefault(location.href),
                 imgUrl:"${topic.icon}"
             };

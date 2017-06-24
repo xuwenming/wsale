@@ -1,5 +1,8 @@
 package jb.pageModel;
 
+import jb.absx.F;
+import jb.listener.Application;
+
 import java.util.Date;
 
 @SuppressWarnings("serial")
@@ -65,6 +68,11 @@ public class ZcTopic implements java.io.Serializable {
 	}
 	
 	public java.lang.String getContent() {
+		return this.content;
+	}
+	public String getContentLine() {
+		if(!F.empty(this.content))
+			return this.content.replaceAll("[\\r\\n]", "").replaceAll("<[^>]+>|&nbsp;", "");
 		return this.content;
 	}
 	public void setTopicComment(java.lang.Integer topicComment) {

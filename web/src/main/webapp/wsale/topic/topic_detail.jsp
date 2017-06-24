@@ -367,7 +367,7 @@
                 title:"${topic.title}",
                 desc:"${fn:replace(topic.content, vEnter, '')}",
                 link:removeQueDefault(location.href),
-                imgUrl:$(".images div:eq(0)").attr("data-original")
+                imgUrl:"${topic.icon}"
             };
             JWEIXIN.onMenuShareAppMessage(shareData);
             JWEIXIN.onMenuShareTimeline(shareData);

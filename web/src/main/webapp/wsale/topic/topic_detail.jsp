@@ -2,6 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%
+    request.setAttribute("vEnter", "\n");
+%>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -357,6 +360,21 @@
                 }
             });
         }
+
+        wx.ready(function () {
+            JWEIXIN.showOptionMenu();
+            var shareData = {
+                title:"${topic.title}",
+                desc:"${fn:replace(topic.content, vEnter, '')}",
+                link:removeQueDefault(location.href),
+                imgUrl:$(".images div:eq(0)").attr("data-original")
+            };
+            JWEIXIN.onMenuShareAppMessage(shareData);
+            JWEIXIN.onMenuShareTimeline(shareData);
+            JWEIXIN.onMenuShareQQ(shareData);
+            JWEIXIN.onMenuShareWeibo(shareData);
+            JWEIXIN.onMenuShareQZone(shareData);
+        });
     </script>
 </body>
 </html>

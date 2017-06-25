@@ -3034,7 +3034,7 @@ div.jqm-demos.ui-page.ui-page-theme-a.ui-page-active{
 }
 div.modal-content{
 	max-width: 640px;
-	margin: 0 auto;
+	margin: 10px auto 0;
 }
 div#commentPopup.weui-popup-container.weui-popup-container-visible{
 	max-width: 640px;

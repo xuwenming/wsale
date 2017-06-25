@@ -96,7 +96,7 @@
                                 <div data-fee="200">200 <sub>元</sub></div>
                             </div>
                             <p style="padding-top: 20px;color:#6f83ec;" class="otherAmount">其他金额</p>
-                            <p style="margin-top: 5px; color: #aaa;">赞赏是为表示鼓励而对文章内容的无偿赠与</p>
+                            <p style="margin-top: 5px; color: #aaa;font-size: 12px;">赞赏是为表示鼓励而对文章内容的无偿赠与</p>
                         </div>
                     </div>
                 </div>
@@ -124,8 +124,8 @@
             <main class="content">
                 ${topic.content}
             </main>
-            <div class="erweima" style="display: none;">
-                <!--<img src="images/ma.png" alt="这里放二维码"/>-->
+            <div class="erweima">
+                <img src="${pageContext.request.contextPath}/wsale/images/topic-qcode.jpg"/>
             </div>
             <form>
                 <fieldset>
@@ -187,6 +187,9 @@
             if($(".rewardUsers").height() == $(".rewardUsers").css('max-height').replace('px', '')) {
                 $(".gengduo").removeClass("hide");
             }
+            $(".content img").lazyload({
+                placeholder : base + 'wsale/images/lazyload.png'
+            });
             $(".gengduo").click(function(e){
                 e.stopPropagation();
                 var self = $(this);

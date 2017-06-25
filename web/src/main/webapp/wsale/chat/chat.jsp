@@ -28,7 +28,7 @@
                     <img src="${pageContext.request.contextPath}/wsale/images/historytime-icon.png" />&nbsp;
                     <span class="history-msg">努力加载中</span>
                 </div>
-                <div class="sixin-content" style="overflow: auto;">
+                <div class="sixin-content" style="overflow: auto; margin: 0 10px;">
 
                 </div>
                 <div id="sixin-send" class="send-info">

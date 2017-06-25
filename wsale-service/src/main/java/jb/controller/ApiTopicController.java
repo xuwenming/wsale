@@ -6,6 +6,7 @@ import jb.service.*;
 import jb.service.impl.CompletionFactory;
 import jb.service.impl.TopicCommon;
 import jb.util.EnumConstants;
+import jb.util.oss.OSSUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -87,6 +88,7 @@ public class ApiTopicController extends BaseController {
 	public String topicDetail(String id, HttpServletRequest request) {
 		SessionInfo s = getSessionInfo(request);
 		ZcTopic topic = zcTopicService.addReadAndDetail(id);
+		topic.setContent(topic.getContent().replaceAll("src=\"" + OSSUtil.cdnUrl, "data-original=\"" + OSSUtil.cdnUrl));
 		topic.setUser(userService.get(topic.getAddUserId(), s.getId()));
 
 		// 是否点赞

@@ -159,7 +159,7 @@
                     <span>${topic.topicPraise}</span>
                 </div>
 
-                <span class="right report"><a href="javascript:void(0);">举报</a></span>
+                <span class="right report" style="margin-top: 10px;"><a href="javascript:void(0);">举报</a></span>
             </div>
             <footer>
                 <span class="right comment">

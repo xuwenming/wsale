@@ -83,6 +83,12 @@
                 <div class="homeBbsList" style="padding: 0 10px;">
                 </div>
 
+                <div class="faxian-link homeTopicTitle" style="border-top: 10px solid rgb(245, 245, 245); display: none;">
+                    <span style="margin-left: 5px;font-size: 15px;">专辑推荐</span>
+                </div>
+                <div class="homeTopicList" style="padding: 0 10px;">
+                </div>
+
                 <div class="faxian-link bestTitle" style="border-top: 10px solid rgb(245, 245, 245); display: none;">
                     <span style="margin-left: 5px;font-size: 15px;">精选推荐</span>
                 </div>
@@ -115,6 +121,7 @@
     </div><!-- /page -->
     <jsp:include page="template/home_template.jsp"></jsp:include>
     <jsp:include page="template/bbs_template.jsp"></jsp:include>
+    <jsp:include page="template/topic_template.jsp"></jsp:include>
 
     <script type="text/javascript">
         document.onreadystatechange =function(){
@@ -156,6 +163,7 @@
             });
 
             drawBbsList();
+            drawTopicList();
 
             var obj = $.cookie('home_best');
             if(obj != null) {
@@ -190,6 +198,32 @@
                         }
                     } else {
                         $('.homeBbsTitle, .homeBbsList').remove();
+                    }
+                }
+            });
+        }
+
+        function drawTopicList() {
+            ajaxPost('api/apiTopic/topicList', {page:1, rows:5, seq:1}, function(data){
+                if(data.success) {
+                    var result = data.obj;
+                    if(result.total != 0) {
+                        $('.homeTopicTitle').show();
+                        for(var i in result.rows) {
+                            var topic = result.rows[i];
+                            buildTopic(topic);
+                        }
+
+                        $(".homeTopicList img.lazy").lazyload({
+                            placeholder : base + 'wsale/images/lazyload.png'
+                        });
+
+                        // 开放更多按钮
+                        if(result.total > 5) {
+
+                        }
+                    } else {
+                        $('.homeTopicTitle, .homeTopicList').remove();
                     }
                 }
             });
@@ -259,6 +293,24 @@
             // dom绑定事件
             dom.click(bbs.id, function(event){
                 href('api/bbsController/bbsDetail?id=' + event.data);
+            });
+        }
+
+        function buildTopic(topic) {
+            var viewData = Util.cloneJson(topic);
+
+            viewData.name_time = '发布人:' + topic.user.nickname;
+            viewData.time = Util.getTime(topic.addtime);
+            viewData.count = '点赞：'+topic.topicPraise+'&nbsp;&nbsp;阅读：' + topic.topicRead;
+
+            var dom = Util.cloneDom("topic_template", topic, viewData);
+            if(viewData.time.indexOf('刚刚') != -1 || viewData.time.indexOf('前') != -1) {
+                dom.find("[name=time]").css('color', 'rgb(252,79,30)');
+            }
+            $(".homeTopicList").append(dom);
+            // dom绑定事件
+            dom.click(topic.id, function(event){
+                href('api/apiTopic/topicDetail?id=' + event.data);
             });
         }
 

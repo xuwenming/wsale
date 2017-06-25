@@ -22,6 +22,7 @@ import wsale.concurrent.Task;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
@@ -64,7 +65,12 @@ public class ZcTopicController extends BaseController {
 	 */
 	@RequestMapping("/dataGrid")
 	@ResponseBody
-	public DataGrid dataGrid(ZcTopic zcTopic, PageHelper ph) {
+	public DataGrid dataGrid(ZcTopic zcTopic, PageHelper ph, HttpSession session) {
+		SessionInfo sessionInfo = (SessionInfo) session.getAttribute(ConfigUtil.getSessionInfoName());
+		User user = userService.getByZc(sessionInfo.getId());
+		if("UT02".equals(user.getUtype())) {
+			zcTopic.setAddUserId(user.getId());
+		}
 		DataGrid dataGrid = zcTopicService.dataGrid(zcTopic, ph);
 
 		List<ZcTopic> list = (List<ZcTopic>) dataGrid.getRows();
@@ -120,8 +126,8 @@ public class ZcTopicController extends BaseController {
 	 * @throws IOException 
 	 */
 	@RequestMapping("/download")
-	public void download(ZcTopic zcTopic, PageHelper ph,String downloadFields,HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
-		DataGrid dg = dataGrid(zcTopic,ph);		
+	public void download(ZcTopic zcTopic, PageHelper ph,String downloadFields,HttpServletResponse response, HttpSession session) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
+		DataGrid dg = dataGrid(zcTopic,ph,session);
 		downloadFields = downloadFields.replace("&quot;", "\"");
 		downloadFields = downloadFields.substring(1,downloadFields.length()-1);
 		List<Colum> colums = JSON.parseArray(downloadFields, Colum.class);

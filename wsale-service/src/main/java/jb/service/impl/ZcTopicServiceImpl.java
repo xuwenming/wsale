@@ -67,6 +67,10 @@ public class ZcTopicServiceImpl extends BaseServiceImpl<ZcTopic> implements ZcTo
 				whereHql += " and t.updateUserId = :updateUserId";
 				params.put("updateUserId", zcTopic.getUpdateUserId());
 			}
+			if(zcTopic.getSeq() != null) {
+				whereHql += " and t.seq >= :seq";
+				params.put("seq", zcTopic.getSeq());
+			}
 		}	
 		return whereHql;
 	}

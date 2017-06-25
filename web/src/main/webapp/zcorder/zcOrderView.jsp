@@ -7,6 +7,10 @@
 		parent.$.messager.progress('close');
 		$('.pImageSlide img').simpleSlide();
 		$('.xImageSlide img').simpleSlide();
+
+		$('.moneyFormat').each(function(){
+			$(this).text($.fenToYuan($(this).text().trim()));
+		});
 	});
 </script>
 <div class="easyui-layout" data-options="fit:true,border:false">
@@ -58,7 +62,61 @@
 			</c:if>
 		</table>
 
-		<c:if test="${order.orderStatus == 'OS05' || order.orderStatus == 'OS10' || order.sendStatus == 'SS03'}">
+		<c:if test="${!empty payOrder and payOrder.payStatus == 'PS02'}">
+			<div style="font-size: 16pt; padding: 8px;">支付信息</div>
+			<table class="table table-hover table-condensed">
+				<tr>
+					<th>交易流水号</th>
+					<td colspan="3">${payOrder.orderNo}</td>
+				</tr>
+				<c:if test="${!empty payOrder.refTransactionNo}">
+					<tr>
+						<th>第三方支付订单号</th>
+						<td colspan="3">
+							${payOrder.refTransactionNo}
+						</td>
+					</tr>
+				</c:if>
+				<tr>
+					<th width="14%">支付渠道</th>
+					<td width="36%">
+						${payOrder.channelZh}
+					</td>
+					<th width="14%">支付时间</th>
+					<td width="36%"><fmt:formatDate value="${payOrder.paytime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+				</tr>
+				<tr>
+					<th>支付金额</th>
+					<td>
+						${payOrder.totalFee}
+					</td>
+					<th>技术服务费</th>
+					<td class="moneyFormat">
+						${payOrder.serviceFee}
+					</td>
+				</tr>
+				<c:if test="${!empty payOrder.refundNo}">
+					<tr>
+						<th>退款单号</th>
+						<td>
+							${payOrder.refundNo}
+						</td>
+						<th>退款金额</th>
+						<td class="moneyFormat">
+							${payOrder.refundFee}
+						</td>
+					</tr>
+					<tr>
+						<th>退款时间</th>
+						<td colspan="3">
+							<fmt:formatDate value="${payOrder.refundtime}" pattern="yyyy-MM-dd HH:mm:ss"/>
+						</td>
+					</tr>
+				</c:if>
+			</table>
+		</c:if>
+
+		<c:if test="${order.payStatus == 'PS02' and !empty address}">
 			<div style="font-size: 16pt; padding: 8px;">发货信息</div>
 			<table class="table table-hover table-condensed">
 				<tr>
@@ -67,16 +125,24 @@
 					<th width="14%">电话</th>
 					<td width="36%">${address.telNumber}</td>
 				</tr>
-				<tr>
-					<th>快递公司</th>
-					<td>
-						${order.expressName}
-					</td>
-					<th>运单号</th>
-					<td>
-						${order.expressNo}
-					</td>
-				</tr>
+				<c:if test="${!empty order.expressName && !empty order.expressNo}">
+					<tr>
+						<th>快递公司</th>
+						<td>
+							${order.expressName}
+						</td>
+						<th>运单号</th>
+						<td>
+							${order.expressNo}
+						</td>
+					</tr>
+					<tr>
+						<th>发货时间</th>
+						<td colspan="3">
+							<fmt:formatDate value="${order.deliverTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
+						</td>
+					</tr>
+				</c:if>
 				<tr>
 					<th>收货地址</th>
 					<td colspan="3">
@@ -137,6 +203,12 @@
 						<th>运单号</th>
 						<td>
 							${order.returnExpressNo}
+						</td>
+					</tr>
+					<tr>
+						<th>退货发货时间</th>
+						<td colspan="3">
+							<fmt:formatDate value="${order.returnDeliverTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
 						</td>
 					</tr>
 				</c:if>

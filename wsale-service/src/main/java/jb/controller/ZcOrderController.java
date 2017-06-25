@@ -68,6 +68,9 @@ public class ZcOrderController extends BaseController {
 	@Autowired
 	private SendWxMessageImpl sendWxMessage;
 
+	@Autowired
+	private ZcPayOrderServiceI zcPayOrderService;
+
 	/**
 	 * 跳转到ZcOrder管理页面
 	 * 
@@ -323,6 +326,13 @@ public class ZcOrderController extends BaseController {
 		backAddress.setOrderId(order.getId());
 		backAddress = zcAddressService.get(backAddress);
 		request.setAttribute("backAddress", backAddress);
+
+		// 支付信息
+		ZcPayOrder payOrder = new ZcPayOrder();
+		payOrder.setObjectType("PO05");
+		payOrder.setObjectId(order.getId());
+		payOrder = zcPayOrderService.get(payOrder);
+		request.setAttribute("payOrder", payOrder);
 	}
 
 	/**

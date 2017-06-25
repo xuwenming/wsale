@@ -200,7 +200,7 @@
             });
             var items = [];
             $(".content img").each(function(){
-                items.push($(this).attr("src") || $(this).attr("data-original"));
+                items.push($(this).attr("data-original"));
             });
 
             $(".content img").click(function(){

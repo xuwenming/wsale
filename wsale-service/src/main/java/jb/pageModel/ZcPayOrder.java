@@ -1,5 +1,7 @@
 package jb.pageModel;
 
+import jb.listener.Application;
+
 import java.util.Date;
 
 @SuppressWarnings("serial")
@@ -26,6 +28,9 @@ public class ZcPayOrder implements java.io.Serializable {
 	private boolean isRefundServiceFee;
 	private String attachType;
 
+	public String getChannelZh() {
+		return Application.getString(this.channel);
+	}
 	public void setId(String value) {
 		this.id = value;
 	}

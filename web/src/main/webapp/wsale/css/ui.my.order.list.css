@@ -1,0 +1,21 @@
+@charset "utf-8";
+ul.wode-operate.myOrder{
+    display: flex;
+    justify-content: space-around;
+
+}
+@media all and (max-width: 414px) {
+    .cbp-vm-image.ui-link img.lazy{
+        height:150px;
+    }
+}
+@media all and (max-width: 320px) {
+    .cbp-vm-image.ui-link img.lazy{
+        height:128px;
+    }
+}
+@media all and (max-width: 360px) {
+    .cbp-vm-image.ui-link img.lazy{
+        height:136px;
+    }
+}

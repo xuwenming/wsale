@@ -1,0 +1,31 @@
+@charset "utf-8";
+.product-template-jubao,.product-template-sixin{
+    width:60%;
+    max-width: 100px;
+    min-width:50px;
+    margin: 0 auto;
+    font-size: 0.5rem;
+    margin-top: 13px;
+    padding:2px 3px;
+    border-radius: 5px;
+    text-align: center;
+    color:#bbb;
+    border:1px solid #bbb;
+}
+.product-all-guanzhu{
+    width:65px;
+    max-width: 100px;
+    min-width:50px;
+    margin: 0 auto;
+    font-size: 0.5rem;
+    padding:2px 3px;
+    border-radius: 5px;
+    text-align: center;
+    color:#DC721C;
+    border:1px solid #DC721C;
+    float:right;
+}
+.product-template-sixin{
+    color:#71B1EF;
+    border-color: #71B1EF;
+}

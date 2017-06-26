@@ -69,7 +69,7 @@
     <div data-role="page" class="jqm-demos">
 
         <div data-role="header" data-position="fixed" data-theme="b" data-tap-toggle="false" style="z-index: 99;">
-            <div style="float:right; padding:5px 20px 0px 20px;" class="rightTop-more"><img src="${pageContext.request.contextPath}/wsale/images/title-more.png" style="height:20px;margin-top:8px;" /></div>
+            <div style="float:right; padding:5px 20px 0px 20px;" class="rightTop-more"><img src="${pageContext.request.contextPath}/wsale/images/add-icon-a.png" style="height:20px;margin-top:8px;" /></div>
             <c:if test="${fromShare}">
                 <a id="back" rel="external" href="javascript:href('api/apiHomeController/home');" style="padding-top: 15px;background-color: #3da8f5;">首页</a>
             </c:if>

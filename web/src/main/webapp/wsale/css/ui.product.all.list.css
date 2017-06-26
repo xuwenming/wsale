@@ -3,9 +3,8 @@
     width:60%;
     max-width: 100px;
     min-width:50px;
-    margin: 0 auto;
+    margin:10px auto 0;
     font-size: 0.5rem;
-    margin-top: 13px;
     padding:2px 3px;
     border-radius: 5px;
     text-align: center;
@@ -24,8 +23,24 @@
     color:#DC721C;
     border:1px solid #DC721C;
     float:right;
+    display: none;
 }
 .product-template-sixin{
     color:#71B1EF;
     border-color: #71B1EF;
+}
+
+.images .content-img{
+    width: 30%;
+    height: 0;
+    padding-bottom: 30%;
+    display: inline-block;
+    background-size: cover;
+    background-position: center center;
+    /*margin:-2px 2px;*/
+}
+
+.images .one-img {
+    width: 45%;
+    padding-bottom: 55%;
 }

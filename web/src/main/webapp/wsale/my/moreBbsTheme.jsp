@@ -84,7 +84,7 @@
                             buildBbs(bbs);
                         }
 
-                        $(".bbsThemeList img.lazy").lazyload({
+                        $(".bbsThemeList .lazy").lazyload({
                             placeholder : base + 'wsale/images/lazyload.png'
                         });
 

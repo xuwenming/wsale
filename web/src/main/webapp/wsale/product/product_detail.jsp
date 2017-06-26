@@ -187,7 +187,7 @@
                     <div class="images">
                         <c:forEach items="${product.files}" var="file" varStatus="vs">
                             <%--<img class="lazy ppxq-imglist" data-original="${file.fileHandleUrl}" />--%>
-                            <div class="product-detail-content-img lazy" data-original="${file.fileHandleUrl}"></div>
+                            <div class="product-detail-content-img lazy  <c:if test="${product.files.size() == 1}">one-img</c:if>" data-original="${file.fileHandleUrl}"></div>
                         </c:forEach>
                     </div>
                     <div style="margin-top:10px;">
@@ -406,9 +406,9 @@
                                             <span class="wupin-title info-xinxi" style="height: 25px;">${otherProduct.content}</span>
                                             <div>
                                                 <div class="cbp-vm-right">
-                                                    <span style="font-size:12px;"><img src="${pageContext.request.contextPath}/wsale/images/huoyan-icon.png" style="width:13px;" /> ${otherProduct.readCount}</span>
+                                                    <span style="font-size:12px;"><img src="${pageContext.request.contextPath}/wsale/images/huoyan-icon.png" style="width:12px;" /> ${otherProduct.readCount}</span>
                                                 </div>
-                                                <div class="cbp-vm-price">￥${otherProduct.currentPrice}</div>
+                                                <div class="cbp-vm-price" style="margin-top: 0;">￥${otherProduct.currentPrice}</div>
                                             </div>
                                         </div>
                                     </li>

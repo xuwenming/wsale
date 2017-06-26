@@ -3,7 +3,7 @@
 <div id="order_template" class="dingdan-list" style="display: none;">
 	<div class="faxian-link">
 		<div class="dingdan-right">
-			<a style="display: inline;" class="tel"><img class="phone-icon" src="${pageContext.request.contextPath}/wsale/images/phone-icon.png" /></a>
+			<a style="display: inline;padding:10px 0 10px 5px" class="tel"><img class="phone-icon" src="${pageContext.request.contextPath}/wsale/images/phone-icon.png" /></a>
 			<span class="status-text" name="statusName"></span>
 		</div>
 		<div class="normal-text userShop">

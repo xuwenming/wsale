@@ -144,7 +144,7 @@
             $('img.ppxq-title').click(function(){
                 try{
                     JWEIXIN.previewImage([$(this).attr('src')]);
-                } catch (e){}
+                } catch (e){console.log(e)}
             });
         });
 

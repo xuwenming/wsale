@@ -150,7 +150,7 @@
                 <div class="dingdan-product">
                     <div class="faxian-link">
                         <div class="dingdan-right">
-                            <a style="display: inline;" <c:choose><c:when test="${order.isBuyer}">href="tel:${order.seller.mobile}"</c:when><c:otherwise>href="tel:${order.buyer.mobile}"</c:otherwise></c:choose>><img class="phone-icon" src="${pageContext.request.contextPath}/wsale/images/phone-icon.png" /></a>
+                            <a style="display: inline;padding:10px 0 10px 5px" <c:choose><c:when test="${order.isBuyer}">href="tel:${order.seller.mobile}"</c:when><c:otherwise>href="tel:${order.buyer.mobile}"</c:otherwise></c:choose>><img class="phone-icon" src="${pageContext.request.contextPath}/wsale/images/phone-icon.png" /></a>
                             <span class="status-text">
                                 <c:choose>
                                     <c:when test="${order.isXiaoer && order.xiaoer.status == 'XS01'}">
@@ -175,7 +175,7 @@
                         <div class="dingdan-img">
                             <img src="${order.product.icon}" />
                         </div>
-                        <div>
+                        <div class="dingdan-content-flex">
                             <div class="dingdan-title" style="-webkit-line-clamp:1">
                                 ${order.product.content}
                             </div>

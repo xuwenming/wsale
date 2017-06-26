@@ -776,10 +776,12 @@
         function drawImages(elm, product) {
             var files = product.files;
             if(!files || files.length == 0) return;
-            var items = [];
+            var items = [], oneImg = "";
+            if(files.length == 1) oneImg = "one-img";
+
             for(var i=0; i<files.length; i++) {
 //                elm.append('<img class="lazy ppxq-imglist" data-original="'+files[i].fileHandleUrl+'" />\n');
-                elm.append('<div class="atted-content-img lazy" data-original="'+files[i].fileHandleUrl+'"></div>\n')
+                elm.append('<div class="atted-content-img lazy '+oneImg+'" data-original="'+files[i].fileHandleUrl+'"></div>\n')
                 items.push(files[i].fileHandleUrl);
             }
 

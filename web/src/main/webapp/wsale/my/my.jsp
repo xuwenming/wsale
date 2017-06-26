@@ -116,12 +116,12 @@
                         </div>
                         <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/xinpinkaipai-icon.png" class="faxian-lefticon" /> 拍品管理</div>
                     </a>
-                    <a class="faxian-link">
+                    <!--<a class="faxian-link">
                         <div style="float:right;">
                             <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
                         </div>
                         <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/xiaoshoubaobiao-icon.png" class="faxian-lefticon" /> 销售报表</div>
-                    </a>
+                    </a>-->
                     <a href="javascript:href('api/apiShop/myShopSet');" class="faxian-link">
                         <div style="float:right;">
                             <span class="grayright-text">
@@ -296,9 +296,8 @@
                         for(var i in result.rows) {
                             var product = result.rows[i].zcProduct;
                             buildProduct(product, type);
-                            $('.product-list-img').eq(i).css('background-image','url('+product.icon+')')
                         }
-                        $("img.lazy").lazyload({
+                        $(".lazy").lazyload({
                             placeholder : base + 'wsale/images/lazyload.png'
                         });
 

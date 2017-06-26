@@ -104,18 +104,17 @@
 
             <header>
                 <h2 class="font-black">${topic.title}</h2>
-                <c:if test="${topic.user.utype == 'UT02'}">
-                    <span class="header_author" onclick="javascript:href('api/userController/homePage?userId=${topic.user.id}');">
-                        <c:choose>
-                            <c:when test="${fn:length(topic.user.nickname) > 5}">
-                                <c:out value="${fn:substring(topic.user.nickname, 0, 5)}..." />
-                            </c:when>
-                            <c:otherwise>${topic.user.nickname}</c:otherwise>
-                        </c:choose>
-                    </span>
-                </c:if>
                 <span class="header_time"><fmt:formatDate value="${topic.addtime}" pattern="yyyy-MM-dd"/></span>
-                <span><a href="javascript:href('api/apiHomeController/home');">集东集西</a></span>
+                <span>
+                    <c:choose>
+                        <c:when test="${topic.user.utype == 'UT02'}">
+                            <a href="javascript:href('api/userController/homePage?userId=${topic.user.id}');">${topic.user.nickname}</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="javascript:href('api/apiHomeController/home');">集东集西</a>
+                        </c:otherwise>
+                    </c:choose>
+                </span>
                 <c:if test="${topic.user.utype == 'UT02' and !topic.user.attred and !topic.user.self}">
                     <div class="right button-at attBtn">+ 关注</div>
                 </c:if>

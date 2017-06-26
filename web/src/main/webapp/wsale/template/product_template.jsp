@@ -15,18 +15,18 @@
 <li id="product_template" style="display: none;">
 	<a class="cbp-vm-image">
 		<%--<img class="lazy" name="icon">--%>
-		<div class="product-list-img lazy icon"></div>
+		<div class="product-list-img lazy" name="icon"></div>
 		<span class="others-time" style="display: none;">
 			距截拍 <span class="others-timeno">00</span>:<span class="others-timeno">00</span>:<span class="others-timeno">00</span>
 	 	</span>
 	</a>
 	<div class="cbp-vm-title">
-		<span name="content" class="wupin-title info-xinxi" style="height: 25px;">福寿绵长-江南山水图-天地造（名家纯手...）</span>
+		<span name="content" class="wupin-title info-xinxi" style="height: 25px;"></span>
 		<div class="cbp-vm-time"><!--距截拍：<span class="cbp-vm-timenumber">10</span>时<span class="cbp-vm-timenumber">23</span>分<span class="cbp-vm-timenumber">23</span>秒--></div>
 		<div>
 			<div class="cbp-vm-right">
-				<span style="font-size:12px;"><img src="${pageContext.request.contextPath}/wsale/images/huoyan-icon.png" style="width:13px;" /> <count name="readCount">36</count></span>
-				<span style="font-size:12px;" name="likeCount"><img src="${pageContext.request.contextPath}/wsale/images/guanzhu-icon.png" style="width:15px;" /> <count>48</count></span>
+				<span style="font-size:12px;"><img src="${pageContext.request.contextPath}/wsale/images/huoyan-icon.png" style="width:12px;" /> <count name="readCount">36</count></span>
+				<span style="font-size:12px;" name="likeCount"><img src="${pageContext.request.contextPath}/wsale/images/guanzhu-icon.png" style="width:14px;" /> <count>48</count></span>
 			</div>
 			<div class="cbp-vm-price" name="currentPrice" style="margin-top: 0;">￥4088</div>
 		</div>
@@ -37,11 +37,11 @@
 <a id="best_product_template" class="jingxuan-list" style="display:none;">
 	<%--<img   class="jingxuan-image lazy" name="icon" />--%>
 	<div class="jingxuan-img lazy" name="icon"></div>
-	<div name="content" class="wupin-title info-xinxi" style="height: 25px;font-size: 14px;">福寿绵长-江南山水图-天地造（名家纯手...）</div>
+	<div name="content" class="wupin-title info-xinxi" style="height: 25px;font-size: 14px;"></div>
 	<div>
 		<div class="jingxuan-info">
-			<span style="font-size:12px;"><img src="${pageContext.request.contextPath}/wsale/images/huoyan-icon.png" style="width:13px;" /> <count name="readCount">36</count></span>
-			<span style="font-size:12px;" name="likeCount"><img src="${pageContext.request.contextPath}/wsale/images/yiguanzhu-icon.png" style="width:15px;" /> <count>48</count></span>
+			<span style="font-size:12px;"><img src="${pageContext.request.contextPath}/wsale/images/huoyan-icon.png" style="width:12px;" /> <count name="readCount"></count></span>
+			<span style="font-size:12px;" name="likeCount"><img src="${pageContext.request.contextPath}/wsale/images/yiguanzhu-icon.png" style="width:14px;" /> <count></count></span>
 		</div>
 		<div class="jingxuan-price" name="currentPrice">￥4088</div>
 	</div>
@@ -86,8 +86,8 @@
 			<img name="icon"/>
 		</div>
 		<div class="paipin-img-after">
-			<div name="content" class="paipin-title info-xinxi">和田玉</div>
-			<div name="time" class="paipin-time">流拍时间 7-12 12:30</div>
+			<div name="content" class="paipin-title dingdan-title"></div>
+			<div name="time" class="paipin-time"></div>
 		</div>
 	</div>
 	<ul class="paipin-guanli dingdan-opearte">
@@ -116,8 +116,8 @@
 	</div>
 	<div class="ppxq-rightinfo">
 		<div class="qbpp-title" name="user" style="display: inline-block" data-name="nickname"></div>
-		<%--<div class="product-all-guanzhu" style="display: inline-block;float:right">+ 关注</div>--%>
-		<div>
+		<div class="product-all-guanzhu attBtn">+ 关注</div>
+		<div style="margin-bottom: -5px;">
 			<img class="ppxq-smallicon protection" src="${pageContext.request.contextPath}/wsale/images/baozhang-icon.png" style="display: none;"/>
 			<img class="ppxq-smallicon auth" src="${pageContext.request.contextPath}/wsale/images/renzheng2-icon.png" style="display: none;"/>
 			<img class="ppxq-smallicon" src="${pageContext.request.contextPath}/wsale/images/v2.png" />

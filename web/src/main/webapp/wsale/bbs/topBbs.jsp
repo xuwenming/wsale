@@ -134,7 +134,7 @@
                             buildBbs(bbs);
                         }
 
-                        $(".topBbsList img.lazy").lazyload({
+                        $(".topBbsList .lazy").lazyload({
                             placeholder : base + 'wsale/images/lazyload.png'
                         });
 
@@ -178,9 +178,8 @@
             viewData.time = Util.getTime(bbs.addtime);
             viewData.count = '回复：'+bbs.bbsComment+' &nbsp;&nbsp;围观：' + bbs.bbsRead;
 
-            var dom = Util.cloneDom("bbs_new_template", bbs, viewData);
+            var dom = Util.cloneDom("bbs_template", bbs, viewData);
             dom.find("[name=bbsTitle]").css('color', color);
-            dom.find('.bbs-list-img').css('background-image','url('+ bbs.icon +')')
             if(d) dom.find("[name=spIcon]").show();
             if(viewData.time.indexOf('刚刚') != -1 || viewData.time.indexOf('前') != -1) {
                 dom.find("[name=time]").css('color', 'rgb(252,79,30)');

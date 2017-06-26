@@ -1,20 +1,15 @@
 package jb.controller;
 
-import jb.absx.F;
-import jb.interceptors.TokenManage;
 import jb.pageModel.*;
-import jb.service.*;
+import jb.service.UserServiceI;
+import jb.service.ZcBestProductServiceI;
+import jb.service.ZcProductServiceI;
 import jb.service.impl.CompletionFactory;
-import jb.util.Constants;
-import jb.util.DateUtil;
-import jb.util.EnumConstants;
-import jb.util.Util;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import wsale.concurrent.CacheKey;
 import wsale.concurrent.CompletionService;
 import wsale.concurrent.Task;
 
@@ -68,21 +63,25 @@ public class ApiBestProductController extends BaseController {
 			if(!CollectionUtils.isEmpty(products)) {
 				final CompletionService completionService = CompletionFactory.initCompletion();
 				final String userId = s.getId();
+				final Date now = new Date();
 				for (ZcBestProduct product : products) {
 					// 获取封面
 					completionService.submit(new Task<ZcBestProduct, ZcProduct>(product) {
 						@Override
 						public ZcProduct call() throws Exception {
-
-							ZcProduct zc=zcProductService.get(getD().getProductId(),userId);
-
-							return zc == null ? null : zc;
+							ZcProduct product = zcProductService.get(getD().getProductId(), userId);
+							// 距街拍
+							long deadlineLen = 0;
+							if(product.getRealDeadline() != null)
+								deadlineLen = product.getRealDeadline().getTime() - now.getTime();
+							deadlineLen = deadlineLen <= 0 ? 0 : deadlineLen/1000;
+							product.setDeadlineLen(deadlineLen);
+							return product == null ? null : product;
 						}
 
 						protected void set(ZcBestProduct d, ZcProduct v) {
 							if (v != null)
 								d.setZcProduct(v);
-
 						}
 					});
 

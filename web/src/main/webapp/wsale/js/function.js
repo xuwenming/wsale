@@ -303,16 +303,16 @@
 			$("body").on("click",".cbp-vm-icon", function(){
 				var dataView = $(this).attr("data-view");
 				if(dataView == "cbp-vm-view-grid"){
-					$("#cbp-vm").removeClass("cbp-vm-view-grid");
-					$("#cbp-vm").addClass("cbp-vm-view-list");
-					$(this).attr("data-view","cbp-vm-view-list");
 					$(".cbp-vm-time").show();
+					$(".cbp-vm").removeClass("cbp-vm-view-grid");
+					$(".cbp-vm").addClass("cbp-vm-view-list");
+					$(this).attr("data-view","cbp-vm-view-list");
 				}
 				if(dataView == "cbp-vm-view-list"){
-					$("#cbp-vm").removeClass("cbp-vm-view-list");
-					$("#cbp-vm").addClass("cbp-vm-view-grid");
-					$(this).attr("data-view","cbp-vm-view-grid");
 					$(".cbp-vm-time").hide();
+					$(".cbp-vm").removeClass("cbp-vm-view-list");
+					$(".cbp-vm").addClass("cbp-vm-view-grid");
+					$(this).attr("data-view","cbp-vm-view-grid");
 				}
 			});
 

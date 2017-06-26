@@ -19,3 +19,8 @@
     background-position: center center;
     /*margin:-2px 2px;*/
 }
+
+.images .one-img {
+    width: 45%;
+    padding-bottom: 55%;
+}

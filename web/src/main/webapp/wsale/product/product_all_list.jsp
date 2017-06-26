@@ -302,7 +302,7 @@
                             var productDetail = result.rows[i];
                             buildProductDetail(productDetail);
                         }
-                        $("img.lazy").lazyload({
+                        $(".lazy").lazyload({
                             placeholder : base + 'wsale/images/lazyload.png'
                         });
 
@@ -361,9 +361,12 @@
             else if(product.approvalDays == 'AD07') dom.find('.baotui').html('7天包退');
             else dom.find('.baotui').hide();
 
-            if(!self)
+            if(!self) {
+                if(${!user.attred}) {
+                    dom.find('.attBtn').show();
+                }
                 dom.find('.qbpp-xiajia').removeClass('xiajia-btn').html(new Date(product.startingTime.replace(/-/g,"/")).format('MM月dd日'));
-            else {
+            } else {
                 if(product.status == 'PT03' || product.status == 'PT05')
                     dom.find('.qbpp-xiajia').addClass('p-off').html('下架');
                 else if(product.status == 'PT04' || product.status == 'PT06') {
@@ -401,6 +404,14 @@
         }
 
         function createEvent(dom, productDetail) {
+            dom.find('.attBtn').click(function(){
+                ajaxPost('api/userController/addShieldorfans', {objectType:'FS', userId:'${user.id}'}, function(data){
+                    if(data.success) {
+                        $('.attBtn').remove();
+                    }
+                });
+            });
+
             dom.find(".showMore").click(function(e){
                 e.stopPropagation();
                 e.preventDefault();
@@ -798,9 +809,12 @@
         function drawImages(elm, product) {
             var files = product.files;
             if(!files || files.length == 0) return;
-            var items = [];
+            var items = [], oneImg = "";
+            if(files.length == 1) oneImg = "one-img";
+
             for(var i=0; i<files.length; i++) {
-                elm.append('<img class="lazy ppxq-imglist" data-original="'+files[i].fileHandleUrl+'" />\n');
+//                elm.append('<img class="lazy ppxq-imglist" data-original="'+files[i].fileHandleUrl+'" />\n');
+                elm.append('<div class="content-img lazy '+oneImg+'" data-original="'+files[i].fileHandleUrl+'"></div>\n')
                 items.push(files[i].fileHandleUrl);
             }
 

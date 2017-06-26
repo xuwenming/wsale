@@ -26,6 +26,7 @@ import  com.sun.image.codec.jpeg.JPEGCodec;
 import  com.sun.image.codec.jpeg.JPEGImageEncoder;
 import jb.absx.F;
 import jb.util.oss.OSSUtil;
+import jb.util.wx.DownloadMediaUtil;
 import org.springframework.http.HttpRequest;
 
 public final class ImageUtils {
@@ -193,7 +194,7 @@ public final class ImageUtils {
                 if (matcherForAttrib.find()) {
                     String attributeStr = matcherForAttrib.group(1);
                     if(attributeStr.indexOf(OSSUtil.cdnUrl) == -1) {
-                        String fileExt = attributeStr.substring(attributeStr.lastIndexOf(".") + 1).toLowerCase();
+                        //String fileExt = attributeStr.substring(attributeStr.lastIndexOf(".") + 1).toLowerCase();
                         URL url = new URL(attributeStr);
                         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                         conn.setDoInput(true);
@@ -201,6 +202,7 @@ public final class ImageUtils {
                         conn.setUseCaches(false);
                         conn.setRequestMethod("GET");
                         conn.connect();
+                        String fileExt = DownloadMediaUtil.getFileExtName(conn.getHeaderField("Content-Type"));
                         String path = OSSUtil.putInputStream(OSSUtil.bucketName, conn.getInputStream(),  getFilePath(fileExt));
                         path = pressImage(path, realPath);
                         conn.disconnect();

@@ -167,7 +167,7 @@
                 });
             });
             // dom绑定事件
-            dom.find('.jingxuan-image').click(product.id, function(event){
+            dom.find('.jingxuan-img').click(product.id, function(event){
                 $.cookie('home_best_product', JSON.stringify({scrollTop:$(window).scrollTop(), currPage:currPage-1}));
                 href('api/apiProductController/productDetail?id=' + event.data);
             });

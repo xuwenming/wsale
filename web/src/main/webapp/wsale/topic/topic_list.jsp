@@ -70,7 +70,7 @@
                         buildTopic(topic);
                     }
 
-                    $(".topicList img.lazy").lazyload({
+                    $(".topicList .lazy").lazyload({
                         placeholder : base + 'wsale/images/lazyload.png'
                     });
 

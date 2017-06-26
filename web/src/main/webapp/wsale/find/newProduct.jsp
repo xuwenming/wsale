@@ -56,7 +56,7 @@
 
                         scroll(true);
                         currPage ++;
-                        $("img.lazy").lazyload({
+                        $(".lazy").lazyload({
                             placeholder : base + 'wsale/images/lazyload.png'
                         });
                     }

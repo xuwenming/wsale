@@ -35,7 +35,8 @@
 </li>
 
 <a id="best_product_template" class="jingxuan-list" style="display:none;">
-	<img   class="jingxuan-image lazy" name="icon" />
+	<%--<img   class="jingxuan-image lazy" name="icon" />--%>
+	<div class="jingxuan-img lazy" name="icon"></div>
 	<div name="content" class="wupin-title info-xinxi" style="height: 25px;font-size: 14px;">福寿绵长-江南山水图-天地造（名家纯手...）</div>
 	<div>
 		<div class="jingxuan-info">
@@ -241,7 +242,8 @@
 </div>
 
 <a id="new_product_first_template" style="display: none;">
-	<img class="xinpin-largeimg lazy" name="icon" />
+	<%--<img class="xinpin-largeimg lazy" name="icon" />--%>
+	<div class="xinpin-large-img lazy " name="icon"></div>
 	<div class="xinpin-title">
 		<span style="margin-left:5px;" name="nickname">国家级玉雕大师张保国作品</span>
 	</div>

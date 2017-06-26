@@ -540,7 +540,7 @@
                             $(".bestProducts").append(dom);
                             $('.product-list-img').eq(i).css('background-image','url('+ product.icon + ')')
                         }
-                        $(".bestProducts img.lazy").lazyload({
+                        $(".bestProducts .lazy").lazyload({
                             placeholder : base + 'wsale/images/lazyload.png'
                         });
 

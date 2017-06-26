@@ -73,7 +73,7 @@
             <c:if test="${fromShare}">
                 <a id="back" rel="external" href="javascript:href('api/apiHomeController/home');" style="padding-top: 15px;background-color: #3da8f5;">首页</a>
             </c:if>
-            <h3 style="margin:0 calc((100% - 60px)/2);">${bbs.bbsTitle}</h3>
+            <h3 style="margin:0 30%">${bbs.bbsTitle}</h3>
 
         </div><!-- /header -->
         <div class="topmore-list" style="z-index: 1002;">

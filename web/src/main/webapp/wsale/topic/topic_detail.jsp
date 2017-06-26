@@ -62,7 +62,7 @@
                 <div class="weui-popup-modal" style="background-color:transparent;height: 380px;text-align: center;overflow: hidden;">
 
                     <div class="modal-content" style="padding-top: 0;overflow: hidden">
-                        <div class="shang-background-a"></div>
+                        <div class="shang-background-a close-popup"></div>
                         <div class="shang-active">
                             <p>
                                 <c:choose>
@@ -105,7 +105,7 @@
             <header>
                 <h2 class="font-black">${topic.title}</h2>
                 <c:if test="${topic.user.utype == 'UT02'}">
-                    <span class="header_author ">
+                    <span class="header_author" onclick="javascript:href('api/userController/homePage?userId=${topic.user.id}');">
                         <c:choose>
                             <c:when test="${fn:length(topic.user.nickname) > 5}">
                                 <c:out value="${fn:substring(topic.user.nickname, 0, 5)}..." />

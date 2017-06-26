@@ -82,7 +82,7 @@
                             buildBbs(bbs);
                         }
 
-                        $(".atted-bbs-list img.lazy").lazyload({
+                        $(".atted-bbs-list .lazy").lazyload({
                             placeholder : base + 'wsale/images/lazyload.png'
                         });
 
@@ -129,9 +129,7 @@
             viewData.time = Util.getTime(bbs.addtime);
             viewData.count = '回复：'+bbs.bbsComment+' &nbsp;&nbsp;围观：' + bbs.bbsRead;
 
-            var dom = Util.cloneDom("bbs_new_template", bbs, viewData);
-            dom.find('.icon').attr("data-original", bbs.icon);
-            dom.find('.icon').css('background-image','url("'+bbs.icon+'")')
+            var dom = Util.cloneDom("bbs_template", bbs, viewData);
             dom.find("[name=bbsTitle]").css('color', color);
             if(d) dom.find("[name=spIcon]").show();
             if(viewData.time.indexOf('刚刚') != -1 || viewData.time.indexOf('前') != -1) {

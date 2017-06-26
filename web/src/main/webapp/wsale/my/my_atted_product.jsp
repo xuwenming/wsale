@@ -294,7 +294,7 @@
                             var productDetail = result.rows[i];
                             buildProductDetail(productDetail);
                         }
-                        $("img.lazy").lazyload({
+                        $(".lazy").lazyload({
                             placeholder : base + 'wsale/images/lazyload.png'
                         });
 
@@ -779,13 +779,11 @@
             var items = [];
             for(var i=0; i<files.length; i++) {
 //                elm.append('<img class="lazy ppxq-imglist" data-original="'+files[i].fileHandleUrl+'" />\n');
-                elm.append('<div class="atted-content-img" ' +
-                'style="background-image: url('+ files[i].fileHandleUrl +');' +
-                'background-position:center center;background-size:cover;width:30%;height:0;padding-bottom:30%;display:inline-block;margin:-2px 2px;"></div>')
+                elm.append('<div class="atted-content-img lazy" data-original="'+files[i].fileHandleUrl+'"></div>\n')
                 items.push(files[i].fileHandleUrl);
             }
 
-            elm.find('img').click(function(){
+            elm.find('.atted-content-img').click(function(){
                 if('${subscribe}' == 0) {
                     $('.mask-layer, .subscribe').show();
                     addSubscribeLog(product.id);

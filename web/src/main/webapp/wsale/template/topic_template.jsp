@@ -2,8 +2,7 @@
 <%--专题列表--%>
 <a id="topic_template" href="javascript:void(0);" style="height:70px;border-bottom:1px solid #ddd;display: none;padding:6px 0;">
 	<div style="vertical-align:middle; text-align:center;float: left;">
-		<%--<img class="lazy" style="width:90%;height:60px;" name="icon"/>--%>
-		<div class="topic-list-img lazy icon"></div>
+		<div class="topic-list-img lazy" name="icon"></div>
 	</div>
 	<div style="vertical-align:middle;display:block;padding-left: 10px;float:right;width:calc(100% - 80px);">
 		<div name="title" class="tiezi-title" style="width: 85%;"></div>

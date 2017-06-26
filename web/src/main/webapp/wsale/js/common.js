@@ -224,13 +224,14 @@ Util.cloneDom = function(templateId,data,viewData, showType){
             if(d) val = view[i][d];
             else val = view[i];
             if(val || val == 0){
-                if(_this.is("img")){
-                    if(_this.hasClass('lazy'))
-                        _this.attr("data-original",val);
-                    else
+                if(_this.hasClass('lazy'))
+                    _this.attr("data-original",val);
+                else {
+                    if(_this.is("img")){
                         _this.attr("src",val);
-                }else{
-                    _this.html(val);
+                    }else{
+                        _this.html(val);
+                    }
                 }
             }
         });

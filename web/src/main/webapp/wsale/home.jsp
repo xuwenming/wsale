@@ -209,17 +209,14 @@
                     var result = data.obj;
                     if(result.total != 0) {
                         $('.homeTopicTitle').show();
-                        $(".homeTopicList .lazy").lazyload({
-                            placeholder : base + 'wsale/images/lazyload.png'
-                        });
                         for(var i in result.rows) {
                             var topic = result.rows[i];
                             buildTopic(topic);
-                            console.log(topic.icon);
-                            $('.topic-list-img').eq(i).css('background-image','url('+topic.icon +')');
                         }
 
-
+                        $(".homeTopicList .lazy").lazyload({
+                            placeholder : base + 'wsale/images/lazyload.png'
+                        });
 
                         // 开放更多按钮
                         if(result.total > 5) {
@@ -285,9 +282,7 @@
             viewData.time = Util.getTime(bbs.addtime);
             viewData.count = '回复：'+bbs.bbsComment+' &nbsp;&nbsp;围观：' + bbs.bbsRead;
 
-            var dom = Util.cloneDom("bbs_new_template", bbs, viewData);
-//            dom.find('[name=icon]').css("background-image", "url('" + bbs.icon + "')");
-            dom.find('.icon').attr("data-original", bbs.icon);
+            var dom = Util.cloneDom("bbs_template", bbs, viewData);
             dom.find("[name=bbsTitle]").css('color', color);
             if(d) dom.find("[name=spIcon]").show();
 

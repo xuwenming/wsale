@@ -84,7 +84,7 @@
                 </div>
 
                 <div class="faxian-link homeTopicTitle" style="border-top: 10px solid rgb(245, 245, 245); display: none;">
-                    <span style="margin-left: 5px;font-size: 15px;">专辑推荐</span>
+                    <span style="margin-left: 5px;font-size: 15px;">专题推荐</span>
                 </div>
                 <div class="homeTopicList" style="padding: 0 10px;">
                 </div>

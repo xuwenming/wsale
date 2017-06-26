@@ -192,16 +192,23 @@
 }
 
 .cbp-vm-view-list .cbp-vm-image {
-	width: 10%;
+	width: 100px;
 }
 
 .cbp-vm-view-list .cbp-vm-title {
 	font-size: 14px;
 	padding: 0 10px;
 	white-space: normal;
-	width: 23%;
-}
+	width: 80%;
+	height: 100px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 
+}
+.cbp-vm-switcher.cbp-vm-view-list .cbp-vm-image{
+	float:left;
+}
 .cbp-vm-view-list .cbp-vm-price {
 	font-size: 16px;
 	width: 10%;
@@ -232,11 +239,11 @@
 
 @media screen and (max-width: 47.375em) {
 	.cbp-vm-view-list .cbp-vm-image {
-		width: 85px;
+		width: 100px;
 	}
 
 	.cbp-vm-view-list .cbp-vm-title {
-		width: calc(100% - 100px);
+		width: calc(100% - 120px);
 	}
 
 	.cbp-vm-view-list .cbp-vm-details  {
@@ -247,6 +254,9 @@
 
 	.cbp-vm-view-list .cbp-vm-add  {
 		margin: 10px;
+	}
+	.dingdan-img+.dingdan-content-flex{
+		height: 85px;
 	}
 }
 

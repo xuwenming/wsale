@@ -15,8 +15,9 @@
 	<div class="dingdan-content">
 		<div class="dingdan-img">
 			<img name="product" data-name="icon" />
+			<%--<div class="dingdan-detail-img lazy" name="product" data-name="icon"></div>--%>
 		</div>
-		<div>
+		<div class="dingdan-content-flex">
 			<div class="dingdan-title" name="product" data-name="content" style="-webkit-line-clamp:1">
 			</div>
 			<div class="dingdan-info">

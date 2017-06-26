@@ -85,7 +85,7 @@
 		<div class="paipin-img">
 			<img name="icon"/>
 		</div>
-		<div>
+		<div class="paipin-img-after">
 			<div name="content" class="paipin-title info-xinxi">和田玉</div>
 			<div name="time" class="paipin-time">流拍时间 7-12 12:30</div>
 		</div>

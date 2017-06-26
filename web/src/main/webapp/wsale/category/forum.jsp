@@ -538,6 +538,7 @@
                             var product = result.rows[i].zcProduct;
                             var dom = buildProduct(product);
                             $(".bestProducts").append(dom);
+                            $('.product-list-img').eq(i).css('background-image','url('+ product.icon + ')')
                         }
                         $(".bestProducts img.lazy").lazyload({
                             placeholder : base + 'wsale/images/lazyload.png'

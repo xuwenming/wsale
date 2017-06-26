@@ -232,11 +232,11 @@
 
 @media screen and (max-width: 47.375em) {
 	.cbp-vm-view-list .cbp-vm-image {
-		width: 25%;
+		width: 70px;
 	}
 
 	.cbp-vm-view-list .cbp-vm-title {
-		width: 73%;
+		width: calc(100% - 88px);
 	}
 
 	.cbp-vm-view-list .cbp-vm-details  {

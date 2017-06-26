@@ -192,7 +192,7 @@
                 <div class="weui-popup-modal" style="background-color:transparent;height: 380px;text-align: center;overflow: hidden;">
 
                     <div class="modal-content" style="padding-top: 0;overflow: hidden">
-                        <div class="shang-background-a"></div>
+                        <div class="shang-background-a close-popup"></div>
                         <div class="shang-active">
                             <p>
                                 <c:choose>

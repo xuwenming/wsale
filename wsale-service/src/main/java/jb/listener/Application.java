@@ -1,5 +1,6 @@
 package jb.listener;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -29,10 +30,12 @@ public class Application implements ServletContextListener {
 	private static ServletContext context;
 	private static String PREFIX = "SV.";
 	private static String sWordReg;
+	public static String version = "0";
 	@Override
 	public void contextInitialized(ServletContextEvent event) {	
 	 	context = event.getServletContext();
 	 	initAppVariable();
+		version = new Date().getTime() + "";
 
 		// 启动刷新微信access_token
 		AccessTokenInstance.getInstance();

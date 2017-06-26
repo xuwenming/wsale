@@ -7,7 +7,7 @@
 <head>
     <title>${topic.title}</title>
     <jsp:include page="../inc.jsp"></jsp:include>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.topic.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.topic.css?v=${staticVersion}" />
 </head>
 <body>
     <div data-role="page" class="jqm-demos" style="background-color:#f5f5f5;">

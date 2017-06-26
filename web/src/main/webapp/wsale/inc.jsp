@@ -13,9 +13,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/jquery.mobile-1.4.5.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/style.css?v=21">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/component.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/gaugeMeter.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/style.css?v=${staticVersion}">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/component.css?v=${staticVersion}">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/swiper.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/weui.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/jquery-weui.css">
@@ -36,15 +35,15 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/swiper.js" charset="utf-8"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/jquery-browser.js" charset="utf-8"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/jquery.qqFace.js" charset="utf-8"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/function.js" charset="utf-8"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/common.js" charset="utf-8"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/function.js?v=${staticVersion}" charset="utf-8"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/common.js?v=${staticVersion}" charset="utf-8"></script>
 <!-- 扩展jQuery -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/jslib/extJquery.js?v=201305301341" charset="utf-8"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/jslib/extJquery.js?v=${staticVersion}" charset="utf-8"></script>
 <!-- 微信JS-SDK -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/jweixin-1.0.0.js" charset="utf-8"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/jweixin-common.js" charset="utf-8"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/jweixin-common.js?v=${staticVersion}" charset="utf-8"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/jquery.lazyload.js" charset="utf-8"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/jslib/load/load.js" charset="utf-8"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/jslib/load/load.js?v=${staticVersion}" charset="utf-8"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/fastclick.js" charset="utf-8"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/jquery.raty.js" charset="utf-8"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/jslib/jsencrypt.min.js" charset="utf-8"></script>

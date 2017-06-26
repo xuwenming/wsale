@@ -12,8 +12,8 @@
 <html>
 <head>
     <title>拍品详情</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.product.detail.css"/>
     <jsp:include page="../inc.jsp"></jsp:include>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.product.detail.css?v=${staticVersion}"/>
     <style>
         .ui-header-fixed {
             position: absolute;

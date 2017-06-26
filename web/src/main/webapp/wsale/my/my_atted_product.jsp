@@ -11,7 +11,7 @@
 <head>
     <title>我的关注</title>
     <jsp:include page="../inc.jsp"></jsp:include>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.my.atted.product.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.my.atted.product.css?v=${staticVersion}"/>
     <style>
         .renzheng-input .ui-input-text input {
             font-size: 14px;
@@ -451,9 +451,9 @@
             });
 
             if(productDetail.user.self) {
-                dom.find(".qbpp-sixin").hide();
+                dom.find(".product-template-sixin").hide();
             } else {
-                dom.find(".qbpp-sixin").click({productId : productDetail.product.id, userId : productDetail.user.id}, function(event){
+                dom.find(".product-template-sixin").click({productId : productDetail.product.id, userId : productDetail.user.id}, function(event){
                     href('api/apiChat/chat?toUserId='+event.data.userId+'&subscribe=true&productId=' + event.data.productId);
                 });
             }

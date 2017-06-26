@@ -17,7 +17,7 @@
         </c:choose>
     </title>
     <jsp:include page="../inc.jsp"></jsp:include>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.product.all.list.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.product.all.list.css?v=${staticVersion}"/>
     <style>
         .ui-header-fixed {
             position: absolute;
@@ -480,9 +480,9 @@
             });
 
             if(self) {
-                dom.find(".qbpp-sixin").hide();
+                dom.find(".product-template-sixin").hide();
             } else {
-                dom.find(".qbpp-sixin").click(productDetail.product.id, function(event){
+                dom.find(".product-template-sixin").click(productDetail.product.id, function(event){
                     href('api/apiChat/chat?toUserId=${user.id}&subscribe=true&productId=' + event.data);
                 });
             }
@@ -818,7 +818,7 @@
                 items.push(files[i].fileHandleUrl);
             }
 
-            elm.find('img').click(function(){
+            elm.find('.content-img').click(function(){
                 if('${subscribe}' == 0) {
                     $('.mask-layer, .subscribe').show();
                     addSubscribeLog(product.id);

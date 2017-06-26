@@ -11,7 +11,7 @@
     <title></title>
     <jsp:include page="../inc.jsp"></jsp:include>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/audioplayer.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.bbs.detail.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.bbs.detail.css?v=${staticVersion}">
     <script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/audioplayer.js" charset="utf-8"></script>
     <c:if test="${fn:contains(sessionInfo.resourceList, 'auth_tzsc')}">
         <script type="text/javascript">

@@ -188,7 +188,7 @@
                             buildBbs(bbs);
                         }
 
-                        $(".homeBbsList img.lazy").lazyload({
+                        $(".homeBbsList .lazy").lazyload({
                             placeholder : base + 'wsale/images/lazyload.png'
                         });
 
@@ -209,14 +209,17 @@
                     var result = data.obj;
                     if(result.total != 0) {
                         $('.homeTopicTitle').show();
+                        $(".homeTopicList .lazy").lazyload({
+                            placeholder : base + 'wsale/images/lazyload.png'
+                        });
                         for(var i in result.rows) {
                             var topic = result.rows[i];
                             buildTopic(topic);
+                            console.log(topic.icon);
+                            $('.topic-list-img').eq(i).css('background-image','url('+topic.icon +')');
                         }
 
-                        $(".homeTopicList img.lazy").lazyload({
-                            placeholder : base + 'wsale/images/lazyload.png'
-                        });
+
 
                         // 开放更多按钮
                         if(result.total > 5) {
@@ -277,11 +280,14 @@
                 d = true;
                 viewData.spIcon += '<img src="${pageContext.request.contextPath}/wsale/images/jsp-icon3.png" style="width:20px;" />';
             }
+
             viewData.name_time = '发帖人:'+bbs.addUserName;
             viewData.time = Util.getTime(bbs.addtime);
             viewData.count = '回复：'+bbs.bbsComment+' &nbsp;&nbsp;围观：' + bbs.bbsRead;
 
-            var dom = Util.cloneDom("bbs_template", bbs, viewData);
+            var dom = Util.cloneDom("bbs_new_template", bbs, viewData);
+//            dom.find('[name=icon]').css("background-image", "url('" + bbs.icon + "')");
+            dom.find('.icon').attr("data-original", bbs.icon);
             dom.find("[name=bbsTitle]").css('color', color);
             if(d) dom.find("[name=spIcon]").show();
 

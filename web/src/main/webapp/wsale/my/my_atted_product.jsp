@@ -11,6 +11,7 @@
 <head>
     <title>我的关注</title>
     <jsp:include page="../inc.jsp"></jsp:include>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.my.atted.product.css"/>
     <style>
         .renzheng-input .ui-input-text input {
             font-size: 14px;
@@ -777,7 +778,10 @@
             if(!files || files.length == 0) return;
             var items = [];
             for(var i=0; i<files.length; i++) {
-                elm.append('<img class="lazy ppxq-imglist" data-original="'+files[i].fileHandleUrl+'" />\n');
+//                elm.append('<img class="lazy ppxq-imglist" data-original="'+files[i].fileHandleUrl+'" />\n');
+                elm.append('<div class="atted-content-img" ' +
+                'style="background-image: url('+ files[i].fileHandleUrl +');' +
+                'background-position:center center;background-size:cover;width:30%;height:0;padding-bottom:30%;display:inline-block;margin:-2px 2px;"></div>')
                 items.push(files[i].fileHandleUrl);
             }
 

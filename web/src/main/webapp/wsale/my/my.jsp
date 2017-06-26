@@ -9,8 +9,8 @@
 <html>
 <head>
     <title>我的</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.my.order.list.css"/>
     <jsp:include page="../inc.jsp"></jsp:include>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.my.order.list.css"/>
     <style>
         .redPoint {
             margin: 4px -18px;
@@ -296,6 +296,7 @@
                         for(var i in result.rows) {
                             var product = result.rows[i].zcProduct;
                             buildProduct(product, type);
+                            $('.product-list-img').eq(i).css('background-image','url('+product.icon+')')
                         }
                         $("img.lazy").lazyload({
                             placeholder : base + 'wsale/images/lazyload.png'

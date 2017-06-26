@@ -14,7 +14,8 @@
 
 <li id="product_template" style="display: none;">
 	<a class="cbp-vm-image">
-		<img class="lazy" name="icon">
+		<%--<img class="lazy" name="icon">--%>
+		<div class="product-list-img lazy icon"></div>
 		<span class="others-time" style="display: none;">
 			距截拍 <span class="others-timeno">00</span>:<span class="others-timeno">00</span>:<span class="others-timeno">00</span>
 	 	</span>
@@ -104,11 +105,17 @@
 			<div class="ppxq-level">
 				<img name="user" data-name="positionIcon" style="width:50%;" />
 			</div>
-			<div><img class="qbpp-sixin" src="${pageContext.request.contextPath}/wsale/images/sixin-icon.png" /></div>
+			<div>
+				<%--<img class="qbpp-sixin" src="${pageContext.request.contextPath}/wsale/images/sixin-icon.png" />--%>
+				<%--<div class="product-template-guanzhu">+ 关 注</div>--%>
+				<div class="product-template-sixin">私 信</div>
+				<%--<div class="product-template-jubao">举报</div>--%>
+			</div>
 		</div>
 	</div>
 	<div class="ppxq-rightinfo">
-		<div class="qbpp-title" name="user" data-name="nickname"></div>
+		<div class="qbpp-title" name="user" style="display: inline-block" data-name="nickname"></div>
+		<%--<div class="product-all-guanzhu" style="display: inline-block;float:right">+ 关注</div>--%>
 		<div>
 			<img class="ppxq-smallicon protection" src="${pageContext.request.contextPath}/wsale/images/baozhang-icon.png" style="display: none;"/>
 			<img class="ppxq-smallicon auth" src="${pageContext.request.contextPath}/wsale/images/renzheng2-icon.png" style="display: none;"/>

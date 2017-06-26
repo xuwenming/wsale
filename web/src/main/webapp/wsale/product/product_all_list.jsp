@@ -17,6 +17,7 @@
         </c:choose>
     </title>
     <jsp:include page="../inc.jsp"></jsp:include>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.product.all.list.css"/>
     <style>
         .ui-header-fixed {
             position: absolute;
@@ -126,7 +127,7 @@
                 </div>
             </div>
 
-            <div class="all_list" style="margin-top: 10px;">
+            <div class="all_list" style="margin-top: 37px;">
 
             </div>
             <div class="home-content">

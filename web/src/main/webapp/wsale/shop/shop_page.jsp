@@ -178,6 +178,7 @@
                         for(var i in result.rows) {
                             var product = type == 3 ? result.rows[i].zcProduct : result.rows[i];
                             buildProduct(product, type);
+                            $('.product-list-img').eq(i).css('background-image','url('+product.icon+')')
                         }
                         $("img.lazy").lazyload({
                             placeholder : base + 'wsale/images/lazyload.png'

@@ -107,6 +107,8 @@
         viewData.count = '点赞：'+topic.topicPraise+'&nbsp;&nbsp;阅读：' + topic.topicRead;
 
         var dom = Util.cloneDom("topic_template", topic, viewData);
+        dom.find('.icon').attr("data-original", viewData.icon);
+        dom.find('.icon').css('background-image','url("'+viewData.icon+'")')
         if(viewData.time.indexOf('刚刚') != -1 || viewData.time.indexOf('前') != -1) {
             dom.find("[name=time]").css('color', 'rgb(252,79,30)');
         }

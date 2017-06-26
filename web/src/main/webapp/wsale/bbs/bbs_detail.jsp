@@ -263,7 +263,7 @@
                     <div class="imageFiles" style="margin-top: 5px;">
                         <c:forEach items="${bbs.files}" var="file" varStatus="vs">
                             <%--<img class="lazy" data-original="${file.fileHandleUrl}" style="width:30%;height:80px;" />--%>
-                            <div class="bbsDetailBackgroundImg lazy" data-original="${file.fileHandleUrl}"></div>
+                            <div class="bbsDetailBackgroundImg lazy <c:if test="${bbs.files.size() == 1}">one-img</c:if>" data-original="${file.fileHandleUrl}"></div>
                         </c:forEach>
                     </div>
                     <c:if test="${!empty bbs.lastUpdateTime}">

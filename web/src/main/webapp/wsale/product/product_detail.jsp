@@ -187,7 +187,7 @@
                     <div class="images">
                         <c:forEach items="${product.files}" var="file" varStatus="vs">
                             <%--<img class="lazy ppxq-imglist" data-original="${file.fileHandleUrl}" />--%>
-                            <div class="product-detail-content-img lazy  <c:if test="${product.files.size() == 1}">one-img</c:if>" data-original="${file.fileHandleUrl}"></div>
+                            <div class="product-detail-content-img lazy <c:if test="${product.files.size() == 1}">one-img</c:if>" data-original="${file.fileHandleUrl}"></div>
                         </c:forEach>
                     </div>
                     <div style="margin-top:10px;">

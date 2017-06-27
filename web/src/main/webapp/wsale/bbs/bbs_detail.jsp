@@ -348,7 +348,7 @@
                     评论加载中
                 </div>
             </div>
-            <div class="cut" style="margin-bottom: 55px;"></div>
+            <div style="margin-bottom: 50px;"></div>
             <div id="fabuinfo" class="comment" style="font-size:14px;display:block; min-height:40px; background-color:#fff; border-top:1px solid #ddd; position:fixed;bottom:0;left:0;right:0;padding:5px 10px;z-index: 2;">
                 <img src="${pageContext.request.contextPath}/wsale/images/xiaolian-icon.png" class="emotion" style="width:7%; vertical-align:top; margin-top: 4px;" />
                 <!--<img src="${pageContext.request.contextPath}/wsale/images/add-icon.png" style="width:25px; vertical-align:middle;margin-left:5px;" />-->
@@ -411,16 +411,7 @@
             });
             authInit();
 
-            $('.emotion').click(function(){
-                if(!$('.face-tab').is(':hidden')) {
-                    $('.sixin-content').css('margin-bottom', '55px');
-                } else {
-                    $('.cut').css('margin-bottom', '125px');
-                    $(document.body).destroyInfinite();
-                    $(".home-content .weui-infinite-scroll").hide();
-                    $.mobile.silentScroll($(document).height());
-                }
-            }).qqFace({
+            $('.emotion').qqFace({
                 id : 'facebox', //表情盒子的ID
                 assign:'commentContent', //给那个控件赋值
                 path:'${pageContext.request.contextPath}/wsale/images/face/'	//表情存放的路径
@@ -430,13 +421,9 @@
             $("body:eq(0)").bind('click', function(e){
                 var target = $(e.target);
                 if(target.closest(".qqface").length == 0){
-                    if(!$('.face-tab').is(':hidden')) {
-                        $('#facebox').hide();
-                        $('#facebox').remove();
-                        $(".face-tab").hide();
-                        $(document.body).infinite();
-                        $('.cut').css('margin-bottom', '55px');
-                    }
+                    $('#facebox').hide();
+                    $('#facebox').remove();
+                    $(".face-tab").hide();
                 }
             });
 
@@ -574,7 +561,7 @@
             $("#commentContent").focus(function(){
                 $(document.body).destroyInfinite();
                 $(".home-content .weui-infinite-scroll").hide();
-                $.mobile.silentScroll($(document).height()-30);
+                $.mobile.silentScroll($(document).height());
             });
 
             $(".first-style").click(function(){

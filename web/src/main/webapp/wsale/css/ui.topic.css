@@ -192,12 +192,12 @@ footer .right{
     padding-right: 10px;
 }
 .zan,.pencil{
-    width:15px;
-    height: 15px;
+    width:18px;
+    height: 18px;
 }
 .zan{
     position: relative;
-    top: 2px;
+    top: 3px;
 }
 .miss{
     display: none;

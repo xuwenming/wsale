@@ -403,9 +403,9 @@
             } else if(mtype == 'SHOWPRODUCT') {
                 viewData.content = '<div class="productMsg" data-product="${product.id}"><img style="width: 100%;height: 100px;" src="${product.icon}" class="imageMsg"/><div><a href="#" style="max-height: 40px;overflow-y: hidden;">拍品：${fn:replace(product.content, vEnter, '')}</a><div class="sendProduct" style="float:right;padding-top:5px;">发送拍品</div></div></div>';
             } else if(mtype == 'BBS') {
-                viewData.content = '<div class="bbsMsg" data-bbs="'+message.bbs.id+'"><img style="width: 100%;height: 100px;" src="'+message.bbs.icon+'" class="imageMsg"/><div><a style="float:left;">帖子：'+message.bbs.bbsTitle+'</a></div></div>';
+                viewData.content = '<div class="bbsMsg" data-bbs="'+message.bbs.id+'"><div style="width: 100%;height:0;padding-bottom:100px; background:url('+message.bbs.icon+'); background-position:center center;background-size:cover"; class="imageMsg"></div><div><a style="float:left;">帖子：'+message.bbs.bbsTitle+'</a></div></div>';
             } else if(mtype == 'SHOWBBS') {
-                viewData.content = '<div class="bbsMsg" data-bbs="${bbs.id}"><img style="width: 100%;height: 100px;" src="${bbs.icon}" class="imageMsg"/><div><a href="#" style="max-height: 40px;overflow-y: hidden;">帖子：${fn:replace(bbs.bbsTitle, vEnter, '')}</a><div class="sendBbs" style="float:right;padding-top:5px;">发送帖子</div></div></div>';
+                viewData.content = '<div class="bbsMsg" data-bbs="${bbs.id}"><div style="width: 100%;height:0;padding-bottom:100px; background:url('+bbs.icon+'); background-position:center center;background-size:cover"; class="imageMsg"></div><div><a href="#" style="max-height: 40px;overflow-y: hidden;">帖子：${fn:replace(bbs.bbsTitle, vEnter, '')}</a><div class="sendBbs" style="float:right;padding-top:5px;">发送帖子</div></div></div>';
             }
 
             if(message.fromUserId == fromUser)

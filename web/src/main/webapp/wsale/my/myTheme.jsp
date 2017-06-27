@@ -35,6 +35,7 @@
                             <c:forEach items="${productThemes.rows}" var="productTheme" varStatus="vs">
                                 <li onclick="href('api/apiProductController/productDetail?id=${productTheme.id}');">
                                     <img src="${productTheme.icon}" />
+                                    <%--<div class="paipin-theme-li-img" style="background-image: url('${productTheme.icon}')"></div>--%>
                                 </li>
                             </c:forEach>
                         </ul>

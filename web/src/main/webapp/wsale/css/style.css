@@ -581,10 +581,9 @@ textarea.ui-input-text{
 	left:0;
 	right:0;
 	bottom:0;
-	background-color:rgba(88,88,88,0.6);
+	opacity:0.6;
+	background-color:#333;
 	display:none;
-	max-width: 640px;
-	margin:0 auto;
 }
 .mask-layer-1{
 	position:fixed;
@@ -3004,7 +3003,18 @@ p.order-right-middle{
 .bbs-content {
 	font-size:13px;color:#777;line-height:1.5;margin-top:8px;max-height: 75px;overflow-y: hidden;
 }
-
+.bbs-detail-layer{
+	position:fixed;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	opacity: 1;
+	background-color:rgba(88,88,88,.6);
+	display:none;
+	max-width: 640px;
+	margin:0 auto;
+}
 
 .subscribe {
 	width: 80%;
@@ -3014,8 +3024,14 @@ p.order-right-middle{
 	-webkit-transform: translate(12.5%, 16.8%);
 	display: none;
 	position: relative;
-	top:10%;
+	top:5%;
 }
+@media (min-width: 640px){
+	.subscribe {
+		top:-5%;
+	}
+}
+
 
 .modal-content{
 	margin-top: 10px;
@@ -3081,6 +3097,10 @@ div.weui-popup-overlay,div.weui-popup-modal{
 	margin:0 auto;
 	left:0;
 	right:0;
+}
+.dialog-content{
+	max-width: 640px;
+	margin:0 auto;
 }
 
 
@@ -3208,7 +3228,18 @@ div.weui-popup-modal{
 	background-position: center center;
 	background-size: cover;
 }
+.bbsMsg a{
+	color:#8a8aec;
+}
 .emoji{
 	position: relative;
 	top:3px;
+}
+/*myTheme图片样式*/
+.paipin-theme-li-img{
+	width:85px;
+	height: 0;
+	padding-bottom: 85px;
+	background-size: cover;
+	background-position: center center;
 }

@@ -430,11 +430,13 @@
             $("body:eq(0)").bind('click', function(e){
                 var target = $(e.target);
                 if(target.closest(".qqface").length == 0){
-                    $('#facebox').hide();
-                    $('#facebox').remove();
-                    $(".face-tab").hide();
-                    $(document.body).infinite();
-                    $('.cut').css('margin-bottom', '55px');
+                    if(!$('.face-tab').is(':hidden')) {
+                        $('#facebox').hide();
+                        $('#facebox').remove();
+                        $(".face-tab").hide();
+                        $(document.body).infinite();
+                        $('.cut').css('margin-bottom', '55px');
+                    }
                 }
             });
 

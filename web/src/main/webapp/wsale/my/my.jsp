@@ -171,7 +171,7 @@
                         <div style="float:right;">
                             <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
                         </div>
-                        <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/yonghushezhi-icon.png" class="faxian-lefticon" /> 帮助中心</div>
+                        <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/help-icon.png" class="faxian-lefticon" /> 帮助中心</div>
                     </a>
                 </div>
                 <div>

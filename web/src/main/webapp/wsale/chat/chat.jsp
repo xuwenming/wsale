@@ -61,7 +61,10 @@
 
             $(".send-btn").bind('click', sendMsg);
 
-            $('.send-more').qqFace({
+            $('.send-more').click(function(){
+                $('.sixin-content').css('padding-bottom', '120px');
+                $.mobile.silentScroll($(document).height());
+            }).qqFace({
                 id : 'facebox', //表情盒子的ID
                 assign:'content', //给那个控件赋值
                 path:'${pageContext.request.contextPath}/wsale/images/face/'	//表情存放的路径
@@ -74,6 +77,7 @@
                     $('#facebox').hide();
                     $('#facebox').remove();
                     $(".face-tab").hide();
+                    $('.sixin-content').css('padding-bottom', '50px');
                 }
             });
 

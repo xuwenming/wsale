@@ -580,10 +580,11 @@ textarea.ui-input-text{
 	top:0;
 	left:0;
 	right:0;
-	bottom:0; 
-	opacity:0.6; 
-	background-color:#333;
+	bottom:0;
+	background-color:rgba(88,88,88,0.6);
 	display:none;
+	max-width: 640px;
+	margin:0 auto;
 }
 .mask-layer-1{
 	position:fixed;
@@ -3006,13 +3007,14 @@ p.order-right-middle{
 
 
 .subscribe {
-	position: fixed;
 	width: 80%;
 	border-radius: 5px;
 	z-index: 1999;
 	transform: translate(12.5%, 16.8%);
 	-webkit-transform: translate(12.5%, 16.8%);
 	display: none;
+	position: relative;
+	top:10%;
 }
 
 .modal-content{
@@ -3201,3 +3203,12 @@ div.weui-popup-modal{
 	padding-bottom: 55%;
 }
 
+/*消息chat页面样式--*/
+.bbsMsg .imageMsg{
+	background-position: center center;
+	background-size: cover;
+}
+.emoji{
+	position: relative;
+	top:3px;
+}

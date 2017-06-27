@@ -88,9 +88,11 @@
             </ul>
         </div>
         <div role="main" class="ui-content jqm-content jqm-fullwidth">
-            <img src="${pageContext.request.contextPath}/wsale/images/subscribe/bbs-icon.jpg" class="subscribe"/>
+            <%--<img src="${pageContext.request.contextPath}/wsale/images/subscribe/bbs-icon.jpg" class="subscribe"/>--%>
 
-            <div class="mask-layer" style="z-index: 1001;"></div>
+            <div class="mask-layer" style="z-index: 1001;">
+                <img src="${pageContext.request.contextPath}/wsale/images/subscribe/bbs-icon.jpg" class="subscribe"/>
+            </div>
             <div class="dialog-content" style="z-index: 1002;">
                 <div class="fenlei-liebiao" style="background-color:#eee;">
                     <span class="fenlei-title">分类</span>

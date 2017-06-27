@@ -27,6 +27,9 @@ div.reply{
     top:-5px;
     left:5px;
 }
+.comment-template-info{
+    margin-left: 5px;
+}
 div[data-name="nickname"]{
     display: inline-block;
     margin-bottom: 10px;

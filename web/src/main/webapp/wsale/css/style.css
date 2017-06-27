@@ -3098,7 +3098,7 @@ div.weui-popup-overlay,div.weui-popup-modal{
 	left:0;
 	right:0;
 }
-.dialog-content{
+.dialog-content, .second-style{
 	max-width: 640px;
 	margin:0 auto;
 }
@@ -3228,8 +3228,8 @@ div.weui-popup-modal{
 	background-position: center center;
 	background-size: cover;
 }
-.bbsMsg a{
-	color:#8a8aec;
+.bbsMsg a, .productMsg a{
+	color:#6f83ec;
 	padding-top:10px;
 }
 .emoji{

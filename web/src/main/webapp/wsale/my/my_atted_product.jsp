@@ -27,8 +27,9 @@
     <div data-role="page" data-title="我的关注" class="jqm-demos">
         <div role="main" class="ui-content jqm-content jqm-fullwidth">
             <input type="hidden" id="bindMobile" value="${sessionInfo.mobile}" />
-            <img src="${pageContext.request.contextPath}/wsale/images/subscribe/bid-icon.jpg" class="subscribe"/>
-            <div class="mask-layer" style="z-index: 1001;"></div>
+            <div class="mask-layer bbs-detail-layer" style="z-index: 1001;">
+                <img src="${pageContext.request.contextPath}/wsale/images/subscribe/bid-icon.jpg" class="subscribe"/>
+            </div>
 
             <div id="sharePopup" class="weui-popup-container popup-bottom">
                 <div class="weui-popup-overlay"></div>

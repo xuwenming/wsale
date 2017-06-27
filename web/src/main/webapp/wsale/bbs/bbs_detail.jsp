@@ -91,7 +91,7 @@
             <%--<img src="${pageContext.request.contextPath}/wsale/images/subscribe/bbs-icon.jpg" class="subscribe bbs-detail-layer-img"/>--%>
 
             <div class="mask-layer bbs-detail-layer" style="z-index: 1001;">
-                <img src="${pageContext.request.contextPath}/wsale/images/subscribe/bbs-icon.jpg" class="subscribe bbs-detail-layer-img"/>
+                <img src="${pageContext.request.contextPath}/wsale/images/subscribe/bbs-icon.jpg" class="subscribe"/>
             </div>
             <div class="dialog-content" style="z-index: 1002;">
                 <div class="fenlei-liebiao" style="background-color:#eee;">

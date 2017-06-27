@@ -157,8 +157,8 @@
                             <div style="color:#EF8326;font-size:12px;text-align:center;letter-spacing:0;">帖子：${user.bbsNums}</div>
                             <c:if test="${!user.self}">
                                 <%--<div class="tieziInfo-more" style="font-size:12px;color:#888;margin-top:5px;">更多 <img src="${pageContext.request.contextPath}/wsale/images/more-icon.png" style="height:10px; vertical-align:middle;" /></div>--%>
-                                <div class="sixin botton-b" onclick="href('api/apiChat/chat?toUserId=${user.id}&subscribe=true&productId=${product.id}');">私信</div>
-                                <div class="jubao report">举报</div>
+                                <div class="sixin botton-b" onclick="href('api/apiChat/chat?toUserId=${user.id}&subscribe=true&productId=${product.id}');">私 信</div>
+                                <div class="jubao report">举 报</div>
                             </c:if>
                         </div>
                     </div>

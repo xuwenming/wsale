@@ -10,7 +10,7 @@ WebIM.config = {
     /*
      * Application AppKey
      */
-    appkey: '1147161120178318#wsale',
+    appkey: 'xuwenming-1987#wsale',
     /*
      * Whether to use HTTPS
      * @parameter {Boolean} true or false

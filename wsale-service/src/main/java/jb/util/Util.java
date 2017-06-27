@@ -121,7 +121,7 @@ public class Util {
 		if(source.length() > len) {
 			source = source.substring(0, len) + "...";
 		}
-		return source.replaceAll("※", "[表情]");
+		return source.replaceAll("※", "[表情]").replaceAll("[\\r\\n]", "");
 	}
 
 }

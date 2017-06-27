@@ -388,7 +388,7 @@
             var viewData = Util.cloneJson(message), dom, mtype = message.mtype;
             viewData.addtime = message.addtime.substring(2, 16);
             if(mtype == 'TEXT') {
-                viewData.content = WebIM.utils.parseEmoji(message.content);
+                viewData.content = WebIM.utils.parseEmoji(message.content.replace(/[\r\n]/g, "<br/>"));
             } else if(mtype == 'IMAGE'){
                 viewData.content = '<img src="'+message.content+'" class="send-img imageMsg"/>';
             } else if(mtype == 'WXIMAGE') {

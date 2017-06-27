@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/audioplayer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.bbs.detail.css?v=${staticVersion}">
     <script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/audioplayer.js" charset="utf-8"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/jslib/web-im-1.1.2/strophe.js" charset="utf-8"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/jslib/web-im-1.1.2/websdk-1.1.2.js" charset="utf-8"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/emoji.config.js?v=${staticVersion}" charset="utf-8"></script>
+
     <c:if test="${fn:contains(sessionInfo.resourceList, 'auth_tzsc')}">
         <script type="text/javascript">
             $.authTzsc = true; // 帖子删除
@@ -884,6 +888,8 @@
 
             if(comment.ctype == 'IMAGE') {
                 viewData.comment = '<img src="'+comment.comment+'" class="imageMsg" style="max-width:50%;" /><br>';
+            } else {
+                viewData.comment = WebIM.utils.parseEmoji(viewData.comment.replace(/[\r\n]/g, "<br/>"));
             }
 
             if(comment.pid) {
@@ -894,7 +900,7 @@
                     if(comment.parentComment.ctype == 'IMAGE') {
                         pComment = '<br><img src="'+comment.parentComment.comment+'" class="imageMsg" style="max-width:50%;"/>';
                     } else {
-                        pComment = comment.parentComment.comment;
+                        pComment = WebIM.utils.parseEmoji(comment.parentComment.comment.replace(/[\r\n]/g, "<br/>"));
                     }
                 }
 
@@ -950,7 +956,7 @@
         function addComment(comment, type) {
             var reply = replyComment;
             type = type || 'TEXT';
-            comment = comment || replace_em($.trim($("#commentContent").val()));
+            comment = comment || $.trim($("#commentContent").val());
             $("#commentContent").val('');
             $('#facebox').hide();
             $('#facebox').remove();

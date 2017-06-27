@@ -139,12 +139,24 @@ public class ZcProductRangeServiceImpl extends BaseServiceImpl<ZcProductRange> i
 			q.setProductId("-1");
 			ranges = query(q);
 		}
-		double rangePrice = 0;
+		double rangePrice = 0, minStartPrice = 0, minPrice = 0, maxEndPrice = 0, maxPrice = 0;
 		for(ZcProductRange range : ranges) {
-			if(currentPrice >=range.getStartPrice() && currentPrice <= range.getEndPrice()) {
+			if(minStartPrice == 0 || minStartPrice > range.getStartPrice()) {
+				minStartPrice = range.getStartPrice();
+				minPrice = range.getPrice();
+			}
+			if(maxEndPrice < range.getEndPrice()) {
+				maxEndPrice = range.getEndPrice();
+				maxPrice = range.getPrice();
+			}
+			if(currentPrice >= range.getStartPrice() && currentPrice <= range.getEndPrice()) {
 				rangePrice = range.getPrice();
 				break;
 			}
+		}
+		if(rangePrice == 0) {
+			if(currentPrice < minStartPrice) rangePrice = minPrice;
+			else if(currentPrice > maxEndPrice) rangePrice = maxPrice;
 		}
 
 		return rangePrice;

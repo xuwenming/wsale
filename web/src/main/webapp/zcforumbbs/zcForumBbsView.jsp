@@ -18,6 +18,13 @@
 	<title>ZcForumBbs管理</title>
 	<jsp:include page="../inc.jsp"></jsp:include>
 	<script type="text/javascript">
+		var base = '${pageContext.request.contextPath}/';
+	</script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/jslib/web-im-1.1.2/strophe.js" charset="utf-8"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/jslib/web-im-1.1.2/websdk-1.1.2.js" charset="utf-8"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/emoji.config.js" charset="utf-8"></script>
+
+	<script type="text/javascript">
 		$(function() {
 			parent.imageSlide.initImageSlide($('.imageSlide img'));
 			$('.imageSlide img').click(function(){
@@ -103,7 +110,9 @@
 						var str = "";
 						if(value && row.ctype == 'IMAGE'){
 							str = "<img class=\"imageS\" style=\"height: 60px;width: 80px;\" src=\""+value+"\" i=\""+value+"\" />";
-						} else str = value;
+						} else {
+							str = WebIM.utils.parseEmoji(value.replace(/[\r\n]/g, "<br/>"));
+						}
 						return str;
 					}
 				} ] ],

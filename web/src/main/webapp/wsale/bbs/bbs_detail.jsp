@@ -80,7 +80,7 @@
             <h3 style="margin:0 30%">${bbs.bbsTitle}</h3>
 
         </div><!-- /header -->
-        <div class="topmore-list" style="z-index: 1002;">
+        <div class="topmore-list" style="z-index: 1002;position: fixed;">
             <ul>
                 <!--<li><a>测试1</a></li>
                 <li><a>测试2</a></li>

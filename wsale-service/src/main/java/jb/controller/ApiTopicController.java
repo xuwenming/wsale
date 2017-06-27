@@ -50,9 +50,10 @@ public class ApiTopicController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/topic")
-	public String topic(HttpServletRequest request) {
+	public String topic(String addUserId, HttpServletRequest request) {
 		SessionInfo s = getSessionInfo(request);
 		request.setAttribute("sessionInfo", s);
+		request.setAttribute("addUserId", addUserId);
 		return "/wsale/topic/topic_list";
 	}
 

@@ -113,6 +113,7 @@
     function drawTopicList(page) {
         currPage = page || currPage;
         var params = {page:(page && 1) || currPage, rows:(page && page*rows) || rows};
+        if(${!empty addUserId}) params.addUserId = '${addUserId}';
         ajaxPost('api/apiTopic/topicList', params, function(data){
             if(data.success) {
                 var result = data.obj;

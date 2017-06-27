@@ -61,6 +61,9 @@ public class ApiUserController extends BaseController {
 	private ForumBbsCommon forumBbsCommon;
 
 	@Autowired
+	private TopicCommon topicCommon;
+
+	@Autowired
 	private ZcAddressServiceI zcAddressService;
 
 	@Autowired
@@ -456,6 +459,16 @@ public class ApiUserController extends BaseController {
 		// 声音主题
 		bbs.setThemeType(EnumConstants.MSG_TYPE.AUDIO.getCode());
 		request.setAttribute("audioThemes", forumBbsCommon.dataGrid(ph, bbs));
+
+		// 专题主题
+		ZcTopic zcTopic = new ZcTopic();
+		zcTopic.setAddUserId(F.empty(userId) ? s.getId() : userId);
+		ph = new PageHelper();
+		ph.setSort("seq desc, t.addtime");
+		ph.setOrder("desc");
+		ph.setPage(1);
+		ph.setRows(2);
+		request.setAttribute("topicThemes", topicCommon.dataGrid(ph, zcTopic));
 	}
 
 	/**

@@ -174,16 +174,16 @@
                                             <div class="wenzizhuti-flag">
                                                 <img src="${pageContext.request.contextPath}/wsale/images/jsp-icon3.png" />
                                             </div>
-                                            <div class="orange-title">${textTheme.bbsTitle}</div>
+                                            <div class="tiezi-title orange-title">${textTheme.bbsTitle}</div>
                                         </c:when>
                                         <c:when test="${textTheme.isLight}">
                                             <div class="wenzizhuti-flag">
                                                 <img src="${pageContext.request.contextPath}/wsale/images/jsp-icon2.png" />
                                             </div>
-                                            <div class="blue-title">${textTheme.bbsTitle}</div>
+                                            <div class="tiezi-title blue-title">${textTheme.bbsTitle}</div>
                                         </c:when>
                                         <c:otherwise>
-                                            <div>${textTheme.bbsTitle}</div>
+                                            <div class="tiezi-title">${textTheme.bbsTitle}</div>
                                         </c:otherwise>
                                     </c:choose>
                                     <div class="wzzt-info">
@@ -227,22 +227,59 @@
                                             <div class="wenzizhuti-flag">
                                                 <img src="${pageContext.request.contextPath}/wsale/images/jsp-icon3.png" />
                                             </div>
-                                            <div class="orange-title">${audioTheme.bbsTitle}</div>
+                                            <div class="tiezi-title orange-title">${audioTheme.bbsTitle}</div>
                                         </c:when>
                                         <c:when test="${audioTheme.isLight}">
                                             <div class="wenzizhuti-flag">
                                                 <img src="${pageContext.request.contextPath}/wsale/images/jsp-icon2.png" />
                                             </div>
-                                            <div class="blue-title">${audioTheme.bbsTitle}</div>
+                                            <div class="tiezi-title blue-title">${audioTheme.bbsTitle}</div>
                                         </c:when>
                                         <c:otherwise>
-                                            <div>${audioTheme.bbsTitle}</div>
+                                            <div class="tiezi-title">${audioTheme.bbsTitle}</div>
                                         </c:otherwise>
                                     </c:choose>
                                     <div class="wzzt-info">
                                         <div style="float: right;" class="time">${audioTheme.addtime}</div>
                                         <div class="info-xinxi">发帖人:${audioTheme.addUserName}</div>
                                         <div>回复：${audioTheme.bbsComment} &nbsp;&nbsp;围观：${audioTheme.bbsRead}</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </c:forEach>
+                    </div>
+                </div>
+
+                <div class="xinxi-ppzt">
+                    <a class="faxian-link">
+                        <div class="list-right" <c:if test="${topicThemes.total >= 2}">onclick="href('api/apiTopic/topic?addUserId=${user.id}');"</c:if>>
+                            <c:choose>
+                                <c:when test="${topicThemes.total == 0}">
+                                    <span class="grayright-text">暂无专题</span>
+                                </c:when>
+                                <c:when test="${topicThemes.total < 2}">
+                                    <span class="grayright-text">暂无更多</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="grayright-text">更多专题</span>
+                                </c:otherwise>
+                            </c:choose>
+                            <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
+                        </div>
+                        <div class="normal-text">专题主题</div>
+                    </a>
+                    <div class="zhuti-list">
+                        <c:forEach items="${topicThemes.rows}" var="topicTheme" varStatus="vs">
+                            <a class="wenzizhuti-content" href="javascript:href('api/apiTopic/topicDetail?id=${topicTheme.id}');">
+                                <div class="wenzizhuti-img">
+                                    <img src="${topicTheme.icon}" />
+                                </div>
+                                <div class="wenzizhuti-info">
+                                    <div class="tiezi-title">${topicTheme.title}</div>
+                                    <div class="wzzt-info">
+                                        <div style="float: right;" class="time">${topicTheme.addtime}</div>
+                                        <div class="info-xinxi">发布人:${topicTheme.user.nickname}</div>
+                                        <div>点赞：${topicTheme.topicPraise} &nbsp;&nbsp;阅读：${topicTheme.topicRead}</div>
                                     </div>
                                 </div>
                             </a>

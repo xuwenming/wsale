@@ -412,10 +412,14 @@
             authInit();
 
             $('.emotion').click(function(){
-                $('.cut').css('margin-bottom', '125px');
-//                $(document.body).destroyInfinite();
-//                $(".home-content .weui-infinite-scroll").hide();
-                $.mobile.silentScroll($(document).height()-30);
+                if(!$('.face-tab').is(':hidden')) {
+                    $('.sixin-content').css('margin-bottom', '55px');
+                } else {
+                    $('.cut').css('margin-bottom', '125px');
+                    $(document.body).destroyInfinite();
+                    $(".home-content .weui-infinite-scroll").hide();
+                    $.mobile.silentScroll($(document).height());
+                }
             }).qqFace({
                 id : 'facebox', //表情盒子的ID
                 assign:'commentContent', //给那个控件赋值
@@ -429,7 +433,7 @@
                     $('#facebox').hide();
                     $('#facebox').remove();
                     $(".face-tab").hide();
-                    //$(document.body).infinite();
+                    $(document.body).infinite();
                     $('.cut').css('margin-bottom', '55px');
                 }
             });
@@ -553,8 +557,8 @@
             $('#commentContent').autoHeight(5.6*2);
 
             $("#commentContent").blur(function(){
-                //$(document.body).infinite();
-                //$(".home-content .weui-infinite-scroll").show();
+                $(document.body).infinite();
+                $(".home-content .weui-infinite-scroll").show();
                 setTimeout(function(){
                     if(replyState) {
                         if(replyComment != null) replyComment = null;
@@ -566,8 +570,8 @@
             });
 
             $("#commentContent").focus(function(){
-                //$(document.body).destroyInfinite();
-                //$(".home-content .weui-infinite-scroll").hide();
+                $(document.body).destroyInfinite();
+                $(".home-content .weui-infinite-scroll").hide();
                 $.mobile.silentScroll($(document).height()-30);
             });
 

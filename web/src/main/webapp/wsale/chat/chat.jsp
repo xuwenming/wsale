@@ -390,22 +390,21 @@
             if(mtype == 'TEXT') {
                 viewData.content = WebIM.utils.parseEmoji(message.content.replace(/[\r\n]/g, "<br/>"));
             } else if(mtype == 'IMAGE'){
-                viewData.content = '<img src="'+message.content+'" class="send-img imageMsg"/>';
+                viewData.content = '<img data-original="'+message.content+'" class="send-img imageMsg lazy"/>';
             } else if(mtype == 'WXIMAGE') {
-                viewData.content = '<img src="'+message.content+'" class="send-img imageMsg"/>';
-                //viewData.content += '<div class="sending-load sending"><img src="'+base+'wsale/images/loading.gif" /><div>正在发送中...</div></div>';
+                viewData.content = '<img data-original="'+message.content+'" class="send-img imageMsg lazy"/>';
             } else if(mtype == 'AUDIO') {
                 viewData.content = '<div class="audioMsg" data-src="'+message.content+'"><span>语音</span>：'+(message.duration||1)+'\"</div>';
             } else if(mtype == 'WXAUDIO') {
                 viewData.content = '<div class="audioMsg wx" data-src="'+message.content+'"><span>语音</span>：'+message.duration+'\"</div>';
             } else if(mtype == 'PRODUCT') {
-                viewData.content = '<div class="productMsg" data-product="'+message.product.id+'"><img style="width: 100%;height: 100px;" src="'+message.product.icon+'" class="imageMsg"/><div><a style="float:left;">拍品：'+message.product.content+'</a></div></div>';
+                viewData.content = '<div class="productMsg" data-product="'+message.product.id+'"><div data-original="'+message.product.icon+'" style="width: 100%;height:0;padding-bottom:100px; background-position:center center;background-size:cover;" class="imageMsg lazy"></div><div><a style="float:left;">拍品：'+message.product.content+'</a></div></div>';
             } else if(mtype == 'SHOWPRODUCT') {
-                viewData.content = '<div class="productMsg" data-product="${product.id}"><img style="width: 100%;height: 100px;" src="${product.icon}" class="imageMsg"/><div><a href="#" style="max-height: 40px;overflow-y: hidden;">拍品：${fn:replace(product.content, vEnter, '')}</a><div class="sendProduct" style="float:right;padding-top:5px;">发送拍品</div></div></div>';
+                viewData.content = '<div class="productMsg" data-product="${product.id}"><div data-original="${product.icon}" style="width: 100%;height:0;padding-bottom:100px; background-position:center center;background-size:cover;" class="imageMsg lazy"></div><div><a href="#" style="max-height: 40px;overflow-y: hidden;">拍品：${fn:replace(product.content, vEnter, '')}</a><div class="sendProduct" style="float:right;padding-top:5px;">发送拍品</div></div></div>';
             } else if(mtype == 'BBS') {
-                viewData.content = '<div class="bbsMsg" data-bbs="'+message.bbs.id+'"><div style="width: 100%;height:0;padding-bottom:100px; background:url('+message.bbs.icon+'); background-position:center center;background-size:cover"; class="imageMsg"></div><div><a style="float:left;">帖子：'+message.bbs.bbsTitle+'</a></div></div>';
+                viewData.content = '<div class="bbsMsg" data-bbs="'+message.bbs.id+'"><div data-original="'+message.bbs.icon+'" style="width: 100%;height:0;padding-bottom:100px; background-position:center center;background-size:cover;" class="imageMsg lazy"></div><div><a style="float:left;">帖子：'+message.bbs.bbsTitle+'</a></div></div>';
             } else if(mtype == 'SHOWBBS') {
-                viewData.content = '<div class="bbsMsg" data-bbs="${bbs.id}"><div style="width: 100%;height:0;padding-bottom:100px; background:url('+bbs.icon+'); background-position:center center;background-size:cover"; class="imageMsg"></div><div><a href="#" style="max-height: 40px;overflow-y: hidden;">帖子：${fn:replace(bbs.bbsTitle, vEnter, '')}</a><div class="sendBbs" style="float:right;padding-top:5px;">发送帖子</div></div></div>';
+                viewData.content = '<div class="bbsMsg" data-bbs="${bbs.id}"><div data-original="${bbs.icon}" style="width: 100%;height:0;padding-bottom:100px; background-position:center center;background-size:cover"; class="imageMsg lazy"></div><div><a href="#" style="max-height: 40px;overflow-y: hidden;">帖子：${fn:replace(bbs.bbsTitle, vEnter, '')}</a><div class="sendBbs" style="float:right;padding-top:5px;">发送帖子</div></div></div>';
             }
 
             if(message.fromUserId == fromUser)
@@ -437,7 +436,7 @@
 
             dom.find('.imageMsg').click(function(){
                 event.stopPropagation();
-                var imageUrls = [$(this).attr('src')];
+                var imageUrls = [$(this).attr('data-original')];
                 JWEIXIN.previewImage(imageUrls);
             });
             if(mtype == 'WXIMAGE') {
@@ -447,6 +446,9 @@
                }, 200);
             }
 
+            $(".lazy").lazyload({
+                placeholder : base + 'wsale/images/lazyload.png'
+            });
             //$.mobile.silentScroll($(document).height());
             return dom;
         }

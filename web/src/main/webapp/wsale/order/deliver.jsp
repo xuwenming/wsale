@@ -68,7 +68,7 @@
             <div  class="renzheng-input" style="border-bottom: 10px solid #f5f5f5;">
                 <a class="faxian-link">
                     <div style="float:right;">
-                        <input class="onlyNum" maxlength="20" type="text" placeholder="请输入运单号" id="expressNo"/>
+                        <input class="onlyNum" maxlength="20" type="text" placeholder="请输入或扫描运单号" id="expressNo"/>
                         <img class="shaoyishao scanBtn" src="${pageContext.request.contextPath}/wsale/images/saoyisao.png" alt=""/>
                     </div>
                     <div class="dingdan-title">运单号</div>

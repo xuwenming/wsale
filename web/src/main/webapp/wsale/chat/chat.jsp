@@ -62,8 +62,13 @@
             $(".send-btn").bind('click', sendMsg);
 
             $('.send-more').click(function(){
-                $('.sixin-content').css('padding-bottom', '120px');
-                $.mobile.silentScroll($(document).height());
+                if(!$('.face-tab').is(':hidden')) {
+                    $('.sixin-content').css('padding-bottom', '50px');
+                } else {
+                    $('.sixin-content').css('padding-bottom', '125px');
+                    $.mobile.silentScroll($(document).height());
+                }
+
             }).qqFace({
                 id : 'facebox', //表情盒子的ID
                 assign:'content', //给那个控件赋值

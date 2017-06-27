@@ -41,7 +41,7 @@ html .ui-header .ui-btn{
 }
 .ui-page-theme-a a{
 	display:block;
-	color:#8a8aec;
+	color:#888;
 	font-weight:normal;
 	font-size:12px; 
 	text-decoration:none;
@@ -3227,6 +3227,9 @@ div.weui-popup-modal{
 .bbsMsg .imageMsg{
 	background-position: center center;
 	background-size: cover;
+}
+.bbsMsg a{
+	color:#8a8aec;
 }
 .emoji{
 	position: relative;

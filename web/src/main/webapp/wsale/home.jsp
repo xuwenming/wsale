@@ -52,7 +52,7 @@
                     </a>
                     <a style="width:23%; display:inline-block;background-color:#fff;padding:15px 0px;border-left: 1px solid #eee;" href="javascript:href('api/apiTopic/topic');">
                         <img alt="" src="${pageContext.request.contextPath}/wsale/images/home-icon4.png" style="width:30%;margin-bottom:10px;" />
-                        <div style="font-size:14px;color:#808080;">集物专题</div>
+                        <div style="font-size:14px;color:#808080;">专题文章</div>
                     </a>
                 </div>
                 <!--<div style="margin-top:10px;">

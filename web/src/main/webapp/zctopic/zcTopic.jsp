@@ -151,12 +151,12 @@
 			id = rows[0].id;
 		}
 		parent.$.modalDialog({
-			title : '编辑数据',
+			title : '更新专题文章',
 			width : 780,
 			height : 500,
 			href : '${pageContext.request.contextPath}/zcTopicController/editPage?id=' + id,
 			buttons : [ {
-				text : '编辑',
+				text : '更新',
 				handler : function() {
 					parent.$.modalDialog.openner_dataGrid = dataGrid;//因为添加成功之后，需要刷新这个dataGrid，所以先预定义好
 					var f = parent.$.modalDialog.handler.find('#form');
@@ -192,12 +192,12 @@
 
 	function addFun() {
 		parent.$.modalDialog({
-			title : '添加数据',
+			title : '发布专题文章',
 			width : 780,
 			height : 500,
 			href : '${pageContext.request.contextPath}/zcTopicController/addPage',
 			buttons : [ {
-				text : '添加',
+				text : '发布',
 				handler : function() {
 					parent.$.modalDialog.openner_dataGrid = dataGrid;//因为添加成功之后，需要刷新这个dataGrid，所以先预定义好
 					var f = parent.$.modalDialog.handler.find('#form');

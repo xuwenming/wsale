@@ -72,7 +72,7 @@ public class ZcRewardServiceImpl extends BaseServiceImpl<ZcReward> implements Zc
 			}
 			if(!F.empty(zcReward.getByUserId())) {
 				if(zcReward.getAuth() != null && zcReward.getAuth()) {
-					where += " and (b.addUserId = :byUserId or p.addUserId = :byUserId or t.userId = :byUserId)";
+					where += " and (b.addUserId = :byUserId or p.addUserId = :byUserId or t.user_id = :byUserId)";
 				} else {
 					where += " and (b.addUserId = :byUserId or p.addUserId = :byUserId)";
 				}

@@ -30,7 +30,7 @@ body{
     color:red;
 }
 #main img{
-    margin-top: 20px;
+    margin: 20px auto;
 }
 div.hr{
     height:10px;

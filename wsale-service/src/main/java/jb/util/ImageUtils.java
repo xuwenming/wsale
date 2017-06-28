@@ -183,7 +183,6 @@ public final class ImageUtils {
     }
 
     public static String replaceHtmlTag(String str, String tag, String tagAttrib, String startTag, String endTag, String realPath) {
-
         try {
             String regxpForTag = "<\\s*" + tag + "\\s+([^>]*)\\s*" ;
             String regxpForTagAttrib = tagAttrib + "=\\s*\"([^\"]+)\"" ;
@@ -193,24 +192,29 @@ public final class ImageUtils {
             StringBuffer sb = new StringBuffer();
             boolean result = matcherForTag.find();
             while (result) {
-                StringBuffer sbreplace = new StringBuffer( "<"+tag+" ");
+                StringBuffer sbreplace = new StringBuffer("<" + tag + " ");
                 Matcher matcherForAttrib = patternForAttrib.matcher(matcherForTag.group(1));
                 if (matcherForAttrib.find()) {
                     String attributeStr = matcherForAttrib.group(1);
-                    if(attributeStr.indexOf(OSSUtil.cdnUrl) == -1) {
-                        //String fileExt = attributeStr.substring(attributeStr.lastIndexOf(".") + 1).toLowerCase();
-                        URL url = new URL(attributeStr);
-                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                        conn.setDoInput(true);
-                        conn.setDoOutput(true);
-                        conn.setUseCaches(false);
-                        conn.setRequestMethod("GET");
-                        conn.connect();
-                        String fileExt = DownloadMediaUtil.getFileExtName(conn.getHeaderField("Content-Type"));
-                        String path = OSSUtil.putInputStream(OSSUtil.bucketName, conn.getInputStream(),  getFilePath(fileExt));
-                        path = pressImage(path, realPath);
-                        conn.disconnect();
-                        matcherForAttrib.appendReplacement(sbreplace, startTag + path + endTag);
+                    if (attributeStr.indexOf(OSSUtil.cdnUrl) == -1) {
+                        try {
+                            //String fileExt = attributeStr.substring(attributeStr.lastIndexOf(".") + 1).toLowerCase();
+                            URL url = new URL(attributeStr);
+                            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                            conn.setDoInput(true);
+                            conn.setDoOutput(true);
+                            conn.setUseCaches(false);
+                            conn.setRequestMethod("GET");
+                            conn.connect();
+                            String fileExt = DownloadMediaUtil.getFileExtName(conn.getHeaderField("Content-Type"));
+                            String path = OSSUtil.putInputStream(OSSUtil.bucketName, conn.getInputStream(), getFilePath(fileExt));
+                            path = pressImage(path, realPath);
+                            conn.disconnect();
+                            matcherForAttrib.appendReplacement(sbreplace, startTag + path + endTag);
+                        } catch (Exception e) {
+                            String error = String.format("replaceHtmlTag失败：%s", e);
+                            System.out.println(error);
+                        }
                     }
                 }
                 matcherForAttrib.appendTail(sbreplace);

@@ -118,9 +118,11 @@ public class TokenInterceptor implements HandlerInterceptor {
 			// TODO 非微信授权或获取code失败
 			if(F.empty(tokenId) || !tokenManage.validToken(tokenId)) {
 				String userAgent = request.getHeader("user-agent");
-				if(!F.empty(userAgent) && userAgent.indexOf("MicroMessenger") == -1)
+				if(!F.empty(userAgent) && userAgent.indexOf("MicroMessenger") == -1) {
+					request.setAttribute("redirect_uri", redirect_uri);
+//					request.setAttribute("type", "token_expire");
 					request.getRequestDispatcher("/api/apiCommon/error").forward(request, response);
-				else
+				} else
 					response.sendRedirect("https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+ URLEncoder.encode(redirect_uri, "UTF-8") +"&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect");
 				return false;
 			}

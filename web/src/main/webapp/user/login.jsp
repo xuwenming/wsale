@@ -74,12 +74,6 @@
 			left : 200
 		});
 
-		var sessionInfo_userId = '${sessionInfo.id}';
-		if (sessionInfo_userId) {/*目的是，如果已经登陆过了，那么刷新页面后也不需要弹出登录窗体*/
-			loginDialog.dialog('close');
-			defaultUserInfoDialog.dialog('close');
-		}
-
 		$('#loginDialog input').keyup(function(event) {
 			if (event.keyCode == '13') {
 				loginFun();
@@ -116,6 +110,12 @@
 		});
 
 		getQrcodeUrl();
+
+		var sessionInfo_userId = '${sessionInfo.id}';
+		if (sessionInfo_userId) {/*目的是，如果已经登陆过了，那么刷新页面后也不需要弹出登录窗体*/
+			loginDialog.dialog('close');
+			defaultUserInfoDialog.dialog('close');
+		}
 	});
 
 	function getQrcodeUrl() {
@@ -196,7 +196,7 @@
 		}
 	}
 </script>
-<div id="loginDialog" title="用户登录" style="width: 300px; height: 400px; overflow: hidden; display: none;">
+<div id="loginDialog" title="用户登录" style="overflow: hidden; display: none;">
 	<div id="loginTabs" class="easyui-tabs" data-options="fit:true,border:false">
 		<div title="扫码登录" style="overflow: hidden; padding: 10px;text-align: center">
 			<div class="scanLogin">

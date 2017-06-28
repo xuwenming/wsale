@@ -47,14 +47,13 @@ public class ApiCommonController extends BaseController {
 	 * @param
 	 * @return
 	 */
-	@ResponseBody
 	@RequestMapping("/error")
-	public Json error() {
-		Json j = new Json();
-		j.setObj("token_expire");
-		j.setSuccess(false);
-		j.setMsg("token过期，请重新登录！");
-		return j;
+	public String error(HttpServletRequest request) {
+//		Json j = new Json();
+//		j.setObj("token_expire");
+//		j.setSuccess(false);
+//		j.setMsg("token过期，请重新登录！");
+		return "/wsale/error";
 	}
 
 	/**

@@ -121,6 +121,7 @@
 	function getQrcodeUrl() {
 		$.post('${pageContext.request.contextPath}/userController/getQrcodeUrl', {}, function(result) {
 			if (result.success) {
+				$('#qrcode').empty();
 				// 设置参数方式
 				var qrcode = new QRCode('qrcode', {
 					width: 180,

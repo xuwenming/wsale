@@ -219,7 +219,7 @@ public final class ImageUtils {
             String error = String.format("replaceHtmlTag失败：%s", e);
             System.out.println(error);
         }
-        return null;
+        return str;
     }
 
     public static String getFilePath(String fileExt) {

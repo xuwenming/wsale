@@ -183,6 +183,7 @@
     <script type="text/javascript">
         var loading = true, currPage = 1, rows = 10;
         $(function(){
+            $('.content img').css('width','100%')
             if($(".rewardUsers").height() == $(".rewardUsers").css('max-height').replace('px', '')) {
                 $(".gengduo").removeClass("hide");
             }

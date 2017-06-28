@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<style>
+	#qrcode img{
+		margin: 20px auto;
+	}
+</style>
 <script type="text/javascript" charset="utf-8">
 	var loginDialog;
 	var defaultUserInfoDialog;
@@ -93,10 +98,20 @@
 
 		$('#loginTabs').tabs({
 			onSelect:function(title, index){
-				if(index == 1)
+				if(index == 1) {
+					$('#loginDialog').dialog({
+						width: 330,
+						height: 220
+					});
 					$("#loginDialog .dialog-button").show();
-				else
+				} else {
+					$('#loginDialog').dialog({
+						width: 300,
+						height: 400
+					});
 					$("#loginDialog .dialog-button").hide();
+				}
+
 			}
 		});
 
@@ -108,8 +123,8 @@
 			if (result.success) {
 				// 设置参数方式
 				var qrcode = new QRCode('qrcode', {
-					width: 110,
-					height: 110
+					width: 180,
+					height: 180
 				});
 				// 使用 API
 				qrcode.clear();
@@ -181,10 +196,20 @@
 		}
 	}
 </script>
-<div id="loginDialog" title="用户登录" style="width: 330px; height: 220px; overflow: hidden; display: none;">
+<div id="loginDialog" title="用户登录" style="width: 300px; height: 400px; overflow: hidden; display: none;">
 	<div id="loginTabs" class="easyui-tabs" data-options="fit:true,border:false">
 		<div title="扫码登录" style="overflow: hidden; padding: 10px;text-align: center">
-			<div id="qrcode"></div>
+			<div class="scanLogin">
+				<div id="qrcode"></div>
+				<div style="font-size: 16px;margin-top: 50px;">请使用微信扫一扫以登录</div>
+			</div>
+			<!--<div class="loginConfirm">
+				<div class="saoma-login-img">
+					<img src="${pageContext.request.contextPath}/wsale/images/search-icon.png"/>
+					<h3>扫描成功</h3>
+					<p>请在手机上确认登录</p>
+				</div>
+			</div>-->
 		</div>
 		<div title="用户名登录" style="overflow: hidden; padding: 10px;">
 			<form method="post">

@@ -141,8 +141,7 @@ footer .right{
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: flex-start;
-    margin: 10px;
-    margin-left: 0;
+    margin: 10px 10px 10px 0;
     padding:10px 0;
 }
 .footer_img{

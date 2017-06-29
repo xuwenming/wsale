@@ -3200,13 +3200,21 @@ div.weui-popup-modal{
 }
 
 /*下面是论坛列表图片样式*/
-.img-parent>.bbs-list-img,.topic-list-img{
-	width:68px;
+.img-parent>.bbs-list-img{
+	width:70px;
 	height: 0;
 	padding-bottom: 60px;
 	background-position: center center;
 	background-size: cover;
 }
+.topic-list-img{
+	width:120px;
+	height: 0;
+	padding-bottom: 100px;
+	background-position: center center;
+	background-size: cover;
+}
+
 .product-list-img{
 	width:100%;
 	height:0;
@@ -3243,4 +3251,21 @@ div.weui-popup-modal{
 	padding-bottom: 85px;
 	background-size: cover;
 	background-position: center center;
+}
+
+/*专题文章列表标题上下排列分布*/
+/*.topic-list-flex{*/
+	/*display: flex;*/
+	/*flex-direction: column;*/
+	/*justify-content: space-around;*/
+	/*height: 100%;*/
+/*}*/
+
+/*首页专题列表样式*/
+.home-topic-list-img{
+	width:70px;
+	height: 0;
+	padding-bottom: 60px;
+	background-position: center center;
+	background-size: cover;
 }

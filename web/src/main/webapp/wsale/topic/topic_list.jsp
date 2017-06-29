@@ -37,6 +37,12 @@
             font-size: 1.25em;
             padding-right: .1em;
         }
+        .topic-list-flex{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
     </style>
 </head>
 <body>

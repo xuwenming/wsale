@@ -97,12 +97,14 @@ public final class ImageUtils {
             //水印文件
             File _fileMark = new File(realPath + pressImg);
             Image src_mark = ImageIO.read(_fileMark);
-            int width_mark = src_mark.getWidth(null)/3 > image.getWidth()/3 ? image.getWidth()/3 : src_mark.getWidth(null)/3;
-            int height_mark = src_mark.getHeight(null)/3 > image.getHeight()/3 ? image.getHeight()/3 : src_mark.getHeight(null)/3;
-            if(width < 960 || height < 960) {
-                width_mark = 100;
-                height_mark = 55;
-            }
+//            int width_mark = src_mark.getWidth(null)/3 > image.getWidth()/3 ? image.getWidth()/3 : src_mark.getWidth(null)/3;
+//            int height_mark = src_mark.getHeight(null)/3 > image.getHeight()/3 ? image.getHeight()/3 : src_mark.getHeight(null)/3;
+//            if(width < 960 || height < 960) {
+//                width_mark = 100;
+//                height_mark = 55;
+//            }
+            int width_mark = width/6;
+            int height_mark = width_mark/2;
             g.drawImage(src_mark, (width - width_mark) - x ,
                     (height - height_mark) - y , width_mark, height_mark, null);
             //水印文件结束

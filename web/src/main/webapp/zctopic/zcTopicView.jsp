@@ -96,7 +96,7 @@
 
 		function loadRewardDataGrid() {
 			return $('#rewardDataGrid').datagrid({
-				url : '${pageContext.request.contextPath}/zcRewardController/dataGridByTopic?objectId=${zcTopic.id}&objectType=TOPIC',
+				url : '${pageContext.request.contextPath}/zcRewardController/dataGridByTopic?objectId=${zcTopic.id}&objectType=TOPIC&payStatus=PS02',
 				fit : true,
 				fitColumns : true,
 				border : false,

@@ -126,7 +126,7 @@
 		}
 		function loadRewardDataGrid() {
 			return $('#rewardDataGrid').datagrid({
-				url : '${pageContext.request.contextPath}/zcRewardController/dataGridByBbs?objectId=${zcForumBbs.id}&objectType=BBS',
+				url : '${pageContext.request.contextPath}/zcRewardController/dataGridByBbs?objectId=${zcForumBbs.id}&objectType=BBS&payStatus=PS02',
 				fit : true,
 				fitColumns : true,
 				border : false,

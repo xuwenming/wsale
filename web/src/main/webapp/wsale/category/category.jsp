@@ -88,7 +88,7 @@
                         for(var i in result) {
                             var $a = $("<a></a>").addClass("fenlei-imglist").css({display:'inline-block'}).attr({'categoryId':result[i].id});
                             $a.append('<img class="lazy" data-original="'+result[i].icon+'" width="72" height="72"/>');
-                            $a.append('<div style="width:73px">'+result[i].name+'</div>');
+                            $a.append('<div style="min-width: 70px;">'+result[i].name+'</div>');
                             $("#childCategory").append($a);
                         }
                         $("img.lazy").lazyload({

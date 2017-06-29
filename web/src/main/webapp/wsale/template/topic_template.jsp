@@ -6,7 +6,7 @@
 	</div>
 	<div style="vertical-align:middle;display:block;padding-left: 10px;float:right;width:calc(100% - 130px);height: 100px;">
 		<div class="topic-list-flex">
-			<div name="title" class="tiezi-title" style="width: 85%; font-size: 14px;"></div>
+			<div name="title" class="line-two" style="width: 85%; font-size: 14px;"></div>
 			<div style="color:#aaa; line-height:1.4;padding-bottom:5px;font-size: 12px;">
 				<div style="float: right;" name="time"></div>
 				<div class="info-xinxi" name="name_time"></div>

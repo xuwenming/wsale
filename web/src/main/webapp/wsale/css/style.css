@@ -3213,6 +3213,7 @@ div.weui-popup-modal{
 	padding-bottom: 100px;
 	background-position: center center;
 	background-size: cover;
+	border-radius: 4px;
 }
 
 .product-list-img{

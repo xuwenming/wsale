@@ -76,6 +76,10 @@ public class UserController extends BaseController {
 	public Json login(User user, HttpSession session, HttpServletRequest request) {
 		Json j = new Json();
 		String privateKey = (String)session.getAttribute(RSAUtil.PRIVATE_KEY);
+		if(privateKey == null) {
+			j.setMsg("登陆失败，请关闭当前浏览器重新打开！");
+			return j;
+		}
 		user.setName(RSAUtil.decryptByPravite(user.getName(), privateKey));
 		user.setPwd(RSAUtil.decryptByPravite(user.getPwd(), privateKey));
 		User u = userService.login(user);

@@ -11,6 +11,7 @@
     <div data-role="page" data-title="分类" class="jqm-demos">
 
         <div role="main" class="ui-content jqm-content jqm-fullwidth">
+            <div class="mask-layer-1" style="display: none;"></div>
             <div class="home-content" style="margin:0;">
                 <div style="width:25%; display:inline-block; vertical-align:top;">
                     <ul id="fenlei-list">
@@ -58,6 +59,7 @@
             });
             $("#fenlei-list li").bind("click", function(){
                 if($(this).hasClass("fenlei-active")) return;
+                $('.mask-layer-1').show();
                 $(this).addClass("fenlei-active");
                 $(this).siblings().removeClass("fenlei-active");
                 drawChildCategory($(this).attr("categoryId"));
@@ -104,6 +106,7 @@
                     }
 
                     $(".home-content .weui-infinite-scroll").hide();
+                    $('.mask-layer-1').hide();
                 }
             });
         }

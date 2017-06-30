@@ -690,8 +690,8 @@ textarea.ui-input-text{
 .touxiang-list{
 	width:30px;
 	height:30px;
-	/*vertical-align:top;*/
-	margin-bottom:0px;
+	vertical-align:top;
+	margin:2px 0;
 }
 .ppxq-userinfo{
 	margin-top:-35px;
@@ -2254,7 +2254,7 @@ p.order-right-middle{
 }
 .ppxq-rightinfo{
 	position: relative;
-	top:-7px;
+	top:-5px;
 }
 .qbpp-price{
 	font-size:12px; color:#888; line-height:1.8;
@@ -3265,9 +3265,8 @@ div.weui-popup-modal{
 	padding-top:10px;
 }
 .emoji{
-	height: 16px;
 	position: relative;
-	top:3px;
+	top:5px;
 }
 /*myTheme图片样式*/
 .paipin-theme-li-img{

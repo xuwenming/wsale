@@ -171,7 +171,7 @@
                             <div class="product-detail-guanzhu attBtn">+ 关注</div>
                         </c:if>
                     </div>
-                    <div style="margin-top:5px;margin-bottom: -5px;">
+                    <div style="margin-bottom: -8px;">
                         <c:if test="${user.isPayBond}">
                             <img class="ppxq-smallicon" src="${pageContext.request.contextPath}/wsale/images/baozhang-icon.png" />
                         </c:if>

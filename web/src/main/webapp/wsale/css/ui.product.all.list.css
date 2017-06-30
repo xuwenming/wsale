@@ -5,19 +5,19 @@
     min-width:50px;
     margin:10px auto 0;
     font-size: 0.5rem;
-    padding:2px 3px;
+    padding:1px 2px;
     border-radius: 2px;
     text-align: center;
     color:#bbb;
     border:1px solid #bbb;
 }
 .product-all-guanzhu{
-    width:65px;
+    width:55px;
     max-width: 100px;
     min-width:50px;
-    margin: 0 auto;
+    margin: 2px auto;
     font-size: 0.5rem;
-    padding:2px 3px;
+    padding:1px 0px;
     border-radius: 2px;
     text-align: center;
     color:#DC721C;

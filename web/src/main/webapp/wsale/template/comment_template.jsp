@@ -13,9 +13,8 @@
 		<div class="reply">
 			<div style="color:#ff0000;font-size:13px;" name="user" data-name="nickname"></div>
 			<div class="comment-template-at attBtn">+ 关注</div>
-
 		</div>
-		<div style="font-size:13px; color:#000000;margin-left: 5px;" name="comment"></div>
+		<div class="reply" style="font-size:13px; color:#000000;" name="comment"></div>
 		<div class="comment-template-info"><span style="color:#EF8326;font-size:12px;" class="bbsNums">帖子:<font name="user" data-name="bbsNums"></font></span>&nbsp;<span style="font-size:12px; color:#aaa;" name="addtime"></span>
 			<div style="float:right;margin-right:10px;display: inline-block;" class="del"><img src="${pageContext.request.contextPath}/wsale/images/delete-icon.png" style="width:12px;" /></div>
 		</div>

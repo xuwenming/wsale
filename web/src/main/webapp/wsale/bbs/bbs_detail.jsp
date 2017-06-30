@@ -232,7 +232,7 @@
                                 <div data-fee="200">200 <sub>元</sub></div>
                             </div>
                             <p style="padding-top: 20px;color:#6f83ec;" class="otherAmount">其他金额</p>
-                            <p style="margin-top: 5px; color: #aaa;font-size: 12px;">赞赏是为表示鼓励而对文章内容的无偿赠与</p>
+                            <p style="margin-top: 5px; color: #aaa;font-size: 12px;">赞赏是为表示鼓励而对帖子的无偿赠与</p>
                         </div>
                     </div>
                 </div>
@@ -328,7 +328,7 @@
                             <div style="display:inline-block; line-height: 1.2;" class="dashang-user">
                                 <c:forEach items="${rewards}" var="reward" varStatus="vs">
                                     <!--<div class="dashang-list">-->
-                                        <img style="width:35px;height:35px;" src="${reward.user.headImage}" onclick="href('api/userController/homePage?userId=${reward.user.id}');"/>
+                                        <img style="width:30px;height:30px;" src="${reward.user.headImage}" onclick="href('api/userController/homePage?userId=${reward.user.id}');"/>
                                         <!--<div>￥${reward.rewardFee}</div>
                                     </div>-->
                                 </c:forEach>
@@ -768,7 +768,10 @@
             } else {
                 if(${bbs.isOffReply})
                     $(".isOffReply").html("回复已关闭");
-                else $(".isOffReply").hide();
+                else {
+                    $(".isOffReply").hide();
+                    $('.isOffReply').parent().next().css('padding-top', '5px');
+                }
             }
             $authDom.find(".edit").click(function(){
                 // 跳转编辑页

@@ -117,7 +117,7 @@
 	<div class="ppxq-rightinfo">
 		<div class="qbpp-title new-qbpp-title" name="user" style="display: inline-block" data-name="nickname"></div>
 		<div class="product-all-guanzhu attBtn">+ 关注</div>
-		<div style="margin-bottom: -5px;clear: both;">
+		<div style="margin-bottom: -8px;clear: both;">
 			<img class="ppxq-smallicon protection" src="${pageContext.request.contextPath}/wsale/images/baozhang-icon.png" style="display: none;"/>
 			<img class="ppxq-smallicon auth" src="${pageContext.request.contextPath}/wsale/images/renzheng2-icon.png" style="display: none;"/>
 			<img class="ppxq-smallicon" src="${pageContext.request.contextPath}/wsale/images/v2.png" />

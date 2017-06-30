@@ -716,7 +716,7 @@ textarea.ui-input-text{
 	margin:55px 10px 10px 10px;
 }
 .ppxq-leftinfo{
-	width:20%; text-align:center;display:inline-block;vertical-align:top;
+	width:17%; text-align:center;display:inline-block;vertical-align:top;
 }
 .ppxq-touxiang{
 	width:100%;
@@ -725,7 +725,7 @@ textarea.ui-input-text{
 	margin-top:-20px; text-align:right;width:100%;
 }
 .ppxq-rightinfo{
-	width:77%; margin-left:1%;text-align:left;display:inline-block; vertical-align:top;
+	width:80%; margin-left:1%;text-align:left;display:inline-block; vertical-align:top;
 }
 .ppxq-smallicon{
 	width:20px;height:20px;
@@ -1718,6 +1718,7 @@ p.order-right-middle{
 	width:90%;
 	height:80px;
 	margin:10px 5%;
+	border-radius: 4px;
 }
 .zhuti-list{
 	margin:0 10px;
@@ -1732,6 +1733,7 @@ p.order-right-middle{
 	width:60px;
 	height:60px;
 	margin-right:5px;
+	border-radius: 4px;
 }
 .wenzizhuti-info{
 	vertical-align:middle;
@@ -3206,6 +3208,7 @@ div.weui-popup-modal{
 	padding-bottom: 60px;
 	background-position: center center;
 	background-size: cover;
+	border-radius: 4px;
 }
 .topic-list-img{
 	width:120px;
@@ -3269,4 +3272,5 @@ div.weui-popup-modal{
 	padding-bottom: 60px;
 	background-position: center center;
 	background-size: cover;
+	border-radius: 4px;
 }

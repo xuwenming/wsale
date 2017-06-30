@@ -24,15 +24,15 @@
                         <div id="childCategory">
                             <c:forEach items="${childCategorys}" var="childCategory" varStatus="vs">
                                 <a class="fenlei-imglist" style="display:inline-block;" categoryId="${childCategory.id}">
-                                    <img class="lazy" data-original="${childCategory.icon}" width="72" height="72"/>
+                                    <img class="lazy" data-original="${childCategory.icon}" width="72" height="72" style="border-radius: 6px;"/>
                                     <div>${childCategory.name}</div>
                                 </a>
                             </c:forEach>
                         </div>
-                        <div class="weui-infinite-scroll" style="display: none;">
-                            <div class="infinite-preloader"></div>
-                            数据加载中
-                        </div>
+                    </div>
+                    <div class="weui-infinite-scroll" style="display: none;">
+                        <div class="infinite-preloader"></div>
+                        数据加载中
                     </div>
                 </div>
             </div>
@@ -87,7 +87,7 @@
                     if(result.length > 0) {
                         for(var i in result) {
                             var $a = $("<a></a>").addClass("fenlei-imglist").css({display:'inline-block'}).attr({'categoryId':result[i].id});
-                            $a.append('<img class="lazy" data-original="'+result[i].icon+'" width="72" height="72"/>');
+                            $a.append('<img class="lazy" data-original="'+result[i].icon+'" width="72" height="72" style="border-radius: 6px;"/>');
                             $a.append('<div style="min-width: 70px;">'+result[i].name+'</div>');
                             $("#childCategory").append($a);
                         }

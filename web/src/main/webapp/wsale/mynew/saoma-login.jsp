@@ -16,7 +16,7 @@
        <div class="saoma-login-img">
          <img src="${pageContext.request.contextPath}/wsale/images/search-icon.png"/>
        <h3>name</h3>
-       <p>微拍堂网页版登录确认</p>
+       <p>集东集西网页版登录确认</p>
        </div>
        <div class="saoma-login-footer">
          <div class="saoma-login-a">点击登录</div>

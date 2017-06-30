@@ -8,7 +8,7 @@
 		</div>
 	</div>
 
-	<div class="bbs-detail-com-list" style="width:78%; margin-left: 17%; line-height:1.5;">
+	<div class="bbs-detail-com-list" style="width:83%; margin-left: 17%; line-height:1.5;">
 		<!--<a style="font-size:12px;color:#888; float:right; display: none;">更多 <img src="${pageContext.request.contextPath}/wsale/images/more-icon.png" style="height:10px; vertical-align:middle;" /></a>-->
 		<div class="reply">
 			<div style="color:#ff0000;font-size:13px;" name="user" data-name="nickname"></div>

@@ -1091,6 +1091,7 @@ textarea.ui-input-text{
 	line-height: 10px;
 	color: #333;
 	font-weight: 500;
+	margin-top: 1px;
 }
 
 .order-right-top img{
@@ -3264,6 +3265,7 @@ div.weui-popup-modal{
 	padding-top:10px;
 }
 .emoji{
+	height: 16px;
 	position: relative;
 	top:3px;
 }

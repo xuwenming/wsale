@@ -192,8 +192,8 @@ footer .right{
     display: none;
 }
 .zan,.pencil{
-    width:15px;
-    height: 15px;
+    width:14px;
+    height: 14px;
 }
 .zan{
     position: relative;
@@ -205,7 +205,7 @@ footer .right{
 header a.ui-link, .comment a.ui-link{
     display: inline-block;
     font-size: 16px;
-    color:#6f83ec;
+    color:#9EB4D0;
 }
 .pencil{
     margin-bottom: -2px;
@@ -247,7 +247,7 @@ div.jilu>.right a,.comment>.ui-link{
     width:0;
     height: 19px;
     display: inline-block;
-    border-left: 5px solid #67ed80;
+    border-left: 5px solid #57c46b;
     margin-right: 7px;
     vertical-align:sub;
 }

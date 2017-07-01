@@ -185,10 +185,11 @@ footer .right{
 .header_time{
     color:gray;
 }
-.delete{
+.delete, .reply{
     float: right;
     opacity: .5;
     padding-right: 10px;
+    display: none;
 }
 .zan,.pencil{
     width:18px;
@@ -233,10 +234,11 @@ div.jilu>.right a,.comment>.ui-link{
     padding-top: 10px;
     position: relative;
     top:5px;
+    display: none;
 }
 .answer-b{
     color:#bbb;
-    font-size: 12px;
+    font-size: 14px;
     float:right;
     position: relative;
     right: -10px;

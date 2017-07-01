@@ -62,6 +62,8 @@ public class ZcTopicCommentServiceImpl extends BaseServiceImpl<ZcTopicComment> i
 			if (!F.empty(zcTopicComment.getPid())) {
 				whereHql += " and t.pid = :pid";
 				params.put("pid", zcTopicComment.getPid());
+			} else {
+				whereHql += " and t.pid is null ";
 			}
 			if (!F.empty(zcTopicComment.getUserId())) {
 				whereHql += " and t.userId = :userId";

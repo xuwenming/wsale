@@ -77,7 +77,7 @@ public class UserController extends BaseController {
 		Json j = new Json();
 		String privateKey = (String)session.getAttribute(RSAUtil.PRIVATE_KEY);
 		if(privateKey == null) {
-			j.setMsg("登陆失败，请关闭当前浏览器重新打开！");
+			j.setMsg("登陆失败，请关闭当前浏览器重新打开或联系客服！");
 			return j;
 		}
 		user.setName(RSAUtil.decryptByPravite(user.getName(), privateKey));

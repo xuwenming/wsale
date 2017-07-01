@@ -20,7 +20,7 @@
                             <div style="float:right;padding: 10px 0px;width:15%; text-align:center;color: green;" id="addComment">
                                 发 表
                             </div>
-                            <div style="width:80%; padding: 10px;" class="close-popup">
+                            <div style="width:80%; padding: 10px;" class="closeComment">
                                 <span style="padding: 10px 0px;">关 闭</span>
                             </div>
                         </div>
@@ -181,9 +181,10 @@
     <jsp:include page="../template/topic_template.jsp"></jsp:include>
 
     <script type="text/javascript">
-        var loading = true, currPage = 1, rows = 10;
+        var loading = true, currPage = 1, rows = 10, self = ${topic.user.self}, replyComment = null;
         $(function(){
             $('.content img').css('width','100%');
+            $('.content img').parent().css('text-indent', '0');
             if($(".rewardUsers").height() == $(".rewardUsers").css('max-height').replace('px', '')) {
                 $(".gengduo").removeClass("hide");
             }
@@ -212,13 +213,20 @@
             });
 
             $('.reward').click(function(){
-                if(${topic.user.self}) {
+                if(self) {
                     $.toast("<font size='2'>不可以对自己打赏哟</font>", "text");
                     return;
                 }
                 $('#rewardPopup').wePopup();
             });
 
+            $('.closeComment').click(function(){
+                $.closePopup();
+                if(replyComment) {
+                    replyComment = null;
+                    $("#comment").attr("placeholder", "发表您的留言...")
+                }
+            });
             $('#addComment').bind('click', addComment);
             $('.main-zan').bind('click', addPraise);
             $('.attBtn').bind('click', attrFun);
@@ -283,14 +291,28 @@
             var viewData = Util.cloneJson(comment);
             viewData.addtime = Util.getTime(comment.addtime);
             viewData.comment = viewData.comment.replace(/[\r\n]/g, "<br/>");
+            if(comment.replyComment) {
+                viewData.replyComment.addtime = Util.getTime(comment.replyComment.addtime);
+                viewData.replyComment.comment = viewData.replyComment.comment.replace(/[\r\n]/g, "<br/>");
+            }
 
             var dom = Util.cloneDom("topic_comment_template", comment, viewData);
-            if(isNew) $(".comments").prepend(dom)
+            if(comment.replyComment) dom.find('.topic-com-answer').show();
+
+            if(isNew) $(".comments").prepend(dom);
             else $(".comments").append(dom);
 
             dom.find("img.lazy").lazyload({
                 placeholder : base + 'wsale/images/lazyload.png'
             });
+
+            if(self && !comment.replyComment) {
+                dom.find('.reply').show().click(comment, function(event){
+                    replyComment = event.data;
+                    $("#comment").attr("placeholder", "回复 " + replyComment.user.nickname).focus();
+                    $('.comment').click();
+                });
+            }
         }
 
         function addComment() {
@@ -306,9 +328,21 @@
             $("#comment").val('');
 
             var params = {topicId : '${topic.id}', comment:comment, ctype:"TEXT"};
+            if(replyComment) params.pid = replyComment.id;
             ajaxPost('api/apiTopic/addComment', params, function(data){
                 if(data.success) {
-                    buildComment(data.obj, true);
+                    if(replyComment) {
+                        var $p = $('#topic_comment_template_' + replyComment.id);
+                        $p.find('[data-name=comment]').html(data.obj.comment.replace(/[\r\n]/g, "<br/>"));
+                        $p.find('[data-name=addtime]').html(Util.getTime(data.obj.addtime));
+                        $p.find('.topic-com-answer').show();
+                        $p.find('.reply').hide();
+
+                        replyComment = null;
+                        $("#comment").attr("placeholder", "发表您的留言...");
+                    } else {
+                        buildComment(data.obj, true);
+                    }
                     $.toast("发表成功", "text");
                 }
             });

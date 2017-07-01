@@ -192,8 +192,8 @@ footer .right{
     display: none;
 }
 .zan,.pencil{
-    width:18px;
-    height: 18px;
+    width:15px;
+    height: 15px;
 }
 .zan{
     position: relative;
@@ -237,7 +237,7 @@ div.jilu>.right a,.comment>.ui-link{
     display: none;
 }
 .answer-b{
-    color:#bbb;
+    color:#aaa;
     font-size: 14px;
     float:right;
     position: relative;
@@ -247,11 +247,10 @@ div.jilu>.right a,.comment>.ui-link{
     width:0;
     height: 19px;
     display: inline-block;
-    border-left: 5px solid green;
+    border-left: 5px solid #67ed80;
     margin-right: 7px;
     vertical-align:sub;
 }
 .answer-a{
-    color:#bbb;
-    font-weight: 500;
+    color:#aaa;
 }

@@ -168,7 +168,7 @@ footer .right{
     font-size: 14px;
     line-height: 30px;
     position: relative;
-    right:-15px;
+    right:-10px;
 }
 .footer_content p{
     word-wrap: break-word;
@@ -225,4 +225,31 @@ div.jilu>.right a,.comment>.ui-link{
 }
 .font-black{
     color:#333;
+}
+.topic-com-answer{
+    border-top: 1px solid #ddd;
+    clear: both;
+    margin-top: 10px;
+    padding-top: 10px;
+    position: relative;
+    top:5px;
+}
+.answer-b{
+    color:#bbb;
+    font-size: 12px;
+    float:right;
+    position: relative;
+    right: -10px;
+}
+.answer-a>.left-hr{
+    width:0;
+    height: 19px;
+    display: inline-block;
+    border-left: 5px solid green;
+    margin-right: 7px;
+    vertical-align:sub;
+}
+.answer-a{
+    color:#bbb;
+    font-weight: 500;
 }

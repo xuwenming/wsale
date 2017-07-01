@@ -40,6 +40,18 @@
 		<span class="footer_name" name="user" data-name="nickname"></span>
 		<span class="footer_time" name="addtime"></span>
 		<p name="comment"></p>
+
+		<div class="topic-com-answer">
+			<div class="answer-a">
+				<div class="left-hr"></div>作者回复
+				<span class="answer-b">
+				4天前
+			    </span>
+			</div>
+
+			<p class="answer-content">这是回复的内容</p>
+
+		</div>
 		<!--<span class="delete">删除</span>-->
 	</div>
 </div>

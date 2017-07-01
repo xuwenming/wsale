@@ -205,7 +205,7 @@ footer .right{
 header a.ui-link, .comment a.ui-link{
     display: inline-block;
     font-size: 16px;
-    color:#9EB4D0;
+    color:#5CA3F6;
 }
 .pencil{
     margin-bottom: -2px;
@@ -228,7 +228,7 @@ div.jilu>.right a,.comment>.ui-link{
     color:#333;
 }
 .topic-com-answer{
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #aaa;
     clear: both;
     margin-top: 10px;
     padding-top: 10px;
@@ -247,7 +247,7 @@ div.jilu>.right a,.comment>.ui-link{
     width:0;
     height: 19px;
     display: inline-block;
-    border-left: 5px solid #57c46b;
+    border-left: 5px solid #02BB00;
     margin-right: 7px;
     vertical-align:sub;
 }

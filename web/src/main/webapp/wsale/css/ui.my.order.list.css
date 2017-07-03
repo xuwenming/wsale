@@ -6,17 +6,15 @@ ul.wode-operate.myOrder{
 
 }
 .my-order-title{
-    border-bottom: 1px solid #ddd;
-    padding:5px 0;
+    border-bottom: 1px solid #f5f5f5;
+    padding:10px 0;
     height: 25px;
     line-height: 25px;
-    width:90%;
+    width:95%;
     margin:0 auto;
 }
 .order-left{
     float:left;
-    margin-left: 10px;
-    font-weight: 700;
     font-size: 16px;
 }
 .order-right{
@@ -49,6 +47,12 @@ ul.wode-operate.myOrder{
 .faxian-list{
     border-bottom: none;
 }
+.faxian-lefticon {
+    margin-right:0;
+    width: 24px;
+    height: 24px;
+}
+
 @media all and (max-width: 414px) {
     .cbp-vm-image.ui-link img.lazy{
         height:150px;

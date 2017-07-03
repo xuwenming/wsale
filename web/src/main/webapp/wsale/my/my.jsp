@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.my.order.list.css"/>
     <style>
         .redPoint {
-            margin: 4px -18px;
+            margin: -48px 10px;
             min-width: 0;
             min-height: 0;
             width: 8px;
@@ -31,7 +31,7 @@
                         <img src="${user.headImage}" style="border:2px solid #fff;" class="wode-userimg" />
                         <img src="${pageContext.request.contextPath}/wsale/images/p-${user.positionId}.png" class="wode-userflag" />
                     </div>
-                    <div style="float:right;margin-top:20px;">
+                    <div style="float:right;margin-top:15px;">
                         <img src="${pageContext.request.contextPath}/wsale/images/jiantou-white.png" />
                     </div>
                     <div>
@@ -50,10 +50,13 @@
                         </div>
                     </div>
                 </a>
-                <div>
-                    <div class="my-order-title">
+                <div style="border-top: 10px solid #f5f5f5;">
+                    <div class="my-order-title" onclick="href('api/apiOrder/myOrder?type=0');">
                         <span class="order-left">我的订单</span>
-                        <span class="order-right">全部 ></span>
+                        <div style="float: right;">
+                            <span  class="grayright-text" style="font-size: 14px;">全部</span>
+                            <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
+                        </div>
                     </div>
                     <ul class="wode-operate myOrder">
                         <li>
@@ -104,29 +107,26 @@
                             <div>余额</div>
                         </div>
                         <div>
-                            <span style="color:#1AAFF0; font-size:12px;"><fmt:formatNumber type="number" value="${amount}" pattern="0.00" maxFractionDigits="2"/></span>&nbsp;&nbsp;
-                            <%--<img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />--%>
+                            <span style="color:#1AAFF0; font-size:12px;"><fmt:formatNumber type="number" value="${amount}" pattern="0.00" maxFractionDigits="2"/></span>
                         </div>
-
                     </a>
                     <a class="faxian-link" href="javascript:href('api/apiChat/chat_list');">
                         <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/xiaoxizhongxin-icon.png" class="faxian-lefticon" />
                             <div>消息中心</div>
                         </div>
                         <div>
-                            <c:if test="${chat_unread_count > 0}">
+                            <c:if test="${chat_unread_count >= 0}">
                                 <span class="infocenter-number redPoint"></span>
                             </c:if>
-                            <%--<img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />--%>
                         </div>
 
                     </a>
                     <a href="javascript:href('api/apiProductController/productManage');" class="faxian-link">
-                        <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/xinpinkaipai-icon.png" class="faxian-lefticon" />
+                        <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/paipin-icon.png" class="faxian-lefticon" />
                             <div>拍品管理</div>
                         </div>
                         <div>
-                            <span class="grayright-text">竞拍中${auction_in_count}单</span>
+                            <span class="grayright-text2">竞拍中${auction_in_count}单</span>
                             <%--<img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />--%>
                         </div>
 
@@ -142,45 +142,45 @@
                             <div>店铺设置</div>
                         </div>
                         <div>
-                            <span class="grayright-text">
+                            <span class="grayright-text2">
                                 <c:choose>
-                                    <c:when test="${user.isAuth}">店铺已认证</c:when>
-                                    <c:otherwise>店铺未认证</c:otherwise>
+                                    <c:when test="${user.isAuth}">已认证</c:when>
+                                    <c:otherwise>未认证</c:otherwise>
                                 </c:choose>
 
                             </span>
-                            <%--<img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />--%>
                         </div>
-
                     </a>
-                    <a href="javascript:href('api/userController/myTheme');" class="faxian-link">
-                        <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/wodezhuti-icon.png" class="faxian-lefticon" />
-                            <div>我的主题</div>
+                    <a href="javascript:href('api/userController/myFans');" class="faxian-link">
+                        <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/shoucang-icon.png" class="faxian-lefticon" />
+                            <div>收藏</div>
                         </div>
-                        <div>
-                            <%--<img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />--%>
+                    </a>
+                    <a href="javascript:href('api/userController/myFans');" class="faxian-link">
+                        <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/pinglun-icon.png" class="faxian-lefticon" />
+                            <div>评论</div>
                         </div>
-
                     </a>
                     <a href="javascript:href('api/userController/myFans');" class="faxian-link">
                         <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/fensi-icon.png" class="faxian-lefticon" />
                             <div>粉丝</div>
                         </div>
                         <div>
-                            <span style="color:#dc721c; font-size:12px;">${user.fans}</span>&nbsp;&nbsp;
-                            <%--<img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />--%>
+                            <span style="color:#dc721c; font-size:12px;">${user.fans}</span>
                         </div>
-
                     </a>
                     <a href="javascript:href('api/userController/shieldors');" class="faxian-link">
                         <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/pingbiyonghu-icon.png" class="faxian-lefticon" />
                             <div>屏蔽用户</div>
                         </div>
                         <div>
-                            <span style="color:#dc721c; font-size:12px;">${user.shieldors}</span>&nbsp;&nbsp;
-                            <%--<img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />--%>
+                            <span style="color:#dc721c; font-size:12px;">${user.shieldors}</span>
                         </div>
-
+                    </a>
+                    <a href="javascript:href('api/userController/myTheme');" class="faxian-link">
+                        <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/wodezhuti-icon.png" class="faxian-lefticon" />
+                            <div>我的主题</div>
+                        </div>
                     </a>
                 <!--<a class="faxian-link">
                         <div style="float:right;">
@@ -198,16 +198,15 @@
                         </div>
 
                     </a>
-                <a href="<%=helpUrl %>" class="faxian-link">
-                    <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/help-icon.png" class="faxian-lefticon" />
-                        <div>帮助中心</div>
-                    </div>
+                    <a href="<%=helpUrl %>" class="faxian-link">
+                        <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/help-icon.png" class="faxian-lefticon" />
+                            <div>帮助中心</div>
+                        </div>
                         <div>
                             <%--<img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />--%>
                         </div>
-
                     </a>
-                    </div>
+                </div>
                 <div>
                     <ul class="wode-paipin">
                         <li id="canpaipaipin" class="wodepaipin-active">参拍拍品</li>

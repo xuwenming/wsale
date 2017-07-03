@@ -39,19 +39,19 @@
                         <div style="font-size:14px;color:#808080;">精选拍品</div>
                     </a>-->
                     <a style="width:23%; display:inline-block;background-color:#fff;padding:15px 0px;border-right: 1px solid #eee;" href="javascript:href('api/apiHomeController/myAttedProduct');">
-                        <img alt="" src="${pageContext.request.contextPath}/wsale/images/home-icon3.png" style="width:30%;margin-bottom:10px;" />
+                        <img alt="" src="${pageContext.request.contextPath}/wsale/images/home-icon3.png" style="width:30%;margin-bottom:5px;" />
                         <div style="font-size:14px;color:#808080;">我的关注</div>
                     </a>
                     <a style="width:23%; display:inline-block;background-color:#fff;padding:15px 0px;" href="javascript:href('api/bbsController/hotBbs');">
-                        <img alt="" src="${pageContext.request.contextPath}/wsale/images/home-icon6.png" style="width:30%;margin-bottom:10px;" />
+                        <img alt="" src="${pageContext.request.contextPath}/wsale/images/home-icon6.png" style="width:30%;margin-bottom:5px;" />
                         <div style="font-size:14px;color:#808080;">热门主题</div>
                     </a>
                     <a style="width:23%; display:inline-block;background-color:#fff;padding:15px 0px;border-left: 1px solid #eee;" href="javascript:href('api/bbsController/hotBbs?bbsType=BT03');">
-                        <img alt="" src="${pageContext.request.contextPath}/wsale/images/home-icon5.png" style="width:30%;margin-bottom:10px;" />
+                        <img alt="" src="${pageContext.request.contextPath}/wsale/images/home-icon5.png" style="width:30%;margin-bottom:5px;" />
                         <div style="font-size:14px;color:#808080;">热门讲堂</div>
                     </a>
                     <a style="width:23%; display:inline-block;background-color:#fff;padding:15px 0px;border-left: 1px solid #eee;" href="javascript:href('api/apiTopic/topic');">
-                        <img alt="" src="${pageContext.request.contextPath}/wsale/images/home-icon4.png" style="width:30%;margin-bottom:10px;" />
+                        <img alt="" src="${pageContext.request.contextPath}/wsale/images/home-icon4.png" style="width:30%;margin-bottom:5px;" />
                         <div style="font-size:14px;color:#808080;">专题文章</div>
                     </a>
                 </div>

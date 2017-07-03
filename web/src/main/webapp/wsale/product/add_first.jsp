@@ -28,7 +28,7 @@
                 <div class="second-title" style="background-color:#eee; text-align:center;">
                     <div class="retry-choose">重选</div>
                     <div class="choose-ok">完成</div>
-                    <span class="fenlei-title">文玩杂项</span>
+                    <span class="fenlei-title"></span>
                 </div>
                 <div style="margin:10px;">
                     <div style="font-size:12px;color:#888;margin-bottom:10px;">请选择二级分类</div>

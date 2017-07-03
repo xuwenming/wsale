@@ -262,6 +262,7 @@ textarea.ui-input-text{
 	background-color:#dc721c; 
 	position:absolute;
 	right:0;
+	margin-top: 1px;
 	display:none;
 }
 
@@ -1171,8 +1172,8 @@ p.order-right-middle{
 	vertical-align:sub;
 }
 .faxian-lefticon{
-	width:16px;
-	height:16px;
+	width:21px;
+	height:21px;
 	vertical-align:middle;
 	margin-right:5px;
 }
@@ -1263,13 +1264,13 @@ p.order-right-middle{
 }
 /*我的*/
 .wode-userinfo{
-	padding:15px 10px 20px 10px; background-color:#dc721c;
+	padding:10px; background-color:#dc721c;
 }
 .wode-touxiang{
 	float:left;margin-right:10px; vertical-align:middle;
 }
 .wode-userimg{
-	width:60px;height:60px;border:2px solid #fff;
+	width:55px;height:55px;border:2px solid #fff;
 }
 .wode-userflag{
 	width:35px; margin-top:-20px;margin-left:-39px;
@@ -1281,14 +1282,14 @@ p.order-right-middle{
 	width:15px;height:15px; vertical-align:middle;
 }
 .wode-info{
-	margin-top:20px; font-size:12px; color:#fff;
+	margin-top:15px; font-size:12px; color:#fff;
 }
 .wode-level{
 	width:16px;height:16px; vertical-align:middle;
 }
 .wode-operate{
-	margin:0; padding:0;
-	margin-bottom:10px;
+	padding:0;
+	margin:5px 0 10px 0;
 }
 .wode-operate li{
 	list-style:none;
@@ -1303,16 +1304,21 @@ p.order-right-middle{
 .wode-operate li img{
 	width:20px;
 	height:20px;
-	margin:10px 0px 5px 0px;
+	margin:10px 0px 2px 0px;
 }
 .grayright-text{
 	color:#999;
 	font-size:12px;
 	margin-right:5px;
 }
+.grayright-text2{
+	color:#999;
+	font-size:12px;
+}
 .wode-paipin,.wode-paipintitle{
 	margin:0px;
 	padding:0;
+	border-top:10px solid #f5f5f5;
 	border-bottom:10px solid #f5f5f5;
 }
 .wode-paipin li{
@@ -1389,7 +1395,7 @@ p.order-right-middle{
 	font-size:12px;
 }
 .renzheng-flag img{
-	width:25px;
+	width:23px;
 	
 }
 .renzheng-username{

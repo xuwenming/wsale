@@ -21,10 +21,10 @@
     </style>
 </head>
 <body>
-    <div data-role="page" class="jqm-demos">
+    <div data-role="page" class="jqm-demos" style="background-color: #f5f5f5;">
 
         <div id="index-content" role="main" class="ui-content jqm-content jqm-fullwidth">
-            <div class="home-content" style="margin:0; ">
+            <div class="home-content" style="margin:0;background-color: #fff; ">
                 <div class="faxian-list">
                     <a class="faxian-link" href="javascript:href('api/apiFindController/newProduct');">
                         <div style="float:right;">

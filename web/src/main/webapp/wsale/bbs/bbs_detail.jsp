@@ -100,7 +100,7 @@
                 </div>
                 <div style="overflow-y: auto;" class="first-category">
                     <c:forEach items="${categorys}" var="category" varStatus="vs">
-                        <div class="fenlei-liebiao first-style" categoryId="${category.id}">
+                        <div class="fenlei-liebiao first-style" categoryId="${category.id}" categoryName="${category.name}">
                             <img src="${pageContext.request.contextPath}/wsale/images/zhubao-icon.png" class="fenlei-img" /> <span class="fenlei-title">${category.name}</span>
                             <span class="fenlei-desc">${category.summary}</span>
                         </div>
@@ -111,7 +111,7 @@
                 <div class="second-title" style="background-color:#eee; text-align:center;">
                     <div class="retry-choose">重选</div>
                     <div class="choose-ok">完成</div>
-                    <span class="fenlei-title">文玩杂项</span>
+                    <span class="fenlei-title"></span>
                 </div>
                 <div style="margin:10px;">
                     <div style="font-size:12px;color:#888;margin-bottom:10px;">请选择二级分类</div>
@@ -582,6 +582,7 @@
             });
 
             $(".first-style").click(function(){
+                $('.second-title .fenlei-title').html($(this).attr("categoryName"));
                 drawChildCategory($(this).attr("categoryId"));
             });
 
@@ -667,6 +668,8 @@
                     for(var i in result) {
                         $("#childCategory").append('<div class="secondstyle-list" pid="'+pid+'" categoryId="'+result[i].id+'">'+result[i].name+'</div>');
                     }
+                    $(".dialog-content").hide();
+                    $(".second-style").show();
                 }
             });
         }

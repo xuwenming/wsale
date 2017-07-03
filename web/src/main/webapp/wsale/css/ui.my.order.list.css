@@ -2,20 +2,82 @@
 ul.wode-operate.myOrder{
     display: flex;
     justify-content: space-around;
+    clear:both;
 
+}
+.my-order-title{
+    border-bottom: 1px solid #ddd;
+    padding:5px 0;
+    height: 25px;
+    line-height: 25px;
+    width:90%;
+    margin:0 auto;
+}
+.order-left{
+    float:left;
+    margin-left: 10px;
+    font-weight: 700;
+    font-size: 16px;
+}
+.order-right{
+    float: right;
+    margin-right: 10px;
+    font-size: 16px;
+    font-color:#ddd;
+}
+.my-faxian-flex>.faxian-link{
+    float:left;
+    width:18%;
+    text-align: center;
+    margin:1px;
+    height: 55px;
+    min-height: 55px;
+    /*background-color: #fff;*/
+    border-left: 1px solid #ddd;
+
+}
+.my-faxian-flex>.faxian-link:nth-child(4n+1){
+    border-left: none;
+    margin-left: 2%;
+}
+.normal-text{
+    display: block;
+}
+.wode-paipin{
+    clear:both;
+}
+.faxian-list{
+    border-bottom: none;
 }
 @media all and (max-width: 414px) {
     .cbp-vm-image.ui-link img.lazy{
         height:150px;
+    }
+    .my-faxian-flex>.faxian-link:nth-child(4n+1){
+        margin-left: 3%;
     }
 }
 @media all and (max-width: 320px) {
     .cbp-vm-image.ui-link img.lazy{
         height:128px;
     }
+    .my-faxian-flex>.faxian-link{
+        width:17%;
+    }
 }
 @media all and (max-width: 360px) {
     .cbp-vm-image.ui-link img.lazy{
         height:136px;
+    }
+    .my-faxian-flex>.faxian-link:nth-child(4n+1){
+        margin-left: 2%;
+    }
+}
+@media (min-width: 640px) {
+    .my-faxian-flex>.faxian-link{
+        width:20%;
+    }
+    .my-faxian-flex>.faxian-link:nth-child(4n+1){
+        margin-left: 3%;
     }
 }

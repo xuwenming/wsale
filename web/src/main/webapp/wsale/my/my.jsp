@@ -115,7 +115,7 @@
                             <div>消息中心</div>
                         </div>
                         <div>
-                            <c:if test="${chat_unread_count >= 0}">
+                            <c:if test="${chat_unread_count > 0}">
                                 <span class="infocenter-number redPoint"></span>
                             </c:if>
                         </div>

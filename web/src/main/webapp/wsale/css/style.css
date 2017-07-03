@@ -226,6 +226,7 @@ textarea.ui-input-text{
 	display:inline-block;
 	margin-right:10px;
 	vertical-align:middle;
+	padding-bottom: 5px;
 }
 
 .ui-page-theme-a #fabuinfo .ui-body-inherit{
@@ -2196,7 +2197,7 @@ p.order-right-middle{
 .others-tab li{
 	list-style:none;
 	display:inline-block;
-	width:23.5%;
+	width:32%;
 	font-size:12px;
 	padding:10px 0px;
 	text-align:center;

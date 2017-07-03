@@ -99,9 +99,30 @@ public class ApiProductController extends BaseController {
 			request.setAttribute("images", images);
 		} else {
 			ZcProduct product = zcProductService.get(productId, null);
+			if(!F.empty(product.getCategoryId())) {
+				ZcCategory c = zcCategoryService.get(product.getCategoryId());
+				ZcCategory pc = null;
+				if(!F.empty(c.getPid())) {
+					pc = zcCategoryService.get(c.getPid());
+				}
+				request.setAttribute("categoryName", (pc != null ? pc.getName() + " - " : "") + c.getName());
+			}
 			request.setAttribute("product", product);
 		}
 		request.setAttribute("productId", productId);
+
+		// 获取分类
+		ZcCategory c = new ZcCategory();
+		c.setPid("0");
+		c.setIsDeleted(false);
+		List<ZcCategory> categorys = zcCategoryService.query(c);
+		if(CollectionUtils.isNotEmpty(categorys)) {
+			c.setPid(categorys.get(0).getId());
+			List<ZcCategory> childCategorys = zcCategoryService.query(c);
+			request.setAttribute("childCategorys", childCategorys);
+		}
+		request.setAttribute("categorys", categorys);
+
 		return "/wsale/product/add_first";
 	}
 
@@ -115,27 +136,7 @@ public class ApiProductController extends BaseController {
 		SessionInfo s = getSessionInfo(request);
 
 		ZcProduct product = zcProductService.get(id);
-		if(!F.empty(product.getCategoryId())) {
-			ZcCategory c = zcCategoryService.get(product.getCategoryId());
-			ZcCategory pc = null;
-			if(!F.empty(c.getPid())) {
-				pc = zcCategoryService.get(c.getPid());
-			}
-			request.setAttribute("categoryName", (pc != null ? pc.getName() + " - " : "") + c.getName());
-		}
 		request.setAttribute("product", product);
-
-		// 获取分类
-		ZcCategory c = new ZcCategory();
-		c.setPid("0");
-		c.setIsDeleted(false);
-		List<ZcCategory> categorys = zcCategoryService.query(c);
-		if(CollectionUtils.isNotEmpty(categorys)) {
-			c.setPid(categorys.get(0).getId());
-			List<ZcCategory> childCategorys = zcCategoryService.query(c);
-			request.setAttribute("childCategorys", childCategorys);
-		}
-		request.setAttribute("categorys", categorys);
 
 		// 获取加价幅度
 		ZcProductRange range = zcProductRangeService.getLastByUserId(s.getId());
@@ -613,6 +614,7 @@ public class ApiProductController extends BaseController {
 			shieldorfans.setObjectType(EnumConstants.SHIELDOR_FANS.SD.getCode());
 			shieldorfans.setObjectId(p.getAddUserId());
 			shieldorfans.setObjectById(s.getId());
+			shieldorfans.setIsDeleted(false);
 			if(zcShieldorfansService.get(shieldorfans) != null) {
 				j.fail();
 				j.setMsg("出价失败，您已被该用户屏蔽！");
@@ -758,9 +760,7 @@ public class ApiProductController extends BaseController {
 					shieldorfans.setObjectType(EnumConstants.SHIELDOR_FANS.FS.getCode());
 					shieldorfans.setObjectById(getD());
 					shieldorfans.setObjectId(userId);
-					if (zcShieldorfansService.get(shieldorfans) == null) {
-						zcShieldorfansService.add(shieldorfans);
-					}
+					zcShieldorfansService.addOrUpdate(shieldorfans);
 				}
 				return null;
 			}
@@ -892,6 +892,7 @@ public class ApiProductController extends BaseController {
 			shieldorfans.setObjectType(EnumConstants.SHIELDOR_FANS.SD.getCode());
 			shieldorfans.setObjectId(p.getAddUserId());
 			shieldorfans.setObjectById(s.getId());
+			shieldorfans.setIsDeleted(false);
 			if(zcShieldorfansService.get(shieldorfans) != null) {
 				j.fail();
 				j.setMsg("出价失败，您已被该用户屏蔽！");
@@ -1045,9 +1046,7 @@ public class ApiProductController extends BaseController {
 							shieldorfans.setObjectType(EnumConstants.SHIELDOR_FANS.FS.getCode());
 							shieldorfans.setObjectById(getD().getAddUserId());
 							shieldorfans.setObjectId(userId);
-							if (zcShieldorfansService.get(shieldorfans) == null) {
-								zcShieldorfansService.add(shieldorfans);
-							}
+							zcShieldorfansService.addOrUpdate(shieldorfans);
 						}
 
 						return null;

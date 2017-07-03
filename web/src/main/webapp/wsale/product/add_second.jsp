@@ -14,6 +14,12 @@
         .info-list .ui-input-text input {
             font-size: 14px;
         }
+        .fbpp-title {
+            padding: 5px;
+        }
+        .normal-text {
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -21,36 +27,8 @@
         <div role="main" class="ui-content jqm-content jqm-fullwidth">
             <input type="hidden" id="bindMobile" value="${sessionInfo.mobile}" />
             <div class="mask-layer"></div>
-            <div class="dialog-content">
-                <div class="fenlei-liebiao" style="background-color:#eee;">
-                    <span class="fenlei-title">分类</span>
-                    <span class="fenlei-desc">请谨慎选择，切勿跨品类</span>
-                </div>
-                <div style="overflow-y: auto;" class="first-category">
-                    <c:forEach items="${categorys}" var="category" varStatus="vs">
-                        <div class="fenlei-liebiao first-style" categoryId="${category.id}">
-                            <img src="${pageContext.request.contextPath}/wsale/images/zhubao-icon.png" class="fenlei-img" /> <span class="fenlei-title">${category.name}</span>
-                            <span class="fenlei-desc">${category.summary}</span>
-                        </div>
-                    </c:forEach>
-                </div>
-            </div>
-            <div class="second-style">
-                <div class="second-title" style="background-color:#eee; text-align:center;">
-                    <div class="retry-choose">重选</div>
-                    <div class="choose-ok">完成</div>
-                    <span class="fenlei-title">文玩杂项</span>
-                </div>
-                <div style="margin:10px;">
-                    <div style="font-size:12px;color:#888;margin-bottom:10px;">请选择二级分类</div>
-                    <div id="childCategory">
-                        <c:forEach items="${childCategorys}" var="childCategory" varStatus="vs">
-                            <div class="secondstyle-list" pid="${childCategory.pid}" categoryId="${childCategory.id}">${childCategory.name}</div>
-                        </c:forEach>
-                    </div>
-                </div>
-            </div>
-            <div class="baotui-dialog">
+
+            <!--<div class="baotui-dialog">
                 <div style="margin:10px;">
                     <img class="confirm-img" src="${pageContext.request.contextPath}/wsale/images/confirm-icon.png" />
                     <div class="confirm-info">
@@ -58,7 +36,7 @@
                     </div>
                     <a class="bottom-btn confirm-cancel" style="color:#dc721c;border:1px solid #dc721c; background-color:#fff; text-align:center;margin:10px 20px;">取消</a>
                 </div>
-            </div>
+            </div>-->
 
             <div id="bindMobilePopup" class="weui-popup-container popup-bottom">
                 <div class="weui-popup-overlay"></div>
@@ -110,29 +88,13 @@
                     </div>
 
                     <div style="text-align:left;">
-                        <div class="fbpp-title">
-                            基础信息（必填）
-                        </div>
                         <div class="info-list deadline-sel">
-                            <div style="float:right; text-align: right; " class="jzsj-content">
-                                <input type="text" placeholder="请选择时间" id="deadline" name="deadlineStr" readonly style="font-size: 12px;margin-top: 5px;">
+                            <div style="float:right; text-align: right;line-height: 30px;" class="jzsj-content">
+                                <input type="text" placeholder="请选择时间" id="deadline" name="deadlineStr" readonly style="font-size: 14px;padding: 0;">
                                 <!--<span>请选择时间</span> -->
-                                <img class="arrow-right right-iocn" src="${pageContext.request.contextPath}/wsale/images/rili-icon.png" />
+                                <img class="arrow-right right-iocn" src="${pageContext.request.contextPath}/wsale/images/rili-icon.png"/>
                             </div>
                             <div class="normal-text">截止时间</div>
-                        </div>
-                        <div class="info-list product-style">
-                            <div style="float:right;">
-                                <input type="hidden" name="categoryId" value="${product.categoryId}">
-                                <span id="categoryName">
-                                    <c:choose>
-                                        <c:when test="${not empty categoryName}">${categoryName}</c:when>
-                                        <c:otherwise>请选择拍品分类</c:otherwise>
-                                    </c:choose>
-                                </span>
-                                <img class="arrow-right right-iocn" src="${pageContext.request.contextPath}/wsale/images/fenlei-icon.png" />
-                            </div>
-                            <div class="normal-text">分类</div>
                         </div>
                         <div class="info-list">
                             <div style="float:right; text-align: right;" class="bzj-conent">
@@ -141,17 +103,16 @@
                             <div class="normal-text">起拍价</div>
                         </div>
                         <div class="info-list jjfd-set">
-                            <div style="float:right;">
+                            <div style="float:right;line-height: 25px;">
                                 <span>点击设置</span>
                             </div>
                             <div class="normal-text">加价幅度</div>
                         </div>
                         <div class="fbpp-title">
-                            可选设置
                         </div>
                         <div class="info-list">
                             <input type="hidden" name="approvalDays" value="${product.approvalDays}">
-                            <div style="float:right;">
+                            <div style="float:right;line-height: 25px;">
                                 <div class="baotui-choose" <c:if test="${product.approvalDays != 'AD07'}">style="background-color:#fff;color:#C87C1C;"</c:if>>7天包退</div>
                                 <div class="baotui-choose" <c:if test="${product.approvalDays != 'AD03'}">style="background-color:#fff;color:#C87C1C;"</c:if>>3天包退</div>
                                 <div class="baotui-choose" <c:if test="${product.approvalDays != 'AD99'}">style="background-color:#fff;color:#C87C1C;"</c:if>>不包退</div>
@@ -160,7 +121,7 @@
                         </div>
                         <div class="info-list">
                             <input type="hidden" name="isFreeShipping" value="${product.isFreeShipping}">
-                            <div style="float:right;">
+                            <div style="float:right;line-height: 25px;">
                                 <c:choose>
                                     <c:when test="${!product.isFreeShipping}">
                                         <div class="switch-icon" data-flag="false"><div class="switch-btn"></div></div>
@@ -176,19 +137,19 @@
                             <div class="normal-text">包邮</div>
                         </div>
                         <div class="info-list">
-                            <div style="float:right; text-align:right;" class="bzj-conent">
+                            <div style="float:right; text-align:right;line-height: 25px;" class="bzj-conent">
                                 <input class="onlyNum" type="tel" maxlength="10" placeholder="请输入" value="0" readonly name="margin"/>
                                 <span class="marginBtn">点击开通</span> <img class="right-iocn" src="${pageContext.request.contextPath}/wsale/images/baozhengjin-icon.png" />
                             </div>
                             <div class="normal-text">保证金</div>
                         </div>
-                        <div class="info-list">
+                        <!--<div class="info-list">
                             <input type="hidden" name="isOpenBest" value="0">
                             <div style="float:right;" class="bzj-conent">
                                 <span class="bestBtn">点击开通</span> <img class="right-iocn" src="${pageContext.request.contextPath}/wsale/images/jingpai-icon.png" />
                             </div>
                             <div class="normal-text">申请精选</div>
-                        </div>
+                        </div>-->
                         <!--<div class="info-list">
                             <input type="hidden" name="isNeedRealId" value="${product.isNeedRealId}">
                             <div style="float:right;">
@@ -222,7 +183,6 @@
                             <div class="normal-text">消保金</div>
                         </div>-->
                         <div class="fbpp-title">
-                            高级设置
                         </div>
                         <!--<div class="info-list">
                             <div style="float:right; text-align: right;" class="bzj-conent">
@@ -266,7 +226,6 @@
 
 
     <script type="text/javascript">
-        var categoryName = '';
         var positionId = '${sessionInfo.positionId}' || 'by';
         var time = 59, timeInterval;
         $(function(){
@@ -296,18 +255,6 @@
                     //var times = values.split(',');
                     //alert(new Date(times[0],times[1],times[2],times[3],times[4]).getTime());
                 }
-            });
-
-            $(".first-style").click(function(){
-                drawChildCategory($(this).attr("categoryId"));
-            });
-
-            $("#childCategory").on('click', '.secondstyle-list', function(){
-                var _this = $(this);
-                var pid = _this.attr('pid'), categoryId = _this.attr('categoryId');
-                $('input[name=categoryId]').val(categoryId);
-
-                categoryName = $(".first-style[categoryId="+pid+"] .fenlei-title").text() + " - " + _this.text();
             });
 
             $("#product_add_btn").bind('click', addSecond);
@@ -352,12 +299,6 @@
                     $('input[name=isOpenBest]').val(1);
                     $(_this).hide();
                 });
-            });
-
-            $(".choose-ok").click(function(){
-                if(categoryName != '') {
-                    $('#categoryName').text(categoryName);
-                }
             });
 
             $('#vcode-btn').bind('click', sendVCode);
@@ -419,29 +360,17 @@
 
         }
 
-        function drawChildCategory(pid) {
-            $("#childCategory").empty();
-            ajaxPost('api/apiCategoryController/categorys', {pid : pid}, function(data){
-                if(data.success) {
-                    var result = data.obj;
-                    for(var i in result) {
-                        $("#childCategory").append('<div class="secondstyle-list" pid="'+pid+'" categoryId="'+result[i].id+'">'+result[i].name+'</div>');
-                    }
-                }
-            });
-        }
-
         function addSecond() {
             if(!validate()) return;
 
             ajaxPost('api/apiProductController/publish', $('#product_add_form').serialize(), function(data){
                 if(data.success) {
-                    if($('input[name=isOpenBest]').val() == 0) {
+                    replace('api/apiProductController/productDetail?id=' + $("#id").val());
+                    /*if($('input[name=isOpenBest]').val() == 0) {
                         replace('api/apiProductController/productDetail?id=' + $("#id").val());
                     } else {
-                        //pay(data.obj);
                         replace('api/pay/toPay?objectId='+data.obj+'&objectType=PO03&attachType='+$("#id").val()+'&totalFee=<%=totalFee %>');
-                    }
+                    }*/
                 }
             },function(){
                 $.loading.load({type:1, msg:'正在发布...'});
@@ -457,12 +386,6 @@
             var deadlineStr = $("#deadline").val();
             if(Util.checkEmpty(deadlineStr)) {
                 $.toptip('请选择截止时间');
-                return false;
-            }
-
-            var categoryId = $('input[name=categoryId]').val();
-            if(Util.checkEmpty(categoryId)) {
-                $.toptip('请选择拍品分类');
                 return false;
             }
 

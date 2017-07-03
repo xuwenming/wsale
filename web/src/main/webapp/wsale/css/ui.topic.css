@@ -185,14 +185,15 @@ footer .right{
 .header_time{
     color:gray;
 }
-.delete{
+.delete, .reply{
     float: right;
     opacity: .5;
     padding-right: 10px;
+    display: none;
 }
 .zan,.pencil{
-    width:18px;
-    height: 18px;
+    width:14px;
+    height: 14px;
 }
 .zan{
     position: relative;
@@ -204,7 +205,7 @@ footer .right{
 header a.ui-link, .comment a.ui-link{
     display: inline-block;
     font-size: 16px;
-    color:#6f83ec;
+    color:#5CA3F6;
 }
 .pencil{
     margin-bottom: -2px;
@@ -227,16 +228,17 @@ div.jilu>.right a,.comment>.ui-link{
     color:#333;
 }
 .topic-com-answer{
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #aaa;
     clear: both;
     margin-top: 10px;
     padding-top: 10px;
     position: relative;
     top:5px;
+    display: none;
 }
 .answer-b{
-    color:#bbb;
-    font-size: 12px;
+    color:#aaa;
+    font-size: 14px;
     float:right;
     position: relative;
     right: -10px;
@@ -245,11 +247,10 @@ div.jilu>.right a,.comment>.ui-link{
     width:0;
     height: 19px;
     display: inline-block;
-    border-left: 5px solid green;
+    border-left: 5px solid #02BB00;
     margin-right: 7px;
     vertical-align:sub;
 }
 .answer-a{
-    color:#bbb;
-    font-weight: 500;
+    color:#aaa;
 }

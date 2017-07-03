@@ -25,6 +25,7 @@ public class ZcTopicComment implements java.io.Serializable {
 	private String userName;
 	private String auditUserName;
 	private User user;
+	private ZcTopicComment replyComment;
 
 	public String getAuditStatusZh() {
 		return Application.getString(this.auditStatus);
@@ -139,5 +140,13 @@ public class ZcTopicComment implements java.io.Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public ZcTopicComment getReplyComment() {
+		return replyComment;
+	}
+
+	public void setReplyComment(ZcTopicComment replyComment) {
+		this.replyComment = replyComment;
 	}
 }

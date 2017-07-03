@@ -36,6 +36,7 @@ public class ZcProduct implements java.io.Serializable {
 	private Double hammerPrice;
 	private Date hammerTime;			
 	private Boolean isDeleted;
+	private Integer seq;
 	private String addUserId;
 	private Date addtime;			
 	private String updateUserId;
@@ -254,6 +255,15 @@ public class ZcProduct implements java.io.Serializable {
 	public Boolean getIsDeleted() {
 		return this.isDeleted;
 	}
+
+	public Integer getSeq() {
+		return seq;
+	}
+
+	public void setSeq(Integer seq) {
+		this.seq = seq;
+	}
+
 	public void setAddUserId(String addUserId) {
 		this.addUserId = addUserId;
 	}

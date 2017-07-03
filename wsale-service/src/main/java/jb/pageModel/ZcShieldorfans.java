@@ -11,9 +11,8 @@ public class ZcShieldorfans implements java.io.Serializable {
 	private String objectType;
 	private String objectById;
 	private String objectId;
+	private Boolean isDeleted;
 	private Date addtime;			
-
-	
 
 	public void setId(String value) {
 		this.id = value;
@@ -45,6 +44,15 @@ public class ZcShieldorfans implements java.io.Serializable {
 	public String getObjectId() {
 		return this.objectId;
 	}
+
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 	public void setAddtime(Date addtime) {
 		this.addtime = addtime;
 	}

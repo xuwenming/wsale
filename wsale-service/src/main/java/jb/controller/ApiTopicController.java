@@ -153,6 +153,19 @@ public class ApiTopicController extends BaseController {
 							d.setUser(v);
 					}
 				});
+				completionService.submit(new Task<ZcTopicComment, ZcTopicComment>(c) {
+					@Override
+					public ZcTopicComment call() throws Exception {
+						ZcTopicComment reply = new ZcTopicComment();
+						reply.setPid(getD().getId());
+						return zcTopicCommentService.get(reply);
+					}
+
+					protected void set(ZcTopicComment d, ZcTopicComment v) {
+						if (v != null)
+							d.setReplyComment(v);
+					}
+				});
 			}
 			completionService.sync();
 		}

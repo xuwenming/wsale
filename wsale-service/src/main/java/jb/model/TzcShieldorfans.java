@@ -43,6 +43,7 @@ public class TzcShieldorfans implements java.io.Serializable,IEntity{
 	private String objectById;
 	//@Length(max=36)
 	private String objectId;
+	private Boolean isDeleted;
 	//
 	private Date addtime;
 	//columns END
@@ -91,7 +92,15 @@ public class TzcShieldorfans implements java.io.Serializable,IEntity{
 	public void setObjectId(String objectId) {
 		this.objectId = objectId;
 	}
-	
+
+	@Column(name = "isDeleted", unique = false, nullable = true, insertable = true, updatable = true, length = 0)
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 
 	@Column(name = "addtime", unique = false, nullable = true, insertable = true, updatable = true, length = 19)
 	public Date getAddtime() {

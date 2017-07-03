@@ -360,6 +360,16 @@ public class ApiUserController extends BaseController {
 	public String homePage(String userId, HttpServletRequest request) {
 		try {
 			SessionInfo s = getSessionInfo(request);
+
+			// 不是本人加关注逻辑
+			if(!F.empty(userId) && !userId.equals(s.getId())) {
+				ZcShieldorfans shieldorfans = new ZcShieldorfans();
+				shieldorfans.setObjectType("FS");
+				shieldorfans.setObjectById(userId);
+				shieldorfans.setObjectId(s.getId());
+				zcShieldorfansService.addOrUpdate(shieldorfans, true);
+			}
+
 			User user = userService.get(F.empty(userId) ? s.getId() : userId, F.empty(userId) ? null : s.getId());
 			request.setAttribute("user", user);
 
@@ -374,6 +384,7 @@ public class ApiUserController extends BaseController {
 				shieldorfans.setObjectType(EnumConstants.SHIELDOR_FANS.SD.getCode());
 				shieldorfans.setObjectById(userId);
 				shieldorfans.setObjectId(s.getId());
+				shieldorfans.setIsDeleted(false);
 				if (zcShieldorfansService.get(shieldorfans) != null) {
 					shieldored = true;
 				}
@@ -519,15 +530,13 @@ public class ApiUserController extends BaseController {
 			shieldorfans.setObjectType(objectType);
 			shieldorfans.setObjectById(userId);
 			shieldorfans.setObjectId(s.getId());
-			if(zcShieldorfansService.get(shieldorfans) == null) {
-				zcShieldorfansService.add(shieldorfans);
-				if(objectType.equals(EnumConstants.SHIELDOR_FANS.FS.getCode())) {
-					User user = userService.getByZc(userId);
-					StringBuffer buffer = new StringBuffer();
-					buffer.append("『"+s.getNickname()+"』关注了您。").append("\n\n");
-					buffer.append("<a href='"+ PathUtil.getUrlPath("api/userController/homePage?userId=" + s.getId())+"'>查看主页</a>");
-					sendWxMessage.sendCustomMessage(user.getName(), buffer.toString());
-				}
+			boolean r = zcShieldorfansService.addOrUpdate(shieldorfans);
+			if(r && objectType.equals(EnumConstants.SHIELDOR_FANS.FS.getCode())) {
+				User user = userService.getByZc(userId);
+				StringBuffer buffer = new StringBuffer();
+				buffer.append("『"+s.getNickname()+"』关注了您。").append("\n\n");
+				buffer.append("<a href='"+ PathUtil.getUrlPath("api/userController/homePage?userId=" + s.getId())+"'>查看主页</a>");
+				sendWxMessage.sendCustomMessage(user.getName(), buffer.toString());
 			}
 
 			j.setMsg("操作成功");
@@ -554,6 +563,7 @@ public class ApiUserController extends BaseController {
 			shieldorfans.setObjectType(objectType);
 			shieldorfans.setObjectById(userId);
 			shieldorfans.setObjectId(s.getId());
+			shieldorfans.setIsDeleted(false);
 			ZcShieldorfans old = zcShieldorfansService.get(shieldorfans);
 			if(old != null)
 				zcShieldorfansService.delete(old.getId());
@@ -588,6 +598,7 @@ public class ApiUserController extends BaseController {
 		try{
 			SessionInfo s = getSessionInfo(request);
 			shieldorfans.setObjectId(s.getId());
+			shieldorfans.setIsDeleted(false);
 			ph.setSort("addtime");
 			ph.setOrder("desc");
 			DataGrid dataGrid = zcShieldorfansService.dataGrid(shieldorfans, ph);
@@ -651,6 +662,7 @@ public class ApiUserController extends BaseController {
 			ZcShieldorfans shieldorfans = new ZcShieldorfans();
 			shieldorfans.setObjectType(EnumConstants.SHIELDOR_FANS.FS.getCode());
 			shieldorfans.setObjectById(s.getId());
+			shieldorfans.setIsDeleted(false);
 			ph.setSort("addtime");
 			ph.setOrder("desc");
 			DataGrid dataGrid = zcShieldorfansService.dataGrid(shieldorfans, ph);

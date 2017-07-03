@@ -114,6 +114,7 @@ public class TzcProduct implements java.io.Serializable,IEntity{
 	private Date hammerTime;
 	//
 	private Boolean isDeleted;
+	private Integer seq;
 	//@Length(max=36)
 	private String addUserId;
 	//
@@ -361,7 +362,16 @@ public class TzcProduct implements java.io.Serializable,IEntity{
 	public void setIsDeleted(Boolean isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-	
+
+	@Column(name = "seq", unique = false, nullable = true, insertable = true, updatable = true, length = 10)
+	public java.lang.Integer getSeq() {
+		return this.seq;
+	}
+
+	public void setSeq(java.lang.Integer seq) {
+		this.seq = seq;
+	}
+
 	@Column(name = "addUserId", unique = false, nullable = true, insertable = true, updatable = true, length = 36)
 	public String getAddUserId() {
 		return this.addUserId;

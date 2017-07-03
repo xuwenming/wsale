@@ -1,0 +1,67 @@
+@charset "utf-8";
+body{
+    margin:0;
+    padding:0;
+    max-width: 640px;
+    margin:0 auto;
+    text-align: center;
+    box-sizing: border-box;
+    background-color: #eee;
+}
+.speak-main{
+    background-color:#fff;
+}
+ul{
+    list-style: none;
+    padding:0;
+    margin:0;
+}
+.speak-title{
+    line-height: 52px;
+}
+.speak-left{
+    vertical-align: bottom;
+}
+li{
+    padding:10px;
+    border-bottom: 1px solid #ddd;
+    text-align: justify;
+    text-align-last: left;
+}
+.speak-li-left{
+    float: left;
+}
+.speak-li-left>img{
+    width:60px;
+    height: 60px;
+    border-radius: 5px;
+}
+.speak-li-right{
+    width:calc(100% - 75px);
+    float: right;
+}
+.speak-content{
+    width:calc(100% - 95px);
+    float:left;
+}
+.bg-img{
+    width:90px;
+    height:90px;
+    float: right;
+    line-height: 100%;
+}
+.speak-user{
+    float: left;
+    padding:0 5px 5px 0px;
+    font-size: 18px;
+    color: #3668ff;
+    position: relative;
+    top:-4px;
+}
+.new-speak{
+    clear: both;
+}
+.new-speak-time{
+    padding-top: 10px;
+    color:#bbb;
+}

@@ -346,6 +346,7 @@ public class UserServiceImpl implements UserServiceI {
 				shieldorfans.setObjectType("FS");
 				shieldorfans.setObjectById(id);
 				shieldorfans.setObjectId(userId);
+				shieldorfans.setIsDeleted(false);
 				if (zcShieldorfansService.get(shieldorfans) == null) {
 					u.setAttred(false);
 				} else {

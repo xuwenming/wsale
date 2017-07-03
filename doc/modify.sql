@@ -280,5 +280,15 @@ ALTER TABLE `zc_offline_transfer`
 insert into zc_reward (id, object_type, object_id, reward_fee, user_id, addtime, pay_status, paytime)
 select t.id, 'BBS', t.bbs_id, round(t.reward_fee*100), t.user_id,t.addtime,t.pay_status, t.paytime  from zc_bbs_reward t
 
+-- -----------------------------------------------------
+--  新增字段  snow.xu 20170703
+-- -----------------------------------------------------
+ALTER TABLE `zc_forum_bbs`
+  ADD COLUMN `bbs_collect`  int(11) NULL DEFAULT 0 COMMENT '收藏数' AFTER `bbs_listen`;
+ALTER TABLE `zc_shieldorfans`
+  ADD COLUMN `isDeleted`  tinyint(1) NULL DEFAULT 0 COMMENT '是否删除,1删除，0未删除' AFTER `object_id`;
+ALTER TABLE `zc_product`
+  ADD COLUMN `seq`  int(11) NULL DEFAULT 0 COMMENT '热门排序' AFTER `hammer_time`;
+
 
 

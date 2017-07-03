@@ -98,6 +98,7 @@ public class NewAuctionTask {
         ZcShieldorfans sf = new ZcShieldorfans();
         sf.setObjectType("FS");
         sf.setObjectById(product.getAddUserId());
+        sf.setIsDeleted(false);
         List<ZcShieldorfans> attrs = zcShieldorfansService.query(sf);
         if(CollectionUtils.isNotEmpty(attrs)) {
             int page = 1, pageSize = 10;
@@ -223,6 +224,7 @@ public class NewAuctionTask {
                     q = new ZcShieldorfans();
                     q.setObjectType("FS");
                     q.setObjectId(user.getId());
+                    q.setIsDeleted(false);
                     List<ZcShieldorfans> attrs = zcShieldorfansService.query(q);
                     ZcShieldorfans attr = attrs.get(random.nextInt(attrs.size()));
                     pushMessage(user.getName(), attr.getObjectById());

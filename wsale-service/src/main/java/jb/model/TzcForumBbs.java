@@ -91,6 +91,7 @@ public class TzcForumBbs implements java.io.Serializable,IEntity{
 	private Integer bbsShare;
 	//
 	private Integer bbsListen;
+	private Integer bbsCollect;
 	private Date lastCommentTime;
 	private String lastUpdateUserId;
 	private Date lastUpdateTime;
@@ -288,6 +289,15 @@ public class TzcForumBbs implements java.io.Serializable,IEntity{
 	
 	public void setBbsListen(Integer bbsListen) {
 		this.bbsListen = bbsListen;
+	}
+
+	@Column(name = "bbs_collect", unique = false, nullable = true, insertable = true, updatable = true, length = 10)
+	public Integer getBbsCollect() {
+		return bbsCollect;
+	}
+
+	public void setBbsCollect(Integer bbsCollect) {
+		this.bbsCollect = bbsCollect;
 	}
 
 	@Column(name = "last_comment_time", unique = false, nullable = true, insertable = true, updatable = true, length = 19)

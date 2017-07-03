@@ -59,6 +59,9 @@ public class ApiForumBbsController extends BaseController {
 	@Autowired
 	private SendWxMessageImpl sendWxMessage;
 
+	@Autowired
+	private ZcCollectServiceI zcCollectService;
+
 	/**
 	 * 跳转至帖子发布页
 	 * @return
@@ -344,6 +347,16 @@ public class ApiForumBbsController extends BaseController {
 				}
 			}
 			request.setAttribute("isShare", isShare);
+
+			// 是否收藏
+			boolean isCollect = false;
+			ZcCollect collect = new ZcCollect();
+			collect.setObjectType(EnumConstants.OBJECT_TYPE.BBS.getCode());
+			collect.setObjectId(bbs.getId());
+			collect.setUserId(s.getId());
+			collect = zcCollectService.get(collect);
+			if(collect != null) isCollect = true;
+			request.setAttribute("isCollect", isCollect);
 
 			User user = userService.get(bbs.getAddUserId(), s.getId());
 

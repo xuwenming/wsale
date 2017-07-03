@@ -1,26 +1,20 @@
 package jb.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import jb.absx.F;
 import jb.dao.ZcShieldorfansDaoI;
 import jb.model.TzcShieldorfans;
-import jb.model.TzcShop;
-import jb.pageModel.ZcShieldorfans;
 import jb.pageModel.DataGrid;
 import jb.pageModel.PageHelper;
-import jb.pageModel.ZcShop;
+import jb.pageModel.User;
+import jb.pageModel.ZcShieldorfans;
 import jb.service.ZcShieldorfansServiceI;
-
+import jb.util.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import jb.util.MyBeanUtils;
+
+import java.util.*;
 
 @Service
 public class ZcShieldorfansServiceImpl extends BaseServiceImpl<ZcShieldorfans> implements ZcShieldorfansServiceI {
@@ -62,7 +56,11 @@ public class ZcShieldorfansServiceImpl extends BaseServiceImpl<ZcShieldorfans> i
 			if (!F.empty(zcShieldorfans.getObjectId())) {
 				whereHql += " and t.objectId = :objectId";
 				params.put("objectId", zcShieldorfans.getObjectId());
-			}		
+			}
+			if(zcShieldorfans.getIsDeleted() != null) {
+				whereHql += " and t.isDeleted = :isDeleted";
+				params.put("isDeleted", zcShieldorfans.getIsDeleted());
+			}
 		}	
 		return whereHql;
 	}
@@ -97,8 +95,52 @@ public class ZcShieldorfansServiceImpl extends BaseServiceImpl<ZcShieldorfans> i
 
 	@Override
 	public void delete(String id) {
-		zcShieldorfansDao.delete(zcShieldorfansDao.get(TzcShieldorfans.class, id));
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		zcShieldorfansDao.executeHql("update TzcShieldorfans t set t.isDeleted = 1 where t.id = :id", params);
+//		zcShieldorfansDao.delete(zcShieldorfansDao.get(TzcShieldorfans.class, id));
 	}
+
+	/**
+	 *
+	 * @param shieldorfans
+	 * @return true:推送通知消息
+	 */
+	@Override
+	public boolean addOrUpdate(ZcShieldorfans shieldorfans) {
+		return addOrUpdate(shieldorfans, false);
+	}
+
+	/**
+	 *
+	 * @param shieldorfans
+	 * @return true:推送通知消息
+	 */
+	@Override
+	public boolean addOrUpdate(ZcShieldorfans shieldorfans, boolean isHomePage) {
+		boolean result = false;
+		ZcShieldorfans exist = get(shieldorfans);
+		if(exist == null) {
+			add(shieldorfans);
+			result = true;
+		} else {
+			if(exist.getIsDeleted()) {
+				Date now = new Date();
+				boolean isToday = DateUtil.format(now, Constants.DATE_FORMAT_YMD).equals(DateUtil.format(exist.getAddtime(), Constants.DATE_FORMAT_YMD));
+				if(!isHomePage || !isToday) {
+					shieldorfans.setId(exist.getId());
+					shieldorfans.setIsDeleted(false);
+					shieldorfans.setAddtime(now);
+					edit(shieldorfans);
+					if(!isToday)
+						result = true;
+				}
+			}
+		}
+
+		return result;
+	}
+
 
 	@SuppressWarnings("unchecked")
 	@Override

@@ -188,8 +188,8 @@
 				$(".mask-layer,.second-style").hide();
 			});
 			$("body").on("click",".first-style",function(){
-				$(".dialog-content").hide();
-				$(".second-style").show();
+				//$(".dialog-content").hide();
+				//$(".second-style").show();
 			});
 			$("body").on("click",".baotui-choose",function(){
 				$(this).css("color","#fff");
@@ -268,7 +268,7 @@
 
 			/*他人店铺*/
 			$(".others-tab li").click(function(){
-				if($(this).index() == 3) return;
+				if($(this).index() == 2) return;
 				$(this).addClass("titletab-active");
 				$(this).siblings().removeClass("titletab-active");
 				var flId = $(this).attr("id");

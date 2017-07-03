@@ -319,7 +319,16 @@
                         </div>
                           <div style="padding-top:25px;">
                             <img src="${pageContext.request.contextPath}/wsale/images/dashang-icon.png" style="width:20px; vertical-align:middle;" class="rewardBtn" /> <span style="font-size:12px;color:#aaa;" class="rewardBtn">打赏 <count class="bbsReward">${bbs.bbsReward}</count> &nbsp;|&nbsp;</span>
-                            <img src="${pageContext.request.contextPath}/wsale/images/zhuanfa-icon.png" style="width:16px; vertical-align:middle;" class="share-icon"/> <span style="font-size:12px;color:#aaa;" class="share-icon">转发 <count class="bbsShare">${bbs.bbsShare}</count></span>
+                            <c:choose>
+                                <c:when test="${isCollect}">
+                                    <img class="collect collected" src="${pageContext.request.contextPath}/wsale/images/yiguanzhu-icon.png" style="width:18px; vertical-align:middle;" />
+                                    <span style="font-size:12px;color:#aaa;" class="collect collected collect-alt">取消收藏</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <img class="collect" src="${pageContext.request.contextPath}/wsale/images/guanzhu-icon.png" style="width:18px; vertical-align:middle;" />
+                                    <span style="font-size:12px;color:#aaa;" class="collect collect-alt">收藏</span>
+                                </c:otherwise>
+                            </c:choose>
                             <div style="float:right;font-size:12px;color:#aaa;margin-top:5px;margin-right:10px;">回复 <count class="bbsComment">${bbs.bbsComment}</count></div>
                         </div>
                         <div style="margin-left:10px;margin-top:5px;border-left: 5px solid transparent;border-right: 5px solid transparent;border-bottom: 8px solid #f0f0f0;width:0;height:0;<c:if test="${rewards.size() == 0}">display:none;</c:if>" class="dashang-sanjiao">
@@ -375,7 +384,7 @@
         var self = ${user.self};
         var $authDom = $(".topmore-list ul");
         var mp3List = [], durations = 0, progress;
-        var isShare = ${isShare};
+        var isShare = ${isShare}, isCollect = ${isCollect};
         var replyComment = null, replyState = true;
         var categoryId = null;
         var st = 0;
@@ -503,6 +512,7 @@
 
             //$(".more-content li").click(moreFun);
             $('.guanzhu').click('${user.id}', attrFun);
+            $('.collect').click(collectFun);
 
             $('.rewardBtn').bind('click', function(){
                 if(self) {
@@ -751,6 +761,10 @@
                 else $authDom.append('<li name="isEssence" data-value="1"><a>加精</a></li>');
             }
             if($.authTzyd) $authDom.append('<li class="bbsMove"><a>移动</a></li>');
+
+            if(isCollect) $authDom.append('<li class="collect collected"><a class="collect-alt">取消收藏</a></li>');
+            else $authDom.append('<li class="collect"><a class="collect-alt">收藏</a></li>');
+
             if(!self) $authDom.append('<li class="report"><a>举报</a></li>');
             if($.authGbhf) {
                 var isOffReply = 1;
@@ -812,6 +826,33 @@
                 if(data.success) {
                     $(_this).remove();
                     $('div[data-user-id='+userId+']').remove();
+                }
+            });
+        }
+
+        function collectFun() {
+            var url = 'api/apiPoint/addCollect',_this = this;
+            if($(_this).hasClass('collected')) {
+                url = 'api/apiPoint/cancelCollect';
+            }
+            ajaxPost(url, {objectType:'BBS', objectId:'${bbs.id}'}, function(data){
+                if(data.success) {
+                    if($(_this).hasClass('collected')) {
+                        if($('.collect').is('img')) {
+                            $('.collect').attr('src', base + 'wsale/images/guanzhu-icon.png');
+                        }
+                        $('.collect').removeClass('collected');
+                        $('.collect-alt').html('收藏');
+
+                        $.toast("已取消收藏");
+                    } else {
+                        if($('.collect').is('img')) {
+                            $('.collect').attr('src', base + 'wsale/images/yiguanzhu-icon.png');
+                        }
+                        $('.collect').addClass('collected');
+                        $('.collect-alt').html('取消收藏');
+                        $.toast("已收藏");
+                    }
                 }
             });
         }

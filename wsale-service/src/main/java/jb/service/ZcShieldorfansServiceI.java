@@ -53,7 +53,12 @@ public interface ZcShieldorfansServiceI {
 	 */
 	public void delete(String id);
 
+	public boolean addOrUpdate(ZcShieldorfans shieldorfans);
+
+	boolean addOrUpdate(ZcShieldorfans shieldorfans, boolean isHomePage);
+
 	ZcShieldorfans get(ZcShieldorfans shieldorfans);
 
 	public List<ZcShieldorfans> query(ZcShieldorfans shieldorfans);
+
 }

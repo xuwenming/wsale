@@ -54,7 +54,7 @@
                     <ul class="others-tab">
                         <li class="titletab-active">新品开拍</li>
                         <li>即将截拍</li>
-                        <li>参拍拍品</li>
+                        <!--<li>参拍拍品</li>-->
                         <li>全部拍品</li>
                     </ul>
                 </div>
@@ -117,7 +117,7 @@
 
             $('.others-tab li').click(function() {
                 var num = $(this).index();
-                if(num == 3) {
+                if(num == 2) {
                     $.cookie('shop_page', JSON.stringify({num:$("li.titletab-active").index(), scrollTop:$(window).scrollTop(), currPage:currPage-1}));
                     href('api/apiShop/showAllProducts?userId=${user.id}');
                     return;

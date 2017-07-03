@@ -31,6 +31,7 @@ public class ZcForumBbs implements java.io.Serializable {
 	private Integer bbsReward;
 	private Integer bbsShare;
 	private Integer bbsListen;
+	private Integer bbsCollect;
 	private Date lastCommentTime;
 	private String lastUpdateUserId;
 	private Date lastUpdateTime;
@@ -228,6 +229,14 @@ public class ZcForumBbs implements java.io.Serializable {
 	
 	public Integer getBbsListen() {
 		return this.bbsListen;
+	}
+
+	public Integer getBbsCollect() {
+		return bbsCollect;
+	}
+
+	public void setBbsCollect(Integer bbsCollect) {
+		this.bbsCollect = bbsCollect;
 	}
 
 	public Date getLastCommentTime() {

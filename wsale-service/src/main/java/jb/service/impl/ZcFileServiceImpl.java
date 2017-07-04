@@ -148,4 +148,9 @@ public class ZcFileServiceImpl extends BaseServiceImpl<ZcFile> implements ZcFile
 		}
 		return o == null ? 0 : (o.getSeq() == null ? 0 : o.getSeq());
 	}
+
+	@Override
+	public Map<String, String> queryIcons(String objectType, String... objectIds) {
+		return zcFileDao.queryIcons(objectType, objectIds);
+	}
 }

@@ -5,6 +5,7 @@ import jb.pageModel.DataGrid;
 import jb.pageModel.PageHelper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -57,4 +58,6 @@ public interface ZcFileServiceI {
 	public ZcFile get(ZcFile file);
 
 	int getMaxSeq(ZcFile zcFile);
+
+	Map<String,String> queryIcons(String objectType, String... objectIds);
 }

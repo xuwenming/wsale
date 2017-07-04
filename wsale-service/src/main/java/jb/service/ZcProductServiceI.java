@@ -67,4 +67,5 @@ public interface ZcProductServiceI {
 
 	long getCount(ZcProduct product);
 
+	List<ZcProduct> getListByIds(String... productIds);
 }

@@ -2,7 +2,6 @@ package jb.service.impl;
 
 import jb.absx.F;
 import jb.dao.ZcProductDaoI;
-import jb.model.TzcBestProduct;
 import jb.model.TzcProduct;
 import jb.pageModel.*;
 import jb.service.*;
@@ -28,9 +27,9 @@ public class ZcProductServiceImpl extends BaseServiceImpl<ZcProduct> implements 
 	@Autowired
 	private ZcReadRecordServiceI zcReadRecordService;
 
+
 	@Autowired
 	private ZcFileServiceI zcFileService;
-
 	@Autowired
 	private ZcProductLikeServiceI zcProductLikeService;
 
@@ -326,6 +325,20 @@ public class ZcProductServiceImpl extends BaseServiceImpl<ZcProduct> implements 
 		Map<String, Object> params = new HashMap<String, Object>();
 		String where = whereHql(product, params);
 		return zcProductDao.count("select count(*) from TzcProduct t " + where, params);
+	}
+
+	@Override
+	public List<ZcProduct> getListByIds(String... productIds) {
+		List<ZcProduct> ol = new ArrayList<ZcProduct>();
+		List<TzcProduct> l = zcProductDao.getListByIds(productIds);
+		if (l != null && l.size() > 0) {
+			for (TzcProduct t : l) {
+				ZcProduct o = new ZcProduct();
+				BeanUtils.copyProperties(t, o);
+				ol.add(o);
+			}
+		}
+		return ol;
 	}
 
 	@Override

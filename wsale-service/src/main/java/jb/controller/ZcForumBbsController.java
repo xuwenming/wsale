@@ -62,6 +62,9 @@ public class ZcForumBbsController extends BaseController {
 	 */
 	@RequestMapping("/manager")
 	public String manager(HttpServletRequest request) {
+		SessionInfo sessionInfo = (SessionInfo) request.getSession().getAttribute(ConfigUtil.getSessionInfoName());
+		User user = userService.getByZc(sessionInfo.getId());
+		request.setAttribute("utype", user.getUtype());
 		return "/zcforumbbs/zcForumBbs";
 	}
 

@@ -3,8 +3,10 @@ package jb.controller;
 import jb.pageModel.*;
 import jb.service.UserServiceI;
 import jb.service.ZcBestProductServiceI;
+import jb.service.ZcFileServiceI;
 import jb.service.ZcProductServiceI;
 import jb.service.impl.CompletionFactory;
+import jb.util.EnumConstants;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,9 @@ public class ApiBestProductController extends BaseController {
 
 	@Autowired
 	private UserServiceI userService;
+
+	@Autowired
+	private ZcFileServiceI zcFileService;
 
 	/**
 	 * 首页-精选拍品
@@ -139,28 +144,43 @@ public class ApiBestProductController extends BaseController {
 							zcBestProduct.setAddUserId(addUserId);
 							zcBestProduct.setGroup(null);
 							List<ZcBestProduct> list = zcBestProductService.query(zcBestProduct);
-							List<ZcProduct> products = new ArrayList<ZcProduct>();
-							v.put("products", products);
-							v.put("readCount", 0);
-
-							if(!CollectionUtils.isEmpty(list)) {
-								for (ZcBestProduct bp : list) {
-									final String productId = bp.getProductId();
-									completionService.submit(new Task<Map<String, Object>, ZcProduct>(v) {
-										@Override
-										public ZcProduct call() throws Exception {
-											ZcProduct product = zcProductService.get(productId, null);
-											return product;
-										}
-										protected void set(Map<String, Object> d, ZcProduct v) {
-											List<ZcProduct> products = (List<ZcProduct>)d.get("products");
-											int readCount = (int) d.get("readCount");
-											products.add(v);
-											d.put("readCount", readCount + v.getReadCount());
-										}
-									});
-								}
+							String[] productIds = new String[list.size()];
+							int i = 0;
+							for(ZcBestProduct bp : list) {
+								productIds[i] = bp.getProductId();
+								i++;
 							}
+
+							List<ZcProduct> products = zcProductService.getListByIds(productIds);
+							Map<String, String> icons = zcFileService.queryIcons(EnumConstants.OBJECT_TYPE.PRODUCT.getCode(), productIds);
+
+							int readCount = 0;
+							for(ZcProduct product : products) {
+								product.setIcon(icons.get(product.getId()));
+								readCount += product.getReadCount();
+							}
+							//List<ZcProduct> products = new ArrayList<ZcProduct>();
+							v.put("products", products);
+							v.put("readCount", readCount);
+
+//							if(!CollectionUtils.isEmpty(list)) {
+//								for (ZcBestProduct bp : list) {
+//									final String productId = bp.getProductId();
+//									completionService.submit(new Task<Map<String, Object>, ZcProduct>(v) {
+//										@Override
+//										public ZcProduct call() throws Exception {
+//											ZcProduct product = zcProductService.get(productId, null);
+//											return product;
+//										}
+//										protected void set(Map<String, Object> d, ZcProduct v) {
+//											List<ZcProduct> products = (List<ZcProduct>)d.get("products");
+//											int readCount = (int) d.get("readCount");
+//											products.add(v);
+//											d.put("readCount", readCount + v.getReadCount());
+//										}
+//									});
+//								}
+//							}
 
 							d.add(v);
 						}

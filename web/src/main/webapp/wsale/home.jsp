@@ -28,7 +28,7 @@
                     </c:forEach>
                 </div>
             </div>
-            <div class="home-content" style="background-color: #FFF;">
+            <div class="home-content" style="background-color: #FFF; margin-bottom: 0;">
                 <div>
                     <!--<a style="width:29%;display:inline-block; background-color:#fff;padding:15px 0px;" href="javascript:href('api/apiCategoryController/category');">
                         <img alt="" src="${pageContext.request.contextPath}/wsale/images/home-icon1.png" style="width:30%;margin-bottom:10px;" />
@@ -72,28 +72,41 @@
             </div>
 
             <div style="width: 100%;background-color: #FFF;">
-                <div class="faxian-link homeBbsTitle" style="display: none;">
-                    <!--<div class="list-right more">
-                        <span class="grayright-text">更多</span>
-                        <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png">
-                    </div>-->
-                    <span style="margin-left: 5px;font-size: 15px;">热门推荐</span>
+                <div class="faxian-link homeBbsTitle" style="border-top: 10px solid rgb(245, 245, 245); display: none;">
+                    <span style="margin-left: 5px;font-size: 16px;">帖子推荐</span>
+                    <div class="homeBbsMore" style="float: right; display: none;">
+                        <span  class="grayright-text" style="margin-right:0;">更多</span>
+                        <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
+                    </div>
                 </div>
 
                 <div class="homeBbsList" style="padding: 0 10px;">
                 </div>
 
                 <div class="faxian-link homeTopicTitle" style="border-top: 10px solid rgb(245, 245, 245); display: none;">
-                    <span style="margin-left: 5px;font-size: 15px;">专题推荐</span>
+                    <span style="margin-left: 5px;font-size: 16px;">专题推荐</span>
+                    <div class="homeTopicMore" style="float: right;display: none;">
+                        <span  class="grayright-text" style="margin-right:0;">更多</span>
+                        <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
+                    </div>
                 </div>
                 <div class="homeTopicList" style="padding: 0 10px;">
                 </div>
 
                 <div class="faxian-link bestTitle" style="border-top: 10px solid rgb(245, 245, 245); display: none;">
-                    <span style="margin-left: 5px;font-size: 15px;">精选推荐</span>
+                    <span style="margin-left: 5px;font-size: 16px;">精选推荐</span>
+                    <div class="bestMore" style="float: right;display: none;">
+                        <span  class="grayright-text" style="margin-right:0;">更多</span>
+                        <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
+                    </div>
                 </div>
                 <div class="bestList">
+                </div>
 
+                <div class="faxian-link homeProductTitle" style="border-top: 10px solid rgb(245, 245, 245); display: none;">
+                    <span style="margin-left: 5px;font-size: 16px;">拍品推荐</span>
+                </div>
+                <div class="homeProductList">
                 </div>
             </div>
             <div class="home-content">
@@ -194,7 +207,10 @@
 
                         // 开放更多按钮
                         if(result.total > 5) {
+                            $('.homeBbsMore').show();
+                            $('.homeBbsTitle').bind('click', function(){
 
+                            });
                         }
                     } else {
                         $('.homeBbsTitle, .homeBbsList').remove();
@@ -220,7 +236,10 @@
 
                         // 开放更多按钮
                         if(result.total > 5) {
+                            $('.homeTopicMore').show();
+                            $('.homeTopicTitle').bind('click', function(){
 
+                            });
                         }
                     } else {
                         $('.homeTopicTitle, .homeTopicList').remove();
@@ -334,8 +353,8 @@
             }
             $(".bestList").append(dom);
 
-            dom.find('.swiper-container').addClass('swiper-container' + index);
-            dom.find('.swiper-pagination').addClass('swiper-p' + index);
+            dom.find('.swiper-container').addClass('best-swiper-container' + index);
+            dom.find('.swiper-pagination').addClass('best-swiper-p' + index);
 
             dom.find('.headImage, .nickname').click(best.user.id, function(event){
                 $.cookie('home_best', JSON.stringify({scrollTop:$(window).scrollTop(), currPage:currPage-1}), {expires:5*60*1000});
@@ -361,8 +380,8 @@
             });
 
             setTimeout(function(){
-                var swiper = new Swiper ('.swiper-container' + index, {
-                    pagination: '.swiper-p' + index,
+                var swiper = new Swiper ('.best-swiper-container' + index, {
+                    pagination: '.best-swiper-p' + index,
                     paginationClickable: true
                 });
 

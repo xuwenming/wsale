@@ -2,6 +2,8 @@ package jb.dao;
 
 import jb.model.TzcFile;
 
+import java.util.Map;
+
 /**
  * ZcFile数据库操作类
  * 
@@ -10,4 +12,5 @@ import jb.model.TzcFile;
  */
 public interface ZcFileDaoI extends BaseDaoI<TzcFile> {
 
+    Map<String,String> queryIcons(String objectType, String... objectIds);
 }

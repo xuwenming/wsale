@@ -95,12 +95,12 @@
                                     <span id="categoryName">
                                         <c:choose>
                                             <c:when test="${not empty categoryName}">${categoryName}</c:when>
-                                            <c:otherwise>请选择拍品分类</c:otherwise>
+                                            <c:otherwise>请选择</c:otherwise>
                                         </c:choose>
                                     </span>
                                     <img class="arrow-right right-iocn" src="${pageContext.request.contextPath}/wsale/images/fenlei-icon.png" />
                                 </div>
-                                <div style="font-size: 16px;">分类</div>
+                                <div style="font-size: 15px;">选择拍品分类</div>
                             </div>
                         </div>
                     </div>

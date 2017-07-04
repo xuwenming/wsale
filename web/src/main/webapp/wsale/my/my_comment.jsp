@@ -3,22 +3,18 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>我的关注</title>
+    <title>我的评论</title>
     <jsp:include page="../inc.jsp"></jsp:include>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.my.comment.css"/>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/jslib/web-im-1.1.2/strophe.js" charset="utf-8"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/jslib/web-im-1.1.2/websdk-1.1.2.js" charset="utf-8"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/emoji.config.js?v=${staticVersion}" charset="utf-8"></script>
 </head>
 <body>
-    <div data-role="page" data-title="我的关注" class="jqm-demos">
+    <div data-role="page" data-title="我的评论" class="jqm-demos">
         <div role="main" class="ui-content jqm-content jqm-fullwidth">
-            <div style="border-bottom:10px solid #f5f5f5;">
-                <div>
-                    <ul class="tab-title">
-                        <li style="width:20%;margin:0 10px;font-size: 15px;" onclick="href('api/apiHomeController/myAttedProduct');">拍品</li>
-                        <li class="titletab-active" style="width:20%;margin:0 10px;font-size: 15px;">主题</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="atted-bbs-list" style="padding: 0 10px;">
+            <div class="speak-main">
+                <ul class="comments"></ul>
             </div>
 
             <div class="home-content">
@@ -41,7 +37,7 @@
                 </ul>
             </div><!-- /navbar -->
         </div><!-- /footer -->
-        <jsp:include page="../template/bbs_template.jsp"></jsp:include>
+        <jsp:include page="../template/comment_template.jsp"></jsp:include>
     </div><!-- /page -->
 
     <script type="text/javascript">
@@ -55,34 +51,34 @@
                 if(loading) return;
                 loading = true;
                 setTimeout(function() {
-                    drawBbsList();
+                    drawList();
                 }, 20);
             });
 
-            var obj = $.cookie('myAttedBbs');
+            var obj = $.cookie('myComment');
             if(obj != null) {
-                $.cookie('myAttedBbs', null);
+                $.cookie('myComment', null);
                 obj = $.parseJSON(obj);
                 scrollTop = obj.scrollTop;
-                drawBbsList(obj.currPage);
+                drawList(obj.currPage);
             } else {
-                drawBbsList();
+                drawList();
             }
         });
 
-        function drawBbsList(page) {
+        function drawList(page) {
             currPage = page || currPage;
             var params = {page:(page && 1) || currPage, rows:(page && page*rows) || rows};
-            ajaxPost('api/bbsController/attedBbsList', params, function(data){
+            ajaxPost('api/userController/comments', params, function(data){
                 if(data.success) {
                     var result = data.obj;
                     if(result.rows.length != 0) {
                         for(var i in result.rows) {
-                            var bbs = result.rows[i];
-                            buildBbs(bbs);
+                            var comment = result.rows[i];
+                            build(comment);
                         }
 
-                        $(".atted-bbs-list .lazy").lazyload({
+                        $(".comments .lazy").lazyload({
                             placeholder : base + 'wsale/images/lazyload.png'
                         });
 
@@ -90,7 +86,7 @@
                         currPage ++;
                     } else {
                         if(result.total == 0)
-                            $(".atted-bbs-list").append(Util.noDate(2, '没有相关的主题，关注更多集友哦！'));
+                            $(".comments").append(Util.noDate(2, '这里还没有内容'));
                     }
 
                     if(result.rows.length >= rows) {
@@ -111,35 +107,37 @@
             });
         }
 
-        function buildBbs(bbs) {
-            var viewData = Util.cloneJson(bbs);
-            var color = '', d = false;
-            viewData.spIcon = '';
-            if(bbs.isLight) {
-                color = 'rgb(19,172,189)';
-                d = true;
-                viewData.spIcon += '<img src="${pageContext.request.contextPath}/wsale/images/jsp-icon2.png" style="width:20px;" />';
+        function build(comment) {
+            var viewData = Util.cloneJson(comment);
+            viewData.headImage = '${sessionInfo.headImage}';
+            viewData.nickname = '${sessionInfo.nickname}';
+            viewData.addtime = Util.getTime(comment.addtime);
+            if(comment.ctype == 'IMAGE') {
+                viewData.comment = '<img src="'+comment.comment+'" class="imageMsg" style="max-width:60%;" /><br>';
+            } else {
+                viewData.comment = WebIM.utils.parseEmoji(viewData.comment.replace(/[\r\n]/g, "<br/>"));
             }
-            if(bbs.isEssence) {
-                color = 'rgb(252,79,30)';
-                d = true;
-                viewData.spIcon += '<img src="${pageContext.request.contextPath}/wsale/images/jsp-icon3.png" style="width:20px;" />';
-            }
-            viewData.name_time = '发帖人:'+bbs.addUserName;
-            viewData.time = Util.getTime(bbs.addtime);
-            viewData.count = '回复：'+bbs.bbsComment+' &nbsp;&nbsp;围观：' + bbs.bbsRead;
 
-            var dom = Util.cloneDom("bbs_template", bbs, viewData);
-            dom.find("[name=bbsTitle]").css('color', color);
-            if(d) dom.find("[name=spIcon]").show();
-            if(viewData.time.indexOf('刚刚') != -1 || viewData.time.indexOf('前') != -1) {
-                dom.find("[name=time]").css('color', 'rgb(252,79,30)');
-            }
-            $(".atted-bbs-list").append(dom);
+            var dom = Util.cloneDom("my_comment_template", comment, viewData);
+            $(".comments").append(dom);
+
+            dom.find("[name=headImage]").click(function(){
+                href('api/userController/homePage?userId=${sessionInfo.id}');
+            });
+            dom.find('.imageMsg').click(function(){
+                event.stopPropagation();
+                var imageUrls = [$(this).attr('src')];
+                JWEIXIN.previewImage(imageUrls);
+            });
             // dom绑定事件
-            dom.click(bbs.id, function(event){
-                $.cookie('myAttedBbs', JSON.stringify({scrollTop:$(window).scrollTop(), currPage:currPage-1}));
-                href('api/bbsController/bbsDetail?id=' + event.data);
+            dom.find('.speak-li-right').click(comment.bbs, function(event){
+                var bbs = event.data;
+                if(bbs.bbsStatus == 'BS02' || bbs.isDeleted) {
+                    $.alert("帖子已关闭或已删除！", "系统提示");
+                    return;
+                }
+                $.cookie('myComment', JSON.stringify({scrollTop:$(window).scrollTop(), currPage:currPage-1}));
+                href('api/bbsController/bbsDetail?id=' + bbs.id);
             });
         }
     </script>

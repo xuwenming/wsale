@@ -13,7 +13,7 @@ public class ZcCollect implements java.io.Serializable {
 	private java.lang.String userId;	
 	private Date addtime;			
 
-	
+	private Object object;
 
 	public void setId(java.lang.String value) {
 		this.id = value;
@@ -53,4 +53,11 @@ public class ZcCollect implements java.io.Serializable {
 		return this.addtime;
 	}
 
+	public Object getObject() {
+		return object;
+	}
+
+	public void setObject(Object object) {
+		this.object = object;
+	}
 }

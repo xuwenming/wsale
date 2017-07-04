@@ -1,20 +1,20 @@
 package jb.controller;
 
-import jb.pageModel.Json;
-import jb.pageModel.SessionInfo;
-import jb.pageModel.ZcCollect;
-import jb.pageModel.ZcPraise;
-import jb.service.ZcCollectServiceI;
-import jb.service.ZcForumBbsServiceI;
-import jb.service.ZcPraiseServiceI;
-import jb.service.ZcTopicServiceI;
+import jb.pageModel.*;
+import jb.service.*;
+import jb.service.impl.CompletionFactory;
 import jb.util.EnumConstants;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import wsale.concurrent.CacheKey;
+import wsale.concurrent.CompletionService;
+import wsale.concurrent.Task;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 点赞/收藏
@@ -34,7 +34,13 @@ public class ApiPointController extends BaseController {
 	private ZcTopicServiceI zcTopicService;
 
 	@Autowired
+	private UserServiceI userService;
+
+	@Autowired
 	private ZcForumBbsServiceI zcForumBbsService;
+
+	@Autowired
+	private ZcFileServiceI zcFileService;
 
 	/**
 	 * 点赞接口
@@ -152,4 +158,59 @@ public class ApiPointController extends BaseController {
 		return j;
 	}
 
+	/**
+	 * 收藏列表
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/collects")
+	public Json collects(String objectType, PageHelper ph, HttpServletRequest request) {
+		Json j = new Json();
+		try{
+			SessionInfo s = getSessionInfo(request);
+			ZcCollect zcCollect = new ZcCollect();
+			zcCollect.setUserId(s.getId());
+			zcCollect.setObjectType(objectType);
+			ph.setSort("addtime");
+			ph.setOrder("desc");
+			DataGrid dataGrid = zcCollectService.dataGrid(zcCollect, ph);
+			List<ZcCollect> collects = (List<ZcCollect>)dataGrid.getRows();
+			if(CollectionUtils.isNotEmpty(collects)) {
+				final CompletionService completionService = CompletionFactory.initCompletion();
+				for(ZcCollect collect : collects) {
+					if(EnumConstants.OBJECT_TYPE.BBS.getCode().equals(objectType)) {
+						completionService.submit(new Task<ZcCollect, ZcForumBbs>(collect) {
+							@Override
+							public ZcForumBbs call() throws Exception {
+								ZcForumBbs bbs = zcForumBbsService.get(getD().getObjectId());
+								User user = userService.getByZc(bbs.getAddUserId());
+								bbs.setAddUserName(user.getNickname());
+								ZcFile file = new ZcFile();
+								file.setObjectType(EnumConstants.OBJECT_TYPE.BBS.getCode());
+								file.setObjectId(bbs.getId());
+								file.setFileType("FT01");
+								ZcFile f = zcFileService.get(file);
+								bbs.setIcon(f.getFileHandleUrl());
+								return bbs;
+							}
+
+							protected void set(ZcCollect d, ZcForumBbs v) {
+								if (v != null)
+									d.setObject(v);
+							}
+
+						});
+					}
+				}
+				completionService.sync();
+			}
+			j.setObj(dataGrid);
+			j.success();
+		}catch(Exception e){
+			j.fail();
+			e.printStackTrace();
+		}
+		return j;
+	}
 }
+;

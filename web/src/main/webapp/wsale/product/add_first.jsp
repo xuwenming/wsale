@@ -100,7 +100,7 @@
                                     </span>
                                     <img class="arrow-right right-iocn" src="${pageContext.request.contextPath}/wsale/images/fenlei-icon.png" />
                                 </div>
-                                <div class="normal-text" style="font-size: 16px;">分类</div>
+                                <div style="font-size: 16px;">分类</div>
                             </div>
                         </div>
                     </div>

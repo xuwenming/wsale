@@ -24,7 +24,10 @@ import wsale.concurrent.Task;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 基础数据
@@ -89,6 +92,9 @@ public class ApiUserController extends BaseController {
 
 	@Autowired
 	private ZcBbsLogServiceI zcBbsLogService;
+
+	@Autowired
+	private ZcBbsCommentServiceI zcBbsCommentService;
 
 	/**
 	 * 获取用户信息
@@ -802,55 +808,74 @@ public class ApiUserController extends BaseController {
 		}
 		return j;
 	}
-	
+
 	/**
-	 * 测试
-	 * 
+	 * 跳转至我的收藏
 	 * @return
 	 */
-	@RequestMapping("/test")
+	@RequestMapping("/myCollect")
+	public String myCollect() {
+		return "/wsale/my/my_collect";
+	}
+
+	/**
+	 * 跳转至我的评论
+	 * @return
+	 */
+	@RequestMapping("/myComment")
+	public String myComment(HttpServletRequest request) {
+		request.setAttribute("sessionInfo", getSessionInfo(request));
+		return "/wsale/my/my_comment";
+	}
+
+	/**
+	 * 收藏列表
+	 * @return
+	 */
 	@ResponseBody
-	public Json test(HttpServletRequest request) {
+	@RequestMapping("/comments")
+	public Json comments(ZcBbsComment bbsComment, PageHelper ph, HttpServletRequest request) {
 		Json j = new Json();
 		try{
-			SessionInfo sessionInfo = userService.login("oYKBMxBYnY7B6kYSK0mIFfsQhEO8");
+			SessionInfo s = getSessionInfo(request);
+			bbsComment.setUserId(s.getId());
+			bbsComment.setIsDeleted(false);
+			ph.setSort("addtime");
+			ph.setOrder("desc");
+			DataGrid dataGrid = zcBbsCommentService.dataGrid(bbsComment, ph);
+			List<ZcBbsComment> comments = (List<ZcBbsComment>) dataGrid.getRows();
+			if(CollectionUtils.isNotEmpty(comments)) {
+				CompletionService completionService = CompletionFactory.initCompletion();
+				for(ZcBbsComment comment : comments) {
+					if (!F.empty(comment.getBbsId())) {
+						completionService.submit(new Task<ZcBbsComment, ZcForumBbs>(new CacheKey("bbs", comment.getBbsId()), comment) {
+							@Override
+							public ZcForumBbs call() throws Exception {
+								ZcForumBbs bbs = zcForumBbsService.get(getD().getBbsId());
+								ZcFile file = new ZcFile();
+								file.setObjectType(EnumConstants.OBJECT_TYPE.BBS.getCode());
+								file.setObjectId(bbs.getId());
+								file.setFileType("FT01");
+								ZcFile f = zcFileService.get(file);
+								bbs.setIcon(f.getFileHandleUrl());
+								return bbs;
+							}
 
-			final SessionInfo s = getSessionInfo(request);
-			Vector vector = new Vector();
-			long start = System.currentTimeMillis();
-			for(int i = 0;i<10;i++){
-				User user = userService.get(s.getId());
-				//vector.add(fmUser);
-			}
-			String rs = "同步"+(System.currentTimeMillis()-start);
-			start = System.currentTimeMillis();
-			final CompletionService completionService = CompletionFactory.initCompletion();
-
-			for (int i = 0;i<10;i++){
-				completionService.submit(new Task<Vector, User>(vector){
-					@Override
-					public User call() throws Exception {
-						long start = System.currentTimeMillis();
-						User user = userService.get(s.getId());
-						System.out.println("同步"+(System.currentTimeMillis()-start));
-						return user;
+							protected void set(ZcBbsComment d, ZcForumBbs v) {
+								if (v != null)
+									d.setBbs(v);
+							}
+						});
 					}
-					protected void set(Vector d, User v) {
-						d.add(v);
-					}
-
-				});
+				}
+				completionService.sync();
 			}
-			completionService.sync();
-			rs+="异步"+(System.currentTimeMillis()-start);
-			j.setObj(sessionInfo);
-			j.setMsg(rs);
+			j.setObj(dataGrid);
 			j.success();
 		}catch(Exception e){
 			j.fail();
 			e.printStackTrace();
-		}		
+		}
 		return j;
 	}
-
 }

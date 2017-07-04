@@ -22,3 +22,19 @@
 	</div>
 </div>
 
+<%--我的评论列表--%>
+<li id="my_comment_template" style="display: none;">
+	<div class="speak-li-left">
+		<img class="lazy" name="headImage"/>
+	</div>
+	<div class="speak-li-right">
+		<div class="speak-content">
+			<span class="speak-user" name="nickname"></span>
+			<div class="new-speak" name="comment"></div>
+			<div class="new-speak-time" name="addtime"></div>
+		</div>
+		<div class="bg-img lazy" name="bbs" data-name="icon"></div>
+	</div>
+	<div style="clear: both"></div>
+</li>
+

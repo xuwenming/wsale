@@ -151,12 +151,12 @@
                             </span>
                         </div>
                     </a>
-                    <a href="javascript:href('api/userController/myFans');" class="faxian-link">
+                    <a href="javascript:href('api/userController/myCollect');" class="faxian-link">
                         <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/shoucang-icon.png" class="faxian-lefticon" />
                             <div>收藏</div>
                         </div>
                     </a>
-                    <a href="javascript:href('api/userController/myFans');" class="faxian-link">
+                    <a href="javascript:href('api/userController/myComment');" class="faxian-link">
                         <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/pinglun-icon.png" class="faxian-lefticon" />
                             <div>评论</div>
                         </div>

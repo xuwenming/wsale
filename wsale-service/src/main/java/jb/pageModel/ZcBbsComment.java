@@ -23,6 +23,7 @@ public class ZcBbsComment implements java.io.Serializable {
 	private User user; // 评论人信息
 	private ZcBbsComment parentComment;
 	private String bbsTitle;
+	private ZcForumBbs bbs;
 	private String userName;
 	private String categoryId;
 	private String categoryName;
@@ -145,5 +146,13 @@ public class ZcBbsComment implements java.io.Serializable {
 
 	public void setCategoryId(String categoryId) {
 		this.categoryId = categoryId;
+	}
+
+	public ZcForumBbs getBbs() {
+		return bbs;
+	}
+
+	public void setBbs(ZcForumBbs bbs) {
+		this.bbs = bbs;
 	}
 }

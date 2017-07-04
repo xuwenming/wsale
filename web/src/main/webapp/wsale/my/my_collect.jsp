@@ -3,22 +3,13 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>我的关注</title>
+    <title>我的收藏</title>
     <jsp:include page="../inc.jsp"></jsp:include>
 </head>
 <body>
-    <div data-role="page" data-title="我的关注" class="jqm-demos">
+    <div data-role="page" data-title="我的收藏" class="jqm-demos">
         <div role="main" class="ui-content jqm-content jqm-fullwidth">
-            <div style="border-bottom:10px solid #f5f5f5;">
-                <div>
-                    <ul class="tab-title">
-                        <li style="width:20%;margin:0 10px;font-size: 15px;" onclick="href('api/apiHomeController/myAttedProduct');">拍品</li>
-                        <li class="titletab-active" style="width:20%;margin:0 10px;font-size: 15px;">主题</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="atted-bbs-list" style="padding: 0 10px;">
+            <div class="collect-list" style="padding: 0 10px;">
             </div>
 
             <div class="home-content">
@@ -59,9 +50,9 @@
                 }, 20);
             });
 
-            var obj = $.cookie('myAttedBbs');
+            var obj = $.cookie('myCollect');
             if(obj != null) {
-                $.cookie('myAttedBbs', null);
+                $.cookie('myCollect', null);
                 obj = $.parseJSON(obj);
                 scrollTop = obj.scrollTop;
                 drawBbsList(obj.currPage);
@@ -72,17 +63,17 @@
 
         function drawBbsList(page) {
             currPage = page || currPage;
-            var params = {page:(page && 1) || currPage, rows:(page && page*rows) || rows};
-            ajaxPost('api/bbsController/attedBbsList', params, function(data){
+            var params = {page:(page && 1) || currPage, rows:(page && page*rows) || rows, objectType:'BBS'};
+            ajaxPost('api/apiPoint/collects', params, function(data){
                 if(data.success) {
                     var result = data.obj;
                     if(result.rows.length != 0) {
                         for(var i in result.rows) {
-                            var bbs = result.rows[i];
+                            var bbs = result.rows[i].object;
                             buildBbs(bbs);
                         }
 
-                        $(".atted-bbs-list .lazy").lazyload({
+                        $(".collect-list .lazy").lazyload({
                             placeholder : base + 'wsale/images/lazyload.png'
                         });
 
@@ -90,7 +81,7 @@
                         currPage ++;
                     } else {
                         if(result.total == 0)
-                            $(".atted-bbs-list").append(Util.noDate(2, '没有相关的主题，关注更多集友哦！'));
+                            $(".collect-list").append(Util.noDate(2, '这里还没有内容'));
                     }
 
                     if(result.rows.length >= rows) {
@@ -135,10 +126,10 @@
             if(viewData.time.indexOf('刚刚') != -1 || viewData.time.indexOf('前') != -1) {
                 dom.find("[name=time]").css('color', 'rgb(252,79,30)');
             }
-            $(".atted-bbs-list").append(dom);
+            $(".collect-list").append(dom);
             // dom绑定事件
             dom.click(bbs.id, function(event){
-                $.cookie('myAttedBbs', JSON.stringify({scrollTop:$(window).scrollTop(), currPage:currPage-1}));
+                $.cookie('myCollect', JSON.stringify({scrollTop:$(window).scrollTop(), currPage:currPage-1}));
                 href('api/bbsController/bbsDetail?id=' + event.data);
             });
         }

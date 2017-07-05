@@ -493,7 +493,17 @@
 						</td>
 					</tr>
 					<tr>
-						<td colspan="5">
+						<td>
+							类型：
+							<select name="utype" class="easyui-combobox"
+									data-options="width:140,height:29,editable:false,panelHeight:'auto'">
+								<option value="">不限</option>
+								<option value="UT01">后端</option>
+								<option value="UT02">前端</option>
+								<option value="UT03">模拟</option>
+							</select>
+						</td>
+						<td colspan="4">
 							创建时间：
 							<input type="text" class="span2" name="createdatetimeStart" placeholder="点击选择时间"
 								onclick="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"
@@ -529,7 +539,7 @@
 				class="easyui-linkbutton" data-options="plain:true,iconCls:'delete'">批量删除</a>
 		</c:if>
 		<a href="javascript:void(0);" class="easyui-linkbutton"
-			data-options="iconCls:'brick_add',plain:true" onclick="searchFun();">过滤条件</a><a
+			data-options="iconCls:'brick_add',plain:true" onclick="searchFun();">查询</a><a
 			href="javascript:void(0);" class="easyui-linkbutton"
 			data-options="iconCls:'brick_delete',plain:true"
 			onclick="cleanFun();">清空条件</a>

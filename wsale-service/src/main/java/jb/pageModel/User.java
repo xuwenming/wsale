@@ -52,6 +52,12 @@ public class User implements java.io.Serializable {
 	private java.lang.Double walletAmount;
 	private java.lang.Double protection;
 
+	public String getUtypeZh() {
+		if("UT01".equals(utype)) return "后端";
+		else if("UT02".equals(utype)) return "前端";
+		else return "模拟";
+	}
+
 	public String getId() {
 		return id;
 	}

@@ -20,13 +20,8 @@
 		<div class="swiper-pagination"></div>
 	</div>
 
-	<div class="readNum new-readNum">
-		<div class="info-xinxi home-best-img-title">我是图片的标题我是图片标题我是图片标题我是图片标题</div>
-		<div class="home-best-item-text">
-			<span class="home-best-money"> ￥200</span>&#x3000;
-			<span>竞拍50次</span>
-		</div>
-		<img src="${pageContext.request.contextPath}/wsale/images/huoyan-icon.png" style="width:13px;" />
+	<div class="readNum">
+		<img src="${pageContext.request.contextPath}/wsale/images/huoyan-icon.png" style="width:12px;" />
 		<span name="readCount">0</span>
 	</div>
 </div>
@@ -51,8 +46,13 @@
 		<div class="swiper-pagination"></div>
 	</div>
 
-	<div class="readNum">
-		<img src="${pageContext.request.contextPath}/wsale/images/huoyan-icon.png" style="width:13px;" />
+	<div class="readNum new-readNum">
+		<div class="info-xinxi home-best-img-title" name="content"></div>
+		<div class="home-best-item-text">
+			<span class="home-best-money" name="currentPrice"></span>
+			<span style="font-size: 12px;">已有<count name="auctionNum">0</count>次出价</span>
+		</div>
+		<img src="${pageContext.request.contextPath}/wsale/images/huoyan-icon.png" style="width:12px;" />
 		<span name="readCount">0</span>
 	</div>
 </div>

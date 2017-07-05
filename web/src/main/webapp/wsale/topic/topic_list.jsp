@@ -3,7 +3,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>集物专题</title>
+    <title>专题文章</title>
     <jsp:include page="../inc.jsp"></jsp:include>
     <style>
         .cparea{

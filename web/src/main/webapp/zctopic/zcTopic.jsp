@@ -242,7 +242,17 @@
 							<%=TzcTopic.ALIAS_TITLE%>：
 							<input type="text" name="title" maxlength="100" class="span2"/>
 						</td>
+						<td>
+							首页推荐：
+							<select name="seq" class="easyui-combobox"
+									data-options="width:140,height:29,editable:false,panelHeight:'auto'">
+								<option value="">不限</option>
+								<option value="1">是</option>
+								<option value="0">否</option>
+							</select>
+						</td>
 					</tr>
+
 				</table>
 			</form>
 		</div>

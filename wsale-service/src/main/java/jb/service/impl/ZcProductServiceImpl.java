@@ -149,6 +149,14 @@ public class ZcProductServiceImpl extends BaseServiceImpl<ZcProduct> implements 
 				whereHql += " and t.isDeleted = :isDeleted";
 				params.put("isDeleted", zcProduct.getIsDeleted());
 			}
+			if(zcProduct.getSeq() != null) {
+				if(zcProduct.getSeq() == 0) {
+					whereHql += " and t.seq = 0";
+				} else {
+					whereHql += " and t.seq >= :seq";
+					params.put("seq", zcProduct.getSeq());
+				}
+			}
 			if(zcProduct.getOthers() != null && zcProduct.getOthers() && !F.empty(zcProduct.getId())) {
 				whereHql += " and t.id != :id";
 				params.put("id", zcProduct.getId());
@@ -212,7 +220,7 @@ public class ZcProductServiceImpl extends BaseServiceImpl<ZcProduct> implements 
 	public void edit(ZcProduct zcProduct) {
 		TzcProduct t = zcProductDao.get(TzcProduct.class, zcProduct.getId());
 		if (t != null) {
-			MyBeanUtils.copyProperties(zcProduct, t, new String[] { "id" , "addtime" },true);
+			MyBeanUtils.copyProperties(zcProduct, t, new String[] {"id"},true);
 			zcProduct.setContent(t.getContent());
 
 			// 退回非交易人的保证金

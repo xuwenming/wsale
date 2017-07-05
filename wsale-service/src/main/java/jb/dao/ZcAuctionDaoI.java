@@ -2,6 +2,8 @@ package jb.dao;
 
 import jb.model.TzcAuction;
 
+import java.util.Map;
+
 /**
  * ZcAuction数据库操作类
  * 
@@ -10,4 +12,5 @@ import jb.model.TzcAuction;
  */
 public interface ZcAuctionDaoI extends BaseDaoI<TzcAuction> {
 
+    Map<String,Integer> getCountAuctionNum(String[] productIds);
 }

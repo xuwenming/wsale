@@ -39,8 +39,14 @@
 			<table class="table table-hover table-condensed">
 				<tr>
 					<th width="12%">围观数</th>
-					<td colspan="3">
+					<td width="40%">
 						<input value="${zcProduct.readCount}" class="easyui-validatebox span2" data-options="required:true" name="readCount" type="text"/>
+					</td>
+					<th width="12%">推荐排序</th>
+					<td width="40%">
+						<input name="seq" value="${zcProduct.seq}" class="easyui-numberspinner"
+							   style="width: 140px; height: 29px;" required="required"
+							   data-options="editable:true">
 					</td>
 				</tr>
 

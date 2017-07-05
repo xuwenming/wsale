@@ -79,10 +79,6 @@
 				title : '<%=TzcProduct.ALIAS_STARTING_PRICE%>',
 				width : 40
 				},{
-				field : 'fixedPrice',
-				title : '<%=TzcProduct.ALIAS_FIXED_PRICE%>',
-				width : 40
-				}, {
 				field : 'currentPrice',
 				title : '<%=TzcProduct.ALIAS_CURRENT_PRICE%>',
 				width : 40
@@ -94,6 +90,11 @@
 				field : 'approvalDaysZh',
 				title : '包退',
 				width : 40
+				}, {
+				field : 'seq',
+				title : '推荐排序',
+				width : 40,
+				sortable:true
 				}, {
 				field : 'userName',
 				title : '成交人',
@@ -131,7 +132,7 @@
 					var str = '';
 					if ($.canEdit) {
 						//str += $.formatString('<img onclick="editFun(\'{0}\');" src="{1}" title="编辑"/>', row.id, '${pageContext.request.contextPath}/style/images/extjs_icons/bug/bug_edit.png');
-						str += '<a onclick="editFun(\'' + row.id + '\')">围观数</a>';
+						str += '<a onclick="editFun(\'' + row.id + '\')">编辑</a>';
 					}
 					str += '&nbsp;&nbsp;';
 					if ($.canDelete) {
@@ -327,9 +328,18 @@
 								包退：
 								<jb:select dataType="AD" name="approvalDays"></jb:select>
 							</td>
-							<td colspan="2">
+							<td>
 								状态：
 								<jb:select dataType="PT" name="status"></jb:select>
+							</td>
+							<td>
+								首页推荐：
+								<select name="seq" class="easyui-combobox"
+										data-options="width:140,height:29,editable:false,panelHeight:'auto'">
+									<option value="">不限</option>
+									<option value="1">是</option>
+									<option value="0">否</option>
+								</select>
 							</td>
 						</tr>
 				</table>

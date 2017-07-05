@@ -344,8 +344,12 @@
 						</tr>
 						<tr>
 							<th>出价保证金</th>
-							<td colspan="3">
+							<td>
 								${zcProduct.margin}
+							</td>
+							<th>推荐排序</th>
+							<td>
+								${zcProduct.seq}
 							</td>
 						</tr>
 						<tr>

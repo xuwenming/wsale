@@ -174,6 +174,8 @@ public class ApiProductController extends BaseController {
 				zcProductService.add(zcProduct);
 			} else {
 				zcProduct.setReadCount(0);
+				zcProduct.setAddtime(new Date());
+				zcProduct.setSeq(0);
 				zcProductService.edit(zcProduct);
 			}
 
@@ -337,6 +339,31 @@ public class ApiProductController extends BaseController {
 			ph.setOrder("desc");
 			zcProduct.setIsDeleted(false);
 			j.setObj(productCommon.dataGrid(ph, zcProduct, s.getId()));
+			j.success();
+			j.setMsg("操作成功");
+
+		}catch(Exception e){
+			j.fail();
+			e.printStackTrace();
+		}
+		return j;
+	}
+
+	/**
+	 * 拍品推荐列表
+	 * @return
+	 */
+	@RequestMapping("/hotList")
+	@ResponseBody
+	public Json hotList(PageHelper ph, ZcProduct zcProduct, HttpServletRequest request) {
+		Json j = new Json();
+		try{
+			SessionInfo s = getSessionInfo(request);
+			ph.setSort("seq");
+			ph.setOrder("desc");
+			zcProduct.setIsDeleted(false);
+			zcProduct.setStatus("PT03");
+			j.setObj(productCommon.dataGridHot(ph, zcProduct, s.getId()));
 			j.success();
 			j.setMsg("操作成功");
 

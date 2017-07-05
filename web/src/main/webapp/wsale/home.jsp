@@ -72,10 +72,10 @@
             </div>
 
             <div style="width: 100%;background-color: #FFF;">
-                <div class="faxian-link homeBbsTitle" style="border-top: 10px solid rgb(245, 245, 245); display: none;">
+                <div class="faxian-link homeBbsTitle" style="border-top: 10px solid #eee; display: none;">
                     <span style="margin-left: 5px;font-size: 16px;">帖子推荐</span>
                     <div class="homeBbsMore" style="float: right; display: none;">
-                        <span  class="grayright-text" style="margin-right:0;">更多</span>
+                        <span class="grayright-text" style="margin-right:0;">更多</span>
                         <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
                     </div>
                 </div>
@@ -83,31 +83,32 @@
                 <div class="homeBbsList" style="padding: 0 10px;">
                 </div>
 
-                <div class="faxian-link homeTopicTitle" style="border-top: 10px solid rgb(245, 245, 245); display: none;">
+                <div class="faxian-link homeTopicTitle" style="border-top: 10px solid #eee; display: none;">
                     <span style="margin-left: 5px;font-size: 16px;">专题推荐</span>
                     <div class="homeTopicMore" style="float: right;display: none;">
-                        <span  class="grayright-text" style="margin-right:0;">更多</span>
+                        <span class="grayright-text" style="margin-right:0;">更多</span>
                         <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
                     </div>
                 </div>
                 <div class="homeTopicList" style="padding: 0 10px;">
                 </div>
 
-                <div class="faxian-link bestTitle" style="border-top: 10px solid rgb(245, 245, 245); display: none;">
-                    <span style="margin-left: 5px;font-size: 16px;">精选推荐</span>
-                    <div class="bestMore" style="float: right;display: none;">
-                        <span  class="grayright-text" style="margin-right:0;">更多</span>
+                <div class="faxian-link homeProductTitle" style="border-top: 10px solid #eee; display: none;">
+                    <span style="margin-left: 5px;font-size: 16px;">拍品推荐</span>
+                    <div class="homeProductMore" style="float: right;display: none;">
+                        <span class="grayright-text" style="margin-right:0;">更多</span>
                         <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
                     </div>
+                </div>
+                <div class="homeProductList">
+                </div>
+
+                <div class="faxian-link bestTitle" style="border-top: 10px solid #eee; display: none;">
+                    <span style="margin-left: 5px;font-size: 16px;">精选推荐</span>
                 </div>
                 <div class="bestList">
                 </div>
 
-                <div class="faxian-link homeProductTitle" style="border-top: 10px solid rgb(245, 245, 245); display: none;">
-                    <span style="margin-left: 5px;font-size: 16px;">拍品推荐</span>
-                </div>
-                <div class="homeProductList">
-                </div>
             </div>
             <div class="home-content">
                 <div class="weui-infinite-scroll">
@@ -177,6 +178,7 @@
 
             drawBbsList();
             drawTopicList();
+            drawProductList();
 
             var obj = $.cookie('home_best');
             if(obj != null) {
@@ -248,6 +250,31 @@
             });
         }
 
+        function drawProductList() {
+            ajaxPost('api/apiProductController/hotList', {page:1, rows:5, seq:1}, function(data){
+                if(data.success) {
+                    var result = data.obj;
+                    if(result.total != 0) {
+                        $('.homeProductTitle').show();
+                        for(var i in result.rows) {
+                            var product = result.rows[i];
+                            buildProduct(product, i);
+                        }
+
+                        // 开放更多按钮
+                        if(result.total > 5) {
+                            $('.homeProductMore').show();
+                            $('.homeProductTitle').bind('click', function(){
+
+                            });
+                        }
+                    } else {
+                        $('.homeProductTitle, .homeProductList').remove();
+                    }
+                }
+            });
+        }
+
         function drawBest(page) {
             currPage = page || currPage;
             var params = {page:(page && 1) || currPage, rows:(page && page*rows) || rows, channel:'HOME'};
@@ -258,7 +285,7 @@
                         $('.bestTitle').show();
                         for(var i in result.rows) {
                             var best = result.rows[i];
-                            var dom = buildBest(best, i);
+                            buildBest(best, i);
                         }
 
                         loading = false;
@@ -332,6 +359,63 @@
             dom.click(topic.id, function(event){
                 href('api/apiTopic/topicDetail?id=' + event.data);
             });
+        }
+
+        function buildProduct(product, index) {
+            var viewData = Util.cloneJson(product);
+            viewData.readCount = product.readCount || 0;
+            viewData.currentPrice = '￥' + product.currentPrice;
+            var dom = Util.cloneDom("home_product_template", product, viewData);
+            dom.find('.headImage').css('background-image', 'url('+product.user.headImage+')');
+            if(product.user.self) dom.find('.attentionIt').hide();
+            else {
+                if(product.user.attred) {
+                    dom.find('.attentioned').addClass('attred').html('已');
+                }
+            }
+            if(product.files) {
+                for(var i in product.files) {
+                    var file = product.files[i];
+                    dom.find('.pIconBox').append('<div class="swiper-slide pIconImg" style="background-image: url(\''+file.fileHandleUrl+'\');"></div>');
+                }
+            }
+            $(".homeProductList").append(dom);
+
+            dom.find('.swiper-container').addClass('product-swiper-container' + index);
+            dom.find('.swiper-pagination').addClass('product-swiper-p' + index);
+
+            dom.find('.headImage, .nickname').click(product.user.id, function(event){
+                href('api/apiShop/shop?userId=' + event.data);
+            });
+
+            dom.find('.pIconBox .pIconImg').click(product.id, function(event){
+                href('api/apiProductController/productDetail?id=' + event.data);
+            });
+
+            dom.find('.attentionIt').click(product.user.id, function(event){
+                var userId = event.data, url = 'api/userController/addShieldorfans', _this = $(this);
+                if($(_this).find('.attentioned').hasClass('attred')) {
+                    url = 'api/userController/delShieldorfans';
+                    $.confirm("是否取消对该用户的关注?", "系统提示", function() {
+                        attrFun(_this, url, userId);
+                    }, function() {});
+                } else {
+                    attrFun(_this, url, userId);
+                }
+            });
+
+            setTimeout(function(){
+                var swiper = new Swiper ('.product-swiper-container' + index, {
+                    pagination: '.product-swiper-p' + index,
+                    paginationClickable: true
+                });
+
+                if(dom.find('.pIconBox').children().length <= 1) {
+                    dom.find('.pIcon .swiper-pagination').remove();
+                }
+            }, 20);
+
+            return dom;
         }
 
         function buildBest(best, index) {

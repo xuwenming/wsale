@@ -167,6 +167,12 @@ public class ZcAuctionServiceImpl extends BaseServiceImpl<ZcAuction> implements 
 		dg.setTotal(count == null ? 0 : count.longValue());
 		return dg;
 	}
+
+	@Override
+	public Map<String, Integer> getCountAuctionNum(String[] productIds) {
+		return zcAuctionDao.getCountAuctionNum(productIds);
+	}
+
 	@Override
 	public ZcAuction get(ZcAuction zcAuction) {
 		String hql = " from TzcAuction t ";

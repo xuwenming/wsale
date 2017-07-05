@@ -216,4 +216,56 @@ public class ProductCommon {
 
         return dataGrid;
     }
+
+    public DataGrid dataGridHot(PageHelper ph, ZcProduct zcProduct, final String userId) {
+        DataGrid dataGrid = zcProductService.dataGrid(zcProduct, ph);
+        List<ZcProduct> products = (List<ZcProduct>) dataGrid.getRows();
+        if(!CollectionUtils.isEmpty(products)) {
+            final CompletionService completionService = CompletionFactory.initCompletion();
+            String[] productIds = new String[products.size()];
+            int i = 0;
+            for (ZcProduct product : products) {
+                productIds[i] = product.getId();
+                i++;
+                // 获取图片集合
+                completionService.submit(new Task<ZcProduct, List<ZcFile>>(product) {
+                    @Override
+                    public List<ZcFile> call() throws Exception {
+                        ZcFile file = new ZcFile();
+                        file.setObjectType(EnumConstants.OBJECT_TYPE.PRODUCT.getCode());
+                        file.setObjectId(getD().getId());
+                        file.setFileType("FT01");
+                        return zcFileService.queryFiles(file);
+                    }
+
+                    protected void set(ZcProduct d, List<ZcFile> v) {
+                        if (v != null)
+                            d.setFiles(v);
+                    }
+                });
+
+                completionService.submit(new Task<ZcProduct, User>(product) {
+                    @Override
+                    public User call() throws Exception {
+                        User user = userService.get(getD().getAddUserId(), userId);
+                        return user;
+                    }
+
+                    protected void set(ZcProduct d, User v) {
+                        if (v != null)
+                            d.setUser(v);
+                    }
+                });
+            }
+            completionService.sync();
+
+            Map<String, Integer> auctions = zcAuctionService.getCountAuctionNum(productIds);
+            for (ZcProduct product : products) {
+                Integer num = auctions.get(product.getId());
+                if(num != null) product.setAuctionNum(num);
+            }
+        }
+
+        return dataGrid;
+    }
 }

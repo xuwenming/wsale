@@ -67,7 +67,7 @@
 				}, {
 				field : 'categoryName',
 				title : '所属分类',
-				width : 70
+				width : 80
 				}, {
 				field : 'bbsTypeZh',
 				title : '类别',

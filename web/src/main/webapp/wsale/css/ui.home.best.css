@@ -94,7 +94,7 @@
 }
 .bestList .bestItem .readNum.new-readNum{
 	color: #888;
-	padding: 0 3%;
+	padding: 0 3% 5px;
 	text-align: right;
 	line-height: 30px;
 }

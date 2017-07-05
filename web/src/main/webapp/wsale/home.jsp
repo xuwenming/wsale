@@ -211,7 +211,7 @@
                         if(result.total > 5) {
                             $('.homeBbsMore').show();
                             $('.homeBbsTitle').bind('click', function(){
-
+                                href('api/bbsController/hotBbs?isHomeHot=true');
                             });
                         }
                     } else {
@@ -240,7 +240,7 @@
                         if(result.total > 5) {
                             $('.homeTopicMore').show();
                             $('.homeTopicTitle').bind('click', function(){
-
+                                href('api/apiTopic/topic?isHomeHot=true');
                             });
                         }
                     } else {
@@ -265,7 +265,7 @@
                         if(result.total > 5) {
                             $('.homeProductMore').show();
                             $('.homeProductTitle').bind('click', function(){
-
+                                href('api/apiProductController/moreHot');
                             });
                         }
                     } else {
@@ -369,6 +369,7 @@
             dom.find('.headImage').css('background-image', 'url('+product.user.headImage+')');
             if(product.user.self) dom.find('.attentionIt').hide();
             else {
+                dom.find('.attentioned').attr('data-user-id', product.user.id);
                 if(product.user.attred) {
                     dom.find('.attentioned').addClass('attred').html('已');
                 }
@@ -425,6 +426,7 @@
             dom.find('.headImage').css('background-image', 'url('+best.user.headImage+')');
             if(best.user.self) dom.find('.attentionIt').hide();
             else {
+                dom.find('.attentioned').attr('data-user-id', best.user.id);
                 if(best.user.attred) {
                     dom.find('.attentioned').addClass('attred').html('已');
                 }
@@ -482,9 +484,9 @@
                 if(data.success) {
                     var $a = $(elm).find('.attentioned');
                     if($a.hasClass('attred')) {
-                        $a.removeClass('attred').html('+&nbsp;');
+                        $('.attentioned[data-user-id='+userId+']').removeClass('attred').html('+&nbsp;');
                     } else {
-                        $a.addClass('attred').html('已');
+                        $('.attentioned[data-user-id='+userId+']').addClass('attred').html('已');
                     }
                 }
             });

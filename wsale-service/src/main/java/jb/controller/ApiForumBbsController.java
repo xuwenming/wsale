@@ -303,8 +303,9 @@ public class ApiForumBbsController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/hotBbs")
-	public String hotBbs(String bbsType, HttpServletRequest request) {
+	public String hotBbs(String bbsType, boolean isHomeHot, HttpServletRequest request) {
 		request.setAttribute("bbsType", bbsType);
+		request.setAttribute("isHomeHot", isHomeHot);
 		return "/wsale/bbs/hotBbs";
 	}
 

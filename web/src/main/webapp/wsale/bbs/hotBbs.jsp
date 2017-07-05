@@ -5,8 +5,13 @@
 <head>
     <title>
         <c:choose>
-            <c:when test="${empty bbsType}">热门主题</c:when>
-            <c:otherwise>热门讲堂</c:otherwise>
+            <c:when test="${isHomeHot}">帖子推荐</c:when>
+            <c:otherwise>
+                <c:choose>
+                    <c:when test="${empty bbsType}">热门主题</c:when>
+                    <c:otherwise>热门讲堂</c:otherwise>
+                </c:choose>
+            </c:otherwise>
         </c:choose>
     </title>
     <jsp:include page="../inc.jsp"></jsp:include>
@@ -67,11 +72,18 @@
         function drawBbsList(page) {
             currPage = page || currPage;
             var params = {page:(page && 1) || currPage, rows:(page && page*rows) || rows};
-            params.themeType = 'TEXT';
-            if('${bbsType}') {
-                params.themeType = 'AUDIO';
+            if(${isHomeHot}) {
+                params.isHomeHot = true;
+                params.sort = 'seq desc, t.addtime';
+                params.order = 'desc';
+            } else {
+                params.themeType = 'TEXT';
+                if('${bbsType}') {
+                    params.themeType = 'AUDIO';
+                }
+                params.isHot = true;
             }
-            params.isHot = true;
+
             params.bbsStatus = 'BS01';
             ajaxPost('api/bbsController/bbsList', params, function(data){
                 if(data.success) {

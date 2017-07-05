@@ -350,6 +350,16 @@ public class ApiProductController extends BaseController {
 	}
 
 	/**
+	 * 拍品推荐
+	 *
+	 * @return
+	 */
+	@RequestMapping("/moreHot")
+	public String hotBbs() {
+		return "/wsale/product/hot_product";
+	}
+
+	/**
 	 * 拍品推荐列表
 	 * @return
 	 */

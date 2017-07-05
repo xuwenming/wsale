@@ -164,7 +164,7 @@ public class ApiChatController extends BaseController {
 		friend.setIsBoth(true);
 		List<ZcChatFriend> exists = zcChatFriendService.query(friend);
 		if(CollectionUtils.isEmpty(exists)) {
-			if(!F.empty(toUserId) && !toUserId.equals(s.getId())) {
+			if(!F.empty(toUserId) && !toUserId.equals(s.getId()) && "UT02".equals(friendUser.getUtype())) {
 				HuanxinUtil.addFriend(s.getId(), toUserId);
 			}
 			if(subscribe) {

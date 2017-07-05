@@ -541,7 +541,7 @@ public class ApiForumBbsController extends BaseController {
 
 				// 推送回复@消息
 				// 非@发帖人并且评论人不是@自己
-				if(!p.getUserId().equals(bbs.getAddUserId()) && !p.getUserId().equals(s.getId())) {
+				if(!p.getUserId().equals(bbs.getAddUserId()) && !p.getUserId().equals(s.getId()) && "UT02".equals(user.getUtype())) {
 					buffer = new StringBuffer();
 					buffer.append("『" + s.getNickname() + "』在主题帖\"" + bbs.getBbsTitle() + "\"中@了您。").append("\n\n");
 					buffer.append("<a href='"+ PathUtil.getUrlPath("api/bbsController/bbsDetail?id=" + comment.getBbsId()) +"'>点击查看</a>");

@@ -67,7 +67,7 @@
 				}, {
 				field : 'bankCodeZh',
 				title : '银行',
-				width : 80
+				width : 100
 				}, {
 				field : 'transferUserName',
 				title : '<%=TzcOfflineTransfer.ALIAS_TRANSFER_USER_NAME%>',
@@ -96,10 +96,6 @@
 
 					return str;
 				}
-				}, {
-				field : 'handleUserName',
-				title : '<%=TzcOfflineTransfer.ALIAS_HANDLE_USER_ID%>',
-				width : 50
 				}, {
 				field : 'addtime',
 				title : '<%=TzcOfflineTransfer.ALIAS_ADDTIME%>',

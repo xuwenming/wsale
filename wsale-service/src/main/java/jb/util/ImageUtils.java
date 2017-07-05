@@ -104,7 +104,7 @@ public final class ImageUtils {
 //                height_mark = 55;
 //            }
             int width_mark = width/6;
-            int height_mark = width_mark/2;
+            int height_mark = width_mark*3/5;
             g.drawImage(src_mark, (width - width_mark) - x ,
                     (height - height_mark) - y , width_mark, height_mark, null);
             //水印文件结束

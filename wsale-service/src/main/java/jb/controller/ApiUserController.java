@@ -444,6 +444,7 @@ public class ApiUserController extends BaseController {
 
 	private void setThemes(String userId, HttpServletRequest request) {
 		SessionInfo s = getSessionInfo(request);
+		request.setAttribute("userId", F.empty(userId) ? s.getId() : userId);
 		// 拍品主题
 		ZcProduct zcProduct = new ZcProduct();
 		zcProduct.setIsDeleted(false);

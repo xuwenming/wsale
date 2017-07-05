@@ -151,7 +151,7 @@
 
                 <div class="xinxi-ppzt">
                     <a class="faxian-link">
-                        <div class="list-right" <c:if test="${topicThemes.total >= 2}">onclick="href('api/apiTopic/topic?addUserId=${user.id}');"</c:if>>
+                        <div class="list-right" <c:if test="${topicThemes.total >= 2}">onclick="href('api/apiTopic/topic?addUserId=${userId}');"</c:if>>
                             <c:choose>
                                 <c:when test="${topicThemes.total == 0}">
                                     <span class="grayright-text">暂无专题</span>

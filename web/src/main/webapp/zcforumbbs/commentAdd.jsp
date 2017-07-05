@@ -121,10 +121,10 @@
 				</tr>
 				<tr>
 					<td colspan="4" id="emojiShortcut">
-						<span value="[em_1]">[em_1]=<img class="emoji" src="/wsale/images/face/1.gif"></span>；
-						<span value="[em_63]">[em_63]=<img class="emoji" src="/wsale/images/face/63.gif"></span>；
-						<span value="[em_65]">[em_65]=<img class="emoji" src="/wsale/images/face/65.gif"></span>；
-						<span value="[em_71]">[em_71]=<img class="emoji" src="/wsale/images/face/71.gif"></span>
+						<span value="[em_1]">[em_1]=<img class="emoji" src="${pageContext.request.contextPath}/wsale/images/face/1.gif"></span>；
+						<span value="[em_63]">[em_63]=<img class="emoji" src="${pageContext.request.contextPath}/wsale/images/face/63.gif"></span>；
+						<span value="[em_65]">[em_65]=<img class="emoji" src="${pageContext.request.contextPath}/wsale/images/face/65.gif"></span>；
+						<span value="[em_71]">[em_71]=<img class="emoji" src="${pageContext.request.contextPath}/wsale/images/face/71.gif"></span>
 					</td>
 				</tr>
 			</table>

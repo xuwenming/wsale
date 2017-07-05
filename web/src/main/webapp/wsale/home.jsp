@@ -72,9 +72,9 @@
             </div>
 
             <div style="width: 100%;background-color: #FFF;">
-                <div class="faxian-link homeBbsTitle" style="border-top: 10px solid #eee; display: none;">
+                <div class="faxian-link homeBbsTitle" style="border-top: 10px solid #eee; display: none;" onclick="href('api/bbsController/hotBbs?isHomeHot=true');">
                     <span style="margin-left: 5px;font-size: 16px;">帖子推荐</span>
-                    <div class="homeBbsMore" style="float: right; display: none;">
+                    <div class="homeBbsMore" style="float: right;">
                         <span class="grayright-text" style="margin-right:0;">更多</span>
                         <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
                     </div>
@@ -83,9 +83,9 @@
                 <div class="homeBbsList" style="padding: 0 10px;">
                 </div>
 
-                <div class="faxian-link homeTopicTitle" style="border-top: 10px solid #eee; display: none;">
+                <div class="faxian-link homeTopicTitle" style="border-top: 10px solid #eee; display: none;" onclick="href('api/apiTopic/topic?isHomeHot=true');">
                     <span style="margin-left: 5px;font-size: 16px;">专题推荐</span>
-                    <div class="homeTopicMore" style="float: right;display: none;">
+                    <div class="homeTopicMore" style="float: right;">
                         <span class="grayright-text" style="margin-right:0;">更多</span>
                         <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
                     </div>
@@ -93,9 +93,9 @@
                 <div class="homeTopicList" style="padding: 0 10px;">
                 </div>
 
-                <div class="faxian-link homeProductTitle" style="border-top: 10px solid #eee; display: none;">
+                <div class="faxian-link homeProductTitle" style="border-top: 10px solid #eee; display: none;" onclick="href('api/apiProductController/moreHot');">
                     <span style="margin-left: 5px;font-size: 16px;">拍品推荐</span>
-                    <div class="homeProductMore" style="float: right;display: none;">
+                    <div class="homeProductMore" style="float: right;">
                         <span class="grayright-text" style="margin-right:0;">更多</span>
                         <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
                     </div>
@@ -104,7 +104,7 @@
                 </div>
 
                 <div class="faxian-link bestTitle" style="border-top: 10px solid #eee; display: none;">
-                    <span style="margin-left: 5px;font-size: 16px;">精选推荐</span>
+                    <span style="margin-left: 5px;font-size: 16px;color:#dc721c;">精选推荐</span>
                 </div>
                 <div class="bestList">
                 </div>
@@ -208,12 +208,12 @@
                         });
 
                         // 开放更多按钮
-                        if(result.total > 5) {
-                            $('.homeBbsMore').show();
-                            $('.homeBbsTitle').bind('click', function(){
-                                href('api/bbsController/hotBbs?isHomeHot=true');
-                            });
-                        }
+//                        if(result.total > 5) {
+//                            $('.homeBbsMore').show();
+//                            $('.homeBbsTitle').bind('click', function(){
+//                                href('api/bbsController/hotBbs?isHomeHot=true');
+//                            });
+//                        }
                     } else {
                         $('.homeBbsTitle, .homeBbsList').remove();
                     }
@@ -237,12 +237,12 @@
                         });
 
                         // 开放更多按钮
-                        if(result.total > 5) {
-                            $('.homeTopicMore').show();
-                            $('.homeTopicTitle').bind('click', function(){
-                                href('api/apiTopic/topic?isHomeHot=true');
-                            });
-                        }
+//                        if(result.total > 5) {
+//                            $('.homeTopicMore').show();
+//                            $('.homeTopicTitle').bind('click', function(){
+//                                href('api/apiTopic/topic?isHomeHot=true');
+//                            });
+//                        }
                     } else {
                         $('.homeTopicTitle, .homeTopicList').remove();
                     }
@@ -262,12 +262,12 @@
                         }
 
                         // 开放更多按钮
-                        if(result.total > 5) {
-                            $('.homeProductMore').show();
-                            $('.homeProductTitle').bind('click', function(){
-                                href('api/apiProductController/moreHot');
-                            });
-                        }
+//                        if(result.total > 5) {
+//                            $('.homeProductMore').show();
+//                            $('.homeProductTitle').bind('click', function(){
+//                                href('api/apiProductController/moreHot');
+//                            });
+//                        }
                     } else {
                         $('.homeProductTitle, .homeProductList').remove();
                     }

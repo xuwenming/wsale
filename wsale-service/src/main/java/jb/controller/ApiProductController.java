@@ -1329,6 +1329,25 @@ public class ApiProductController extends BaseController {
 			if(zcProductLikeService.get(like) == null) {
 				zcProductLikeService.add(like);
 				zcProductService.updateCount(productId, 1, "like_count");
+
+				// 异步加关注
+				CompletionService completionService = CompletionFactory.initCompletion();
+				completionService.submit(new Task<ZcProductLike, Boolean>(like) {
+					@Override
+					public Boolean call() throws Exception {
+						ZcProduct product = zcProductService.get(getD().getProductId());
+						if(!getD().getUserId().equals(product.getAddUserId())) {
+							ZcShieldorfans shieldorfans = new ZcShieldorfans();
+							shieldorfans.setObjectType("FS");
+							shieldorfans.setObjectById(product.getAddUserId());
+							shieldorfans.setObjectId(getD().getUserId());
+							zcShieldorfansService.addOrUpdate(shieldorfans);
+						}
+
+						return true;
+					}
+				});
+
 			}
 
 			j.success();

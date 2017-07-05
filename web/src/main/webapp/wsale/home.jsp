@@ -5,7 +5,7 @@
 <head>
     <title>首页</title>
     <jsp:include page="inc.jsp"></jsp:include>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.home.best.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/wsale/css/ui.home.best.css?v=${staticVersion}" />
 </head>
 <body>
     <div data-role="page" data-title="首页" class="jqm-demos" style="background-color:#f5f5f5;">

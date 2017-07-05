@@ -72,11 +72,24 @@
 				}, {
 				field : 'startTime',
 				title : '<%=TzcBestProduct.ALIAS_START_TIME%>',
-				width : 80
+				width : 80,
+				sortable:true
 				}, {
 				field : 'endTime',
 				title : '<%=TzcBestProduct.ALIAS_END_TIME%>',
-				width : 80
+				width : 80,
+				sortable:true
+				}, {
+				field : 'status',
+				title : '状态',
+				width : 40,
+				formatter : function (value, row, index) {
+					var str = "";
+					if(row.status == 1 && row.zcProduct.status == 'PT03') str = '<font color="#4cd964;">进行中</font>';
+					else if(row.status == 2 || row.zcProduct.status != 'PT03') str =  '<font color="#f6383a;">已结束</font>';
+
+					return str;
+				}
 				}, {
 				field : 'payStatusZh',
 				title : '<%=TzcBestProduct.ALIAS_PAY_STATUS%>',
@@ -99,10 +112,6 @@
 
 					return str;
 				}
-				}, {
-				field : 'auditRemark',
-				title : '<%=TzcBestProduct.ALIAS_AUDIT_REMARK%>',
-				width : 100
 			}, {
 				field : 'action',
 				title : '操作',

@@ -96,6 +96,7 @@ public class ZcBestProductController extends BaseController {
 						if (v != null) {
 							d.setPno(v.getPno());
 							d.setCategoryName(v.getCname());
+							d.setZcProduct(v);
 						}
 
 					}

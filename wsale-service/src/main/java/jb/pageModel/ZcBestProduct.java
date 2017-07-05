@@ -34,6 +34,15 @@ public class ZcBestProduct implements java.io.Serializable {
 	private String group;
 	private String productStatus;
 
+	public int getStatus() {
+		int status = 0;
+		if(endTime != null) {
+			if(endTime.getTime() > new Date().getTime()) status = 1;
+			else status = 2;
+		}
+		return status;
+	}
+
 	public String getChannelZh() {
 		return EnumConstants.BEST_CHANNEL.getCnName(this.channel);
 	}

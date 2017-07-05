@@ -86,7 +86,8 @@
 				width : 50,
 				formatter : function(value, row, index) {
 					if(value == 'UT01') return '后端';
-					return '前端';
+					else if(value == 'UT03') return '模拟';
+					else return '前端';
 				}
 			}, {
 				field : 'walletAmount',

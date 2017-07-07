@@ -34,7 +34,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/jquery.mobile-1.4.5.js" charset="utf-8"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/swiper.js" charset="utf-8"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/jquery-browser.js" charset="utf-8"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/jquery.qqFace.js" charset="utf-8"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/jquery.qqFace.js?v=${staticVersion}" charset="utf-8"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/function.js?v=${staticVersion}" charset="utf-8"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/wsale/js/common.js?v=${staticVersion}" charset="utf-8"></script>
 <!-- 扩展jQuery -->

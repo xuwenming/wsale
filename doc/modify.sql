@@ -291,4 +291,32 @@ ALTER TABLE `zc_product`
   ADD COLUMN `seq`  int(11) NULL DEFAULT 0 COMMENT '热门排序' AFTER `hammer_time`;
 
 
+-- -----------------------------------------------------
+--  新增表zc_notice、zc_sys_msg  snow.xu 20170706
+-- -----------------------------------------------------
+CREATE TABLE `zc_notice` (
+  `id` varchar(36) NOT NULL COMMENT '主键',
+  `content` longtext COMMENT '消息内容',
+  `status` varchar(4) DEFAULT NULL COMMENT '状态{ST}',
+  `addUserId` varchar(36) DEFAULT NULL COMMENT '创建人ID',
+  `addtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `updateUserId` varchar(36) DEFAULT NULL COMMENT '更新人ID',
+  `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='公告消息表';
+
+CREATE TABLE `zc_sys_msg` (
+  `id` varchar(36) NOT NULL COMMENT '主键',
+  `object_type` varchar(36) DEFAULT NULL COMMENT '对象类型',
+  `object_id` varchar(36) DEFAULT NULL COMMENT '对象ID',
+  `user_id` varchar(36) DEFAULT NULL COMMENT '用户id',
+  `mtype` varchar(4) DEFAULT NULL COMMENT '消息类型',
+  `time_unit` varchar(20) DEFAULT NULL COMMENT '时间单位',
+  `content` varchar(500) DEFAULT NULL COMMENT '消息内容',
+  `is_read` tinyint(1) DEFAULT '0' COMMENT '是否已读（1:已读；0：未读）',
+  `addtime` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统消息表';
+
+
 

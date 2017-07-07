@@ -9,9 +9,23 @@
 <head>
     <title></title>
     <jsp:include page="../chat_inc.jsp"></jsp:include>
+    <c:if test="${isOfficial}">
+        <style>
+            .sixin-record span{
+                font-size: 15px;
+            }
+            .sixin-record span u, .sixin-record span a{
+                font-size: 15px;
+                color: #337FE5;
+            }
+            .ui-page-theme-a a:visited {
+                color: #337FE5;
+            }
+        </style>
+    </c:if>
 </head>
 <body>
-    <div data-role="page" data-title="臻藏-${friend.nickname}" class="jqm-demos" style="background-color:#f5f5f5;">
+    <div data-role="page" data-title="<c:choose><c:when test="${isOfficial}">集东集西</c:when><c:otherwise>臻藏-${friend.nickname}</c:otherwise></c:choose>" class="jqm-demos" style="background-color:#f5f5f5;">
         <div data-role="header" data-position="fixed" data-theme="b" data-tap-toggle="false" style="position: fixed; left: 0;right:0;top:0;z-index: 100;">
             <a href="javascript:href('api/apiChat/chat_list');" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             <h1></h1>
@@ -31,23 +45,24 @@
                 <div class="sixin-content" style="overflow: auto; margin: 0 10px;">
 
                 </div>
-                <div id="sixin-send" class="send-info">
-                    <img src="${pageContext.request.contextPath}/wsale/images/yuyin-icon.png" class="send-yuyin" />
-                    <img src="${pageContext.request.contextPath}/wsale/images/gengduo-icon.png" class="send-more" />
-                    <!--<input type="text" id="content" />-->
-                    <textarea id="content" rows="1" data-role="none"></textarea>
-                    <div class="recordAudio" style="display: none; ">按住 说话</div>
-                    <audio id="audio"></audio>
-                    <a class="send-btn">发送</a>
-                    <div class="qqface">
-                        <div class="qqface-list"></div>
-                        <div class="face-tab">
-                            <div class="face-img"><img src="${pageContext.request.contextPath}/wsale/images/face-icon.png" /></div>
-                            <div class="pic-img"><img src="${pageContext.request.contextPath}/wsale/images/pic-icon.png" /> 照片</div>
+                <c:if test="${!isOfficial}">
+                    <div id="sixin-send" class="send-info">
+                        <img src="${pageContext.request.contextPath}/wsale/images/yuyin-icon.png" class="send-yuyin" />
+                        <img src="${pageContext.request.contextPath}/wsale/images/gengduo-icon.png" class="send-more" />
+                        <!--<input type="text" id="content" />-->
+                        <textarea id="content" rows="1" data-role="none"></textarea>
+                        <div class="recordAudio" style="display: none; ">按住 说话</div>
+                        <audio id="audio"></audio>
+                        <a class="send-btn">发送</a>
+                        <div class="qqface">
+                            <div class="qqface-list"></div>
+                            <div class="face-tab">
+                                <div class="face-img"><img src="${pageContext.request.contextPath}/wsale/images/face-icon.png" /></div>
+                                <div class="pic-img"><img src="${pageContext.request.contextPath}/wsale/images/pic-icon.png" /> 照片</div>
+                            </div>
                         </div>
                     </div>
-                </div>
-
+                </c:if>
             </div>
         </div><!-- /content -->
     </div><!-- /page -->
@@ -55,7 +70,7 @@
 
     <script type="text/javascript">
         var scrollH = 0, rows = 10, initTime = new Date().getTime(), start, end,startY,endY, recordTimer, audio = document.getElementById("audio");
-        var fromUser = '${own.id}', hxPass = '${own.hxPassword}', toUser = '${friend.id}';
+        var fromUser = '${own.id}', hxPass = '${own.hxPassword}', toUser = '${friend.id}', isOfficial = ${isOfficial};
         $(function(){
             drawMessages();
 
@@ -327,12 +342,28 @@
         }
 
         function drawMessages(page) {
-            ajaxPost('api/apiChat/messages', {userId:toUser, page: page || 0, rows: rows}, function(data){
+            var url, params;
+            if(isOfficial) {
+                url = 'api/apiChat/notices';
+                params = {page: page%rows || 0, rows: rows};
+            } else {
+                url = 'api/apiChat/messages';
+                params = {userId:toUser, page: page || 0, rows: rows};
+            }
+
+            ajaxPost(url, params, function(data){
                 if(data.success) {
                     var result = data.obj;
                     if(result.rows.length != 0) {
                         for(var i in result.rows) {
-                            buildMessage(result.rows[i]);
+                            var message = result.rows[i];
+                            if(isOfficial) {
+                                message.mtype = 'TEXT';
+                                message.user = {
+                                    headImage : base + 'wsale/images/logo.png'
+                                }
+                            }
+                            buildMessage(message);
                         }
 
                         if(${!empty product}) {
@@ -421,9 +452,11 @@
             else {
                 dom = Util.cloneDom("chat_friend_template", message, viewData);
 
-                dom.find('.sixin-leftimg').click(message.fromUserId, function(event){
-                    href('api/userController/homePage?userId=' + event.data);
-                });
+                if(!isOfficial) {
+                    dom.find('.sixin-leftimg').click(message.fromUserId, function(event){
+                        href('api/userController/homePage?userId=' + event.data);
+                    });
+                }
             }
 
 

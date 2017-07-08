@@ -326,7 +326,7 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 	@Override
 	public Map<String, Object> orderStatusCount(String userId) {
 		try{
-			Map result = new HashMap();
+			Map<String, Object> result = new HashMap<String, Object>();
 			BaseData baseData = new BaseData();
 			baseData.setBasetypeCode("RA");
 			List<BaseData> bds = basedataService.getBaseDatas(baseData);
@@ -335,9 +335,9 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 					String desc = bd.getDescription().replaceAll("：", ":");
 					if(userId.equals(desc.split(":")[1])) {
 						String[] nums = bd.getName().split("-");
-						result.put("OS10", nums[0]);
-						result.put("B_OS15", nums[1]);
-						result.put("S_OS15", nums[2]);
+						result.put("OS10",   BigInteger.valueOf(Long.valueOf(nums[0])));
+						result.put("B_OS15", BigInteger.valueOf(Long.valueOf(nums[1])));
+						result.put("S_OS15", BigInteger.valueOf(Long.valueOf(nums[2])));
 						break;
 					}
 				}

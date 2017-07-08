@@ -702,7 +702,7 @@
                     currPage = 1;
                     drawAuction(true);
                 }
-                if(result.product.deadlineLen == 0) {
+                if(result.product.deadlineLen <= 0) {
                     $('.bidStatus').html('<div class="paipin-done">'+new Date().format("yyyy年MM月dd日 HH:mm")+'拍卖已结束</div>');
                 }
 

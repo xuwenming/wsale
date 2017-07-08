@@ -567,7 +567,7 @@
                     drawAuction($p.find('.auctions'), product, true);
                 }
 
-                if(result.product.deadlineLen == 0) {
+                if(result.product.deadlineLen <= 0) {
                     $p.find('.auction-opt').html('<div class="paipin-done">'+new Date().format("M月dd日 HH:mm")+'拍卖已结束</div>');
                 }
             });

@@ -109,9 +109,10 @@
 				field : 'unread',
 				title : '状态',
 				width : 50,
+				sortable : true,
 				formatter : function (value, row, index) {
-					if(row.unread) return '未读';
-					else return '已读';
+					if(row.unread) return '<font color="#f6383a;">未读</font>';
+					else return '<font color="#4cd964;">已读</font>';
 				}
 			} ] ],
 			toolbar : '#toolbar',

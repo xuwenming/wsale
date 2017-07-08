@@ -266,8 +266,16 @@
 
         wx.ready(function () {
             JWEIXIN.showOptionMenu();
+            var title = "『${user.nickname}』的集东集西店铺", userId = '${user.id}';
+            if(userId == 'DA810FE5750049698C09DD2761267A39') { // 集网竞价(一)
+                title = "集东集西.文房古韵-明清杂项专场";
+            } else if(userId == 'F3BEC27A84004FDFA58CAD252D7AFF92') { // 集网竞价(二)
+                title = "集东集西.金铜遗珍-古代饰品专场";
+            } else if(userId == 'DF4C7761C55F4071AD4B9011EF71F31E') { // 集网竞价(三)
+                title = "集东集西.琉璃厂遗珍-刻铜艺术-超级大拍";
+            }
             var shareData = {
-                title:"『${user.nickname}』的集东集西店铺",
+                title:title,
                 desc:"推荐给您一个好店铺，快来看看一起把货掏回家吧！",
                 link:removeQueDefault(location.href),
                 imgUrl:'${user.headImage}'

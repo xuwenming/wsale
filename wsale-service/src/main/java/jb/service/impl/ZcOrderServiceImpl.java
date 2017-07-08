@@ -3,10 +3,8 @@ package jb.service.impl;
 import jb.absx.F;
 import jb.dao.ZcOrderDaoI;
 import jb.model.TzcOrder;
-import jb.pageModel.DataGrid;
-import jb.pageModel.PageHelper;
-import jb.pageModel.ZcOrder;
-import jb.pageModel.ZcProduct;
+import jb.pageModel.*;
+import jb.service.BasedataServiceI;
 import jb.service.ZcOrderServiceI;
 import jb.service.impl.order.OrderState;
 import jb.util.Constants;
@@ -33,6 +31,9 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 
 	@Resource
 	Map<String,OrderState> orderStateMap;
+
+	@Autowired
+	private BasedataServiceI basedataService;
 
 	@Override
 	public DataGrid dataGrid(ZcOrder zcOrder, PageHelper ph) {
@@ -324,6 +325,29 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 
 	@Override
 	public Map<String, Object> orderStatusCount(String userId) {
+		try{
+			Map result = new HashMap();
+			BaseData baseData = new BaseData();
+			baseData.setBasetypeCode("RA");
+			List<BaseData> bds = basedataService.getBaseDatas(baseData);
+			if(CollectionUtils.isNotEmpty(bds)) {
+				for(BaseData bd : bds) {
+					String desc = bd.getDescription().replaceAll("：", ":");
+					if(userId.equals(desc.split(":")[1])) {
+						String[] nums = bd.getName().split("-");
+						result.put("OS10", nums[0]);
+						result.put("B_OS15", nums[1]);
+						result.put("S_OS15", nums[2]);
+						break;
+					}
+				}
+				if(!result.isEmpty()) return result;
+			}
+
+		} catch (Exception e) {
+			System.out.println("用户-信誉违约设置方法orderStatusCount有错误！");
+		}
+
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("addUserId", userId);
 		String sql = "select count(case when t.order_status='OS10' and (t.face_status is null or t.face_status <> 'FS02') then t.id end) OS10, " // 信誉排除当面交易

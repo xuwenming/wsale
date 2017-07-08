@@ -362,7 +362,7 @@
             if(product.deadlineLen == 0) {
                 dom.find('.auction-opt').html('<div class="paipin-done">'+new Date(product.realDeadline.replace(/-/g,"/")).format('M月dd日 HH:mm')+'拍卖已结束</div>');
             } else {
-                addTimer(dom.find('.deadline'), product.deadlineLen);
+                addTimer(dom, product.deadlineLen);
                 if(!user.self) {
                     var price = product.currentPrice == 0 ? (product.startingPrice || productDetail.rangePrice) : (product.currentPrice + productDetail.rangePrice);
                     dom.find('.jiage-value').val(price);
@@ -529,7 +529,7 @@
                         $p.find('.rangePrice').html(result.rangePrice);
                         $p.find('.jiage-value').val(currentPrice == 0 ? (result.product.startingPrice == 0 ? result.rangePrice : result.product.startingPrice) : (currentPrice + result.rangePrice));
                         if(result.product.deadlineLen > 0) {
-                            addTimer($p.find('.deadline'), result.product.deadlineLen);
+                            addTimer($p, result.product.deadlineLen);
                         }
                     }
 
@@ -730,7 +730,7 @@
                             $p.find('.jiage-value').val(bid + result.rangePrice);
                             dom.find(".order-flag").attr('src', base + 'wsale/images/lingxian-icon.png');
                             if(result.deadlineLen > 0) {
-                                addTimer($p.find('.deadline'), result.deadlineLen);
+                                addTimer($p, result.deadlineLen);
                             }
                         }
 
@@ -877,7 +877,10 @@
             function go() {
                 for (var i = 0; i < list.length; i++) {
                     var dom = list[i].ele, time = list[i].time;
-                    dom.html(getTimerString(time ? list[i].time -= 1 : 0));
+                    var timerStr = getTimerString(time ? list[i].time -= 1 : 0);
+                    if(timerStr == -1) dom.find('.updateBid span').click();
+                    else dom.find('.deadline').html(timerStr);
+
                     if (!time)
                         list.splice(i--, 1);
                 }
@@ -892,7 +895,7 @@
                     var dh = d == 0 ? '' : '<span class="cbp-vm-timenumber">'+d+'</span>天';
                     return '<font style="color: #a8a8a8;">拍卖倒计时：</font>'+dh+'<span class="cbp-vm-timenumber">'+h+'</span>时<span class="cbp-vm-timenumber">'+m+'</span>分<span class="cbp-vm-timenumber">'+s+'</span>秒'
                 }
-                else return "已截拍";
+                else return -1;
             }
         }) ();
 

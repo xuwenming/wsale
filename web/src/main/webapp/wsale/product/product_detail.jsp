@@ -1019,7 +1019,10 @@
             function go() {
                 for (var i = 0; i < list.length; i++) {
                     var dom = list[i].ele, time = list[i].time;
-                    dom.html(getTimerString(time ? list[i].time -= 1 : 0));
+                    var timerStr = getTimerString(time ? list[i].time -= 1 : 0);
+                    if(timerStr == -1) updateBid();
+                    else dom.html(timerStr);
+
                     if (!time)
                         list.splice(i--, 1);
                 }
@@ -1033,8 +1036,7 @@
                 if (time > 0) {
                     var dh = d == 0 ? '' : '<span class="cbp-vm-timenumber">'+d+'</span>天';
                     return '<font style="color: #a8a8a8;">拍卖倒计时：</font>'+dh+'<span class="cbp-vm-timenumber">'+h+'</span>时<span class="cbp-vm-timenumber">'+m+'</span>分<span class="cbp-vm-timenumber">'+s+'</span>秒'
-                }
-                else return "已截拍";
+                } else return -1;
             }
         }) ();
 

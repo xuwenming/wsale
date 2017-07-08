@@ -702,7 +702,7 @@
                     currPage = 1;
                     drawAuction(true);
                 }
-                if(result.product.deadlineLen <= 0) {
+                if(result.product.deadlineLen <= 0 || $('.deadline').hasClass('isOver')) {
                     $('.bidStatus').html('<div class="paipin-done">'+new Date().format("yyyy年MM月dd日 HH:mm")+'拍卖已结束</div>');
                 }
 
@@ -1020,8 +1020,10 @@
                 for (var i = 0; i < list.length; i++) {
                     var dom = list[i].ele, time = list[i].time;
                     var timerStr = getTimerString(time ? list[i].time -= 1 : 0);
-                    if(timerStr == -1) updateBid();
-                    else dom.html(timerStr);
+                    if(timerStr == -1) {
+                        $('.deadline').addClass('isOver');
+                        updateBid();
+                    } else dom.html(timerStr);
 
                     if (!time)
                         list.splice(i--, 1);

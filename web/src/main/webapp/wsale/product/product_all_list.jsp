@@ -539,7 +539,7 @@
 
             dom.find('.p-off').click(productDetail.product, xjFun);
             dom.find('.p-close').click(productDetail.product, closeFun);
-            dom.find('.updateBid span').click(productDetail.product, updateBid);
+            dom.find('.updateBid span').bind('click', productDetail.product, updateBid);
 
             dom.find('.makeQr').click(productDetail.product.id, function(event){
                 openQrcode(event.data);

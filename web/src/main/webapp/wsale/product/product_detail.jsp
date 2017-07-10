@@ -688,22 +688,20 @@
         // 手动更新
         function updateBid() {
             ajaxPostSync('api/apiProductController/updateBid', {id:'${product.id}', currentPrice:currentPrice}, function(data){
-                $('.updateBid .newbidTM').html(new Date().format('HH:mm:ss'));
                 var result = data.obj;
+                if(result.product.deadlineLen > 0) {
+                    addTimer($('.deadline'), result.product.deadlineLen);
+                } else {
+                    $('.bidStatus').html('<div class="paipin-done">'+new Date().format("yyyy年MM月dd日 HH:mm")+'拍卖已结束</div>');
+                }
+                $('.updateBid .newbidTM').html(new Date().format('HH:mm:ss'));
                 if(data.success) {
-                    if(result.product.deadlineLen > 0) {
-                        currentPrice = result.product.currentPrice;
-                        $('.rangePrice').html(result.rangePrice);
-                        $('.jiage-value').val(currentPrice == 0 ? (result.product.startingPrice == 0 ? result.rangePrice : result.product.startingPrice) : (currentPrice + result.rangePrice));
-                        if(result.product.deadlineLen > 0) {
-                            addTimer($('.deadline'), result.product.deadlineLen);
-                        }
-                    }
+                    currentPrice = result.product.currentPrice;
+                    $('.rangePrice').html(result.rangePrice);
+                    $('.jiage-value').val(currentPrice == 0 ? (result.product.startingPrice == 0 ? result.rangePrice : result.product.startingPrice) : (currentPrice + result.rangePrice));
+
                     currPage = 1;
                     drawAuction(true);
-                }
-                if(result.product.deadlineLen <= 0 || $('.deadline').hasClass('isOver')) {
-                    $('.bidStatus').html('<div class="paipin-done">'+new Date().format("yyyy年MM月dd日 HH:mm")+'拍卖已结束</div>');
                 }
 
             });
@@ -1021,7 +1019,7 @@
                     var dom = list[i].ele, time = list[i].time;
                     var timerStr = getTimerString(time ? list[i].time -= 1 : 0);
                     if(timerStr == -1) {
-                        $('.deadline').addClass('isOver');
+//                        $('.deadline').addClass('isOver');
                         updateBid();
                     } else dom.html(timerStr);
 

@@ -4,6 +4,7 @@ import jb.comparator.NameComparator;
 import jb.comparator.SizeComparator;
 import jb.comparator.TypeComparator;
 import jb.util.ConfigUtil;
+import jb.util.ImageUtils;
 import jb.util.oss.OSSUtil;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -185,7 +186,7 @@ public class FileController extends BaseController {
 		m.put("error", 1);
 		m.put("message", "上传失败！");
 		// 文件保存目录路径
-//		String savePath = session.getServletContext().getRealPath("/") + "attached/";
+		String realPath = session.getServletContext().getRealPath("/");
 		String savePath = "attached/";
 
 		// 文件保存目录URL
@@ -275,6 +276,7 @@ public class FileController extends BaseController {
 						String result = null;
 						try {
 							result = OSSUtil.putInputStream(OSSUtil.bucketName, item.getInputStream(), savePath + newFileName);
+							result = ImageUtils.pressImage(result, realPath);
 							//File uploadedFile = new File(savePath, newFileName);
 							//item.write(uploadedFile);
 						} catch (Exception e) {

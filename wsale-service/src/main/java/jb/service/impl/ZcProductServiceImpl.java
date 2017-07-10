@@ -63,7 +63,11 @@ public class ZcProductServiceImpl extends BaseServiceImpl<ZcProduct> implements 
 	@Override
 	public DataGrid dataGridComplex(ZcProduct zcProduct, PageHelper ph) {
 		List<ZcProduct> ol = new ArrayList<ZcProduct>();
-		String hql = "select distinct t from TzcProduct t, TzcShieldorfans sf ";
+		String hql = " from TzcProduct t ";
+		if(!F.empty(zcProduct.getAtteId())) {
+			hql = "select distinct t from TzcProduct t, TzcShieldorfans sf ";
+		}
+
 		DataGrid dg = new DataGrid();
 		Map<String, Object> params = new HashMap<String, Object>();
 		String where = whereHql(zcProduct, params);

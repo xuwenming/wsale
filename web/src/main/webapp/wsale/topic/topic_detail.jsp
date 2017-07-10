@@ -182,15 +182,18 @@
 
     <script type="text/javascript">
         var loading = true, currPage = 1, rows = 10, self = ${topic.user.self}, replyComment = null;
+
         $(function(){
             $('.content img').css('width','100%');
             $('.content img').parent().css('text-indent', '0');
             if($(".rewardUsers").height() == $(".rewardUsers").css('max-height').replace('px', '')) {
                 $(".gengduo").removeClass("hide");
             }
-            $(".content img").lazyload({
+
+            $(".content img[data-original]").lazyload({
                 placeholder : base + 'wsale/images/lazyload.png'
             });
+
             $(".gengduo").click(function(e){
                 e.stopPropagation();
                 var self = $(this);
@@ -201,10 +204,11 @@
             });
             var items = [];
             $(".content img").each(function(){
-                items.push($(this).attr("data-original"));
+                items.push($(this).attr("src"));
             });
 
             $(".content img").click(function(){
+                if($(this).parent().is('a')) return;
                 JWEIXIN.previewImage(items, items.indexOf($(this).attr("src")));
             });
             $('.comment').click(function(){

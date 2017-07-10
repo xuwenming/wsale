@@ -550,25 +550,24 @@
         function updateBid(event) {
             var $p = $(this).closest('.qbpp-detail'),product = event.data;
             ajaxPostSync('api/apiProductController/updateBid', {id:product.id, currentPrice : $p.attr('currentPrice')}, function(data){
-                $p.find('.updateBid .newbidTM').html(new Date().format('HH:mm:ss'));
                 var result = data.obj;
+
+                if(result.product.deadlineLen > 0) {
+                    addTimer($p, result.product.deadlineLen);
+                } else {
+                    $p.find('.auction-opt').html('<div class="paipin-done">'+new Date().format("M月dd日 HH:mm")+'拍卖已结束</div>');
+                }
+
+                $p.find('.updateBid .newbidTM').html(new Date().format('HH:mm:ss'));
+
                 if(data.success) {
-                    if(result.product.deadlineLen > 0) {
-                        var currentPrice = result.product.currentPrice;
-                        $p.attr('currentPrice', currentPrice);
-                        $p.find('.rangePrice').html(result.rangePrice);
-                        $p.find('.jiage-value').val(currentPrice == 0 ? (result.product.startingPrice == 0 ? result.rangePrice : result.product.startingPrice) : (currentPrice + result.rangePrice));
-                        if(result.product.deadlineLen > 0) {
-                            addTimer($p, result.product.deadlineLen);
-                        }
-                    }
+                    var currentPrice = result.product.currentPrice;
+                    $p.attr('currentPrice', currentPrice);
+                    $p.find('.rangePrice').html(result.rangePrice);
+                    $p.find('.jiage-value').val(currentPrice == 0 ? (result.product.startingPrice == 0 ? result.rangePrice : result.product.startingPrice) : (currentPrice + result.rangePrice));
 
                     $p.find('.auctions').attr('page-currPage', 1);
                     drawAuction($p.find('.auctions'), product, true);
-                }
-
-                if(result.product.deadlineLen <= 0 || $p.hasClass('isOver')) {
-                    $p.find('.auction-opt').html('<div class="paipin-done">'+new Date().format("M月dd日 HH:mm")+'拍卖已结束</div>');
                 }
             });
         }
@@ -911,7 +910,7 @@
                     var dom = list[i].ele, time = list[i].time;
                     var timerStr = getTimerString(time ? list[i].time -= 1 : 0);
                     if(timerStr == -1) {
-                        dom.addClass('isOver');
+//                        dom.addClass('isOver');
                         dom.find('.updateBid span').click();
                     } else dom.find('.deadline').html(timerStr);
 

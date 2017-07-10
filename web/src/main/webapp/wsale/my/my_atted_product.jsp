@@ -711,7 +711,7 @@
                     var result = data.obj;
                     if(data.success) {
                         $.toast("出价成功", "text");
-                        if($first.length != 0) {
+                        /*if($first.length != 0) {
                             $first.find(".order-sign").hide();
                             $first.find(".order-flag").attr('src', base + 'wsale/images/chuju-icon.png');
                         } else {
@@ -732,7 +732,7 @@
                             if(result.deadlineLen > 0) {
                                 addTimer($p, result.deadlineLen, product.id);
                             }
-                        }
+                        }*/
 
                         $p.find('.updateBid span').click();
                     } else {

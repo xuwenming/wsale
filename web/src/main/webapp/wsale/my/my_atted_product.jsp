@@ -734,6 +734,7 @@
                             }
                         }
 
+                        $p.find('.updateBid span').click();
                     } else {
                         $.alert(data.msg, "系统提示");
                     }
@@ -767,7 +768,9 @@
 
             ajaxPost('api/apiProductController/autoBid', {productId:productId, maxPrice : maxPrice}, function(data){
                 if(data.success) {
-                    $.alert("自动出价成功，请手动更新！", "系统提示");
+                    $.alert("自动出价成功，请手动更新！", "系统提示", function(){
+                        $p.find('.updateBid span').click();
+                    });
                 } else {
                     $.alert(data.msg, "系统提示");
                 }

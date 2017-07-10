@@ -744,6 +744,9 @@ public class ApiProductController extends BaseController {
 				double rangePrice = zcProductRangeService.getRangePrice(product.getId(), product.getCurrentPrice());
 				isDeal = false;
 				double bid = currentPrice + rangePrice;
+				if(bid > auto.getMaxPrice()) {
+					bid = auto.getMaxPrice();
+				}
 				if(product.getFixedPrice() > 0 && bid >= product.getFixedPrice()) {
 					isDeal = true;
 					bid = product.getFixedPrice();

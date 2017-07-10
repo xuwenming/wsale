@@ -864,6 +864,8 @@
                                 addTimer($('.deadline'), result.deadlineLen, '${product.id}');
                             }
                         }
+
+                        updateBid();
                     } else {
                         $.alert(data.msg, "系统提示");
                     }
@@ -893,8 +895,9 @@
 
             ajaxPost('api/apiProductController/autoBid', {productId:'${product.id}', maxPrice : maxPrice}, function(data){
                 if(data.success) {
-                    $.alert("自动出价成功，请手动更新！", "系统提示");
-                    //$('.maxPriceMsg').html('当前自动出价最高价为'+maxPrice+'元');
+                    $.alert("自动出价成功，请手动更新！", "系统提示", function(){
+                        updateBid();
+                    });
                 } else {
                     $.alert(data.msg, "系统提示");
                 }

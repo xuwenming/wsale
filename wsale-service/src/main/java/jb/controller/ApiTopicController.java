@@ -225,7 +225,7 @@ public class ApiTopicController extends BaseController {
 					if("UT02".equals(user.getUtype())) {
 						buffer.append("『" + s.getNickname() + "』留言了您的专题文章\"" + topic.getTitle() + "\"，期待您的点评！").append("\n");
 						buffer.append("留言内容：" + Util.replaceFace(comment.getComment(), 10)).append("\n\n");
-						buffer.append("<a href='"+ PathUtil.getUrlPath("api/apiTopic/topicDetail?id==" + topic.getId()) +"'>点击查看</a>");
+						buffer.append("<a href='"+ PathUtil.getUrlPath("api/apiTopic/topicDetail?id=" + topic.getId()) +"'>点击查看</a>");
 						sendWxMessage.sendCustomMessage(user.getName(), buffer.toString());
 					}
 				}
@@ -236,7 +236,7 @@ public class ApiTopicController extends BaseController {
 					if("UT02".equals(user.getUtype())) {
 						buffer.append("专题文章\"" + topic.getTitle() + "\"的作者『" + s.getNickname() + "』回复了您的留言").append("\n");
 						buffer.append("回复内容：" + Util.replaceFace(comment.getComment(), 10)).append("\n\n");
-						buffer.append("<a href='"+ PathUtil.getUrlPath("api/apiTopic/topicDetail?id==" + topic.getId()) +"'>点击查看</a>");
+						buffer.append("<a href='"+ PathUtil.getUrlPath("api/apiTopic/topicDetail?id=" + topic.getId()) +"'>点击查看</a>");
 						sendWxMessage.sendCustomMessage(user.getName(), buffer.toString());
 					}
 				}

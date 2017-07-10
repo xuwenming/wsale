@@ -192,7 +192,7 @@
 				title : '<%=TzcProductRange.ALIAS_PRICE%>',
 				width : 50
 			} ] ]
-		});
+		});1
 	}
 	function loadLikeDataGrid() {
 		return $('#likeDataGrid').datagrid({
@@ -270,7 +270,7 @@
 				title : '<%=TzcProductMargin.ALIAS_REFUND_NO%>',
 				width : 50
 			}, {
-				field : 'returnTime',
+				field : 'refundtime',
 				title : '<%=TzcProductMargin.ALIAS_REFUND_TIME%>',
 				width : 50
 			} ] ]

@@ -4,8 +4,11 @@ import jb.absx.F;
 import jb.pageModel.*;
 import jb.service.*;
 import jb.service.impl.CompletionFactory;
+import jb.service.impl.SendWxMessageImpl;
 import jb.service.impl.TopicCommon;
 import jb.util.EnumConstants;
+import jb.util.PathUtil;
+import jb.util.Util;
 import jb.util.oss.OSSUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +47,9 @@ public class ApiTopicController extends BaseController {
 
 	@Autowired
 	private ZcPraiseServiceI zcPraiseService;
+
+	@Autowired
+	private SendWxMessageImpl sendWxMessage;
 
 	/**
 	 * 跳转专题列表
@@ -90,7 +96,7 @@ public class ApiTopicController extends BaseController {
 	public String topicDetail(String id, HttpServletRequest request) {
 		SessionInfo s = getSessionInfo(request);
 		ZcTopic topic = zcTopicService.addReadAndDetail(id);
-		//topic.setContent(topic.getContent().replaceAll("src=\"" + OSSUtil.cdnUrl, "data-original=\"" + OSSUtil.cdnUrl));
+		topic.setContent(topic.getContent().replaceAll("src=\"" + OSSUtil.cdnUrl, "data-original=\"" + OSSUtil.cdnUrl));
 		topic.setUser(userService.get(topic.getAddUserId(), s.getId()));
 
 		// 是否点赞
@@ -209,7 +215,32 @@ public class ApiTopicController extends BaseController {
 
 			comment.setUser(userService.get(s.getId(), null));
 
-			zcTopicService.updateCount(comment.getTopicId(), 1, "topic_comment");
+			ZcTopic topic = zcTopicService.get(comment.getTopicId());
+			StringBuffer buffer = new StringBuffer();
+			if(F.empty(comment.getPid())) {
+				zcTopicService.updateCount(comment.getTopicId(), 1, "topic_comment");
+				// 给作者推送消息
+				if(!s.getId().equals(topic.getAddUserId())) {
+					User user = userService.getByZc(topic.getAddUserId());
+					if("UT02".equals(user.getUtype())) {
+						buffer.append("『" + s.getNickname() + "』留言了您的专题文章\"" + topic.getTitle() + "\"，期待您的点评！").append("\n");
+						buffer.append("留言内容：" + Util.replaceFace(comment.getComment(), 10)).append("\n\n");
+						buffer.append("<a href='"+ PathUtil.getUrlPath("api/apiTopic/topicDetail?id==" + topic.getId()) +"'>点击查看</a>");
+						sendWxMessage.sendCustomMessage(user.getName(), buffer.toString());
+					}
+				}
+			} else {
+				ZcTopicComment p = zcTopicCommentService.get(comment.getPid());
+				if(!s.getId().equals(p.getUserId())) {
+					User user = userService.getByZc(p.getUserId());
+					if("UT02".equals(user.getUtype())) {
+						buffer.append("专题文章\"" + topic.getTitle() + "\"的作者『" + s.getNickname() + "』回复了您的留言").append("\n");
+						buffer.append("回复内容：" + Util.replaceFace(comment.getComment(), 10)).append("\n\n");
+						buffer.append("<a href='"+ PathUtil.getUrlPath("api/apiTopic/topicDetail?id==" + topic.getId()) +"'>点击查看</a>");
+						sendWxMessage.sendCustomMessage(user.getName(), buffer.toString());
+					}
+				}
+			}
 
 			j.setObj(comment);
 			j.success();

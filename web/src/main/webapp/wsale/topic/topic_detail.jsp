@@ -190,6 +190,16 @@
                 $(".gengduo").removeClass("hide");
             }
 
+            var items = [];
+            $(".content img[data-original]").each(function(){
+                var src = $(this).attr("data-original");
+                if($(this).parent().is('a')) {
+                    $(this).removeAttr('data-original').attr('src', src);
+                } else {
+                    items.push(src);
+                }
+            });
+
             $(".content img[data-original]").lazyload({
                 placeholder : base + 'wsale/images/lazyload.png'
             });
@@ -202,12 +212,8 @@
                     self.remove();
                 }, 200);
             });
-            var items = [];
-            $(".content img").each(function(){
-                items.push($(this).attr("src"));
-            });
 
-            $(".content img").click(function(){
+            $(".content img[data-original]").click(function(){
                 if($(this).parent().is('a')) return;
                 JWEIXIN.previewImage(items, items.indexOf($(this).attr("src")));
             });

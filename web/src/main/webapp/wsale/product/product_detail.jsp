@@ -958,7 +958,7 @@
 
         function drawAuction(load) {
             if(load) $('#auctions').empty();
-            ajaxPost('api/apiProductController/auctions', {productId:'${product.id}', page:currPage, rows:rows}, function(data){
+            ajaxPostSync('api/apiProductController/auctions', {productId:'${product.id}', page:currPage, rows:rows}, function(data){
                 if(data.success) {
                     var result = data.obj;
                     if(result.rows.length != 0) {

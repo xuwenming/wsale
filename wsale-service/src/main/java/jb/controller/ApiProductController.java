@@ -1125,8 +1125,7 @@ public class ApiProductController extends BaseController {
 			ZcAuction auction = new ZcAuction();
 			auction.setProductId(id);
 			auction = zcAuctionService.get(auction);
-			if(auction == null || auction.getBid() == currentPrice
-					|| (auction.getBuyerId().equals(s.getId()) && !auction.getIsAuto())) {
+			if(auction == null || auction.getBid() == currentPrice) {
 				j.fail();
 				j.setMsg("暂无变动，无需更新");
 				j.setObj(obj);

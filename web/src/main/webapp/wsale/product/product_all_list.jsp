@@ -848,7 +848,7 @@
             if(load) $(elm).empty();
             var $d = elm.parent();
             var currPage = elm.attr('page-currPage') || 1;
-            ajaxPost('api/apiProductController/auctions', {productId:product.id, page:currPage, rows:rows}, function(data){
+            ajaxPostSync('api/apiProductController/auctions', {productId:product.id, page:currPage, rows:rows}, function(data){
                 if(data.success) {
                     var result = data.obj;
                     var flag = product.status == 'PT03';

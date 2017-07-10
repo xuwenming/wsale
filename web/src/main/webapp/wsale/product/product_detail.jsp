@@ -464,7 +464,7 @@
             });
 
             if(${product.deadlineLen > 0})
-                addTimer($('.deadline'), ${product.deadlineLen});
+                addTimer($('.deadline'), ${product.deadlineLen}, '${product.id}');
 
             drawAuction(true);
             $(".check-more").bind('click', function(){
@@ -690,9 +690,10 @@
             ajaxPostSync('api/apiProductController/updateBid', {id:'${product.id}', currentPrice:currentPrice}, function(data){
                 var result = data.obj;
                 if(result.product.deadlineLen > 0) {
-                    addTimer($('.deadline'), result.product.deadlineLen);
+                    addTimer($('.deadline'), result.product.deadlineLen, '${product.id}');
                 } else {
                     $('.bidStatus').html('<div class="paipin-done">'+new Date().format("yyyy年MM月dd日 HH:mm")+'拍卖已结束</div>');
+                    clearInterval(timerArr['interval_${product.id}']);
                 }
                 $('.updateBid .newbidTM').html(new Date().format('HH:mm:ss'));
                 if(data.success) {
@@ -860,7 +861,7 @@
                             $('.jiage-value').val(bid + result.rangePrice);
                             dom.find(".order-flag").attr('src', base + 'wsale/images/lingxian-icon.png');
                             if(result.deadlineLen > 0) {
-                                addTimer($('.deadline'), result.deadlineLen);
+                                addTimer($('.deadline'), result.deadlineLen, '${product.id}');
                             }
                         }
                     } else {
@@ -1004,39 +1005,39 @@
             return dom;
         }
 
+        var timerArr = {};
         var addTimer = (function () {
-            var list = [], interval;
 
-            return function (dom, time) {
-                if (!interval)
-                    interval = setInterval(go, 1000);
-                list.push({ ele: dom, time: time });
-                go();
-            }
+            return function (dom, time, key) {
+                timerArr['interval_time_' + key] = time + 1;
+                if (!timerArr['interval_' + key]) {
+                    timerArr['interval_' + key] = setInterval(function(){
+                        go(dom, key);
+                    }, 1000);
 
-            function go() {
-                for (var i = 0; i < list.length; i++) {
-                    var dom = list[i].ele, time = list[i].time;
-                    var timerStr = getTimerString(time ? list[i].time -= 1 : 0);
-                    if(timerStr == -1) {
-//                        $('.deadline').addClass('isOver');
-                        updateBid();
-                    } else dom.html(timerStr);
-
-                    if (!time)
-                        list.splice(i--, 1);
+                    go(dom, key);
                 }
+            };
+
+            function go(dom, key) {
+                var time = timerArr['interval_time_' + key];
+                var timerStr = getTimerString(time ? timerArr['interval_time_' + key] -= 1 : 0);
+                if(timerStr == -1) {
+                    updateBid();
+                }
+                else dom.html(timerStr);
             }
 
             function getTimerString(time) {
                 var d = Math.floor(time / 86400),
-                    h = Math.floor((time % 86400) / 3600),
-                    m = Math.floor(((time % 86400) % 3600) / 60),
-                    s = Math.floor(((time % 86400) % 3600) % 60);
+                        h = Math.floor((time % 86400) / 3600),
+                        m = Math.floor(((time % 86400) % 3600) / 60),
+                        s = Math.floor(((time % 86400) % 3600) % 60);
                 if (time > 0) {
                     var dh = d == 0 ? '' : '<span class="cbp-vm-timenumber">'+d+'</span>天';
                     return '<font style="color: #a8a8a8;">拍卖倒计时：</font>'+dh+'<span class="cbp-vm-timenumber">'+h+'</span>时<span class="cbp-vm-timenumber">'+m+'</span>分<span class="cbp-vm-timenumber">'+s+'</span>秒'
-                } else return -1;
+                }
+                else return -1;
             }
         }) ();
 

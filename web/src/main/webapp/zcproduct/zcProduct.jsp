@@ -82,6 +82,10 @@
 				field : 'currentPrice',
 				title : '<%=TzcProduct.ALIAS_CURRENT_PRICE%>',
 				width : 40
+				},{
+				field : 'reservePrice',
+				title : '保留价',
+				width : 40
 				}, {
 				field : 'isFreeShippingZh',
 				title : '是否包邮',
@@ -221,8 +225,8 @@
 		}
 		parent.$.modalDialog({
 			title : '编辑数据',
-			width : 500,
-			height : 150,
+			width : 650,
+			height : 400,
 			href : '${pageContext.request.contextPath}/zcProductController/editPage?id=' + id,
 			buttons : [ {
 				text : '编辑',

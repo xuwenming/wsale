@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="jb.model.TzcSysMsg" %>
+<%@ page import="jb.model.TzcIntermediary" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="jb" uri="http://www.jb.cn/jbtag"%> 
@@ -7,7 +7,7 @@
 	$(function() {
 		parent.$.messager.progress('close');
 		$('#form').form({
-			url : '${pageContext.request.contextPath}/zcSysMsgController/edit',
+			url : '${pageContext.request.contextPath}/zcIntermediaryController/edit',
 			onSubmit : function() {
 				parent.$.messager.progress({
 					title : '提示',
@@ -35,32 +35,46 @@
 <div class="easyui-layout" data-options="fit:true,border:false">
 	<div data-options="region:'center',border:false" title="" style="overflow: auto;">
 		<form id="form" method="post">
-				<input type="hidden" name="id" value = "${zcSysMsg.id}"/>
+				<input type="hidden" name="id" value = "${zcIntermediary.id}"/>
 			<table class="table table-hover table-condensed">
 				<tr>	
-					<th><%=TzcSysMsg.ALIAS_OBJECT_TYPE%></th>	
+					<th><%=TzcIntermediary.ALIAS_IM_NO%></th>	
 					<td>
-											<input class="span2" name="objectType" type="text" value="${zcSysMsg.objectType}"/>
+											<input class="span2" name="imNo" type="text" class="easyui-validatebox span2" data-options="required:true" value="${zcIntermediary.imNo}"/>
 					</td>							
-					<th><%=TzcSysMsg.ALIAS_OBJECT_ID%></th>	
+					<th><%=TzcIntermediary.ALIAS_BBS_ID%></th>	
 					<td>
-											<input class="span2" name="objectId" type="text" value="${zcSysMsg.objectId}"/>
-					</td>							
-			</tr>	
-				<tr>	
-					<th><%=TzcSysMsg.ALIAS_USER_ID%></th>	
-					<td>
-											<input class="span2" name="userId" type="text" value="${zcSysMsg.userId}"/>
-					</td>							
-					<th><%=TzcSysMsg.ALIAS_NEWTIME%></th>	
-					<td>
-					<input class="span2" name="newtime" type="text" onclick="WdatePicker({dateFmt:'<%=TzcSysMsg.FORMAT_NEWTIME%>'})"   maxlength="0" value="${zcSysMsg.newtime}"/>
+											<input class="span2" name="bbsId" type="text" value="${zcIntermediary.bbsId}"/>
 					</td>							
 			</tr>	
 				<tr>	
-					<th><%=TzcSysMsg.ALIAS_ADDTIME%></th>	
+					<th><%=TzcIntermediary.ALIAS_SELL_USER_ID%></th>	
 					<td>
-					<input class="span2" name="addtime" type="text" onclick="WdatePicker({dateFmt:'<%=TzcSysMsg.FORMAT_ADDTIME%>'})"   maxlength="0" value="${zcSysMsg.addtime}"/>
+											<input class="span2" name="sellUserId" type="text" value="${zcIntermediary.sellUserId}"/>
+					</td>							
+					<th><%=TzcIntermediary.ALIAS_USER_ID%></th>	
+					<td>
+											<input class="span2" name="userId" type="text" value="${zcIntermediary.userId}"/>
+					</td>							
+			</tr>	
+				<tr>	
+					<th><%=TzcIntermediary.ALIAS_AMOUNT%></th>	
+					<td>
+											<input class="span2" name="amount" type="text" value="${zcIntermediary.amount}"/>
+					</td>							
+					<th><%=TzcIntermediary.ALIAS_REMARK%></th>	
+					<td>
+											<input class="span2" name="remark" type="text" value="${zcIntermediary.remark}"/>
+					</td>							
+			</tr>	
+				<tr>	
+					<th><%=TzcIntermediary.ALIAS_STATUS%></th>	
+					<td>
+											<jb:select dataType="IS" name="status" value="${zcIntermediary.status}"></jb:select>	
+					</td>							
+					<th><%=TzcIntermediary.ALIAS_ADDTIME%></th>	
+					<td>
+					<input class="span2" name="addtime" type="text" onclick="WdatePicker({dateFmt:'<%=TzcIntermediary.FORMAT_ADDTIME%>'})"   maxlength="0" value="${zcIntermediary.addtime}"/>
 					</td>							
 			</tr>	
 			</table>				

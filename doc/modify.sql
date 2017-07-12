@@ -297,7 +297,8 @@ ALTER TABLE `zc_product`
 CREATE TABLE `zc_notice` (
   `id` varchar(36) NOT NULL COMMENT '主键',
   `content` longtext COMMENT '消息内容',
-  `status` varchar(4) DEFAULT NULL COMMENT '状态{ST}',
+  `status` varchar(4) DEFAULT 'ST02' COMMENT '状态{ST}',
+  `isDeleted` tinyint(1) DEFAULT '0' COMMENT '是否删除,1删除，0未删除',
   `addUserId` varchar(36) DEFAULT NULL COMMENT '创建人ID',
   `addtime` datetime DEFAULT NULL COMMENT '创建时间',
   `updateUserId` varchar(36) DEFAULT NULL COMMENT '更新人ID',
@@ -310,13 +311,53 @@ CREATE TABLE `zc_sys_msg` (
   `object_type` varchar(36) DEFAULT NULL COMMENT '对象类型',
   `object_id` varchar(36) DEFAULT NULL COMMENT '对象ID',
   `user_id` varchar(36) DEFAULT NULL COMMENT '用户id',
+  `newtime` datetime DEFAULT NULL COMMENT '最新消息时间',
+  `addtime` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统消息表';
+
+CREATE TABLE `zc_sys_msg_log` (
+  `id` varchar(36) NOT NULL COMMENT '主键',
+  `sys_msg_id` varchar(36) DEFAULT NULL COMMENT '消息id',
   `mtype` varchar(4) DEFAULT NULL COMMENT '消息类型',
   `time_unit` varchar(20) DEFAULT NULL COMMENT '时间单位',
   `content` varchar(500) DEFAULT NULL COMMENT '消息内容',
   `is_read` tinyint(1) DEFAULT '0' COMMENT '是否已读（1:已读；0：未读）',
   `addtime` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统消息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统消息明细表';
+
+
+CREATE TABLE `zc_intermediary` (
+  `id` varchar(36) NOT NULL COMMENT '主键',
+  `im_no` varchar(64) NOT NULL COMMENT '交易编号',
+  `bbs_id` varchar(36) DEFAULT NULL COMMENT '帖子ID',
+  `sell_user_id` varchar(36) DEFAULT NULL COMMENT '卖家id',
+  `user_id` varchar(36) DEFAULT NULL COMMENT '买家id',
+  `amount` bigint(20) DEFAULT NULL COMMENT '交易金额',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `status` varchar(4) DEFAULT NULL COMMENT '状态{IS}',
+  `addtime` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='中介交易表';
+
+CREATE TABLE `zc_intermediary_log` (
+  `id` varchar(36) NOT NULL COMMENT '主键',
+  `im_id` varchar(36) DEFAULT NULL COMMENT '中介交易ID',
+  `user_id` varchar(36) DEFAULT NULL COMMENT '操作人',
+  `log_type` varchar(4) DEFAULT NULL COMMENT '日志类型{IL}',
+  `content` varchar(500) DEFAULT NULL COMMENT '日志内容',
+  `addtime` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='中介交易日志表';
+
+
+ALTER TABLE `zc_product`
+	ADD COLUMN `reserve_price` double DEFAULT '0' COMMENT '保留价' AFTER `current_price`;
+ALTER TABLE `zc_best_product`
+  ADD COLUMN `shop_seq`  int NULL DEFAULT 0 COMMENT '店铺排序' AFTER `addtime`,
+  ADD COLUMN `product_seq`  int NULL DEFAULT 0 COMMENT '拍品排序' AFTER `shop_seq`;
+
 
 
 

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="jb.model.TzcProduct" %>
+<%@ page import="jb.model.TzcSysMsgLog" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="jb" uri="http://www.jb.cn/jbtag"%> 
@@ -7,7 +7,7 @@
 	$(function() {
 		parent.$.messager.progress('close');
 		$('#form').form({
-			url : '${pageContext.request.contextPath}/zcProductController/edit',
+			url : '${pageContext.request.contextPath}/zcSysMsgLogController/edit',
 			onSubmit : function() {
 				parent.$.messager.progress({
 					title : '提示',
@@ -35,37 +35,39 @@
 <div class="easyui-layout" data-options="fit:true,border:false">
 	<div data-options="region:'center',border:false" title="" style="overflow: auto;">
 		<form id="form" method="post">
-				<input type="hidden" name="id" value = "${zcProduct.id}"/>
+				<input type="hidden" name="id" value = "${zcSysMsgLog.id}"/>
 			<table class="table table-hover table-condensed">
-				<tr>
-					<th width="12%">围观数</th>
-					<td width="40%">
-						<input value="${zcProduct.readCount}" class="easyui-validatebox span2" data-options="required:true" name="readCount" type="text"/>
-					</td>
-					<th width="12%">推荐排序</th>
-					<td width="40%">
-						<input name="seq" value="${zcProduct.seq}" class="easyui-numberspinner"
-							   style="width: 140px; height: 29px;" required="required"
-							   data-options="editable:true">
-					</td>
-				</tr>
-				<tr>
-					<th>保留价</th>
-					<td colspan="3">
-						<input name="reservePrice" value="${zcProduct.reservePrice}" class="easyui-numberspinner"
-							   style="width: 140px; height: 29px;" required="required"
-							   data-options="editable:true">
-						<span style="color: red;">(*仅供后台参考数据)</span>
-					</td>
-				</tr>
-				<tr>
-					<th valign="top">内容</th>
-					<td colspan="3">
-						<textarea style="width: 510px;height: 200px;" name="content">${zcProduct.content}</textarea>
-					</td>
-				</tr>
-
-			</table>
+				<tr>	
+					<th><%=TzcSysMsgLog.ALIAS_SYS_MSG_ID%></th>	
+					<td>
+											<input class="span2" name="sysMsgId" type="text" value="${zcSysMsgLog.sysMsgId}"/>
+					</td>							
+					<th><%=TzcSysMsgLog.ALIAS_MTYPE%></th>	
+					<td>
+											<input class="span2" name="mtype" type="text" value="${zcSysMsgLog.mtype}"/>
+					</td>							
+			</tr>	
+				<tr>	
+					<th><%=TzcSysMsgLog.ALIAS_TIME_UNIT%></th>	
+					<td>
+											<input class="span2" name="timeUnit" type="text" value="${zcSysMsgLog.timeUnit}"/>
+					</td>							
+					<th><%=TzcSysMsgLog.ALIAS_CONTENT%></th>	
+					<td>
+											<input class="span2" name="content" type="text" value="${zcSysMsgLog.content}"/>
+					</td>							
+			</tr>	
+				<tr>	
+					<th><%=TzcSysMsgLog.ALIAS_IS_READ%></th>	
+					<td>
+											<input class="span2" name="isRead" type="text" value="${zcSysMsgLog.isRead}"/>
+					</td>							
+					<th><%=TzcSysMsgLog.ALIAS_ADDTIME%></th>	
+					<td>
+					<input class="span2" name="addtime" type="text" onclick="WdatePicker({dateFmt:'<%=TzcSysMsgLog.FORMAT_ADDTIME%>'})"   maxlength="0" value="${zcSysMsgLog.addtime}"/>
+					</td>							
+			</tr>	
+			</table>				
 		</form>
 	</div>
 </div>

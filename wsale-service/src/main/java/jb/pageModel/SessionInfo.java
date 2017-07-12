@@ -21,6 +21,7 @@ public class SessionInfo implements java.io.Serializable {
 	private String position; // 职位
 	private String headImage; // 头像
 	private String mobile; // 手机号
+	private String utype;
 	private Boolean isGag;
 	private Boolean isAuth;
 	private Boolean isPayBond;
@@ -111,6 +112,14 @@ public class SessionInfo implements java.io.Serializable {
 
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
+	}
+
+	public String getUtype() {
+		return utype;
+	}
+
+	public void setUtype(String utype) {
+		this.utype = utype;
 	}
 
 	public Boolean getIsGag() {

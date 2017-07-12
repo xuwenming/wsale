@@ -7,9 +7,7 @@ import jb.pageModel.*;
 import jb.service.*;
 import jb.service.impl.CompletionFactory;
 import jb.service.impl.SendWxMessageImpl;
-import jb.util.ConfigUtil;
-import jb.util.EnumConstants;
-import jb.util.PathUtil;
+import jb.util.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -66,6 +64,8 @@ public class ZcBestProductController extends BaseController {
 	 */
 	@RequestMapping("/manager")
 	public String manager(HttpServletRequest request) {
+		String utype = ((SessionInfo) request.getSession().getAttribute(ConfigUtil.getSessionInfoName())).getUtype();
+		request.setAttribute("utype", utype);
 		return "/zcbestproduct/zcBestProduct";
 	}
 
@@ -215,6 +215,9 @@ public class ZcBestProductController extends BaseController {
 	 */
 	@RequestMapping("/editPage")
 	public String editPage(HttpServletRequest request, String id) {
+		String utype = ((SessionInfo) request.getSession().getAttribute(ConfigUtil.getSessionInfoName())).getUtype();
+		request.setAttribute("utype", utype);
+
 		ZcBestProduct zcBestProduct = zcBestProductService.get(id);
 		User user = userService.getByZc(zcBestProduct.getAddUserId());
 		zcBestProduct.setAddUserName(user.getNickname());
@@ -265,7 +268,7 @@ public class ZcBestProductController extends BaseController {
 	 */
 	@RequestMapping("/edit")
 	@ResponseBody
-	public Json edit(ZcBestProduct zcBestProduct, HttpServletRequest request) {
+	public Json edit(ZcBestProduct zcBestProduct, String startTimeStr, String endTimeStr, HttpServletRequest request) {
 		Json j = new Json();
 		StringBuffer buffer = new StringBuffer();
 		ZcProduct product = zcProductService.get(zcBestProduct.getProductId());
@@ -273,6 +276,7 @@ public class ZcBestProductController extends BaseController {
 		content = content.length() > 20 ? content.substring(0, 20) + "..." : content;
 		if("AS02".equals(zcBestProduct.getAuditStatus())) {
 			Calendar c = Calendar.getInstance();
+			if(!F.empty(startTimeStr)) c.setTime(DateUtil.parse(startTimeStr, Constants.DATE_FORMAT));
 			Date realDeadline = product.getRealDeadline();
 			if(c.getTime().after(realDeadline)) {
 				j.fail();
@@ -285,9 +289,14 @@ public class ZcBestProductController extends BaseController {
 				return j;
 			}
 			zcBestProduct.setStartTime(c.getTime());
-			// 有效时间24小时
-			c.add(Calendar.DAY_OF_MONTH, 1);
-			zcBestProduct.setEndTime(c.getTime());
+			if(!F.empty(endTimeStr)) {
+				zcBestProduct.setEndTime(DateUtil.parse(endTimeStr, Constants.DATE_FORMAT));
+			} else {
+				// 有效时间24小时
+				c.add(Calendar.DAY_OF_MONTH, 1);
+				zcBestProduct.setEndTime(c.getTime());
+			}
+
 			// 精拍至少保留2天
 			/*if(realDeadline.getTime() - c.getTime().getTime() < 48*60*60*1000) {
 				c.add(Calendar.DAY_OF_MONTH, 2);

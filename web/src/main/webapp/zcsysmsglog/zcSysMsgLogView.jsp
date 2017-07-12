@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="jb.model.TzcSysMsg" %>
+<%@ page import="jb.model.TzcSysMsgLog" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script type="text/javascript">
 	$(function() {
@@ -10,29 +10,33 @@
 	<div data-options="region:'center',border:false">
 		<table class="table table-hover table-condensed">
 				<tr>	
-					<th><%=TzcSysMsg.ALIAS_OBJECT_TYPE%></th>	
+					<th><%=TzcSysMsgLog.ALIAS_SYS_MSG_ID%></th>	
 					<td>
-						${zcSysMsg.objectType}							
+						${zcSysMsgLog.sysMsgId}							
 					</td>							
-					<th><%=TzcSysMsg.ALIAS_OBJECT_ID%></th>	
+					<th><%=TzcSysMsgLog.ALIAS_MTYPE%></th>	
 					<td>
-						${zcSysMsg.objectId}							
-					</td>							
-				</tr>		
-				<tr>	
-					<th><%=TzcSysMsg.ALIAS_USER_ID%></th>	
-					<td>
-						${zcSysMsg.userId}							
-					</td>							
-					<th><%=TzcSysMsg.ALIAS_NEWTIME%></th>	
-					<td>
-						${zcSysMsg.newtime}							
+						${zcSysMsgLog.mtype}							
 					</td>							
 				</tr>		
 				<tr>	
-					<th><%=TzcSysMsg.ALIAS_ADDTIME%></th>	
+					<th><%=TzcSysMsgLog.ALIAS_TIME_UNIT%></th>	
 					<td>
-						${zcSysMsg.addtime}							
+						${zcSysMsgLog.timeUnit}							
+					</td>							
+					<th><%=TzcSysMsgLog.ALIAS_CONTENT%></th>	
+					<td>
+						${zcSysMsgLog.content}							
+					</td>							
+				</tr>		
+				<tr>	
+					<th><%=TzcSysMsgLog.ALIAS_IS_READ%></th>	
+					<td>
+						${zcSysMsgLog.isRead}							
+					</td>							
+					<th><%=TzcSysMsgLog.ALIAS_ADDTIME%></th>	
+					<td>
+						${zcSysMsgLog.addtime}							
 					</td>							
 				</tr>		
 		</table>

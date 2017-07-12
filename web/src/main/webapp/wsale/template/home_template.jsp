@@ -20,10 +20,10 @@
 		<div class="swiper-pagination"></div>
 	</div>
 
-	<div class="readNum">
+	<!--<div class="readNum">
 		<img src="${pageContext.request.contextPath}/wsale/images/huoyan-icon.png" style="width:12px;" />
 		<span name="readCount">0</span>
-	</div>
+	</div>-->
 </div>
 
 <div id="home_product_template" class="bestItem" style="display: none;">

@@ -106,6 +106,7 @@ public class TzcProduct implements java.io.Serializable,IEntity{
 	private Integer shareCount;
 	//
 	private Double currentPrice;
+	private Double reservePrice;
 	//@Length(max=36)
 	private String userId;
 	//
@@ -325,7 +326,16 @@ public class TzcProduct implements java.io.Serializable,IEntity{
 	public void setCurrentPrice(Double currentPrice) {
 		this.currentPrice = currentPrice;
 	}
-	
+
+	@Column(name = "reserve_price", unique = false, nullable = true, insertable = true, updatable = true, length = 22)
+	public Double getReservePrice() {
+		return reservePrice;
+	}
+
+	public void setReservePrice(Double reservePrice) {
+		this.reservePrice = reservePrice;
+	}
+
 	@Column(name = "user_id", unique = false, nullable = true, insertable = true, updatable = true, length = 36)
 	public String getUserId() {
 		return this.userId;

@@ -431,16 +431,21 @@
                     dom.find('.attentioned').addClass('attred').html('已');
                 }
             }
+
             if(best.products) {
                 for(var i in best.products) {
                     var product = best.products[i];
-                    dom.find('.pIconBox').append('<div class="swiper-slide pIconImg" data-pro-id="'+product.id+'" style="background-image: url(\''+product.icon+'\');"></div>');
+                    var html = '<div class="readNum new-readNum" style="background-color: #fff;"><div class="info-xinxi home-best-img-title">'+product.content+'</div>'
+                            + '<div class="home-best-item-text"><span class="home-best-money">￥' + product.currentPrice+'</span><span style="font-size: 12px;">已有<count>'+product.auctionNum+'</count>次出价</span></div>'
+                            + '<img src="${pageContext.request.contextPath}/wsale/images/huoyan-icon.png" style="width:12px;" /><span>'+best.readCount+'</span></div>';
+
+                    dom.find('.pIconBox').append('<div class="swiper-slide pIconImg" data-pro-id="'+product.id+'" style="background-image: url(\''+product.icon+'\');">'+html+'</div>');
                 }
             }
             $(".bestList").append(dom);
 
             dom.find('.swiper-container').addClass('best-swiper-container' + index);
-            dom.find('.swiper-pagination').addClass('best-swiper-p' + index);
+            dom.find('.swiper-pagination').css('bottom', '60px').addClass('best-swiper-p' + index);
 
             dom.find('.headImage, .nickname').click(best.user.id, function(event){
                 $.cookie('home_best', JSON.stringify({scrollTop:$(window).scrollTop(), currPage:currPage-1}), {expires:5*60*1000});

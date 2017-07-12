@@ -84,7 +84,7 @@ public class ZcBestProductServiceImpl extends BaseServiceImpl<ZcBestProduct> imp
 				params.put("addUserId", zcBestProduct.getAddUserId());
 			}
 			if(zcBestProduct.getEndTime() != null) {
-				whereHql += " and t.endTime > :endTime";
+				whereHql += " and t.startTime < :endTime and t.endTime > :endTime";
 				params.put("endTime", zcBestProduct.getEndTime());
 			}
 			if(!F.empty(zcBestProduct.getProductStatus())) {
@@ -138,6 +138,13 @@ public class ZcBestProductServiceImpl extends BaseServiceImpl<ZcBestProduct> imp
 				zcBestProduct.setEndTime(new Date()); // 审核失败，终止结束时间
 			}
 			MyBeanUtils.copyProperties(zcBestProduct, t, new String[] { "id" , "addtime" },true);
+
+			if(zcBestProduct.getOldShopSeq() != null && !zcBestProduct.getOldShopSeq().equals(zcBestProduct.getShopSeq())) {
+				Map<String, Object> params = new HashMap<String, Object>();
+				params.put("shopSeq", zcBestProduct.getShopSeq());
+				params.put("addUserId", t.getAddUserId());
+				zcBestProductDao.executeHql("update TzcBestProduct t set t.shopSeq = :shopSeq where t.addUserId = :addUserId", params);
+			}
 		}
 	}
 

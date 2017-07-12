@@ -91,6 +91,18 @@
 					return str;
 				}
 				}, {
+				field : 'shopSeq',
+				title : '店铺排序',
+				width : 30,
+				sortable:true,
+				hidden : ${utype == 'UT01'} ? false : true
+				}, {
+				field : 'productSeq',
+				title : '拍品排序',
+				width : 30,
+				sortable:true,
+				hidden : ${utype == 'UT01'} ? false : true
+				}, {
 				field : 'payStatusZh',
 				title : '<%=TzcBestProduct.ALIAS_PAY_STATUS%>',
 				width : 40,

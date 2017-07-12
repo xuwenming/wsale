@@ -1,24 +1,24 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="jb.model.TzcSysMsg" %>
+<%@ page import="jb.model.TzcIntermediaryLog" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="jb" uri="http://www.jb.cn/jbtag"%> 
 <!DOCTYPE html>
 <html>
 <head>
-<title>ZcSysMsg管理</title>
+<title>ZcIntermediaryLog管理</title>
 <jsp:include page="../inc.jsp"></jsp:include>
-<c:if test="${fn:contains(sessionInfo.resourceList, '/zcSysMsgController/editPage')}">
+<c:if test="${fn:contains(sessionInfo.resourceList, '/zcIntermediaryLogController/editPage')}">
 	<script type="text/javascript">
 		$.canEdit = true;
 	</script>
 </c:if>
-<c:if test="${fn:contains(sessionInfo.resourceList, '/zcSysMsgController/delete')}">
+<c:if test="${fn:contains(sessionInfo.resourceList, '/zcIntermediaryLogController/delete')}">
 	<script type="text/javascript">
 		$.canDelete = true;
 	</script>
 </c:if>
-<c:if test="${fn:contains(sessionInfo.resourceList, '/zcSysMsgController/view')}">
+<c:if test="${fn:contains(sessionInfo.resourceList, '/zcIntermediaryLogController/view')}">
 	<script type="text/javascript">
 		$.canView = true;
 	</script>
@@ -27,7 +27,7 @@
 	var dataGrid;
 	$(function() {
 		dataGrid = $('#dataGrid').datagrid({
-			url : '${pageContext.request.contextPath}/zcSysMsgController/dataGrid',
+			url : '${pageContext.request.contextPath}/zcIntermediaryLogController/dataGrid',
 			fit : true,
 			fitColumns : true,
 			border : false,
@@ -49,24 +49,24 @@
 				width : 150,
 				hidden : true
 				}, {
-				field : 'objectType',
-				title : '<%=TzcSysMsg.ALIAS_OBJECT_TYPE%>',
-				width : 50		
-				}, {
-				field : 'objectId',
-				title : '<%=TzcSysMsg.ALIAS_OBJECT_ID%>',
+				field : 'imId',
+				title : '<%=TzcIntermediaryLog.ALIAS_IM_ID%>',
 				width : 50		
 				}, {
 				field : 'userId',
-				title : '<%=TzcSysMsg.ALIAS_USER_ID%>',
+				title : '<%=TzcIntermediaryLog.ALIAS_USER_ID%>',
 				width : 50		
 				}, {
-				field : 'newtime',
-				title : '<%=TzcSysMsg.ALIAS_NEWTIME%>',
+				field : 'logType',
+				title : '<%=TzcIntermediaryLog.ALIAS_LOG_TYPE%>',
+				width : 50		
+				}, {
+				field : 'content',
+				title : '<%=TzcIntermediaryLog.ALIAS_CONTENT%>',
 				width : 50		
 				}, {
 				field : 'addtime',
-				title : '<%=TzcSysMsg.ALIAS_ADDTIME%>',
+				title : '<%=TzcIntermediaryLog.ALIAS_ADDTIME%>',
 				width : 50		
 			}, {
 				field : 'action',
@@ -109,7 +109,7 @@
 					title : '提示',
 					text : '数据处理中，请稍后....'
 				});
-				$.post('${pageContext.request.contextPath}/zcSysMsgController/delete', {
+				$.post('${pageContext.request.contextPath}/zcIntermediaryLogController/delete', {
 					id : id
 				}, function(result) {
 					if (result.success) {
@@ -131,7 +131,7 @@
 			title : '编辑数据',
 			width : 780,
 			height : 500,
-			href : '${pageContext.request.contextPath}/zcSysMsgController/editPage?id=' + id,
+			href : '${pageContext.request.contextPath}/zcIntermediaryLogController/editPage?id=' + id,
 			buttons : [ {
 				text : '编辑',
 				handler : function() {
@@ -152,7 +152,7 @@
 			title : '查看数据',
 			width : 780,
 			height : 500,
-			href : '${pageContext.request.contextPath}/zcSysMsgController/view?id=' + id
+			href : '${pageContext.request.contextPath}/zcIntermediaryLogController/view?id=' + id
 		});
 	}
 
@@ -161,7 +161,7 @@
 			title : '添加数据',
 			width : 780,
 			height : 500,
-			href : '${pageContext.request.contextPath}/zcSysMsgController/addPage',
+			href : '${pageContext.request.contextPath}/zcIntermediaryLogController/addPage',
 			buttons : [ {
 				text : '添加',
 				handler : function() {
@@ -179,7 +179,7 @@
 		$.merge($colums, options.frozenColumns);
 		var columsStr = JSON.stringify($colums);
 	    $('#downloadTable').form('submit', {
-	        url:'${pageContext.request.contextPath}/zcSysMsgController/download',
+	        url:'${pageContext.request.contextPath}/zcIntermediaryLogController/download',
 	        onSubmit: function(param){
 	        	$.extend(param, $.serializeObject($('#searchForm')));
 	        	param.downloadFields = columsStr;
@@ -205,28 +205,27 @@
 				<table class="table table-hover table-condensed" style="display: none;">
 						<tr>	
 							<td>
-								<%=TzcSysMsg.ALIAS_OBJECT_TYPE%>：
-											<input type="text" name="objectType" maxlength="36" class="span2"/>
+								<%=TzcIntermediaryLog.ALIAS_IM_ID%>：
+											<input type="text" name="imId" maxlength="36" class="span2"/>
 							</td>
 							<td>
-								<%=TzcSysMsg.ALIAS_OBJECT_ID%>：
-											<input type="text" name="objectId" maxlength="36" class="span2"/>
-							</td>
-							<td>
-								<%=TzcSysMsg.ALIAS_USER_ID%>：
+								<%=TzcIntermediaryLog.ALIAS_USER_ID%>：
 											<input type="text" name="userId" maxlength="36" class="span2"/>
 							</td>
 							<td>
-								<%=TzcSysMsg.ALIAS_NEWTIME%>：
-								<input type="text" class="span2" onclick="WdatePicker({dateFmt:'<%=TzcSysMsg.FORMAT_NEWTIME%>'})" id="newtimeBegin" name="newtimeBegin"/>
-								<input type="text" class="span2" onclick="WdatePicker({dateFmt:'<%=TzcSysMsg.FORMAT_NEWTIME%>'})" id="newtimeEnd" name="newtimeEnd"/>
+								<%=TzcIntermediaryLog.ALIAS_LOG_TYPE%>：
+											<jb:select dataType="IL" name="logType"></jb:select>	
+							</td>
+							<td>
+								<%=TzcIntermediaryLog.ALIAS_CONTENT%>：
+											<input type="text" name="content" maxlength="500" class="span2"/>
 							</td>
 						</tr>	
 						<tr>	
 							<td>
-								<%=TzcSysMsg.ALIAS_ADDTIME%>：
-								<input type="text" class="span2" onclick="WdatePicker({dateFmt:'<%=TzcSysMsg.FORMAT_ADDTIME%>'})" id="addtimeBegin" name="addtimeBegin"/>
-								<input type="text" class="span2" onclick="WdatePicker({dateFmt:'<%=TzcSysMsg.FORMAT_ADDTIME%>'})" id="addtimeEnd" name="addtimeEnd"/>
+								<%=TzcIntermediaryLog.ALIAS_ADDTIME%>：
+								<input type="text" class="span2" onclick="WdatePicker({dateFmt:'<%=TzcIntermediaryLog.FORMAT_ADDTIME%>'})" id="addtimeBegin" name="addtimeBegin"/>
+								<input type="text" class="span2" onclick="WdatePicker({dateFmt:'<%=TzcIntermediaryLog.FORMAT_ADDTIME%>'})" id="addtimeEnd" name="addtimeEnd"/>
 							</td>
 						</tr>	
 				</table>
@@ -237,11 +236,11 @@
 		</div>
 	</div>
 	<div id="toolbar" style="display: none;">
-		<c:if test="${fn:contains(sessionInfo.resourceList, '/zcSysMsgController/addPage')}">
+		<c:if test="${fn:contains(sessionInfo.resourceList, '/zcIntermediaryLogController/addPage')}">
 			<a onclick="addFun();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'bug_add'">添加</a>
 		</c:if>
 		<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'brick_add',plain:true" onclick="searchFun();">过滤条件</a><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'brick_delete',plain:true" onclick="cleanFun();">清空条件</a>
-		<c:if test="${fn:contains(sessionInfo.resourceList, '/zcSysMsgController/download')}">
+		<c:if test="${fn:contains(sessionInfo.resourceList, '/zcIntermediaryLogController/download')}">
 			<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'server_go',plain:true" onclick="downloadTable();">导出</a>		
 			<form id="downloadTable" target="downloadIframe" method="post" style="display: none;">
 			</form>

@@ -61,18 +61,6 @@ public class ZcSysMsgServiceImpl extends BaseServiceImpl<ZcSysMsg> implements Zc
 				whereHql += " and t.userId = :userId";
 				params.put("userId", zcSysMsg.getUserId());
 			}		
-			if (!F.empty(zcSysMsg.getMtype())) {
-				whereHql += " and t.mtype = :mtype";
-				params.put("mtype", zcSysMsg.getMtype());
-			}		
-			if (!F.empty(zcSysMsg.getTimeUnit())) {
-				whereHql += " and t.timeUnit = :timeUnit";
-				params.put("timeUnit", zcSysMsg.getTimeUnit());
-			}		
-			if (!F.empty(zcSysMsg.getContent())) {
-				whereHql += " and t.content = :content";
-				params.put("content", zcSysMsg.getContent());
-			}		
 		}	
 		return whereHql;
 	}

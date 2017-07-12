@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="jb.model.TzcSysMsg" %>
+<%@ page import="jb.model.TzcIntermediaryLog" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script type="text/javascript">
 	$(function() {
@@ -10,29 +10,29 @@
 	<div data-options="region:'center',border:false">
 		<table class="table table-hover table-condensed">
 				<tr>	
-					<th><%=TzcSysMsg.ALIAS_OBJECT_TYPE%></th>	
+					<th><%=TzcIntermediaryLog.ALIAS_IM_ID%></th>	
 					<td>
-						${zcSysMsg.objectType}							
+						${zcIntermediaryLog.imId}							
 					</td>							
-					<th><%=TzcSysMsg.ALIAS_OBJECT_ID%></th>	
+					<th><%=TzcIntermediaryLog.ALIAS_USER_ID%></th>	
 					<td>
-						${zcSysMsg.objectId}							
-					</td>							
-				</tr>		
-				<tr>	
-					<th><%=TzcSysMsg.ALIAS_USER_ID%></th>	
-					<td>
-						${zcSysMsg.userId}							
-					</td>							
-					<th><%=TzcSysMsg.ALIAS_NEWTIME%></th>	
-					<td>
-						${zcSysMsg.newtime}							
+						${zcIntermediaryLog.userId}							
 					</td>							
 				</tr>		
 				<tr>	
-					<th><%=TzcSysMsg.ALIAS_ADDTIME%></th>	
+					<th><%=TzcIntermediaryLog.ALIAS_LOG_TYPE%></th>	
 					<td>
-						${zcSysMsg.addtime}							
+						${zcIntermediaryLog.logType}							
+					</td>							
+					<th><%=TzcIntermediaryLog.ALIAS_CONTENT%></th>	
+					<td>
+						${zcIntermediaryLog.content}							
+					</td>							
+				</tr>		
+				<tr>	
+					<th><%=TzcIntermediaryLog.ALIAS_ADDTIME%></th>	
+					<td>
+						${zcIntermediaryLog.addtime}							
 					</td>							
 				</tr>		
 		</table>

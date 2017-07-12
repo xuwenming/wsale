@@ -73,6 +73,8 @@ public class TzcBestProduct implements java.io.Serializable,IEntity{
 	private String addUserId;
 	//
 	private Date addtime;
+	private Integer shopSeq;
+	private Integer productSeq;
 	//columns END
 
 
@@ -205,7 +207,24 @@ public class TzcBestProduct implements java.io.Serializable,IEntity{
 	public void setAddtime(Date addtime) {
 		this.addtime = addtime;
 	}
-	
+
+	@Column(name = "shop_seq", unique = false, nullable = true, insertable = true, updatable = true, length = 10)
+	public Integer getShopSeq() {
+		return shopSeq;
+	}
+
+	public void setShopSeq(Integer shopSeq) {
+		this.shopSeq = shopSeq;
+	}
+
+	@Column(name = "product_seq", unique = false, nullable = true, insertable = true, updatable = true, length = 10)
+	public Integer getProductSeq() {
+		return productSeq;
+	}
+
+	public void setProductSeq(Integer productSeq) {
+		this.productSeq = productSeq;
+	}
 	
 	/*
 	public String toString() {

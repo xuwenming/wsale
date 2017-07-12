@@ -32,6 +32,7 @@ public class ZcProduct implements java.io.Serializable {
 	private Integer likeCount;
 	private Integer shareCount;
 	private Double currentPrice;
+	private Double reservePrice;
 	private String userId;
 	private Double hammerPrice;
 	private Date hammerTime;			
@@ -229,6 +230,15 @@ public class ZcProduct implements java.io.Serializable {
 	public Double getCurrentPrice() {
 		return this.currentPrice;
 	}
+
+	public Double getReservePrice() {
+		return reservePrice;
+	}
+
+	public void setReservePrice(Double reservePrice) {
+		this.reservePrice = reservePrice;
+	}
+
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="jb.model.TzcSysMsg" %>
+<%@ page import="jb.model.TzcSysMsgLog" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="jb" uri="http://www.jb.cn/jbtag"%>  
@@ -7,7 +7,7 @@
 	$(function() {
 	 parent.$.messager.progress('close');
 		$('#form').form({
-			url : '${pageContext.request.contextPath}/zcSysMsgController/add',
+			url : '${pageContext.request.contextPath}/zcSysMsgLogController/add',
 			onSubmit : function() {
 				parent.$.messager.progress({
 					title : '提示',
@@ -38,29 +38,33 @@
 				<input type="hidden" name="id"/>
 			<table class="table table-hover table-condensed">
 				<tr>	
-					<th><%=TzcSysMsg.ALIAS_OBJECT_TYPE%></th>	
+					<th><%=TzcSysMsgLog.ALIAS_SYS_MSG_ID%></th>	
 					<td>
-											<input class="span2" name="objectType" type="text"/>
+											<input class="span2" name="sysMsgId" type="text"/>
 					</td>							
-					<th><%=TzcSysMsg.ALIAS_OBJECT_ID%></th>	
+					<th><%=TzcSysMsgLog.ALIAS_MTYPE%></th>	
 					<td>
-											<input class="span2" name="objectId" type="text"/>
-					</td>							
-				</tr>	
-				<tr>	
-					<th><%=TzcSysMsg.ALIAS_USER_ID%></th>	
-					<td>
-											<input class="span2" name="userId" type="text"/>
-					</td>							
-					<th><%=TzcSysMsg.ALIAS_NEWTIME%></th>	
-					<td>
-					<input name="newtime" type="text" onclick="WdatePicker({dateFmt:'<%=TzcSysMsg.FORMAT_NEWTIME%>'})"  maxlength="0" class="span " />
+											<input class="span2" name="mtype" type="text"/>
 					</td>							
 				</tr>	
 				<tr>	
-					<th><%=TzcSysMsg.ALIAS_ADDTIME%></th>	
+					<th><%=TzcSysMsgLog.ALIAS_TIME_UNIT%></th>	
 					<td>
-					<input name="addtime" type="text" onclick="WdatePicker({dateFmt:'<%=TzcSysMsg.FORMAT_ADDTIME%>'})"  maxlength="0" class="span " />
+											<input class="span2" name="timeUnit" type="text"/>
+					</td>							
+					<th><%=TzcSysMsgLog.ALIAS_CONTENT%></th>	
+					<td>
+											<input class="span2" name="content" type="text"/>
+					</td>							
+				</tr>	
+				<tr>	
+					<th><%=TzcSysMsgLog.ALIAS_IS_READ%></th>	
+					<td>
+											<input class="span2" name="isRead" type="text"/>
+					</td>							
+					<th><%=TzcSysMsgLog.ALIAS_ADDTIME%></th>	
+					<td>
+					<input name="addtime" type="text" onclick="WdatePicker({dateFmt:'<%=TzcSysMsgLog.FORMAT_ADDTIME%>'})"  maxlength="0" class="span " />
 					</td>							
 				</tr>	
 			</table>		

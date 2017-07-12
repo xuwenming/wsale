@@ -3,15 +3,15 @@ package jb.pageModel;
 import java.util.Date;
 
 @SuppressWarnings("serial")
-public class ZcSysMsg implements java.io.Serializable {
+public class ZcIntermediaryLog implements java.io.Serializable {
 
 	private static final long serialVersionUID = 5454155825314635342L;
 
 	private java.lang.String id;	
-	private java.lang.String objectType;	
-	private java.lang.String objectId;	
+	private java.lang.String imId;	
 	private java.lang.String userId;	
-	private Date newtime;			
+	private java.lang.String logType;	
+	private java.lang.String content;	
 	private Date addtime;			
 
 	
@@ -25,19 +25,12 @@ public class ZcSysMsg implements java.io.Serializable {
 	}
 
 	
-	public void setObjectType(java.lang.String objectType) {
-		this.objectType = objectType;
+	public void setImId(java.lang.String imId) {
+		this.imId = imId;
 	}
 	
-	public java.lang.String getObjectType() {
-		return this.objectType;
-	}
-	public void setObjectId(java.lang.String objectId) {
-		this.objectId = objectId;
-	}
-	
-	public java.lang.String getObjectId() {
-		return this.objectId;
+	public java.lang.String getImId() {
+		return this.imId;
 	}
 	public void setUserId(java.lang.String userId) {
 		this.userId = userId;
@@ -46,12 +39,19 @@ public class ZcSysMsg implements java.io.Serializable {
 	public java.lang.String getUserId() {
 		return this.userId;
 	}
-	public void setNewtime(Date newtime) {
-		this.newtime = newtime;
+	public void setLogType(java.lang.String logType) {
+		this.logType = logType;
 	}
 	
-	public Date getNewtime() {
-		return this.newtime;
+	public java.lang.String getLogType() {
+		return this.logType;
+	}
+	public void setContent(java.lang.String content) {
+		this.content = content;
+	}
+	
+	public java.lang.String getContent() {
+		return this.content;
 	}
 	public void setAddtime(Date addtime) {
 		this.addtime = addtime;

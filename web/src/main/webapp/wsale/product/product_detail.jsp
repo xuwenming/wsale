@@ -98,7 +98,7 @@
                         <div class="renzheng-input" style="background-color: #fff;">
                             <a class="faxian-link" style="padding: 14px;">
                                 <div class="list-right">
-                                    <input type="tel" placeholder="请输入最高价" id="maxPrice" maxlength="10" class="onlyNum"/>
+                                    <input type="tel" placeholder="请输入最高价" id="maxPrice" maxlength="10" class="onlyNum" style="margin:5px 0;"/>
                                 </div>
                                 <div class="normal-text">最高价</div>
                             </a>

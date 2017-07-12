@@ -435,7 +435,7 @@
             if(best.products) {
                 for(var i in best.products) {
                     var product = best.products[i];
-                    var html = '<div class="readNum new-readNum" style="background-color: #fff;"><div class="info-xinxi home-best-img-title">'+product.content+'</div>'
+                    var html = '<div class="readNum new-readNum" style="background-color: #fff;border-bottom: 1px solid #eee;"><div class="info-xinxi home-best-img-title">'+product.content+'</div>'
                             + '<div class="home-best-item-text"><span class="home-best-money">￥' + product.currentPrice+'</span><span style="font-size: 12px;">已有<count>'+product.auctionNum+'</count>次出价</span></div>'
                             + '<img src="${pageContext.request.contextPath}/wsale/images/huoyan-icon.png" style="width:12px;" /><span>'+best.readCount+'</span></div>';
 

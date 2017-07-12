@@ -115,3 +115,7 @@
 	margin-right: 5px;
 	font-size: 16px;
 }
+.swiper-pagination-bullet-active{
+	width: 12px;
+	border-radius: 4px;
+}

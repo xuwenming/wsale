@@ -23,6 +23,8 @@ public class ZcBestProduct implements java.io.Serializable {
 	private Date paytime;			
 	private String addUserId;
 	private Date addtime;
+	private Integer shopSeq;
+	private Integer productSeq;
 
 	private String pno;
 	private String addUserName;
@@ -33,6 +35,16 @@ public class ZcBestProduct implements java.io.Serializable {
 	private String categoryId;
 	private String group;
 	private String productStatus;
+	private Integer oldShopSeq;
+
+	public int getStatus() {
+		int status = 0;
+		if(endTime != null) {
+			if(endTime.getTime() > new Date().getTime()) status = 1;
+			else status = 2;
+		}
+		return status;
+	}
 
 	public String getChannelZh() {
 		return EnumConstants.BEST_CHANNEL.getCnName(this.channel);
@@ -148,6 +160,22 @@ public class ZcBestProduct implements java.io.Serializable {
 		return this.addtime;
 	}
 
+	public Integer getShopSeq() {
+		return shopSeq;
+	}
+
+	public void setShopSeq(Integer shopSeq) {
+		this.shopSeq = shopSeq;
+	}
+
+	public Integer getProductSeq() {
+		return productSeq;
+	}
+
+	public void setProductSeq(Integer productSeq) {
+		this.productSeq = productSeq;
+	}
+
 	public String getPno() {
 		return pno;
 	}
@@ -202,5 +230,13 @@ public class ZcBestProduct implements java.io.Serializable {
 
 	public void setProductStatus(String productStatus) {
 		this.productStatus = productStatus;
+	}
+
+	public Integer getOldShopSeq() {
+		return oldShopSeq;
+	}
+
+	public void setOldShopSeq(Integer oldShopSeq) {
+		this.oldShopSeq = oldShopSeq;
 	}
 }

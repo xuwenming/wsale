@@ -1,10 +1,7 @@
 package jb.controller;
 
 import jb.pageModel.*;
-import jb.service.UserServiceI;
-import jb.service.ZcBestProductServiceI;
-import jb.service.ZcFileServiceI;
-import jb.service.ZcProductServiceI;
+import jb.service.*;
 import jb.service.impl.CompletionFactory;
 import jb.util.EnumConstants;
 import org.apache.commons.collections.CollectionUtils;
@@ -36,6 +33,9 @@ public class ApiBestProductController extends BaseController {
 
 	@Autowired
 	private ZcFileServiceI zcFileService;
+
+	@Autowired
+	private ZcAuctionServiceI zcAuctionService;
 
 	/**
 	 * 首页-精选拍品
@@ -115,7 +115,7 @@ public class ApiBestProductController extends BaseController {
 		Json j = new Json();
 		try{
 			SessionInfo s = getSessionInfo(request);
-			ph.setSort("auditTime");
+			ph.setSort("shopSeq desc, t.auditTime");
 			ph.setOrder("desc");
 			zcBestProduct.setAuditStatus("AS02");
 			zcBestProduct.setEndTime(new Date());
@@ -155,9 +155,13 @@ public class ApiBestProductController extends BaseController {
 							Map<String, String> icons = zcFileService.queryIcons(EnumConstants.OBJECT_TYPE.PRODUCT.getCode(), productIds);
 
 							int readCount = 0;
+							Map<String, Integer> auctions = zcAuctionService.getCountAuctionNum(productIds);
 							for(ZcProduct product : products) {
 								product.setIcon(icons.get(product.getId()));
 								readCount += product.getReadCount();
+
+								Integer num = auctions.get(product.getId());
+								if(num != null) product.setAuctionNum(num);
 							}
 							//List<ZcProduct> products = new ArrayList<ZcProduct>();
 							v.put("products", products);

@@ -98,7 +98,7 @@
                         <div class="renzheng-input" style="background-color: #fff;">
                             <a class="faxian-link" style="padding: 14px;">
                                 <div class="list-right">
-                                    <input type="tel" placeholder="请输入最高价" id="maxPrice" maxlength="10" class="onlyNum"/>
+                                    <input type="tel" placeholder="请输入最高价" id="maxPrice" maxlength="10" class="onlyNum" style="margin:5px 0;"/>
                                 </div>
                                 <div class="normal-text">最高价</div>
                             </a>
@@ -464,7 +464,7 @@
             });
 
             if(${product.deadlineLen > 0})
-                addTimer($('.deadline'), ${product.deadlineLen});
+                addTimer($('.deadline'), ${product.deadlineLen}, '${product.id}');
 
             drawAuction(true);
             $(".check-more").bind('click', function(){
@@ -688,22 +688,21 @@
         // 手动更新
         function updateBid() {
             ajaxPostSync('api/apiProductController/updateBid', {id:'${product.id}', currentPrice:currentPrice}, function(data){
-                $('.updateBid .newbidTM').html(new Date().format('HH:mm:ss'));
                 var result = data.obj;
+                if(result.product.deadlineLen > 0) {
+                    addTimer($('.deadline'), result.product.deadlineLen, '${product.id}');
+                } else {
+                    $('.bidStatus').html('<div class="paipin-done">'+new Date().format("yyyy年MM月dd日 HH:mm")+'拍卖已结束</div>');
+                    clearInterval(timerArr['interval_${product.id}']);
+                }
+                $('.updateBid .newbidTM').html(new Date().format('HH:mm:ss'));
                 if(data.success) {
-                    if(result.product.deadlineLen > 0) {
-                        currentPrice = result.product.currentPrice;
-                        $('.rangePrice').html(result.rangePrice);
-                        $('.jiage-value').val(currentPrice == 0 ? (result.product.startingPrice == 0 ? result.rangePrice : result.product.startingPrice) : (currentPrice + result.rangePrice));
-                        if(result.product.deadlineLen > 0) {
-                            addTimer($('.deadline'), result.product.deadlineLen);
-                        }
-                    }
+                    currentPrice = result.product.currentPrice;
+                    $('.rangePrice').html(result.rangePrice);
+                    $('.jiage-value').val(currentPrice == 0 ? (result.product.startingPrice == 0 ? result.rangePrice : result.product.startingPrice) : (currentPrice + result.rangePrice));
+
                     currPage = 1;
                     drawAuction(true);
-                }
-                if(result.product.deadlineLen == 0) {
-                    $('.bidStatus').html('<div class="paipin-done">'+new Date().format("yyyy年MM月dd日 HH:mm")+'拍卖已结束</div>');
                 }
 
             });
@@ -843,7 +842,7 @@
                     var result = data.obj;
                     if(data.success) {
                         $.toast("出价成功", "text");
-                        if($first.length != 0) {
+                        /*if($first.length != 0) {
                             $first.find(".order-sign").hide();
                             $first.find(".order-flag").attr('src', base + 'wsale/images/chuju-icon.png');
                         } else {
@@ -862,9 +861,11 @@
                             $('.jiage-value').val(bid + result.rangePrice);
                             dom.find(".order-flag").attr('src', base + 'wsale/images/lingxian-icon.png');
                             if(result.deadlineLen > 0) {
-                                addTimer($('.deadline'), result.deadlineLen);
+                                addTimer($('.deadline'), result.deadlineLen, '${product.id}');
                             }
-                        }
+                        }*/
+
+                        updateBid();
                     } else {
                         $.alert(data.msg, "系统提示");
                     }
@@ -894,8 +895,9 @@
 
             ajaxPost('api/apiProductController/autoBid', {productId:'${product.id}', maxPrice : maxPrice}, function(data){
                 if(data.success) {
-                    $.alert("自动出价成功，请手动更新！", "系统提示");
-                    //$('.maxPriceMsg').html('当前自动出价最高价为'+maxPrice+'元');
+                    $.alert("自动出价成功，请手动更新！", "系统提示", function(){
+                        updateBid();
+                    });
                 } else {
                     $.alert(data.msg, "系统提示");
                 }
@@ -956,7 +958,7 @@
 
         function drawAuction(load) {
             if(load) $('#auctions').empty();
-            ajaxPost('api/apiProductController/auctions', {productId:'${product.id}', page:currPage, rows:rows}, function(data){
+            ajaxPostSync('api/apiProductController/auctions', {productId:'${product.id}', page:currPage, rows:rows}, function(data){
                 if(data.success) {
                     var result = data.obj;
                     if(result.rows.length != 0) {
@@ -1006,35 +1008,39 @@
             return dom;
         }
 
+        var timerArr = {};
         var addTimer = (function () {
-            var list = [], interval;
 
-            return function (dom, time) {
-                if (!interval)
-                    interval = setInterval(go, 1000);
-                list.push({ ele: dom, time: time });
-                go();
-            }
+            return function (dom, time, key) {
+                timerArr['interval_time_' + key] = time + 1;
+                if (!timerArr['interval_' + key]) {
+                    timerArr['interval_' + key] = setInterval(function(){
+                        go(dom, key);
+                    }, 1000);
 
-            function go() {
-                for (var i = 0; i < list.length; i++) {
-                    var dom = list[i].ele, time = list[i].time;
-                    dom.html(getTimerString(time ? list[i].time -= 1 : 0));
-                    if (!time)
-                        list.splice(i--, 1);
+                    go(dom, key);
                 }
+            };
+
+            function go(dom, key) {
+                var time = timerArr['interval_time_' + key];
+                var timerStr = getTimerString(time ? timerArr['interval_time_' + key] -= 1 : 0);
+                if(timerStr == -1) {
+                    updateBid();
+                }
+                else dom.html(timerStr);
             }
 
             function getTimerString(time) {
                 var d = Math.floor(time / 86400),
-                    h = Math.floor((time % 86400) / 3600),
-                    m = Math.floor(((time % 86400) % 3600) / 60),
-                    s = Math.floor(((time % 86400) % 3600) % 60);
+                        h = Math.floor((time % 86400) / 3600),
+                        m = Math.floor(((time % 86400) % 3600) / 60),
+                        s = Math.floor(((time % 86400) % 3600) % 60);
                 if (time > 0) {
                     var dh = d == 0 ? '' : '<span class="cbp-vm-timenumber">'+d+'</span>天';
                     return '<font style="color: #a8a8a8;">拍卖倒计时：</font>'+dh+'<span class="cbp-vm-timenumber">'+h+'</span>时<span class="cbp-vm-timenumber">'+m+'</span>分<span class="cbp-vm-timenumber">'+s+'</span>秒'
                 }
-                else return "已截拍";
+                else return -1;
             }
         }) ();
 

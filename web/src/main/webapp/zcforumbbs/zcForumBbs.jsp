@@ -67,7 +67,7 @@
 				}, {
 				field : 'categoryName',
 				title : '所属分类',
-				width : 70
+				width : 80
 				}, {
 				field : 'bbsTypeZh',
 				title : '类别',
@@ -273,6 +273,39 @@
 			} ]
 		});
 	}
+
+	function commentFun() {
+		var rows = dataGrid.datagrid('getChecked');
+		var ids = [];
+		if (rows.length > 0) {
+			for ( var i = 0; i < rows.length; i++) {
+				ids.push(rows[i].id);
+			}
+			parent.$.modalDialog({
+				title : '帖子评论',
+				width : 600,
+				height : 220,
+				href : '${pageContext.request.contextPath}/zcForumBbsController/addCommentPage?ids=' + ids.join(','),
+				buttons : [ {
+					text : '评论',
+					handler : function() {
+						parent.$.messager.confirm('询问', '是否发表评论？', function(b) {
+							if (b) {
+								var f = parent.$.modalDialog.handler.find('#form');
+								f.submit();
+							}
+						});
+					}
+				} ]
+			});
+		} else {
+			parent.$.messager.show({
+				title : '提示',
+				msg : '请勾选要评论的帖子！'
+			});
+		}
+	}
+
 	function downloadTable(){
 		var options = dataGrid.datagrid("options");
 		var $colums = [];		
@@ -368,7 +401,7 @@
 		</c:if>
 		<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'brick_add',plain:true" onclick="searchFun();">查询</a><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'brick_delete',plain:true" onclick="cleanFun();">清空条件</a>
 		<c:if test="${fn:contains(sessionInfo.resourceList, '/zcForumBbsController/addCommentPage')}">
-			<a onclick="addFun();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'comments'">评论</a>
+			<a onclick="commentFun();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'comments'">评论</a>
 		</c:if>
 		<c:if test="${fn:contains(sessionInfo.resourceList, '/zcForumBbsController/download')}">
 			<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'server_go',plain:true" onclick="downloadTable();">导出</a>		

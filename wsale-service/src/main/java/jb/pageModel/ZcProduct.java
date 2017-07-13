@@ -32,6 +32,7 @@ public class ZcProduct implements java.io.Serializable {
 	private Integer likeCount;
 	private Integer shareCount;
 	private Double currentPrice;
+	private Double reservePrice;
 	private String userId;
 	private Double hammerPrice;
 	private Date hammerTime;			
@@ -60,6 +61,8 @@ public class ZcProduct implements java.io.Serializable {
 	private Integer remindLen; // 距离截拍剩余时长提醒，分钟
 
 	private String atteId; // 关注人id,查找关注人拍品列表
+	private int auctionNum; // 出价次数
+	private User user; // 发布人
 
 	public String getStatusZh() {
 		return Application.getString(this.status);
@@ -227,6 +230,15 @@ public class ZcProduct implements java.io.Serializable {
 	public Double getCurrentPrice() {
 		return this.currentPrice;
 	}
+
+	public Double getReservePrice() {
+		return reservePrice;
+	}
+
+	public void setReservePrice(Double reservePrice) {
+		this.reservePrice = reservePrice;
+	}
+
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
@@ -403,5 +415,21 @@ public class ZcProduct implements java.io.Serializable {
 
 	public void setAtteId(String atteId) {
 		this.atteId = atteId;
+	}
+
+	public int getAuctionNum() {
+		return auctionNum;
+	}
+
+	public void setAuctionNum(int auctionNum) {
+		this.auctionNum = auctionNum;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

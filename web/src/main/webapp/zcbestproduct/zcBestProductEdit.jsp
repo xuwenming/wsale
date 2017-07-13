@@ -70,18 +70,56 @@
 					<th>违约</th>
 					<td>${order_status_count.S_OS15 + order_status_count.B_OS15}</td>
 				</tr>
-				<c:if test="${zcBestProduct.auditStatus == 'AS02'}">
-					<tr>
-						<th><%=TzcBestProduct.ALIAS_START_TIME%></th>
-						<td>
-							<fmt:formatDate value="${zcBestProduct.startTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
-						</td>
-						<th><%=TzcBestProduct.ALIAS_END_TIME%></th>
-						<td>
-							<fmt:formatDate value="${zcBestProduct.endTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
-						</td>
-					</tr>
-				</c:if>
+				<c:choose>
+					<c:when test="${utype == 'UT01'}">
+						<tr>
+							<th><%=TzcBestProduct.ALIAS_START_TIME%></th>
+							<td>
+								<input type="text" class="span2" onclick="WdatePicker({dateFmt:'<%=TzcBestProduct.FORMAT_START_TIME%>'})" name="startTimeStr"
+										value="<fmt:formatDate value="${zcBestProduct.startTime}" pattern="yyyy-MM-dd HH:mm:ss"/>" style="width: 140px;"/>
+							</td>
+							<th><%=TzcBestProduct.ALIAS_END_TIME%></th>
+							<td>
+								<input type="text" class="span2" onclick="WdatePicker({dateFmt:'<%=TzcBestProduct.FORMAT_END_TIME%>'})" name="endTimeStr"
+										value="<fmt:formatDate value="${zcBestProduct.endTime}" pattern="yyyy-MM-dd HH:mm:ss"/>" style="width: 140px;"/>
+							</td>
+						</tr>
+						<tr>
+							<th>店铺排序</th>
+							<td>
+								<input type="hidden" name="oldShopSeq" value="${zcBestProduct.shopSeq}">
+								<input name="shopSeq" value="${zcBestProduct.shopSeq}" class="easyui-numberspinner"
+									   style="width: 140px; height: 29px;" required="required"
+									   data-options="editable:true">
+							</td>
+							<th>拍品排序</th>
+							<td>
+								<input name="productSeq" value="${zcBestProduct.productSeq}" class="easyui-numberspinner"
+									   style="width: 140px; height: 29px;" required="required"
+									   data-options="editable:true">
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<span style="color: red;">*1、起始时间和结束时间不选则默认一天；2、排序数值越大越靠前</span>
+							</td>
+						</tr>
+					</c:when>
+					<c:otherwise>
+						<c:if test="${zcBestProduct.auditStatus == 'AS02'}">
+							<tr>
+								<th><%=TzcBestProduct.ALIAS_START_TIME%></th>
+								<td>
+									<fmt:formatDate value="${zcBestProduct.startTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
+								</td>
+								<th><%=TzcBestProduct.ALIAS_END_TIME%></th>
+								<td>
+									<fmt:formatDate value="${zcBestProduct.endTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
+								</td>
+							</tr>
+						</c:if>
+					</c:otherwise>
+				</c:choose>
 				<tr>
 					<th>申请精拍频道</th>
 					<td>

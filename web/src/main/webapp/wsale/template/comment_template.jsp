@@ -2,7 +2,7 @@
 <%--评论列表--%>
 <div id="comment_template" style="border-top:10px solid #f5f5f5;clear: both;padding:10px 10px 0px 10px;display: none;">
 	<div class="bbs-com-img">
-		<img class="lazy" style="width:100%;" name="user" data-name="headImage"/>
+		<img class="lazy" style="width:62px;height: 62px;" name="user" data-name="headImage"/>
 		<div style="margin-top:-20px; text-align:right;width:100%;">
 			<img name="user" data-name="positionIcon" style="width:50%;">
 		</div>

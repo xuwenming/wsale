@@ -4,16 +4,12 @@ import com.alibaba.fastjson.JSON;
 import jb.absx.F;
 import jb.listener.Application;
 import jb.pageModel.*;
-import jb.service.UserServiceI;
-import jb.service.ZcCategoryServiceI;
-import jb.service.ZcFileServiceI;
-import jb.service.ZcForumBbsServiceI;
+import jb.service.*;
 import jb.service.impl.CompletionFactory;
 import jb.util.ConfigUtil;
 import jb.util.EnumConstants;
 import jb.util.ImageUtils;
 import jb.util.MP3Util;
-import jb.util.wx.DownloadMediaUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,6 +49,9 @@ public class ZcForumBbsController extends BaseController {
 
 	@Autowired
 	private UserServiceI userService;
+
+	@Autowired
+	private ZcBbsCommentServiceI zcBbsCommentService;
 
 
 	/**
@@ -343,6 +342,71 @@ public class ZcForumBbsController extends BaseController {
 		Json j = new Json();
 		zcForumBbsService.delete(id);
 		j.setMsg("删除成功！");
+		j.setSuccess(true);
+		return j;
+	}
+
+	/**
+	 * 跳转到评论页面
+	 *
+	 * @return
+	 */
+	@RequestMapping("/addCommentPage")
+	public String addCommentPage(String ids, HttpServletRequest request) {
+		request.setAttribute("ids", ids);
+		return "/zcforumbbs/commentAdd";
+	}
+
+	/**
+	 * 跳转到评论页面
+	 *
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/addComment")
+	public Json addComment(String ids, String userId, String comment, HttpServletRequest request) {
+		Json j = new Json();
+		List<User> users = new ArrayList<User>();
+		if(F.empty(userId)) {
+			User q = new User();
+			q.setUtype("UT03");
+			users = userService.query(q);
+			if(CollectionUtils.isEmpty(users)) {
+				j.setMsg("系统没有模拟用户，请指定评论人！");
+				j.fail();
+				return j;
+			}
+		}
+		Random random = new Random();
+		CompletionService completionService = CompletionFactory.initCompletion();
+		for(String bbsId : ids.split(",")) {
+			if(F.empty(bbsId)) continue;
+			String uid = !F.empty(userId) ? userId : users.get(random.nextInt(users.size())).getId();
+			ZcBbsComment c = new ZcBbsComment();
+			c.setIsDeleted(false);
+			c.setUserId(uid);
+			c.setComment(comment);
+			c.setBbsId(bbsId);
+			zcBbsCommentService.add(c);
+
+			// 更新帖子最后评论时间和回复数
+			completionService.submit(new Task<ZcBbsComment, Object>(c) {
+				@Override
+				public Boolean call() throws Exception {
+					zcForumBbsService.updateCount(getD().getBbsId(), 1, "bbs_comment");
+
+					Calendar c = Calendar.getInstance();
+					ZcForumBbs bbs = new ZcForumBbs();
+					bbs.setId(getD().getBbsId());
+					bbs.setLastCommentTime(c.getTime());
+					bbs.setUpdatetime(c.getTime());
+					zcForumBbsService.edit(bbs);
+					return true;
+				}
+			});
+		}
+
+		j.setMsg("评论成功！");
 		j.setSuccess(true);
 		return j;
 	}

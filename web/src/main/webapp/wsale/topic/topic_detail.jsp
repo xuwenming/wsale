@@ -182,15 +182,28 @@
 
     <script type="text/javascript">
         var loading = true, currPage = 1, rows = 10, self = ${topic.user.self}, replyComment = null;
+
         $(function(){
             $('.content img').css('width','100%');
             $('.content img').parent().css('text-indent', '0');
             if($(".rewardUsers").height() == $(".rewardUsers").css('max-height').replace('px', '')) {
                 $(".gengduo").removeClass("hide");
             }
-            $(".content img").lazyload({
+
+            var items = [];
+            $(".content img[data-original]").each(function(){
+                var src = $(this).attr("data-original");
+                if($(this).parent().is('a')) {
+                    $(this).removeAttr('data-original').attr('src', src);
+                } else {
+                    items.push(src);
+                }
+            });
+
+            $(".content img[data-original]").lazyload({
                 placeholder : base + 'wsale/images/lazyload.png'
             });
+
             $(".gengduo").click(function(e){
                 e.stopPropagation();
                 var self = $(this);
@@ -199,12 +212,9 @@
                     self.remove();
                 }, 200);
             });
-            var items = [];
-            $(".content img").each(function(){
-                items.push($(this).attr("data-original"));
-            });
 
-            $(".content img").click(function(){
+            $(".content img[data-original]").click(function(){
+                if($(this).parent().is('a')) return;
                 JWEIXIN.previewImage(items, items.indexOf($(this).attr("src")));
             });
             $('.comment').click(function(){

@@ -303,8 +303,9 @@ public class ApiForumBbsController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/hotBbs")
-	public String hotBbs(String bbsType, HttpServletRequest request) {
+	public String hotBbs(String bbsType, boolean isHomeHot, HttpServletRequest request) {
 		request.setAttribute("bbsType", bbsType);
+		request.setAttribute("isHomeHot", isHomeHot);
 		return "/wsale/bbs/hotBbs";
 	}
 
@@ -516,19 +517,20 @@ public class ApiForumBbsController extends BaseController {
 			StringBuffer buffer = new StringBuffer();
 			if(!bbs.getAddUserId().equals(s.getId())) {
 				User user = userService.getByZc(bbs.getAddUserId());
-				String username = "BT02".equals(bbs.getBbsType()) ? "鉴定员" : s.getNickname();
-				buffer.append("『" + username + "』回复了您的主题帖\"" + bbs.getBbsTitle() + "\"").append("\n");
-				String content = "";
-				if(EnumConstants.MSG_TYPE.TEXT.getCode().equals(comment.getCtype())) {
-					content = Util.replaceFace(comment.getComment(), 10);
-				} else {
-					content = "[图片]请点击下方查看";
+				if("UT02".equals(user.getUtype())) {
+					String username = "BT02".equals(bbs.getBbsType()) ? "鉴定员" : s.getNickname();
+					buffer.append("『" + username + "』回复了您的主题帖\"" + bbs.getBbsTitle() + "\"").append("\n");
+					String content = "";
+					if(EnumConstants.MSG_TYPE.TEXT.getCode().equals(comment.getCtype())) {
+						content = Util.replaceFace(comment.getComment(), 10);
+					} else {
+						content = "[图片]请点击下方查看";
+					}
+					buffer.append("回复内容：" + content).append("\n\n");
+					buffer.append("<a href='"+ PathUtil.getUrlPath("api/bbsController/bbsDetail?id=" + bbs.getId()) +"'>点击查看</a>");
+					sendWxMessage.sendCustomMessage(user.getName(), buffer.toString());
 				}
-				buffer.append("回复内容：" + content).append("\n\n");
-				buffer.append("<a href='"+ PathUtil.getUrlPath("api/bbsController/bbsDetail?id=" + bbs.getId()) +"'>点击查看</a>");
-				sendWxMessage.sendCustomMessage(user.getName(), buffer.toString());
 			}
-			//sendWxMessage.sendCustomMessage(comment.getBbsId(), "bbs_c", s);
 
 			comment.setUser(userService.get(s.getId(), null));
 
@@ -540,7 +542,7 @@ public class ApiForumBbsController extends BaseController {
 
 				// 推送回复@消息
 				// 非@发帖人并且评论人不是@自己
-				if(!p.getUserId().equals(bbs.getAddUserId()) && !p.getUserId().equals(s.getId())) {
+				if(!p.getUserId().equals(bbs.getAddUserId()) && !p.getUserId().equals(s.getId()) && "UT02".equals(user.getUtype())) {
 					buffer = new StringBuffer();
 					buffer.append("『" + s.getNickname() + "』在主题帖\"" + bbs.getBbsTitle() + "\"中@了您。").append("\n\n");
 					buffer.append("<a href='"+ PathUtil.getUrlPath("api/bbsController/bbsDetail?id=" + comment.getBbsId()) +"'>点击查看</a>");

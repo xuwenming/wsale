@@ -444,6 +444,7 @@ public class ApiUserController extends BaseController {
 
 	private void setThemes(String userId, HttpServletRequest request) {
 		SessionInfo s = getSessionInfo(request);
+		request.setAttribute("userId", F.empty(userId) ? s.getId() : userId);
 		// 拍品主题
 		ZcProduct zcProduct = new ZcProduct();
 		zcProduct.setIsDeleted(false);
@@ -539,10 +540,12 @@ public class ApiUserController extends BaseController {
 			boolean r = zcShieldorfansService.addOrUpdate(shieldorfans);
 			if(r && objectType.equals(EnumConstants.SHIELDOR_FANS.FS.getCode())) {
 				User user = userService.getByZc(userId);
-				StringBuffer buffer = new StringBuffer();
-				buffer.append("『"+s.getNickname()+"』关注了您。").append("\n\n");
-				buffer.append("<a href='"+ PathUtil.getUrlPath("api/userController/homePage?userId=" + s.getId())+"'>查看主页</a>");
-				sendWxMessage.sendCustomMessage(user.getName(), buffer.toString());
+				if("UT02".equals(user.getUtype())) {
+					StringBuffer buffer = new StringBuffer();
+					buffer.append("『" + s.getNickname() + "』关注了您。").append("\n\n");
+					buffer.append("<a href='" + PathUtil.getUrlPath("api/userController/homePage?userId=" + s.getId()) + "'>查看主页</a>");
+					sendWxMessage.sendCustomMessage(user.getName(), buffer.toString());
+				}
 			}
 
 			j.setMsg("操作成功");

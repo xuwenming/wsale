@@ -52,12 +52,29 @@ public class ApiChatController extends BaseController {
 	@Autowired
 	private ZcChatFriendServiceI zcChatFriendService;
 
+	@Autowired
+	private ZcNoticeServiceI zcNoticeService;
+
+	@Autowired
+	private ZcLastViewLogServiceI zcLastViewLogService;
+
 	/**
 	 * 跳转至消息中心-聊天历史列表
 	 * @return
 	 */
 	@RequestMapping("/chat_list")
 	public String chat_list(HttpServletRequest request) {
+		ZcNotice notice= new ZcNotice();
+		notice.setStatus("ST01");
+		notice = zcNoticeService.get(notice);
+		if(notice != null) {
+			request.setAttribute("notice", notice);
+			// 未读数量
+			SessionInfo s = getSessionInfo(request);
+			int count = zcNoticeService.getUnreadCount(s.getId());
+			request.setAttribute("notice_unread_count", count);
+		}
+
 		request.setAttribute("own", getSessionInfo(request));
 		return "/wsale/chat/chat_list";
 	}
@@ -154,64 +171,80 @@ public class ApiChatController extends BaseController {
 	 * @return subscribe=true:检查首次订阅是否发送欢迎语句
 	 */
 	@RequestMapping("/chat")
-	public String chat(String toUserId, String productId, String bbsId, boolean subscribe, HttpServletRequest request) {
+	public String chat(String toUserId, String productId, String bbsId, boolean subscribe, boolean isOfficial, HttpServletRequest request) {
 		SessionInfo s = getSessionInfo(request);
-		User friendUser = userService.getByZc(toUserId);
+		if(isOfficial) {
+			ZcLastViewLog log = new ZcLastViewLog();
+			log.setBusinessType("NOTICE"); // 官方消息
+			log.setUserId(s.getId());
+			ZcLastViewLog exist = zcLastViewLogService.get(log);
 
-		ZcChatFriend friend = new ZcChatFriend();
-		friend.setUserId(s.getId());
-		friend.setFriendUserId(toUserId);
-		friend.setIsBoth(true);
-		List<ZcChatFriend> exists = zcChatFriendService.query(friend);
-		if(CollectionUtils.isEmpty(exists)) {
-			if(!F.empty(toUserId) && !toUserId.equals(s.getId())) {
-				HuanxinUtil.addFriend(s.getId(), toUserId);
-			}
-			if(subscribe) {
-				ZcChatMsg welcome = new ZcChatMsg();
-				welcome.setFromUserId(toUserId);
-				welcome.setToUserId(s.getId());
-				welcome.setContent("欢迎来到" + friendUser.getNickname() + "的臻藏！");
-				welcome.setMtype(EnumConstants.MSG_TYPE.TEXT.getCode());
-				welcome.setUnread(false);
-				zcChatMsgService.add(welcome);
-
-				friend.setLastContent(welcome.getContent());
-				friend.setLastTime(welcome.getAddtime());
-				friend.setIsDeleted(false);
-				zcChatFriendService.add(friend);
+			log.setLastViewTime(new Date());
+			if(exist == null) {
+				zcLastViewLogService.add(log);
+			} else {
+				log.setId(exist.getId());
+				zcLastViewLogService.edit(log);
 			}
 		} else {
-			zcChatMsgService.updateReaded(toUserId, s.getId()); // 把toUserId给我发的消息设置为已读
+			User friendUser = userService.getByZc(toUserId);
+
+			ZcChatFriend friend = new ZcChatFriend();
+			friend.setUserId(s.getId());
+			friend.setFriendUserId(toUserId);
+			friend.setIsBoth(true);
+			List<ZcChatFriend> exists = zcChatFriendService.query(friend);
+			if(CollectionUtils.isEmpty(exists)) {
+				if(!F.empty(toUserId) && !toUserId.equals(s.getId()) && "UT02".equals(friendUser.getUtype())) {
+					HuanxinUtil.addFriend(s.getId(), toUserId);
+				}
+				if(subscribe) {
+					ZcChatMsg welcome = new ZcChatMsg();
+					welcome.setFromUserId(toUserId);
+					welcome.setToUserId(s.getId());
+					welcome.setContent("欢迎来到" + friendUser.getNickname() + "的臻藏！");
+					welcome.setMtype(EnumConstants.MSG_TYPE.TEXT.getCode());
+					welcome.setUnread(false);
+					zcChatMsgService.add(welcome);
+
+					friend.setLastContent(welcome.getContent());
+					friend.setLastTime(welcome.getAddtime());
+					friend.setIsDeleted(false);
+					zcChatFriendService.add(friend);
+				}
+			} else {
+				zcChatMsgService.updateReaded(toUserId, s.getId()); // 把toUserId给我发的消息设置为已读
 
 			/*if(exist.getIsDeleted()) {
 				friend = new ZcChatFriend();
 				friend.setIsDeleted(false);
 				zcChatFriendService.edit(friend);
 			}*/
-		}
+			}
 
 
-		ZcProduct product = null;
-		//
-		if(!F.empty(productId)) {
-			product = zcProductService.get(productId, null);
-		}
-		ZcForumBbs bbs = null;
-		if(!F.empty(bbsId)) {
-			bbs = zcForumBbsService.get(bbsId);
-			ZcFile file = new ZcFile();
-			file.setObjectType(EnumConstants.OBJECT_TYPE.BBS.getCode());
-			file.setObjectId(bbsId);
-			file.setFileType("FT01");
-			ZcFile f = zcFileService.get(file);
-			if(f != null) bbs.setIcon(f.getFileHandleUrl());
-		}
+			ZcProduct product = null;
+			//
+			if(!F.empty(productId)) {
+				product = zcProductService.get(productId, null);
+			}
+			ZcForumBbs bbs = null;
+			if(!F.empty(bbsId)) {
+				bbs = zcForumBbsService.get(bbsId);
+				ZcFile file = new ZcFile();
+				file.setObjectType(EnumConstants.OBJECT_TYPE.BBS.getCode());
+				file.setObjectId(bbsId);
+				file.setFileType("FT01");
+				ZcFile f = zcFileService.get(file);
+				if(f != null) bbs.setIcon(f.getFileHandleUrl());
+			}
 
-		request.setAttribute("friend", friendUser);
+			request.setAttribute("friend", friendUser);
+			request.setAttribute("product", product);
+			request.setAttribute("bbs", bbs);
+		}
 		request.setAttribute("own", s);
-		request.setAttribute("product", product);
-		request.setAttribute("bbs", bbs);
+		request.setAttribute("isOfficial", isOfficial);
 
 		return "/wsale/chat/chat";
 	}
@@ -374,6 +407,31 @@ public class ApiChatController extends BaseController {
 		}
 		return j;
 	}
+
+	/**
+	 * 官方消息分页查
+	 * @return
+	 */
+	@RequestMapping("/notices")
+	@ResponseBody
+	public Json notices(PageHelper ph, HttpServletRequest request) {
+		Json j = new Json();
+		try{
+			ZcNotice notice = new ZcNotice();
+			notice.setStatus("ST01");
+			ph.setSort("addtime");
+			ph.setOrder("desc");
+			j.setObj(zcNoticeService.dataGrid(notice, ph));
+			j.success();
+			j.setMsg("操作成功");
+		}catch(Exception e){
+			j.fail();
+			e.printStackTrace();
+		}
+		return j;
+	}
+
+
 
 	private DataGrid messageDataGrid(PageHelper ph, String ownUserId, String friendUserId) {
 		ZcChatMsg msg = new ZcChatMsg();

@@ -362,7 +362,7 @@
             if(product.deadlineLen == 0) {
                 dom.find('.auction-opt').html('<div class="paipin-done">'+new Date(product.realDeadline.replace(/-/g,"/")).format('M月dd日 HH:mm')+'拍卖已结束</div>');
             } else {
-                addTimer(dom.find('.deadline'), product.deadlineLen);
+                addTimer(dom, product.deadlineLen, product.id);
                 if(!user.self) {
                     var price = product.currentPrice == 0 ? (product.startingPrice || productDetail.rangePrice) : (product.currentPrice + productDetail.rangePrice);
                     dom.find('.jiage-value').val(price);
@@ -509,7 +509,7 @@
 
             dom.find('.p-off').click(productDetail.product, xjFun);
             //dom.find('.p-close').click(productDetail.product, closeFun);
-            dom.find('.updateBid span').click(productDetail.product, updateBid);
+            dom.find('.updateBid span').bind('click', productDetail.product, updateBid);
 
             dom.find('.makeQr').click(productDetail.product.id, function(event){
                 openQrcode(event.data);
@@ -520,25 +520,25 @@
         function updateBid(event) {
             var $p = $(this).closest('.qbpp-detail'), product = event.data;
             ajaxPostSync('api/apiProductController/updateBid', {id:product.id, currentPrice:$p.attr('currentPrice')}, function(data){
-                $p.find('.updateBid .newbidTM').html(new Date().format('HH:mm:ss'));
                 var result = data.obj;
+
+                if(result.product.deadlineLen > 0) {
+                    addTimer($p, result.product.deadlineLen, product.id);
+                } else {
+                    $p.find('.auction-opt').html('<div class="paipin-done">'+new Date().format("M月dd日 HH:mm")+'拍卖已结束</div>');
+                    clearInterval(timerArr['interval_' + product.id]);
+                }
+
+                $p.find('.updateBid .newbidTM').html(new Date().format('HH:mm:ss'));
+
                 if(data.success) {
-                    if(result.product.deadlineLen > 0) {
-                        var currentPrice = result.product.currentPrice;
-                        $p.attr('currentPrice', currentPrice);
-                        $p.find('.rangePrice').html(result.rangePrice);
-                        $p.find('.jiage-value').val(currentPrice == 0 ? (result.product.startingPrice == 0 ? result.rangePrice : result.product.startingPrice) : (currentPrice + result.rangePrice));
-                        if(result.product.deadlineLen > 0) {
-                            addTimer($p.find('.deadline'), result.product.deadlineLen);
-                        }
-                    }
+                    var currentPrice = result.product.currentPrice;
+                    $p.attr('currentPrice', currentPrice);
+                    $p.find('.rangePrice').html(result.rangePrice);
+                    $p.find('.jiage-value').val(currentPrice == 0 ? (result.product.startingPrice == 0 ? result.rangePrice : result.product.startingPrice) : (currentPrice + result.rangePrice));
 
                     $p.find('.auctions').attr('page-currPage', 1);
                     drawAuction($p.find('.auctions'), product, true);
-                }
-
-                if(result.product.deadlineLen == 0) {
-                    $p.find('.auction-opt').html('<div class="paipin-done">'+new Date().format("M月dd日 HH:mm")+'拍卖已结束</div>');
                 }
             });
         }
@@ -711,7 +711,7 @@
                     var result = data.obj;
                     if(data.success) {
                         $.toast("出价成功", "text");
-                        if($first.length != 0) {
+                        /*if($first.length != 0) {
                             $first.find(".order-sign").hide();
                             $first.find(".order-flag").attr('src', base + 'wsale/images/chuju-icon.png');
                         } else {
@@ -730,10 +730,11 @@
                             $p.find('.jiage-value').val(bid + result.rangePrice);
                             dom.find(".order-flag").attr('src', base + 'wsale/images/lingxian-icon.png');
                             if(result.deadlineLen > 0) {
-                                addTimer($p.find('.deadline'), result.deadlineLen);
+                                addTimer($p, result.deadlineLen, product.id);
                             }
-                        }
+                        }*/
 
+                        $p.find('.updateBid span').click();
                     } else {
                         $.alert(data.msg, "系统提示");
                     }
@@ -767,7 +768,9 @@
 
             ajaxPost('api/apiProductController/autoBid', {productId:productId, maxPrice : maxPrice}, function(data){
                 if(data.success) {
-                    $.alert("自动出价成功，请手动更新！", "系统提示");
+                    $.alert("自动出价成功，请手动更新！", "系统提示", function(){
+                        $p.find('.updateBid span').click();
+                    });
                 } else {
                     $.alert(data.msg, "系统提示");
                 }
@@ -812,7 +815,7 @@
             if(load) $(elm).empty();
             var $d = elm.parent();
             var currPage = elm.attr('page-currPage') || 1;
-            ajaxPost('api/apiProductController/auctions', {productId:product.id, page:currPage, rows:rows}, function(data){
+            ajaxPostSync('api/apiProductController/auctions', {productId:product.id, page:currPage, rows:rows}, function(data){
                 if(data.success) {
                     var result = data.obj;
                     //var flag = (product.status == 'PT03') && (product.addUserId != '${sessionInfo.id}');
@@ -864,23 +867,27 @@
             return dom;
         }
 
+        var timerArr = {};
         var addTimer = (function () {
-            var list = [], interval;
 
-            return function (dom, time) {
-                if (!interval)
-                    interval = setInterval(go, 1000);
-                list.push({ ele: dom, time: time });
-                go();
-            }
+            return function (dom, time, key) {
+                timerArr['interval_time_' + key] = time + 1;
+                if (!timerArr['interval_' + key]) {
+                    timerArr['interval_' + key] = setInterval(function(){
+                        go(dom, key);
+                    }, 1000);
 
-            function go() {
-                for (var i = 0; i < list.length; i++) {
-                    var dom = list[i].ele, time = list[i].time;
-                    dom.html(getTimerString(time ? list[i].time -= 1 : 0));
-                    if (!time)
-                        list.splice(i--, 1);
+                    go(dom, key);
                 }
+            };
+
+            function go(dom, key) {
+                var time = timerArr['interval_time_' + key];
+                var timerStr = getTimerString(time ? timerArr['interval_time_' + key] -= 1 : 0);
+                if(timerStr == -1) {
+                    dom.find('.updateBid span').click();
+                }
+                else dom.find('.deadline').html(timerStr);
             }
 
             function getTimerString(time) {
@@ -892,7 +899,7 @@
                     var dh = d == 0 ? '' : '<span class="cbp-vm-timenumber">'+d+'</span>天';
                     return '<font style="color: #a8a8a8;">拍卖倒计时：</font>'+dh+'<span class="cbp-vm-timenumber">'+h+'</span>时<span class="cbp-vm-timenumber">'+m+'</span>分<span class="cbp-vm-timenumber">'+s+'</span>秒'
                 }
-                else return "已截拍";
+                else return -1;
             }
         }) ();
 

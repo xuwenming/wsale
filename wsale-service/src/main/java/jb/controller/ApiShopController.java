@@ -36,6 +36,9 @@ public class ApiShopController extends BaseController {
 	@Autowired
 	private ZcOrderServiceI zcOrderService;
 
+	@Autowired
+	private ZcShieldorfansServiceI zcShieldorfansService;
+
 	/**
 	 * 跳转-店铺信息
 	 * @return
@@ -43,6 +46,15 @@ public class ApiShopController extends BaseController {
 	@RequestMapping("/shop")
 	public String shop(String userId, HttpServletRequest request) {
 		SessionInfo s = getSessionInfo(request);
+		// 不是本人加关注逻辑
+		if(!F.empty(userId) && !userId.equals(s.getId())) {
+			ZcShieldorfans shieldorfans = new ZcShieldorfans();
+			shieldorfans.setObjectType("FS");
+			shieldorfans.setObjectById(userId);
+			shieldorfans.setObjectId(s.getId());
+			zcShieldorfansService.addOrUpdate(shieldorfans, true);
+		}
+
 		userId = F.empty(userId) ? s.getId() : userId;
 		User user = userService.get(userId, s.getId());
 		request.setAttribute("user", user);

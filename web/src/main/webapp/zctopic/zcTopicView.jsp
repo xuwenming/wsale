@@ -90,6 +90,26 @@
 					field : 'comment',
 					title : '<%=TzcTopicComment.ALIAS_COMMENT%>',
 					width : 80
+				}, {
+					field : 'replyComment',
+					title : '作者回复',
+					width : 80,
+					formatter : function (value, row, index) {
+						if(row.replyComment) {
+							return row.replyComment.comment;
+						}
+						return "";
+					}
+				}, {
+					field : 'replyCommentTime',
+					title : '回复时间',
+					width : 80,
+					formatter : function (value, row, index) {
+						if(row.replyComment) {
+							return row.replyComment.addtime;
+						}
+						return "";
+					}
 				} ] ]
 			});
 		}

@@ -174,6 +174,8 @@ public class ApiProductController extends BaseController {
 				zcProductService.add(zcProduct);
 			} else {
 				zcProduct.setReadCount(0);
+				zcProduct.setAddtime(new Date());
+				zcProduct.setSeq(0);
 				zcProductService.edit(zcProduct);
 			}
 
@@ -337,6 +339,41 @@ public class ApiProductController extends BaseController {
 			ph.setOrder("desc");
 			zcProduct.setIsDeleted(false);
 			j.setObj(productCommon.dataGrid(ph, zcProduct, s.getId()));
+			j.success();
+			j.setMsg("操作成功");
+
+		}catch(Exception e){
+			j.fail();
+			e.printStackTrace();
+		}
+		return j;
+	}
+
+	/**
+	 * 拍品推荐
+	 *
+	 * @return
+	 */
+	@RequestMapping("/moreHot")
+	public String hotBbs() {
+		return "/wsale/product/hot_product";
+	}
+
+	/**
+	 * 拍品推荐列表
+	 * @return
+	 */
+	@RequestMapping("/hotList")
+	@ResponseBody
+	public Json hotList(PageHelper ph, ZcProduct zcProduct, HttpServletRequest request) {
+		Json j = new Json();
+		try{
+			SessionInfo s = getSessionInfo(request);
+			ph.setSort("seq");
+			ph.setOrder("desc");
+			zcProduct.setIsDeleted(false);
+			zcProduct.setStatus("PT03");
+			j.setObj(productCommon.dataGridHot(ph, zcProduct, s.getId()));
 			j.success();
 			j.setMsg("操作成功");
 
@@ -707,6 +744,9 @@ public class ApiProductController extends BaseController {
 				double rangePrice = zcProductRangeService.getRangePrice(product.getId(), product.getCurrentPrice());
 				isDeal = false;
 				double bid = currentPrice + rangePrice;
+				if(bid > auto.getMaxPrice()) {
+					bid = auto.getMaxPrice();
+				}
 				if(product.getFixedPrice() > 0 && bid >= product.getFixedPrice()) {
 					isDeal = true;
 					bid = product.getFixedPrice();
@@ -1085,8 +1125,7 @@ public class ApiProductController extends BaseController {
 			ZcAuction auction = new ZcAuction();
 			auction.setProductId(id);
 			auction = zcAuctionService.get(auction);
-			if(auction == null || auction.getBid() == currentPrice
-					|| (auction.getBuyerId().equals(s.getId()) && !auction.getIsAuto())) {
+			if(auction == null || auction.getBid() == currentPrice) {
 				j.fail();
 				j.setMsg("暂无变动，无需更新");
 				j.setObj(obj);
@@ -1292,6 +1331,25 @@ public class ApiProductController extends BaseController {
 			if(zcProductLikeService.get(like) == null) {
 				zcProductLikeService.add(like);
 				zcProductService.updateCount(productId, 1, "like_count");
+
+				// 异步加关注
+				CompletionService completionService = CompletionFactory.initCompletion();
+				completionService.submit(new Task<ZcProductLike, Boolean>(like) {
+					@Override
+					public Boolean call() throws Exception {
+						ZcProduct product = zcProductService.get(getD().getProductId());
+						if(!getD().getUserId().equals(product.getAddUserId())) {
+							ZcShieldorfans shieldorfans = new ZcShieldorfans();
+							shieldorfans.setObjectType("FS");
+							shieldorfans.setObjectById(product.getAddUserId());
+							shieldorfans.setObjectId(getD().getUserId());
+							zcShieldorfansService.addOrUpdate(shieldorfans);
+						}
+
+						return true;
+					}
+				});
+
 			}
 
 			j.success();

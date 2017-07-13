@@ -1,10 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE HTML>
 <html>
 <head>
     <title>私信消息</title>
     <jsp:include page="../chat_inc.jsp"></jsp:include>
+    <style>
+        .official a{
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <div data-role="page" class="jqm-demos" id="main">
@@ -23,6 +29,24 @@
                             系统消息
                         </div>
                     </a>
+                    <c:if test="${not empty notice}">
+                        <div class="qunfa-info official" onclick="href('api/apiChat/chat?isOfficial=true');" style="display: none;">
+                            <div class="left-touxiang">
+                                <img class="sysinfo-icon" src="${pageContext.request.contextPath}/wsale/images/logo.png"/>
+                            </div>
+                            <div class="text-right grayright-text"><fmt:formatDate value="${notice.addtime}" pattern="yyyy/MM/dd"/></div>
+                            <div class="normal-text">
+                                <div>
+                                    <span>集东集西</span>
+                                    <span style="padding: 0 5px;margin-left:5px;font-size: 12px;color:#ff0000;  border: 1px solid #ff0000;border-radius: 10px;">官方</span>
+                                </div>
+                                <c:if test="${notice_unread_count > 0}">
+                                    <span class="infocenter-number unreadCount" style="position: inherit;">${notice_unread_count}</span>
+                                </c:if>
+                                <div class="grayright-text info-xinxi">${notice.content}</div>
+                            </div>
+                        </div>
+                    </c:if>
                     <div id="chat_list">
                     </div>
                     <div class="weui-infinite-scroll">
@@ -57,6 +81,7 @@
         function drawChatList() {
             ajaxPost('api/apiChat/getChatList', {}, function(data){
                 if(data.success) {
+                    if($('.official').length != 0) $('.official').show();
                     var result = data.obj;
                     if(result.length != 0) {
                         for(var i in result) {

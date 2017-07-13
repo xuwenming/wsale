@@ -1,23 +1,23 @@
 @charset "utf-8";
 
-.bestList {
+.bestList, .homeProductList {
 	overflow: hidden;
 	background-color: #EEE;
 }
-.bestList .bestItem:first-child {
+.bestItem:first-child {
 	padding-top: 5px;
 }
-.bestList .bestItem {
+.bestItem {
 	position: relative;
 	margin-bottom: 5px;
 	background-color: #FFF;
 }
-.bestList .bestItem .seller {
+.bestItem .seller {
 	height: 45px;
 	padding: 0 10px;
 	overflow: hidden;
 }
-.bestList .bestItem .seller .nickname {
+.bestItem .seller .nickname {
 	float: left;
 	height: 45px;
 	line-height: 46px;
@@ -26,7 +26,7 @@
 	font-size: 15px;
 	color: #424242;
 }
-.bestList .bestItem .seller .attentionIt {
+.bestItem .seller .attentionIt {
 	float: right;
 	color: #999;
 	padding: 0 20px;
@@ -43,13 +43,13 @@
 	transform-origin: 100% 40%;
 	-webkit-transform-origin: 100% 40%;
 }
-.bestList .bestItem .seller .attentionIt span.attentioned {
+.bestItem .seller .attentionIt span.attentioned {
 	float: left;
 }
-.bestList .bestItem:first-child .headImage {
+.bestItem:first-child .headImage {
 	top: 13px;
 }
-.bestList .bestItem .headImage {
+.bestItem .headImage {
 	position: absolute;
 	top: 8px;
 	left: 10px;
@@ -63,18 +63,18 @@
 	background-repeat: no-repeat;
 	z-index: 99;
 }
-.bestList .bestItem .pIcon {
+.bestItem .pIcon {
 	position: relative;
 	width: 100%;
 }
-.bestList .bestItem .pIcon .pIconBox {
+.bestItem .pIcon .pIconBox {
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
 	z-index: 1;
 	cursor: pointer;
 }
-.bestList .bestItem .pIcon .pIconBox .pIconImg {
+.bestItem .pIcon .pIconBox .pIconImg {
 	position: relative;
 	width: 100%;
 	padding-top: 75%;
@@ -85,32 +85,37 @@
 	background-size: cover;
 	background-position: center center;
 }
-.bestList .bestItem .readNum {
+.bestItem .readNum {
 	color: #888;
 	padding: 0 3%;
 	text-align: right;
-	height: 52px;
-	line-height: 52px;
+	line-height: 40px;
 }
-.bestList .bestItem .readNum.new-readNum{
+.bestItem .readNum.new-readNum{
 	color: #888;
 	padding: 0 3% 5px;
 	text-align: right;
 	line-height: 30px;
 }
-.bestList .bestItem .readNum span {
+.bestItem .readNum span {
 	font-size: 14px;
 	display: inline-block;
 }
 .home-best-img-title{
 	max-width: 80%;
-	color:#000;
+	color:#424242;
 	font-size: 14px;
 	text-align: left;
 }
 .home-best-item-text{
 	float:left;
 }
-.home-best-money{
-	color:red;
+.bestItem .readNum .home-best-money{
+	color:#F56A22;
+	margin-right: 5px;
+	font-size: 16px;
+}
+.swiper-pagination-bullet-active{
+	width: 12px;
+	border-radius: 4px;
 }

@@ -3,7 +3,12 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>集物专题</title>
+    <title>
+        <c:choose>
+            <c:when test="${isHomeHot}">专题推荐</c:when>
+            <c:otherwise> 专题文章</c:otherwise>
+        </c:choose>
+    </title>
     <jsp:include page="../inc.jsp"></jsp:include>
     <style>
         .cparea{
@@ -120,6 +125,9 @@
         currPage = page || currPage;
         var params = {page:(page && 1) || currPage, rows:(page && page*rows) || rows};
         if(${!empty addUserId}) params.addUserId = '${addUserId}';
+        if(${isHomeHot}) {
+            params.seq = 1;
+        }
         ajaxPost('api/apiTopic/topicList', params, function(data){
             if(data.success) {
                 var result = data.obj;

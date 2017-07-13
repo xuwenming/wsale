@@ -192,7 +192,7 @@
 				title : '<%=TzcProductRange.ALIAS_PRICE%>',
 				width : 50
 			} ] ]
-		});
+		});1
 	}
 	function loadLikeDataGrid() {
 		return $('#likeDataGrid').datagrid({
@@ -270,7 +270,7 @@
 				title : '<%=TzcProductMargin.ALIAS_REFUND_NO%>',
 				width : 50
 			}, {
-				field : 'returnTime',
+				field : 'refundtime',
 				title : '<%=TzcProductMargin.ALIAS_REFUND_TIME%>',
 				width : 50
 			} ] ]
@@ -344,8 +344,12 @@
 						</tr>
 						<tr>
 							<th>出价保证金</th>
-							<td colspan="3">
+							<td>
 								${zcProduct.margin}
+							</td>
+							<th>推荐排序</th>
+							<td>
+								${zcProduct.seq}
 							</td>
 						</tr>
 						<tr>

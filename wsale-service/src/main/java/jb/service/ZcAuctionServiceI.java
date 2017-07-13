@@ -6,6 +6,7 @@ import jb.pageModel.PageHelper;
 import jb.pageModel.ZcProduct;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -61,4 +62,6 @@ public interface ZcAuctionServiceI {
 
 	DataGrid dataGridComplet(ZcAuction zcAuction, PageHelper ph);
 	DataGrid dataGridCompletetd( String id, PageHelper ph);
+
+	Map<String,Integer> getCountAuctionNum(String[] productIds);
 }

@@ -12,7 +12,7 @@ public class ZcProductDaoImpl extends BaseDaoImpl<TzcProduct> implements ZcProdu
 
     @Override
     public List<TzcProduct> getListByIds(String... productIds) {
-        String hql = " from TzcProduct t where t.id in (:productIds) ";
+        String hql = "select t from TzcProduct t, TzcBestProduct b where t.id = b.productId and t.id in (:productIds) order by b.productSeq desc, b.auditTime desc";
         Query query = getCurrentSession().createQuery(hql);
         query.setParameterList("productIds", productIds);
         List<TzcProduct> l = query.list();

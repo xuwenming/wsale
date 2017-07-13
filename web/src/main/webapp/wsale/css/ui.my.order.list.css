@@ -30,7 +30,7 @@ ul.wode-operate.myOrder{
     text-align: center;
     height: 55px;
     min-height: 80px;
-    border-right: 1px solid #ddd;
+    border-right: 1px solid #eee;
 }
 .my-faxian-flex>.faxian-link:nth-child(4n){
     border-right: none;

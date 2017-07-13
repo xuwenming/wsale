@@ -386,9 +386,11 @@ public class ApiPayController extends BaseController {
 		// 对数据库的操作
 		String orderNo = map.get("out_trade_no").toString();
 		String transaction_id = map.get("transaction_id").toString(); // 微信支付订单号
+		String attach = map.get("attach").toString(); // 微信支付订单号
 		ZcPayOrder payOrder = new ZcPayOrder();
 		payOrder.setOrderNo(orderNo);
 		payOrder.setRefTransactionNo(transaction_id);
+		payOrder.setAttachType(attach);
 		if (map.get("result_code").toString().equalsIgnoreCase("SUCCESS")) {
 			payOrder.setPayStatus("PS02");
 		} else {
@@ -410,7 +412,7 @@ public class ApiPayController extends BaseController {
 			// 公众账号ID 必填
 			parameters.put("appid", Application.getString(WeixinUtil.APPID));
 			// 附加数据 不是必填
-			parameters.put("attach", payOrder.getOrderNo());
+			parameters.put("attach", F.empty(payOrder.getAttachType()) ? payOrder.getOrderNo() : payOrder.getAttachType());
 			// 商品描述  必填
 			String body = "";
 			if("PO01".equals(payOrder.getObjectType())) {

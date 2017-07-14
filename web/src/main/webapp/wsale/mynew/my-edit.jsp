@@ -77,7 +77,6 @@
         <div class="editor-add-li">
           <div class="e-black"><img src="${pageContext.request.contextPath}/wsale/images/pic.png" alt=""/><span>图片</span></div>
           <div class="e-black"><img src="${pageContext.request.contextPath}/wsale/images/A.png" alt=""/><span>文字</span></div>
-          <div class="e-black"><img src="${pageContext.request.contextPath}/wsale/images/paimai.png" alt=""/><span>拍品</span></div>
           <div class="e-black"><img src="${pageContext.request.contextPath}/wsale/images/shipin.png" alt=""/><span>视频</span></div>
         </div>
       </div>
@@ -111,7 +110,6 @@
       <div class="editor-add-li">
         <div class="e-black"><img src="${pageContext.request.contextPath}/wsale/images/pic.png" alt=""/><span>图片</span></div>
         <div class="e-black"><img src="${pageContext.request.contextPath}/wsale/images/A.png" alt=""/><span>文字</span></div>
-        <div class="e-black"><img src="${pageContext.request.contextPath}/wsale/images/paimai.png" alt=""/><span>拍品</span></div>
         <div class="e-black"><img src="${pageContext.request.contextPath}/wsale/images/shipin.png" alt=""/><span>视频</span></div>
       </div>
     </div>
@@ -149,7 +147,6 @@
       <div class="editor-add-li">
         <div class="e-black"><img src="${pageContext.request.contextPath}/wsale/images/pic.png" alt=""/><span>图片</span></div>
         <div class="e-black"><img src="${pageContext.request.contextPath}/wsale/images/A.png" alt=""/><span>文字</span></div>
-        <div class="e-black"><img src="${pageContext.request.contextPath}/wsale/images/paimai.png" alt=""/><span>拍品</span></div>
         <div class="e-black"><img src="${pageContext.request.contextPath}/wsale/images/shipin.png" alt=""/><span>视频</span></div>
       </div>
     </div>

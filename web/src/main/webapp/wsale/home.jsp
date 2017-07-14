@@ -28,6 +28,14 @@
                     </c:forEach>
                 </div>
             </div>
+            <div class="login-tishi web-login-a">
+                <img src="${pageContext.request.contextPath}/wsale/images/pc.png" alt=""/>
+                网页版已登录&#x3000;
+                <sup></sup>
+                <div class="login-right">
+                    <img src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" alt=""/>
+                </div>
+            </div>
             <div class="home-content" style="background-color: #FFF; margin-bottom: 0;">
                 <div>
                     <!--<a style="width:29%;display:inline-block; background-color:#fff;padding:15px 0px;" href="javascript:href('api/apiCategoryController/category');">

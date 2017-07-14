@@ -1,0 +1,209 @@
+@charset "utf-8";
+body{
+    margin:0;
+}
+.my-editor-web{
+    max-width: 640px;
+    color:#aaa;
+    /*border:1px solid gray;*/
+    margin:0 auto;
+    padding:0;
+    background-color: #eee;
+}
+.my-editor-web div{
+    background-color:#fff;
+}
+.editor-header{
+    padding:8px 16px;
+    height: 25px;
+    border-bottom: 1px solid #ddd;
+    line-height: 25px;
+    font-weight: 500;
+    font-size: 18px;
+}
+.editor-header>span{
+    float:left;
+}
+.editor-header>div{
+    float:right;
+    color:#4BC55D;
+}
+.editor-header>div>span{
+    margin-left: 20px;
+}
+.e-black{
+    color:#000;
+}
+.e-black-w>img{
+    width:30px;
+    margin-right: -2px;
+    vertical-align: -9px;
+}
+.e-black>img{
+    width:20px;
+    margin-right: 5px;
+    vertical-align: -4px;
+}
+.editor-main{
+    clear: both;
+    margin:10px 0 0 0;
+}
+.editor-main>div{
+    padding:10px 15px;
+}
+.editor-main>div>img{
+    width:120px;
+}
+.editor-main>div>img+div{
+    display: inline-block;
+    float:right;
+    width:calc(100% - 130px);
+    position: relative;
+}
+.editor-main>div>img+div>div{
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 120px;
+}
+p{
+    margin:0;
+}
+.editor-main>div>img+div>div>p>img{
+    width:16px;
+    margin-right: 5px;
+    vertical-align: -3px;
+}
+.editor-main>div>img+div>div>p:nth-child(2){
+    text-align: right;
+    bottom:0;
+}
+.my-editor-web .editor-main-m{
+    border-top: 1px solid #eee;
+    padding:5px 15px;
+}
+.e-black.e-black-y{
+    float:right;
+    position: relative;
+    top:4px;
+}
+.e-black.e-black-y img{
+    width:17px;
+}
+.my-editor-web .e-add{
+    height: 60px;
+    margin: 0;
+    background-color: #eee;
+}
+.my-editor-web .editor-add{
+    background-color: #eee;
+    padding:15px 0;
+    width:100%;
+}
+.editor-add{
+    /*display: none;*/
+}
+.editor-add>img{
+    width:30px;
+    margin:0 auto;
+    display: block;
+}
+.editor-add-li{
+    display: none;
+    margin:9px 0;
+    width:100%;
+    padding:10px 0px;
+    font-size: 16px;
+}
+.editor-add-li>.e-black{
+    float:left;
+    width:20%;
+    margin-left: 10%;
+}
+.editor-add,.editor-add-li{
+    position: absolute;
+    top:0;
+}
+.my-editor-web .added-con{
+    min-height: 30px;
+    padding:0px 20px 10px 20px;
+    border-bottom:1px solid #ddd;
+}
+.my-editor-web .added-con img{
+    width:100%;
+    margin-top:5px;
+}
+.my-editor-web .added-con audio{
+    width:100%
+}
+.editor-added{
+    margin-bottom: -20px;
+}
+.added-relate{
+    position: relative;
+    top:-20px;
+}
+.added-foo{
+    height: 40px;
+    color:#888;
+    border-bottom: 1px solid #ddd;
+}
+.added-foo img{
+    margin-left:25%;
+    width:20px;
+}
+@media (min-width: 640px) {
+    .added-foo img{
+    margin-left: 30%;
+}
+}
+.added-foo>div{
+    float: left;
+    line-height: 10px;
+    padding:10px 2%;
+}
+.added-foo .foo-add{
+    width:60%;
+    border-right: 1px solid #ddd;
+}
+.added-foo .foo-or{
+    width:30%;
+}
+.foo-or>div{
+    display: inline-block;
+    width:50%;
+    float:left;
+}
+.foo-or>div>img{
+    margin-left: 45%;
+}
+.foo-or-a>img{
+    position: absolute;
+    left:27%;
+}
+.foo-or-b>img{
+    position: absolute;
+    left:43%;
+}
+.foo-add>img{
+    vertical-align: -5px;
+    margin:0 5px 0 20px;
+}
+.added-con>div.added-con-main{
+    text-align: justify;
+    text-align-last:left;
+}
+.my-editor-web .added-del{
+    display: inline-block;
+    position: relative;
+    top:5px;
+    left:5px;
+    z-index: 9;
+    background-color: rgba(0,0,0,0);
+}
+.added-del>img{
+    width:30px;
+    height:30px;
+    opacity: .7;
+}

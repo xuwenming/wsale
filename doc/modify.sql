@@ -357,6 +357,11 @@ ALTER TABLE `zc_product`
 ALTER TABLE `zc_best_product`
   ADD COLUMN `shop_seq`  int NULL DEFAULT 0 COMMENT '店铺排序' AFTER `addtime`,
   ADD COLUMN `product_seq`  int NULL DEFAULT 0 COMMENT '拍品排序' AFTER `shop_seq`;
+ALTER TABLE `zc_order`
+  ADD COLUMN `total_price` double DEFAULT NULL COMMENT '订单金额' AFTER `order_no`,
+  ADD COLUMN `is_intermediary`  tinyint NULL DEFAULT 0 COMMENT '是否中介交易' AFTER `return_express_no`;
+
+update zc_order o set total_price = (select p.hammer_price from zc_product p where p.id = o.product_id)
 
 
 

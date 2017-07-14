@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import wsale.concurrent.CompletionService;
 import wsale.concurrent.Task;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -63,6 +64,9 @@ public class SendWxMessageImpl {
 
     @Autowired
     private ZcWalletDetailServiceI zcWalletDetailService;
+
+    @Autowired
+    private ZcOrderServiceI zcOrderService;
 
     /**
      *objectType:bbs_e=帖子加精；bbs_l=帖子加亮；bbs_t=帖子置顶；bbs_o=帖子关闭；bbs_m=帖子移动;bbs_c=帖子回复;bbs_r=帖子打赏;bbs_d=帖子删除
@@ -186,7 +190,7 @@ public class SendWxMessageImpl {
     /**
      *
      * @param objectId
-     * @param objectType AUTH=认证成功通知 UNSOLD=实时交易提醒-流拍 UNPAY=实时交易提醒-未付款
+     * @param objectType AUTH=认证成功通知 UNSOLD=实时交易提醒-流拍
      */
     public void sendTemplateMessage(final String objectId, final String objectType) {
         final CompletionService completionService = CompletionFactory.initCompletion();
@@ -222,7 +226,6 @@ public class SendWxMessageImpl {
                     // 审核时间
                     TemplateData keyword3 = new TemplateData();
                     keyword3.setValue(DateUtil.format(zcAuthentication.getAuditTime(), Constants.DATE_FORMAT));
-                    keyword3.setColor("#0000E3");
                     data.put("keyword3", keyword3);
 
                     temp.setData(data);
@@ -249,6 +252,7 @@ public class SendWxMessageImpl {
                     // 交易类型
                     TemplateData tradeType = new TemplateData();
                     tradeType.setValue("流拍");
+                    tradeType.setColor("#0000E3");
                     data.put("tradeType", tradeType);
                     // 交易金额
                     TemplateData curAmount = new TemplateData();
@@ -257,40 +261,65 @@ public class SendWxMessageImpl {
 
                     temp.setData(data);
 
-                } else if("UNPAY".equals(objectType)) {
-                    System.out.println("未付款交易关闭提醒sendTemplateMessage----推送卖家start!");
-                    ZcProduct product = zcProductService.get(objectId);
-                    // 卖家
-                    User seller = userService.getByZc(product.getAddUserId());
-
-                    temp.setTouser(seller.getName());
-                    temp.setUrl(PathUtil.getUrlPath("api/apiProductController/productDetail?id=" + product.getId()));
-                    temp.setTemplate_id(WeixinUtil.TRANSACTION_TEMPLATE_ID);
-
-                    Map<String, TemplateData> data = new HashMap<String, TemplateData>();
-                    TemplateData first = new TemplateData();
-                    String content = product.getContentLine();
-                    content = content.length() > 20 ? content.substring(0, 20) + "..." : content;
-                    first.setValue("尊敬的『"+seller.getNickname()+"』，您的拍品\""+content+"\"买家三天未付款，系统已关闭交易。");
-                    data.put("first", first);
-                    // 交易时间
-                    TemplateData tradeDateTime = new TemplateData();
-                    tradeDateTime.setValue(DateUtil.format(product.getHammerTime(), "MM月dd日 HH:mm"));
-                    data.put("tradeDateTime", tradeDateTime);
-                    // 交易类型
-                    TemplateData tradeType = new TemplateData();
-                    tradeType.setValue("交易关闭");
-                    data.put("tradeType", tradeType);
-                    // 交易金额
-                    TemplateData curAmount = new TemplateData();
-                    curAmount.setValue("未付款");
-                    data.put("curAmount", curAmount);
-
-                    temp.setData(data);
                 }
 
                 WeixinUtil.sendTemplateMessage(temp);
-                System.out.println("认证成功通知/流拍通知/未付款交易关闭提醒 sendTemplateMessage----end!");
+                System.out.println("认证成功通知/流拍通知 sendTemplateMessage----end!");
+                return true;
+            }
+        });
+    }
+
+    /**
+     *  给卖家推送未付款交易关闭提醒
+     */
+    public void sendUnPayTemplateMessage(final ZcOrder order) {
+        final CompletionService completionService = CompletionFactory.initCompletion();
+
+        completionService.submit(new Task<Object, Boolean>(null) {
+            @Override
+            public Boolean call() throws Exception {
+                WxTemplate temp = new WxTemplate();
+                System.out.println("未付款交易关闭提醒sendUnPayTemplateMessage----推送卖家start!");
+                OrderProductInfo product = zcOrderService.getProductInfo(order);
+                // 卖家
+                User seller = userService.getByZc(product.getSellerUserId());
+
+                temp.setTouser(seller.getName());
+                temp.setUrl(PathUtil.getUrlPath("api/apiOrder/myOrder?type=0"));
+                temp.setTemplate_id(WeixinUtil.TRANSACTION_TEMPLATE_ID);
+
+                Map<String, TemplateData> data = new HashMap<String, TemplateData>();
+                TemplateData first = new TemplateData();
+                String content = product.getContentLine();
+                content = content.length() > 20 ? content.substring(0, 20) + "..." : content;
+                first.setValue("尊敬的『" + seller.getNickname() + "』，您的拍品\"" + content + "\"买家三天未付款，系统已关闭交易。");
+                data.put("first", first);
+                // 交易时间
+                TemplateData tradeDateTime = new TemplateData();
+                tradeDateTime.setValue(DateUtil.format(product.getHammerTime(), "MM月dd日 HH:mm"));
+                data.put("tradeDateTime", tradeDateTime);
+                // 交易类型
+                TemplateData tradeType = new TemplateData();
+                tradeType.setValue("交易关闭");
+                tradeType.setColor("#0000E3");
+                data.put("tradeType", tradeType);
+                // 交易金额
+                TemplateData curAmount = new TemplateData();
+                curAmount.setValue("未付款");
+                data.put("curAmount", curAmount);
+                if(product.getMargin() != null && product.getMargin() > 0) {
+                    // 备注
+                    TemplateData remark = new TemplateData();
+                    remark.setValue("\n买家违约保证金已转入到您的余额，请注意查收！");
+                    data.put("remark", remark);
+                }
+
+
+                temp.setData(data);
+
+                WeixinUtil.sendTemplateMessage(temp);
+                System.out.println("未付款交易关闭提醒sendUnPayTemplateMessage----推送卖家end!");
                 return true;
             }
         });
@@ -335,6 +364,7 @@ public class SendWxMessageImpl {
                 // 交易金额
                 TemplateData curAmount = new TemplateData();
                 curAmount.setValue("￥" + product.getHammerPrice());
+                curAmount.setColor("#0000E3");
                 data.put("curAmount", curAmount);
 
                 temp.setData(data);
@@ -359,7 +389,6 @@ public class SendWxMessageImpl {
                 data.put("keyword1", keyword1);
                 // 拍品名称
                 TemplateData keyword2 = new TemplateData();
-
                 keyword2.setValue(content);
                 data.put("keyword2", keyword2);
                 // 成交价格
@@ -393,9 +422,9 @@ public class SendWxMessageImpl {
             @Override
             public Boolean call() throws Exception {
                 WxTemplate temp = new WxTemplate();
-                ZcProduct product = zcProductService.get(order.getProductId());
+                OrderProductInfo product = zcOrderService.getProductInfo(order);
                 // 买家
-                User buyer = userService.getByZc(product.getUserId());
+                User buyer = userService.getByZc(product.getBuyerUserId());
 
                 String content = product.getContentLine();
                 content = content.length() > 20 ? content.substring(0, 20) + "..." : content;
@@ -414,7 +443,8 @@ public class SendWxMessageImpl {
                 data.put("keyword1", keyword1);
                 // 订单金额
                 TemplateData keyword2 = new TemplateData();
-                keyword2.setValue("￥" + product.getHammerPrice());
+                keyword2.setValue("￥" + product.getTotalPrice());
+                keyword2.setColor("#0000E3");
                 data.put("keyword2", keyword2);
                 // 备注
                 TemplateData remark = new TemplateData();
@@ -440,11 +470,12 @@ public class SendWxMessageImpl {
             @Override
             public Boolean call() throws Exception {
                 WxTemplate temp = new WxTemplate();
-                ZcProduct product = zcProductService.get(order.getProductId());
+                OrderProductInfo product = zcOrderService.getProductInfo(order);
                 // 卖家
-                User seller = userService.getByZc(product.getAddUserId());
+                User seller = userService.getByZc(product.getSellerUserId());
+
                 ZcAddress address = new ZcAddress();
-                address.setUserId(product.getUserId());
+                address.setUserId(product.getBuyerUserId());
                 address.setAtype(1); // 1:收货地址; 2:退货地址
                 address.setOrderId(order.getId());
                 address = zcAddressService.get(address);
@@ -468,7 +499,8 @@ public class SendWxMessageImpl {
                 data.put("first", first);
                 // 订单金额
                 TemplateData keyword1 = new TemplateData();
-                keyword1.setValue("￥" + product.getHammerPrice());
+                keyword1.setValue("￥" + product.getTotalPrice());
+                keyword1.setColor("#0000E3");
                 data.put("keyword1", keyword1);
                 // 商品详情
                 TemplateData keyword2 = new TemplateData();
@@ -477,6 +509,7 @@ public class SendWxMessageImpl {
                 // 收货信息
                 TemplateData keyword3 = new TemplateData();
                 keyword3.setValue(address.getUserName() + "，" + address.getTelNumber() + "，" + address.getProvinceName() + address.getCityName() + address.getCountyName() +address.getDetailInfo());
+                keyword3.setColor("#0000E3");
                 data.put("keyword3", keyword3);
                 // 备注
                 TemplateData remark = new TemplateData();
@@ -519,9 +552,9 @@ public class SendWxMessageImpl {
     // 买家退货发货提醒卖家
     private void sendDeliverTemplateMessageB_S(ZcOrder order) {
         WxTemplate temp = new WxTemplate();
-        ZcProduct product = zcProductService.get(order.getProductId());
+        OrderProductInfo product = zcOrderService.getProductInfo(order);
         // 卖家
-        User seller = userService.getByZc(product.getAddUserId());
+        User seller = userService.getByZc(product.getSellerUserId());
 
         String content = product.getContentLine();
         content = content.length() > 20 ? content.substring(0, 20) + "..." : content;
@@ -541,10 +574,12 @@ public class SendWxMessageImpl {
         // 物流公司
         TemplateData keyword2 = new TemplateData();
         keyword2.setValue(order.getReturnExpressName());
+        keyword2.setColor("#0000E3");
         data.put("keyword2", keyword2);
         // 物流单号
         TemplateData keyword3 = new TemplateData();
         keyword3.setValue(order.getReturnExpressNo());
+        keyword3.setColor("#0000E3");
         data.put("keyword3", keyword3);
         // 备注
         TemplateData remark = new TemplateData();
@@ -558,12 +593,12 @@ public class SendWxMessageImpl {
     // 卖家订单发货提醒买家
     private void sendDeliverTemplateMessageS_B(ZcOrder order) {
         WxTemplate temp = new WxTemplate();
-        ZcProduct product = zcProductService.get(order.getProductId());
+        OrderProductInfo product = zcOrderService.getProductInfo(order);
         // 买家
-        User buyer = userService.getByZc(product.getUserId());
+        User buyer = userService.getByZc(product.getBuyerUserId());
 
         ZcAddress address = new ZcAddress();
-        address.setUserId(product.getUserId());
+        address.setUserId(product.getBuyerUserId());
         address.setAtype(1); // 1:收货地址; 2:退货地址
         address.setOrderId(order.getId());
         address = zcAddressService.get(address);
@@ -586,10 +621,12 @@ public class SendWxMessageImpl {
         // 物流公司
         TemplateData keyword2 = new TemplateData();
         keyword2.setValue(order.getExpressName());
+        keyword2.setColor("#0000E3");
         data.put("keyword2", keyword2);
         // 物流单号
         TemplateData keyword3 = new TemplateData();
         keyword3.setValue(order.getExpressNo());
+        keyword3.setColor("#0000E3");
         data.put("keyword3", keyword3);
         // 备注
         TemplateData remark = new TemplateData();
@@ -611,9 +648,9 @@ public class SendWxMessageImpl {
             @Override
             public Boolean call() throws Exception {
                 WxTemplate temp = new WxTemplate();
-                ZcProduct product = zcProductService.get(order.getProductId());
+                OrderProductInfo product = zcOrderService.getProductInfo(order);
                 // 卖家
-                User seller = userService.getByZc(product.getAddUserId());
+                User seller = userService.getByZc(product.getSellerUserId());
 
                 String content = product.getContentLine();
                 content = content.length() > 20 ? content.substring(0, 20) + "..." : content;
@@ -628,7 +665,8 @@ public class SendWxMessageImpl {
                 data.put("first", first);
                 // 订单金额
                 TemplateData keyword1 = new TemplateData();
-                keyword1.setValue("￥" + product.getHammerPrice());
+                keyword1.setValue("￥" + product.getTotalPrice());
+                keyword1.setColor("#0000E3");
                 data.put("keyword1", keyword1);
                 // 商品详情
                 TemplateData keyword2 = new TemplateData();
@@ -749,6 +787,7 @@ public class SendWxMessageImpl {
         // 预定结束时间
         TemplateData deadline = new TemplateData();
         deadline.setValue(DateUtil.format(product.getRealDeadline(), "MM月dd日 HH:mm"));
+        deadline.setColor("#0000E3");
         data.put("deadline", deadline);
         // 目前出价
         TemplateData remark = new TemplateData();
@@ -770,9 +809,9 @@ public class SendWxMessageImpl {
             @Override
             public Boolean call() throws Exception {
                 WxTemplate temp = new WxTemplate();
-                ZcProduct product = zcProductService.get(order.getProductId());
+                OrderProductInfo product = zcOrderService.getProductInfo(order);
                 // 卖家
-                User seller = userService.getByZc(product.getAddUserId());
+                User seller = userService.getByZc(product.getSellerUserId());
 
                 String content = product.getContentLine();
                 content = content.length() > 20 ? content.substring(0, 20) + "..." : content;
@@ -802,7 +841,7 @@ public class SendWxMessageImpl {
                 data.put("keyword2", keyword2);
                 // 订单金额
                 TemplateData keyword3 = new TemplateData();
-                keyword3.setValue("￥" + product.getHammerPrice());
+                keyword3.setValue("￥" + product.getTotalPrice());
                 data.put("keyword3", keyword3);
                 // 备注
                 TemplateData remark = new TemplateData();
@@ -925,9 +964,9 @@ public class SendWxMessageImpl {
             @Override
             public Boolean call() throws Exception {
                 WxTemplate temp = new WxTemplate();
-                ZcProduct product = zcProductService.get(order.getProductId());
+                OrderProductInfo product = zcOrderService.getProductInfo(order);
                 // 买家
-                User buyer = userService.getByZc(product.getUserId());
+                User buyer = userService.getByZc(product.getBuyerUserId());
 
                 String content = product.getContentLine();
                 content = content.length() > 20 ? content.substring(0, 20) + "..." : content;
@@ -940,7 +979,7 @@ public class SendWxMessageImpl {
                 }
 
                 // 技术服务费
-                double sf = 0, refundFee = product.getHammerPrice();
+                double sf = 0, refundFee = product.getTotalPrice();
                 String str = "";
                 if(serviceFee > 0 && "OC003".equals(order.getOrderCloseReason())) {
                     sf = ((double)serviceFee)/100;
@@ -967,6 +1006,7 @@ public class SendWxMessageImpl {
                 // 退款金额
                 TemplateData refund = new TemplateData();
                 refund.setValue("￥" + refundFee + "元");
+                refund.setColor("#0000E3");
                 data.put("refund", refund);
                 // 备注
                 TemplateData remark = new TemplateData();
@@ -994,9 +1034,9 @@ public class SendWxMessageImpl {
             @Override
             public Boolean call() throws Exception {
                 WxTemplate temp = new WxTemplate();
-                ZcProduct product = zcProductService.get(order.getProductId());
+                OrderProductInfo product = zcOrderService.getProductInfo(order);
                 // 买家
-                User buyer = userService.getByZc(product.getUserId());
+                User buyer = userService.getByZc(product.getBuyerUserId());
 
                 String content = product.getContentLine();
                 content = content.length() > 20 ? content.substring(0, 20) + "..." : content;
@@ -1034,7 +1074,8 @@ public class SendWxMessageImpl {
                 data.put("keyword3", keyword3);
                 // 商品金额
                 TemplateData keyword4 = new TemplateData();
-                keyword4.setValue("￥" + product.getHammerPrice() + "元");
+                keyword4.setValue("￥" + product.getTotalPrice() + "元");
+                keyword4.setColor("#0000E3");
                 data.put("keyword4", keyword4);
                 // 备注
                 TemplateData remark = new TemplateData();
@@ -1087,10 +1128,12 @@ public class SendWxMessageImpl {
                 // 转账状态
                 TemplateData keyword1 = new TemplateData();
                 keyword1.setValue(type == 1 ? "成功" : "失败");
+                keyword1.setColor(type == 1 ? "#0000E3" : "#ff0000");
                 data.put("keyword1", keyword1);
                 // 转账金额
                 TemplateData keyword2 = new TemplateData();
                 keyword2.setValue("￥" + offlineTransfer.getTransferAmount() + "元");
+                keyword2.setColor("#0000E3");
                 data.put("keyword2", keyword2);
                 // 订单号
                 TemplateData keyword3 = new TemplateData();
@@ -1156,6 +1199,7 @@ public class SendWxMessageImpl {
                     // 提现金额
                     TemplateData money = new TemplateData();
                     money.setValue(zcWalletDetail.getAmount() + "元");
+                    money.setColor("#0000E3");
                     data.put("money", money);
                     // 提现时间
                     TemplateData timet = new TemplateData();
@@ -1165,6 +1209,7 @@ public class SendWxMessageImpl {
                     // 提现金额
                     TemplateData keyword1 = new TemplateData();
                     keyword1.setValue(zcWalletDetail.getAmount() + "元");
+                    keyword1.setColor("#0000E3");
                     data.put("keyword1", keyword1);
                     // 提现时间
                     TemplateData keyword2 = new TemplateData();
@@ -1200,11 +1245,11 @@ public class SendWxMessageImpl {
             @Override
             public Boolean call() throws Exception {
                 WxTemplate temp = new WxTemplate();
-                ZcProduct product = zcProductService.get(order.getProductId());
+                OrderProductInfo product = zcOrderService.getProductInfo(order);
                 // 卖家
-                User seller = userService.getByZc(product.getAddUserId());
+                User seller = userService.getByZc(product.getSellerUserId());
                 // 买家
-                User buyer = userService.getByZc(product.getUserId());
+                User buyer = userService.getByZc(product.getBuyerUserId());
 
                 String content = product.getContentLine();
                 content = content.length() > 20 ? content.substring(0, 20) + "..." : content;
@@ -1225,11 +1270,76 @@ public class SendWxMessageImpl {
                 // 交易类型
                 TemplateData tradeType = new TemplateData();
                 tradeType.setValue("当面交易");
+                tradeType.setColor("#0000E3");
                 data.put("tradeType", tradeType);
                 // 交易金额
                 TemplateData curAmount = new TemplateData();
-                curAmount.setValue("￥" + product.getHammerPrice());
+                curAmount.setValue("￥" + product.getTotalPrice());
                 data.put("curAmount", curAmount);
+
+                temp.setData(data);
+
+                WeixinUtil.sendTemplateMessage(temp);
+                return true;
+            }
+        });
+    }
+
+    /**
+     * 给卖家发送中介交易提醒
+     * @param
+     */
+    public void sendIMPayTemplateMessage(final ZcIntermediary intermediary, final int h) {
+        final CompletionService completionService = CompletionFactory.initCompletion();
+        completionService.submit(new Task<Object, Boolean>(null) {
+            @Override
+            public Boolean call() throws Exception {
+                WxTemplate temp = new WxTemplate();
+                ZcForumBbs bbs = zcForumBbsService.get(intermediary.getBbsId());
+                // 卖家
+                User seller = userService.getByZc(intermediary.getSellUserId());
+                // 买家
+                User buyer = userService.getByZc(intermediary.getUserId());
+
+                String bbsTitle = bbs.getBbsTitle();
+                bbsTitle = bbsTitle.length() > 20 ? bbsTitle.substring(0, 20) + "..." : bbsTitle;
+
+
+                temp.setTouser(seller.getName());
+                temp.setUrl(PathUtil.getUrlPath("api/apiIntermediary/intermediaryDetail?id=" + intermediary.getId()));
+                temp.setTemplate_id(WeixinUtil.TRANSACTION_TEMPLATE_ID);
+
+                Map<String, TemplateData> data = new HashMap<String, TemplateData>();
+                TemplateData first = new TemplateData();
+                String firstValue = "";
+                if(h == 0) {
+                    firstValue = "尊敬的『" + seller.getNickname() + "』，您的帖子\"" + bbsTitle + "\"由『" + buyer.getNickname() + "』发起中介交易，请您及时处理。";
+                } else {
+                    firstValue = "尊敬的『" + seller.getNickname() + "』，您的帖子\""+bbsTitle+"\"有一笔中介交易离结束还有"+h+"小时，请您及时处理。";
+                }
+                first.setValue(firstValue);
+                data.put("first", first);
+                // 交易时间
+                TemplateData tradeDateTime = new TemplateData();
+                tradeDateTime.setValue(DateUtil.format(intermediary.getAddtime(), "MM月dd日 HH:mm"));
+                data.put("tradeDateTime", tradeDateTime);
+                // 交易类型
+                TemplateData tradeType = new TemplateData();
+                tradeType.setValue("中介交易");
+                tradeType.setColor("#0000E3");
+                data.put("tradeType", tradeType);
+                // 交易金额
+                TemplateData curAmount = new TemplateData();
+                curAmount.setValue("￥" + new BigDecimal(intermediary.getAmount()).divide(new BigDecimal(100)));
+                curAmount.setColor("#0000E3");
+                data.put("curAmount", curAmount);
+
+                if(!F.empty(intermediary.getRemark())) {
+                    // 备注
+                    TemplateData remark = new TemplateData();
+                    remark.setValue("交易备注：" + intermediary.getRemark());
+                    data.put("remark", remark);
+                }
 
                 temp.setData(data);
 
@@ -1246,9 +1356,9 @@ public class SendWxMessageImpl {
             @Override
             public Boolean call() throws Exception {
                 WxTemplate temp = new WxTemplate();
-                ZcProduct product = zcProductService.get(order.getProductId());
+                OrderProductInfo product = zcOrderService.getProductInfo(order);
                 // 买家
-                User buyer = userService.getByZc(product.getUserId());
+                User buyer = userService.getByZc(product.getBuyerUserId());
                 boolean agree = true;
                 if("FS03".equals(order.getFaceStatus())) agree = false;
 
@@ -1267,11 +1377,68 @@ public class SendWxMessageImpl {
                 // 申请内容
                 TemplateData keyword1 = new TemplateData();
                 keyword1.setValue("当面交易");
+                keyword1.setColor("#0000E3");
                 data.put("keyword1", keyword1);
                 // 申请结果
                 TemplateData keyword2 = new TemplateData();
                 keyword2.setValue(agree ? "同意" : "拒绝");
+                keyword2.setColor(agree ? "#0000E3" : "#ff0000");
                 data.put("keyword2", keyword2);
+
+                temp.setData(data);
+
+                WeixinUtil.sendTemplateMessage(temp);
+                return true;
+            }
+        });
+    }
+
+    public void sendIMResultTemplateMessage(final ZcIntermediary intermediary) {
+        final CompletionService completionService = CompletionFactory.initCompletion();
+
+        completionService.submit(new Task<Object, Boolean>(null) {
+            @Override
+            public Boolean call() throws Exception {
+                WxTemplate temp = new WxTemplate();
+                ZcForumBbs bbs = zcForumBbsService.get(intermediary.getBbsId());
+                // 买家
+                User buyer = userService.getByZc(intermediary.getUserId());
+                boolean agree = false, refuse = false;
+                if("IS02".equals(intermediary.getStatus())) agree = true;
+                else if("IS04".equals(intermediary.getStatus())) refuse = true;
+
+                String bbsTitle = bbs.getBbsTitle();
+                bbsTitle = bbsTitle.length() > 20 ? bbsTitle.substring(0, 20) + "..." : bbsTitle;
+
+
+                temp.setTouser(buyer.getName());
+                if(agree) {
+                    temp.setUrl(PathUtil.getUrlPath("api/apiOrder/myOrder?type=1"));
+                } else {
+                    temp.setUrl(PathUtil.getUrlPath("api/apiIntermediary/intermediaryDetail?id=" + intermediary.getId()));
+                }
+                temp.setTemplate_id(WeixinUtil.APPLY_RESULT_TEMPLATE_ID);
+
+                Map<String, TemplateData> data = new HashMap<String, TemplateData>();
+                TemplateData first = new TemplateData();
+                first.setValue("尊敬的『" + buyer.getNickname() + "』，您在帖子\"" + bbsTitle + "\"中申请的中介交易卖家"+(agree ? "已同意，请前往我的订单进行支付" : (refuse ? "已拒绝" : "未处理，交易已取消"))+"。\n");
+                data.put("first", first);
+                // 申请内容
+                TemplateData keyword1 = new TemplateData();
+                keyword1.setValue("中介交易");
+                keyword1.setColor("#0000E3");
+                data.put("keyword1", keyword1);
+                // 申请结果
+                TemplateData keyword2 = new TemplateData();
+                keyword2.setValue(agree ? "同意" : (refuse ? "拒绝" : "已取消"));
+                keyword2.setColor(agree ? "#0000E3" : "#ff0000");
+                data.put("keyword2", keyword2);
+                if(!agree && refuse && !F.empty(intermediary.getContent())) {
+                    // 备注
+                    TemplateData remark = new TemplateData();
+                    remark.setValue("拒绝备注：" + intermediary.getContent());
+                    data.put("remark", remark);
+                }
 
                 temp.setData(data);
 
@@ -1302,10 +1469,12 @@ public class SendWxMessageImpl {
                 // 认证类型
                 TemplateData keyword1 = new TemplateData();
                 keyword1.setValue(Application.getString(zcAuthentication.getAuthType()));
+                keyword1.setColor("#0000E3");
                 data.put("keyword1", keyword1);
                 // 审核结果
                 TemplateData keyword2 = new TemplateData();
                 keyword2.setValue("认证失败");
+                keyword2.setColor("#ff0000");
                 data.put("keyword2", keyword2);
                 // 审核时间
                 TemplateData keyword3 = new TemplateData();
@@ -1361,11 +1530,13 @@ public class SendWxMessageImpl {
                     // 充值金额
                     TemplateData money = new TemplateData();
                     money.setValue(amount + "元");
+                    money.setColor("#0000E3");
                     data.put("money", money);
 
                     // 充值方式
                     TemplateData product = new TemplateData();
                     product.setValue("后台充值");
+                    product.setColor("#0000E3");
                     data.put("product", product);
 
                     // 备注
@@ -1385,6 +1556,7 @@ public class SendWxMessageImpl {
                     // 扣款金额
                     TemplateData keyword1 = new TemplateData();
                     keyword1.setValue(amount + "元");
+                    keyword1.setColor("#0000E3");
                     data.put("keyword1", keyword1);
 
                     // 扣款原因

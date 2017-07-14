@@ -82,6 +82,14 @@ public class Util {
 		return CreateNo("ZCH");
 	}
 
+	/**
+	 * 转账中介交易单号
+	 * @return
+	 */
+	public static String CreateIMNo() {
+		return CreateNo("IM");
+	}
+
 	public static String CreateNo(String tag) {
 		tag = tag == null ? "" : tag;
 		return tag + DateUtil.format(new Date(), "yyMMddHHmmss") + Util.CreateNonceNumstr(4);

@@ -1,7 +1,9 @@
 package job.task;
 
+import jb.pageModel.ZcIntermediary;
 import jb.pageModel.ZcOrder;
 import jb.pageModel.ZcProduct;
+import jb.service.ZcIntermediaryServiceI;
 import jb.service.ZcOrderServiceI;
 import jb.service.ZcProductServiceI;
 import jb.service.impl.CompletionFactory;
@@ -31,6 +33,9 @@ public class RemindTask {
 
     @Autowired
     private ZcProductServiceI zcProductService;
+
+    @Autowired
+    private ZcIntermediaryServiceI zcIntermediaryService;
 
     public void work() {
         final CompletionService completionService = CompletionFactory.initCompletion();
@@ -69,6 +74,28 @@ public class RemindTask {
                 return true;
             }
         });
+
+        completionService.submit(new Task<Object, Object>(null) {
+            @Override
+            public Boolean call() throws Exception {
+                intermediaryRemind(24); // 中介交易24小时提醒
+                return true;
+            }
+        });
+        completionService.submit(new Task<Object, Object>(null) {
+            @Override
+            public Boolean call() throws Exception {
+                intermediaryRemind(3); // 中介交易3小时提醒
+                return true;
+            }
+        });
+        completionService.submit(new Task<Object, Object>(null) {
+            @Override
+            public Boolean call() throws Exception {
+                intermediaryRemind(1); // 中介交易1小时提醒
+                return true;
+            }
+        });
         // 拍品整分提醒
         Calendar cal = Calendar.getInstance();
         if(cal.get(cal.SECOND) == 0) {
@@ -102,6 +129,20 @@ public class RemindTask {
             });
         }
 
+    }
+
+    private void intermediaryRemind(int h) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.HOUR_OF_DAY, -(72-h));
+        ZcIntermediary q = new ZcIntermediary();
+        q.setStatus("IS01"); // 待处理
+        q.setAddtime(cal.getTime());
+        List<ZcIntermediary> ims = zcIntermediaryService.query(q);
+        if(CollectionUtils.isNotEmpty(ims)) {
+            for(ZcIntermediary im : ims) {
+                sendWxMessage.sendIMPayTemplateMessage(im, h);
+            }
+        }
     }
 
     private void productDeadlineRemind(int h, int m) {

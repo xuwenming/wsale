@@ -1,30 +1,37 @@
 package jb.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import jb.absx.F;
 import jb.dao.ZcIntermediaryDaoI;
 import jb.model.TzcIntermediary;
-import jb.pageModel.ZcIntermediary;
-import jb.pageModel.DataGrid;
-import jb.pageModel.PageHelper;
+import jb.pageModel.*;
+import jb.service.ZcFileServiceI;
+import jb.service.ZcForumBbsServiceI;
 import jb.service.ZcIntermediaryServiceI;
-
+import jb.util.Constants;
+import jb.util.DateUtil;
+import jb.util.EnumConstants;
+import jb.util.MyBeanUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import jb.util.MyBeanUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ZcIntermediaryServiceImpl extends BaseServiceImpl<ZcIntermediary> implements ZcIntermediaryServiceI {
 
 	@Autowired
 	private ZcIntermediaryDaoI zcIntermediaryDao;
+
+	@Autowired
+	private ZcForumBbsServiceI zcForumBbsService;
+
+	@Autowired
+	private ZcFileServiceI zcFileService;
 
 	@Override
 	public DataGrid dataGrid(ZcIntermediary zcIntermediary, PageHelper ph) {
@@ -58,7 +65,7 @@ public class ZcIntermediaryServiceImpl extends BaseServiceImpl<ZcIntermediary> i
 				params.put("bbsId", zcIntermediary.getBbsId());
 			}		
 			if (!F.empty(zcIntermediary.getSellUserId())) {
-				whereHql += " and t.sellUserId = :sellUserId";
+				whereHql += " and (t.sellUserId = :sellUserId or t.userId = :sellUserId)";
 				params.put("sellUserId", zcIntermediary.getSellUserId());
 			}		
 			if (!F.empty(zcIntermediary.getUserId())) {
@@ -72,7 +79,11 @@ public class ZcIntermediaryServiceImpl extends BaseServiceImpl<ZcIntermediary> i
 			if (!F.empty(zcIntermediary.getStatus())) {
 				whereHql += " and t.status = :status";
 				params.put("status", zcIntermediary.getStatus());
-			}		
+			}
+			if(zcIntermediary.getAddtime() != null) {
+				whereHql += " and date_format(t.addtime, '%Y-%m-%d %H:%i:%s') = :addtime";
+				params.put("addtime", DateUtil.format(zcIntermediary.getAddtime(), Constants.DATE_FORMAT));
+			}
 		}	
 		return whereHql;
 	}
@@ -83,6 +94,7 @@ public class ZcIntermediaryServiceImpl extends BaseServiceImpl<ZcIntermediary> i
 		TzcIntermediary t = new TzcIntermediary();
 		BeanUtils.copyProperties(zcIntermediary, t);
 		zcIntermediaryDao.save(t);
+		zcIntermediary.setAddtime(t.getAddtime());
 	}
 
 	@Override
@@ -100,6 +112,7 @@ public class ZcIntermediaryServiceImpl extends BaseServiceImpl<ZcIntermediary> i
 		TzcIntermediary t = zcIntermediaryDao.get(TzcIntermediary.class, zcIntermediary.getId());
 		if (t != null) {
 			MyBeanUtils.copyProperties(zcIntermediary, t, new String[] { "id" , "addtime" },true);
+			zcIntermediary.setAmount(t.getAmount());
 		}
 	}
 
@@ -122,6 +135,23 @@ public class ZcIntermediaryServiceImpl extends BaseServiceImpl<ZcIntermediary> i
 			}
 		}
 		return ol;
+	}
+
+	@Override
+	public ZcIntermediary getDetail(String id) {
+		ZcIntermediary im = get(id);
+		ZcForumBbs bbs = zcForumBbsService.get(im.getBbsId());
+		ZcFile file = new ZcFile();
+		file.setObjectType(EnumConstants.OBJECT_TYPE.BBS.getCode());
+		file.setObjectId(bbs.getId());
+		file.setFileType("FT01");
+		List<ZcFile> files = zcFileService.queryFiles(file);
+		bbs.setFiles(files);
+		if (CollectionUtils.isNotEmpty(files)) {
+			bbs.setIcon(files.get(0).getFileHandleUrl());
+		}
+		im.setBbs(bbs);
+		return im;
 	}
 
 	@Override

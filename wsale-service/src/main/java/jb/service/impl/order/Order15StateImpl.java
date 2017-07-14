@@ -50,7 +50,7 @@ public class Order15StateImpl implements OrderState {
             orderService.edit(zcOrder);
 
             // 修改拍品状态:已失败
-            if (!F.empty(zcOrder.getProductId())) {
+            if (!zcOrder.getIsIntermediary() && !F.empty(zcOrder.getProductId())) {
                 ZcProduct p = new ZcProduct();
                 p.setId(zcOrder.getProductId());
                 p.setStatus("PT06");
@@ -76,44 +76,45 @@ public class Order15StateImpl implements OrderState {
 
             // 买家违约，保证金打给卖家
             if(!F.empty(zcOrder.getOrderCloseReason()) && "OC001".equals(zcOrder.getOrderCloseReason())) {
-                final CompletionService completionService = CompletionFactory.initCompletion();
-                completionService.submit(new Task<ZcOrder, Boolean>(zcOrder) {
-                    @Override
-                    public Boolean call() throws Exception {
-                        ZcProduct product = zcProductService.get(getD().getProductId());
-                        if(product.getMargin() > 0 && !F.empty(product.getUserId())) {
-                            ZcProductMargin q = new ZcProductMargin();
-                            q.setProductId(product.getId());
-                            q.setPayStatus("PS02");
-                            q.setBuyUserId(product.getUserId());
-                            ZcProductMargin margin = zcProductMarginService.get(q);
-                            if(margin != null &&  F.empty(margin.getRefundNo())) {
-                                ZcPayOrder payOrder = new ZcPayOrder();
-                                payOrder.setObjectId(margin.getId());
-                                payOrder.setObjectType("PO08");
-                                payOrder = zcPayOrderService.get(payOrder);
+                if(!zcOrder.getIsIntermediary()) {
+                    final CompletionService completionService = CompletionFactory.initCompletion();
+                    completionService.submit(new Task<ZcOrder, Boolean>(zcOrder) {
+                        @Override
+                        public Boolean call() throws Exception {
+                            ZcProduct product = zcProductService.get(getD().getProductId());
+                            if(product.getMargin() > 0 && !F.empty(product.getUserId())) {
+                                ZcProductMargin q = new ZcProductMargin();
+                                q.setProductId(product.getId());
+                                q.setPayStatus("PS02");
+                                q.setBuyUserId(product.getUserId());
+                                ZcProductMargin margin = zcProductMarginService.get(q);
+                                if(margin != null &&  F.empty(margin.getRefundNo())) {
+                                    ZcPayOrder payOrder = new ZcPayOrder();
+                                    payOrder.setObjectId(margin.getId());
+                                    payOrder.setObjectType("PO08");
+                                    payOrder = zcPayOrderService.get(payOrder);
 
-//                                zcPayOrderService.updateWallet(product.getAddUserId(), product.getMargin());
-                                // 新增钱包收支明细
-                                ZcWalletDetail walletDetail = new ZcWalletDetail();
-                                walletDetail.setUserId(product.getAddUserId());
-                                walletDetail.setOrderNo(payOrder.getOrderNo());
-                                walletDetail.setAmount(payOrder.getTotalFee());
-                                walletDetail.setWtype("WT09"); // 保证金转入
-                                walletDetail.setDescription("买家保证金转入");
-                                walletDetail.setChannel("CS02");
-                                zcWalletDetailService.addAndUpdateWallet(walletDetail);
+                                    // 新增钱包收支明细
+                                    ZcWalletDetail walletDetail = new ZcWalletDetail();
+                                    walletDetail.setUserId(product.getAddUserId());
+                                    walletDetail.setOrderNo(payOrder.getOrderNo());
+                                    walletDetail.setAmount(payOrder.getTotalFee());
+                                    walletDetail.setWtype("WT09"); // 保证金转入
+                                    walletDetail.setDescription("买家保证金转入");
+                                    walletDetail.setChannel("CS02");
+                                    zcWalletDetailService.addAndUpdateWallet(walletDetail);
 
-                                // 保证金不退回通知
-                                sendWxMessage.sendMarginNonTemplateMessage(product);
+                                    // 保证金不退回通知
+                                    sendWxMessage.sendMarginNonTemplateMessage(product);
+                                }
                             }
+                            return true;
                         }
-                        return true;
-                    }
-                });
+                    });
+                }
 
                 // 给卖家推送未付款交易关闭提醒
-                sendWxMessage.sendTemplateMessage(zcOrder.getProductId(), "UNPAY");
+                sendWxMessage.sendUnPayTemplateMessage(zcOrder);
             }
         } catch (Exception e) {
             e.printStackTrace();

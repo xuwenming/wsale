@@ -57,4 +57,5 @@ public interface ZcIntermediaryLogServiceI {
 
 	public List<ZcIntermediaryLog> query(ZcIntermediaryLog zcIntermediaryLog);
 
+	void addAndUpdateIM(ZcIntermediaryLog zcIntermediaryLog);
 }

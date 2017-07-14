@@ -17,7 +17,7 @@
                         <c:when test="${order.orderStatus == 'OS15'}">
                             <a class="shouhuo-content">
                                 <div class="pingjia-img">
-                                    <img src="${pageContext.request.contextPath}/wsale/images/pingjia-icon.png" />
+                                    <img src="${pageContext.request.contextPath}/wsale/images/fail-icon.png" />
                                 </div>
                                 <div class="pingjia-text">
                                     <span class="pingjia-status">交易失败</span>
@@ -128,24 +128,39 @@
                             </c:if>
                         </c:otherwise>
                     </c:choose>
-                    <a class="shouhuo-content">
-                        <div class="pingjia-img">
-                            <img src="${pageContext.request.contextPath}/wsale/images/jingpaichenggong-icon.png" />
-                        </div>
-                        <div class="pingjia-text">
-                            <span class="pingjia-status">竞拍成功</span>
-                            <div class="pingjia-time">成功时间：<fmt:formatDate value="${order.product.hammerTime}" pattern="yyyy-MM-dd HH:mm"/></div>
-                        </div>
-                    </a>
-                    <a class="shouhuo-content">
-                        <div class="pingjia-img">
-                            <img src="${pageContext.request.contextPath}/wsale/images/jingpai-icon.png" />
-                        </div>
-                        <div class="pingjia-text">
-                            <span class="pingjia-status">开始竞拍</span>
-                            <div class="pingjia-time">开始时间：<fmt:formatDate value="${order.product.startingTime}" pattern="yyyy-MM-dd HH:mm"/></div>
-                        </div>
-                    </a>
+                    <c:choose>
+                        <c:when test="${order.isIntermediary}">
+                            <a class="shouhuo-content">
+                                <div class="pingjia-img">
+                                    <img src="${pageContext.request.contextPath}/wsale/images/jingpaichenggong-icon.png" />
+                                </div>
+                                <div class="pingjia-text">
+                                    <span class="pingjia-status">创建交易</span>
+                                    <div class="pingjia-time">创建时间：<fmt:formatDate value="${order.product.startingTime}" pattern="yyyy-MM-dd HH:mm"/></div>
+                                </div>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <a class="shouhuo-content">
+                                <div class="pingjia-img">
+                                    <img src="${pageContext.request.contextPath}/wsale/images/jingpaichenggong-icon.png" />
+                                </div>
+                                <div class="pingjia-text">
+                                    <span class="pingjia-status">竞拍成功</span>
+                                    <div class="pingjia-time">成功时间：<fmt:formatDate value="${order.product.hammerTime}" pattern="yyyy-MM-dd HH:mm"/></div>
+                                </div>
+                            </a>
+                            <a class="shouhuo-content">
+                                <div class="pingjia-img">
+                                    <img src="${pageContext.request.contextPath}/wsale/images/jingpai-icon.png" />
+                                </div>
+                                <div class="pingjia-text">
+                                    <span class="pingjia-status">开始竞拍</span>
+                                    <div class="pingjia-time">开始时间：<fmt:formatDate value="${order.product.startingTime}" pattern="yyyy-MM-dd HH:mm"/></div>
+                                </div>
+                            </a>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
                 <div class="dingdan-product">
                     <div class="faxian-link">
@@ -168,10 +183,21 @@
                             </span>
                         </div>
                         <div class="normal-text" <c:choose><c:when test="${order.isBuyer}">onclick="href('api/userController/homePage?userId=${order.seller.id}')"</c:when><c:otherwise>onclick="href('api/userController/homePage?userId=${order.buyer.id}')"</c:otherwise></c:choose>>
-                            <img class="dianpu-icon" src="${pageContext.request.contextPath}/wsale/images/dianpu-icon.png" /> <c:choose><c:when test="${order.isBuyer}">${order.seller.nickname}</c:when><c:otherwise>${order.buyer.nickname}</c:otherwise></c:choose> <img class="more-icon" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
+                            <img class="dianpu-icon" src="${pageContext.request.contextPath}/wsale/images/dianpu-icon.png" />
+                            <c:choose><c:when test="${order.isBuyer}">${order.seller.nickname}</c:when><c:otherwise>${order.buyer.nickname}</c:otherwise></c:choose>
+                            <c:if test="${order.isIntermediary}"><span class="intermediary" style="padding: 0 5px;font-size: 12px;color:#ff0000;  border: 1px solid #ff0000;border-radius: 10px;">中介</span></c:if>
+                            <img class="more-icon" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
                         </div>
                     </div>
-                    <div class="dingdan-content" onclick="href('api/apiProductController/productDetail?id=${order.product.id}')">
+                    <div class="dingdan-content"
+                         <c:choose>
+                             <c:when test="${order.isIntermediary}">
+                                 onclick="href('api/bbsController/bbsDetail?id=${order.product.id}')"
+                             </c:when>
+                             <c:otherwise>
+                                 onclick="href('api/apiProductController/productDetail?id=${order.product.id}')"
+                             </c:otherwise>
+                         </c:choose>>
                         <div class="dingdan-img">
                             <img src="${order.product.icon}" />
                         </div>
@@ -182,16 +208,16 @@
                             <div class="dingdan-info">
                                 <c:choose>
                                     <c:when test="${order.orderStatus == 'OS01'}">
-                                        <div>成交金额：￥<fmt:formatNumber type="number" value="${order.product.hammerPrice}" pattern="0.00" maxFractionDigits="2"/></div>
+                                        <div>成交金额：￥<fmt:formatNumber type="number" value="${order.totalPrice}" pattern="0.00" maxFractionDigits="2"/></div>
                                         <div class="payEnd"></div>
                                     </c:when>
                                     <c:when test="${order.orderStatus == 'OS02'}">
-                                        <div>交易金额：￥<fmt:formatNumber type="number" value="${order.product.hammerPrice}" pattern="0.00" maxFractionDigits="2"/></div>
+                                        <div>交易金额：￥<fmt:formatNumber type="number" value="${order.totalPrice}" pattern="0.00" maxFractionDigits="2"/></div>
                                         <div>付款时间：<fmt:formatDate value="${order.paytime}" pattern="yyyy-MM-dd HH:mm"/></div>
                                         <div class="deliverEnd"></div>
                                     </c:when>
                                     <c:when test="${order.orderStatus == 'OS05'}">
-                                        <div>交易金额：￥<fmt:formatNumber type="number" value="${order.product.hammerPrice}" pattern="0.00" maxFractionDigits="2"/></div>
+                                        <div>交易金额：￥<fmt:formatNumber type="number" value="${order.totalPrice}" pattern="0.00" maxFractionDigits="2"/></div>
                                         <c:choose>
                                             <c:when test="${order.backStatus == 'RS04'}">
                                                 <div>退货时间：<fmt:formatDate value="${order.returnDeliverTime}" pattern="yyyy-MM-dd HH:mm"/></div>
@@ -206,7 +232,7 @@
                                         </c:if>
                                     </c:when>
                                     <c:when test="${order.orderStatus == 'OS10'}">
-                                        <div>交易金额：￥<fmt:formatNumber type="number" value="${order.product.hammerPrice}" pattern="0.00" maxFractionDigits="2"/></div>
+                                        <div>交易金额：￥<fmt:formatNumber type="number" value="${order.totalPrice}" pattern="0.00" maxFractionDigits="2"/></div>
                                         <c:choose>
                                             <c:when test="${!empty order.faceStatus && order.faceStatus == 'FS02'}">
                                                 <div>交易类型：当面交易</div>

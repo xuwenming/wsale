@@ -9,11 +9,13 @@ import java.util.Map;
 import jb.absx.F;
 import jb.dao.ZcIntermediaryLogDaoI;
 import jb.model.TzcIntermediaryLog;
+import jb.pageModel.ZcIntermediary;
 import jb.pageModel.ZcIntermediaryLog;
 import jb.pageModel.DataGrid;
 import jb.pageModel.PageHelper;
 import jb.service.ZcIntermediaryLogServiceI;
 
+import jb.service.ZcIntermediaryServiceI;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class ZcIntermediaryLogServiceImpl extends BaseServiceImpl<ZcIntermediary
 
 	@Autowired
 	private ZcIntermediaryLogDaoI zcIntermediaryLogDao;
+
+	@Autowired
+	private ZcIntermediaryServiceI zcIntermediaryService;
 
 	@Override
 	public DataGrid dataGrid(ZcIntermediaryLog zcIntermediaryLog, PageHelper ph) {
@@ -78,6 +83,19 @@ public class ZcIntermediaryLogServiceImpl extends BaseServiceImpl<ZcIntermediary
 	}
 
 	@Override
+	public void addAndUpdateIM(ZcIntermediaryLog zcIntermediaryLog) {
+		ZcIntermediary im = zcIntermediaryLog.getIntermediary();
+		if(F.empty(im.getId())) {
+			zcIntermediaryService.add(im);
+		} else {
+			zcIntermediaryService.edit(im);
+		}
+
+		zcIntermediaryLog.setImId(im.getId());
+		add(zcIntermediaryLog);
+	}
+
+	@Override
 	public ZcIntermediaryLog get(String id) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
@@ -105,7 +123,7 @@ public class ZcIntermediaryLogServiceImpl extends BaseServiceImpl<ZcIntermediary
 		List<ZcIntermediaryLog> ol = new ArrayList<ZcIntermediaryLog>();
 		String hql = " from TzcIntermediaryLog t ";
 		@SuppressWarnings("unchecked")
-		List<TzcIntermediaryLog> l = query(hql, zcIntermediaryLog, zcIntermediaryLogDao);
+		List<TzcIntermediaryLog> l = query(hql, zcIntermediaryLog, zcIntermediaryLogDao, "addtime", "desc");
 		if (l != null && l.size() > 0) {
 			for (TzcIntermediaryLog t : l) {
 				ZcIntermediaryLog o = new ZcIntermediaryLog();
@@ -120,7 +138,7 @@ public class ZcIntermediaryLogServiceImpl extends BaseServiceImpl<ZcIntermediary
 	public ZcIntermediaryLog get(ZcIntermediaryLog zcIntermediaryLog) {
 		String hql = " from TzcIntermediaryLog t ";
 		@SuppressWarnings("unchecked")
-		List<TzcIntermediaryLog> l = query(hql, zcIntermediaryLog, zcIntermediaryLogDao);
+		List<TzcIntermediaryLog> l = query(hql, zcIntermediaryLog, zcIntermediaryLogDao, "addtime", "desc");
 		ZcIntermediaryLog o = null;
 		if (CollectionUtils.isNotEmpty(l)) {
 			o = new ZcIntermediaryLog();

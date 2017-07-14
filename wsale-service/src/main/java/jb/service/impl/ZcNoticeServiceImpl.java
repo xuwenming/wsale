@@ -147,7 +147,8 @@ public class ZcNoticeServiceImpl extends BaseServiceImpl<ZcNotice> implements Zc
 		notice.setAddtime(addtime);
 		Map<String, Object> params = new HashMap<String, Object>();
 		String where = whereHql(notice, params);
-		return zcNoticeDao.count("select count(*) from TzcNotice t " + where, params).intValue();
+		Long count = zcNoticeDao.count("select count(*) from TzcNotice t " + where, params);
+		return count == null ? 0 : count.intValue();
 	}
 
 	@Override

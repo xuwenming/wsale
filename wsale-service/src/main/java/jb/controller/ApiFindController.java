@@ -28,9 +28,6 @@ import java.util.List;
 public class ApiFindController extends BaseController {
 
 	@Autowired
-	private ZcBannerServiceI zcBannerService;
-
-	@Autowired
 	private ZcNewHistoryServiceI zcNewHistoryService;
 
 	@Autowired
@@ -45,6 +42,8 @@ public class ApiFindController extends BaseController {
 	@Autowired
 	private ZcBestProductServiceI zcBestProductService;
 
+	@Autowired
+	private ZcNoticeServiceI zcNoticeService;
 
 	/**
 	 * 跳转发现
@@ -59,7 +58,7 @@ public class ApiFindController extends BaseController {
 			ZcChatMsg msg = new ZcChatMsg();
 			msg.setToUserId(s.getId());
 			msg.setUnread(true);
-			request.setAttribute("chat_unread_count", zcChatMsgService.count(msg));
+			request.setAttribute("chat_unread_count", zcChatMsgService.count(msg) + zcNoticeService.getUnreadCount(s.getId()));
 
 			// 精选拍品数
 			ZcBestProduct best = new ZcBestProduct();

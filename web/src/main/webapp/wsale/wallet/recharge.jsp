@@ -129,7 +129,8 @@
         $(function(){
             $('.bottom-btn').click(function(){
                 var amount = $("#amount").val();
-                if(Util.checkEmpty(amount)) {
+                if(Util.checkEmpty(amount) || amount == 0) {
+                    $("#amount").val('');
                     $("#amount").focus();
                     return;
                 }

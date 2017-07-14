@@ -1,5 +1,7 @@
 package jb.pageModel;
 
+import jb.listener.Application;
+
 import java.util.Date;
 
 @SuppressWarnings("serial")
@@ -14,7 +16,11 @@ public class ZcIntermediaryLog implements java.io.Serializable {
 	private java.lang.String content;	
 	private Date addtime;			
 
-	
+	private ZcIntermediary intermediary;
+
+	public String getLogTypeZh() {
+		return Application.getString(logType);
+	}
 
 	public void setId(java.lang.String value) {
 		this.id = value;
@@ -61,4 +67,11 @@ public class ZcIntermediaryLog implements java.io.Serializable {
 		return this.addtime;
 	}
 
+	public ZcIntermediary getIntermediary() {
+		return intermediary;
+	}
+
+	public void setIntermediary(ZcIntermediary intermediary) {
+		this.intermediary = intermediary;
+	}
 }

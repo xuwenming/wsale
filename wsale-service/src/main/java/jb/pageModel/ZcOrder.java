@@ -3,6 +3,7 @@ package jb.pageModel;
 import jb.listener.Application;
 
 import java.util.Date;
+import java.util.Map;
 
 @SuppressWarnings("serial")
 public class ZcOrder implements java.io.Serializable {
@@ -11,6 +12,7 @@ public class ZcOrder implements java.io.Serializable {
 
 	private String id;
 	private String orderNo;
+	private Double totalPrice;
 	private String productId;
 	private Boolean isCommented;
 	private Date delayTime;			
@@ -43,13 +45,16 @@ public class ZcOrder implements java.io.Serializable {
 	private Date returnDeliverTime;
 	private String returnExpressName;
 	private String returnExpressNo;
+	private Boolean isIntermediary;
 
 	private Boolean isBuyer; // 是否买家
-	private ZcProduct product;
+	private OrderProductInfo product;
 	private ZcComment comment;
 	private User buyer; // 买家
 	private User seller; // 卖家
-	private String pname;
+	private String buyerUserId;
+	private String sellerUserId;
+	private String pno;
 
 	private Object other; //其他条件
 	private String keyPath;
@@ -98,6 +103,13 @@ public class ZcOrder implements java.io.Serializable {
 	
 	public String getOrderNo() {
 		return this.orderNo;
+	}
+	public Double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(Double totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 	public void setProductId(String productId) {
 		this.productId = productId;
@@ -290,11 +302,11 @@ public class ZcOrder implements java.io.Serializable {
 		this.isBuyer = isBuyer;
 	}
 
-	public ZcProduct getProduct() {
+	public OrderProductInfo getProduct() {
 		return product;
 	}
 
-	public void setProduct(ZcProduct product) {
+	public void setProduct(OrderProductInfo product) {
 		this.product = product;
 	}
 
@@ -322,12 +334,28 @@ public class ZcOrder implements java.io.Serializable {
 		this.seller = seller;
 	}
 
-	public String getPname() {
-		return pname;
+	public String getBuyerUserId() {
+		return buyerUserId;
 	}
 
-	public void setPname(String pname) {
-		this.pname = pname;
+	public void setBuyerUserId(String buyerUserId) {
+		this.buyerUserId = buyerUserId;
+	}
+
+	public String getSellerUserId() {
+		return sellerUserId;
+	}
+
+	public void setSellerUserId(String sellerUserId) {
+		this.sellerUserId = sellerUserId;
+	}
+
+	public String getPno() {
+		return pno;
+	}
+
+	public void setPno(String pno) {
+		this.pno = pno;
 	}
 
 	public Object getOther() {
@@ -400,6 +428,14 @@ public class ZcOrder implements java.io.Serializable {
 
 	public void setReturnExpressNo(String returnExpressNo) {
 		this.returnExpressNo = returnExpressNo;
+	}
+
+	public Boolean getIsIntermediary() {
+		return isIntermediary;
+	}
+
+	public void setIsIntermediary(Boolean isIntermediary) {
+		this.isIntermediary = isIntermediary;
 	}
 
 	public Boolean getIsXiaoer() {

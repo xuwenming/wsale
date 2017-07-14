@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import wsale.concurrent.CompletionService;
 import wsale.concurrent.Task;
 
-import javax.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -76,6 +75,9 @@ public class ApiOrderController extends BaseController {
     @Autowired
     private ZcPayOrderServiceI zcPayOrderService;
 
+    @Autowired
+    private ZcIntermediaryServiceI zcIntermediaryService;
+
     /**
      * 跳转至我的订单
      * type 1-待付款；2-待收货；3-未发货；4-待评价；5-售后
@@ -95,10 +97,14 @@ public class ApiOrderController extends BaseController {
     public String orderDetail(String id, HttpServletRequest request) {
         SessionInfo s = getSessionInfo(request);
         ZcOrder order = zcOrderService.get(id);
-        ZcProduct product = zcProductService.get(order.getProductId(), null);
+
+        OrderProductInfo product = zcOrderService.getProductInfo(order);
+
         order.setProduct(product);
-        String sellerUserId = product.getAddUserId(); // 卖家ID
-        String buyerUserId = product.getUserId(); // 买家ID
+
+        String sellerUserId = product.getSellerUserId();
+        String buyerUserId = product.getBuyerUserId();
+
         if(s.getId().equals(sellerUserId)) {
             order.setIsBuyer(false);
         } else {
@@ -190,17 +196,17 @@ public class ApiOrderController extends BaseController {
                 final CompletionService completionService = CompletionFactory.initCompletion();
                 final String curUserId = s.getId();
                 for(ZcOrder o : orders) {
-                    completionService.submit(new Task<ZcOrder, ZcProduct>(o) {
+                    completionService.submit(new Task<ZcOrder, OrderProductInfo>(o) {
                         @Override
-                        public ZcProduct call() throws Exception {
-                            ZcProduct p = zcProductService.get(getD().getProductId(), null);
-                            return p;
+                        public OrderProductInfo call() throws Exception {
+                            return zcOrderService.getProductInfo(getD());
                         }
-                        protected void set(ZcOrder d, ZcProduct v) {
+                        protected void set(ZcOrder d, OrderProductInfo v) {
                             if(v != null) {
                                 d.setProduct(v);
-                                final String sellerUserId = v.getAddUserId(); // 卖家ID
-                                final String buyerUserId = v.getUserId(); // 买家ID
+
+                                final String sellerUserId = v.getSellerUserId(); // 卖家ID
+                                final String buyerUserId = v.getBuyerUserId(); // 买家ID
                                 if(curUserId.equals(sellerUserId)) {
                                     d.setIsBuyer(false);
                                 } else {
@@ -471,31 +477,33 @@ public class ApiOrderController extends BaseController {
             // 给买家发送申请当面交易成功通知
             sendWxMessage.sendFaceResultTemplateMessage(order);
 
-            // 退回买家保证金
-            final CompletionService completionService = CompletionFactory.initCompletion();
-            completionService.submit(new Task<ZcOrder, Boolean>(order) {
-                @Override
-                public Boolean call() throws Exception {
-                    ZcProduct product = zcProductService.get(getD().getProductId());
-                    if(product.getMargin() > 0 && !F.empty(product.getUserId())) {
-                        ZcProductMargin q = new ZcProductMargin();
-                        q.setProductId(product.getId());
-                        q.setPayStatus("PS02");
-                        q.setBuyUserId(product.getUserId());
-                        ZcProductMargin margin = zcProductMarginService.get(q);
-                        if(margin != null &&  F.empty(margin.getRefundNo())) {
-                            ZcPayOrder payOrder = new ZcPayOrder();
-                            payOrder.setObjectId(margin.getId());
-                            payOrder.setObjectType("PO08");
-                            zcPayOrderService.refund(payOrder, "保证金退回", margin);
+            if(!order.getIsIntermediary()) {
+                // 退回买家保证金
+                final CompletionService completionService = CompletionFactory.initCompletion();
+                completionService.submit(new Task<ZcOrder, Boolean>(order) {
+                    @Override
+                    public Boolean call() throws Exception {
+                        ZcProduct product = zcProductService.get(getD().getProductId());
+                        if(product.getMargin() > 0 && !F.empty(product.getUserId())) {
+                            ZcProductMargin q = new ZcProductMargin();
+                            q.setProductId(product.getId());
+                            q.setPayStatus("PS02");
+                            q.setBuyUserId(product.getUserId());
+                            ZcProductMargin margin = zcProductMarginService.get(q);
+                            if(margin != null &&  F.empty(margin.getRefundNo())) {
+                                ZcPayOrder payOrder = new ZcPayOrder();
+                                payOrder.setObjectId(margin.getId());
+                                payOrder.setObjectType("PO08");
+                                zcPayOrderService.refund(payOrder, "保证金退回", margin);
 
-                            // 保证金退回通知
-                            sendWxMessage.sendMarginRefundTemplateMessage(margin, "订单当面交易");
+                                // 保证金退回通知
+                                sendWxMessage.sendMarginRefundTemplateMessage(margin, "订单当面交易");
+                            }
                         }
+                        return true;
                     }
-                    return true;
-                }
-            });
+                });
+            }
             j.success();
             j.setMsg("操作成功");
 
@@ -575,12 +583,12 @@ public class ApiOrderController extends BaseController {
         ZcOrder order = zcOrderService.get(orderId);
         request.setAttribute("order", order);
 
-        ZcProduct product = zcProductService.get(order.getProductId(), null);
+        OrderProductInfo product = zcOrderService.getProductInfo(order);
         request.setAttribute("product", product);
 
         // 买家收货地址
         ZcAddress address = new ZcAddress();
-        address.setUserId(product.getUserId()); // 买家
+        address.setUserId(product.getSellerUserId()); // 买家
         address.setAtype(1); // 收货地址
         address.setOrderId(orderId);
         address = zcAddressService.get(address);
@@ -640,7 +648,7 @@ public class ApiOrderController extends BaseController {
         Date receiveDownTime = DateUtil.addDayToDate(order.getDeliverTime(), 14);
         request.setAttribute("receiveDownTime", receiveDownTime);
 
-        ZcProduct product = zcProductService.get(productId, null);
+        OrderProductInfo product = zcOrderService.getProductInfo(order);
         request.setAttribute("orderId", orderId);
         request.setAttribute("product", product);
 
@@ -702,7 +710,7 @@ public class ApiOrderController extends BaseController {
         order.setReturnApplyTime(returnApplyTime);
         request.setAttribute("order", order);
 
-        ZcProduct product = zcProductService.get(order.getProductId(), null);
+        OrderProductInfo product = zcOrderService.getProductInfo(order);
         request.setAttribute("product", product);
 
         return "/wsale/order/agreeBack";
@@ -759,7 +767,7 @@ public class ApiOrderController extends BaseController {
         request.setAttribute("order", order);
         request.setAttribute("endTime", endTime);
 
-        ZcProduct product = zcProductService.get(order.getProductId(), null);
+        OrderProductInfo product = zcOrderService.getProductInfo(order);
         request.setAttribute("product", product);
 
         BaseData baseData = new BaseData();
@@ -805,11 +813,11 @@ public class ApiOrderController extends BaseController {
         ZcOrder order = zcOrderService.get(orderId);
         request.setAttribute("order", order);
 
-        ZcProduct product = zcProductService.get(order.getProductId(), null);
+        OrderProductInfo product = zcOrderService.getProductInfo(order);
         request.setAttribute("product", product);
 
         ZcAddress address = new ZcAddress();
-        address.setUserId(product.getAddUserId()); // 卖家
+        address.setUserId(product.getSellerUserId()); // 卖家
         address.setAtype(2); // 退货地址
         address.setOrderId(orderId);
         address = zcAddressService.get(address);
@@ -854,11 +862,11 @@ public class ApiOrderController extends BaseController {
         order.setReturnDeliverTime(returnDeliverTime);
         request.setAttribute("order", order);
 
-        ZcProduct product = zcProductService.get(order.getProductId(), null);
+        OrderProductInfo product = zcOrderService.getProductInfo(order);
         request.setAttribute("product", product);
 
         ZcAddress address = new ZcAddress();
-        address.setUserId(product.getAddUserId()); // 卖家
+        address.setUserId(product.getSellerUserId()); // 卖家
         address.setAtype(2); // 退货地址
         address.setOrderId(orderId);
         address = zcAddressService.get(address);
@@ -895,14 +903,15 @@ public class ApiOrderController extends BaseController {
      * @return
      */
     @RequestMapping("/xiaoer")
-    public String xiaoer(String orderId, String productId, HttpServletRequest request) {
-        ZcProduct product = zcProductService.get(productId, null);
+    public String xiaoer(String orderId, HttpServletRequest request) {
+        ZcOrder order = zcOrderService.get(orderId);
+        OrderProductInfo product = zcOrderService.getProductInfo(order);
         request.setAttribute("product", product);
         request.setAttribute("orderId", orderId);
 
         SessionInfo s = getSessionInfo(request);
         int idType = 1; // 买家
-        if(s.getId().equals(product.getAddUserId())) {
+        if(s.getId().equals(product.getSellerUserId())) {
             idType = 2;
         }
         request.setAttribute("idType", idType);

@@ -15,6 +15,7 @@
 	<bean id="newAuctionTask" class="job.task.NewAuctionTask"></bean>
 	<bean id="productTask" class="job.task.ProductTask"></bean>
 	<bean id="orderTask" class="job.task.OrderTask"></bean>
+	<bean id="intermediaryTask" class="job.task.IntermediaryTask"></bean>
 	<bean id="userRoleTask" class="job.task.UserRoleTask"></bean>
 	<bean id="positionExpiredTask" class="job.task.PositionExpiredTask"></bean>
 	<bean id="remindTask" class="job.task.RemindTask"></bean>
@@ -26,6 +27,7 @@
 		<!-- 每5秒 -->
 		<task:scheduled ref="productTask" method="work" cron="0/5 * * * * ?" />
 		<task:scheduled ref="orderTask" method="work" cron="0/5 * * * * ?" />
+		<task:scheduled ref="intermediaryTask" method="work" cron="0/5 * * * * ?" />
 		<task:scheduled ref="userRoleTask" method="work" cron="0 */1 * * * ?" />
 		<!-- 每天9点 -->
 		<task:scheduled ref="positionExpiredTask" method="work" cron="0 0 9 * * ?" />

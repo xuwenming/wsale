@@ -63,6 +63,7 @@ public class TzcOrder implements java.io.Serializable,IEntity{
 	private String id;
 	//@Length(max=255)
 	private String orderNo;
+	private Double totalPrice;
 	//@Length(max=36)
 	private String productId;
 	//
@@ -118,6 +119,7 @@ public class TzcOrder implements java.io.Serializable,IEntity{
 	private Date returnDeliverTime;
 	private String returnExpressName;
 	private String returnExpressNo;
+	private Boolean isIntermediary;
 	//columns END
 
 
@@ -146,7 +148,16 @@ public class TzcOrder implements java.io.Serializable,IEntity{
 	public void setOrderNo(String orderNo) {
 		this.orderNo = orderNo;
 	}
-	
+
+	@Column(name = "total_price", unique = false, nullable = true, insertable = true, updatable = true, length = 22)
+	public Double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(Double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
 	@Column(name = "product_id", unique = false, nullable = true, insertable = true, updatable = true, length = 36)
 	public String getProductId() {
 		return this.productId;
@@ -441,6 +452,16 @@ public class TzcOrder implements java.io.Serializable,IEntity{
 	public void setReturnExpressNo(String returnExpressNo) {
 		this.returnExpressNo = returnExpressNo;
 	}
+
+	@Column(name = "is_intermediary", unique = false, nullable = true, insertable = true, updatable = true, length = 0)
+	public Boolean getIsIntermediary() {
+		return isIntermediary;
+	}
+
+	public void setIsIntermediary(Boolean isIntermediary) {
+		this.isIntermediary = isIntermediary;
+	}
+
 	/*
 	public String toString() {
 		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)

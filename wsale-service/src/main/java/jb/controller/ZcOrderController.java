@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import wsale.concurrent.CompletionService;
 import wsale.concurrent.Task;
 
-import javax.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -71,6 +70,9 @@ public class ZcOrderController extends BaseController {
 	@Autowired
 	private ZcPayOrderServiceI zcPayOrderService;
 
+	@Autowired
+	private ZcIntermediaryServiceI zcIntermediaryService;
+
 	/**
 	 * 跳转到ZcOrder管理页面
 	 * 
@@ -84,28 +86,29 @@ public class ZcOrderController extends BaseController {
 	/**
 	 * 获取ZcOrder数据表格
 	 * 
-	 * @param user
+	 * @param
 	 * @return
 	 */
 	@RequestMapping("/dataGrid")
 	@ResponseBody
 	public DataGrid dataGrid(ZcOrder zcOrder, PageHelper ph) {
+		//zcOrder.setIsIntermediary(false);
 		DataGrid dataGrid =zcOrderService.dataGrid(zcOrder, ph);
 		List<ZcOrder> list = (List<ZcOrder>) dataGrid.getRows();
 		if(!CollectionUtils.isEmpty(list)) {
 			final CompletionService completionService = CompletionFactory.initCompletion();
 			for(ZcOrder o : list) {
-				completionService.submit(new Task<ZcOrder, ZcProduct>(o) {
+				completionService.submit(new Task<ZcOrder, OrderProductInfo>(o) {
 					@Override
-					public ZcProduct call() throws Exception {
-						ZcProduct p = zcProductService.get(getD().getProductId(), null);
-						return p;
+					public OrderProductInfo call() throws Exception {
+						return zcOrderService.getProductInfo(getD());
 					}
-					protected void set(ZcOrder d, ZcProduct v) {
+					protected void set(ZcOrder d, OrderProductInfo v) {
 						if(v != null) {
 							d.setProduct(v);
-							final String sellerUserId = v.getAddUserId(); // 卖家ID
-							final String buyerUserId = v.getUserId(); // 买家ID
+
+							final String sellerUserId = v.getSellerUserId(); // 卖家ID
+							final String buyerUserId = v.getBuyerUserId(); // 买家ID
 							completionService.submit(new Task<ZcOrder, User>(d) {
 								@Override
 								public User call() throws Exception {
@@ -170,7 +173,7 @@ public class ZcOrderController extends BaseController {
 	/**
 	 * 获取ZcOrder数据表格excel
 	 * 
-	 * @param user
+	 * @param
 	 * @return
 	 * @throws NoSuchMethodException 
 	 * @throws SecurityException 
@@ -237,18 +240,38 @@ public class ZcOrderController extends BaseController {
 		return "/zcproduct/zcOrderView";
 	}
 
-	private void viewRequest(HttpServletRequest request, ZcOrder order) {
-		ZcProduct product = zcProductService.get(order.getProductId(), null);
-		ZcCategory category = zcCategoryService.get(product.getCategoryId());
-		ZcCategory pc = null;
-		if(!F.empty(category.getPid())) {
-			pc = zcCategoryService.get(category.getPid());
-		}
-		product.setCname((pc != null ? pc.getName() + " - " : "") + category.getName());
-		order.setProduct(product);
+	@RequestMapping("/viewByIM")
+	public String viewByIM(HttpServletRequest request, String productId) {
+		ZcOrder order = new ZcOrder();
+		order.setProductId(productId);
+		order = zcOrderService.get(order);
+		if(order != null) viewRequest(request, order);
 
-		String sellerUserId = product.getAddUserId(); // 卖家ID
-		String buyerUserId = product.getUserId(); // 买家ID
+		return "/zcintermediary/zcOrderView";
+	}
+
+	private void viewRequest(HttpServletRequest request, ZcOrder order) {
+
+		String sellerUserId, buyerUserId;
+		if(order.getIsIntermediary()) {
+			ZcIntermediary im = zcIntermediaryService.getDetail(order.getProductId());
+			im.getBbs().setCategoryName(getCname(im.getBbs().getCategoryId()));
+			sellerUserId = im.getSellUserId();
+			buyerUserId = im.getUserId();
+			request.setAttribute("intermediary", im);
+		} else {
+			ZcProduct p = zcProductService.get(order.getProductId(), null);
+			p.setCname(getCname(p.getCategoryId()));
+			sellerUserId = p.getAddUserId();
+			buyerUserId = p.getUserId();
+			request.setAttribute("product", p);
+		}
+
+//		Map<String, Object> product = setProductInfo(order, true);
+//		order.setProduct(product);
+//
+//		String sellerUserId = (String) product.get("sellerUserId");
+//		String buyerUserId = (String) product.get("buyerUserId");
 
 		order.setSeller(userService.getByZc(sellerUserId));
 		order.setBuyer(userService.getByZc(buyerUserId));
@@ -473,5 +496,14 @@ public class ZcOrderController extends BaseController {
 			e.printStackTrace();
 		}
 		return j;
+	}
+
+	private String getCname(String categoryId) {
+		ZcCategory category = zcCategoryService.get(categoryId);
+		ZcCategory pc = null;
+		if(!F.empty(category.getPid())) {
+			pc = zcCategoryService.get(category.getPid());
+		}
+		return (pc != null ? pc.getName() + " - " : "") + category.getName();
 	}
 }

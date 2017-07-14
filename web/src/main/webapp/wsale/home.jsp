@@ -28,9 +28,8 @@
                     </c:forEach>
                 </div>
             </div>
-            <div class="login-tishi web-login-a">
-                <img src="${pageContext.request.contextPath}/wsale/images/pc.png" alt=""/>
-                网页版已登录&#x3000;
+            <div class="login-tishi web-login-a unreadMsg" onclick="href('api/apiChat/chat_list');">
+                <count class="unreadCount"></count> 条未读新消息
                 <sup></sup>
                 <div class="login-right">
                     <img src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" alt=""/>
@@ -184,6 +183,7 @@
                 }, 20);
             });
 
+            getUnreadCount();
             drawBbsList();
             drawTopicList();
             drawProductList();
@@ -199,6 +199,15 @@
             }
 
         });
+
+        function getUnreadCount() {
+            ajaxPost('api/apiChat/unreadCount', {}, function (data) {
+                if (data.success && data.obj > 0) {
+                    $('.unreadCount').html(data.obj);
+                    $('.unreadMsg').show();
+                }
+            });
+        }
 
         function drawBbsList() {
             ajaxPost('api/bbsController/bbsList', {page:1, rows:5, isHomeHot:true,bbsStatus:'BS01', sort:'seq desc, t.addtime', order:'desc'}, function(data){
@@ -445,7 +454,7 @@
                     var product = best.products[i];
                     var html = '<div class="readNum new-readNum" style="background-color: #fff;border-bottom: 1px solid #eee;"><div class="info-xinxi home-best-img-title">'+product.content+'</div>'
                             + '<div class="home-best-item-text"><span class="home-best-money">￥' + product.currentPrice+'</span><span style="font-size: 12px;">已有<count>'+product.auctionNum+'</count>次出价</span></div>'
-                            + '<img src="${pageContext.request.contextPath}/wsale/images/huoyan-icon.png" style="width:12px;" /><span>'+best.readCount+'</span></div>';
+                            + '<img src="${pageContext.request.contextPath}/wsale/images/huoyan-icon.png" style="width:12px;" />\n<span>'+best.readCount+'</span></div>';
 
                     dom.find('.pIconBox').append('<div class="swiper-slide pIconImg" data-pro-id="'+product.id+'" style="background-image: url(\''+product.icon+'\');">'+html+'</div>');
                 }

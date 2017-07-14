@@ -21,12 +21,12 @@
                         <div class="dingdan-img">
                             <img src="${product.icon}" />
                         </div>
-                        <div>
+                        <div class="dingdan-content-flex">
                             <div class="dingdan-title">
                                 ${product.content}
                             </div>
                             <div class="dingdan-info">
-                                <div>成交金额：￥<fmt:formatNumber type="number" value="${product.hammerPrice}" pattern="0.00" maxFractionDigits="2"/></div>
+                                <div>成交金额：￥<fmt:formatNumber type="number" value="${product.totalPrice}" pattern="0.00" maxFractionDigits="2"/></div>
                                 <div>截止时间：<fmt:formatDate value="${order.returnDeliverTime}" pattern="MM-dd HH:mm"/></div>
                             </div>
                         </div>

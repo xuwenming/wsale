@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="jb.model.TzcOrder" %>
+<%@ page import="jb.model.TzcForumBbs" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <script type="text/javascript">
@@ -15,22 +16,34 @@
 </script>
 <div class="easyui-layout" data-options="fit:true,border:false">
 	<div data-options="region:'center',border:false">
-		<div style="font-size: 16pt; padding: 8px;">订单信息</div>
+		<div style="font-size: 16pt; padding: 8px;">
+			订单信息<c:if test="${order.isIntermediary}"><span style="padding: 0 5px;margin-left:8px;font-size: 16px;color:#ff0000;  border: 1px solid #ff0000;border-radius: 10px;">中介</span></c:if>
+		</div>
 		<table class="table table-hover table-condensed">
 			<tr>
 				<th width="14%">订单号</th>
 				<td width="36%">${order.orderNo}</td>
 				<th width="14%">交易金额</th>
-				<td width="36%">${order.product.hammerPrice}</td>
+				<td width="36%">${order.totalPrice}</td>
 			</tr>
 			<tr>
 				<th>卖家</th>
 				<td>
 					${order.seller.nickname}
 				</td>
+				<th>卖家电话</th>
+				<td>
+					${order.seller.mobile}
+				</td>
+			</tr>
+			<tr>
 				<th>买家</th>
 				<td>
 					${order.buyer.nickname}
+				</td>
+				<th>买家电话</th>
+				<td>
+					${order.buyer.mobile}
 				</td>
 			</tr>
 			<tr>
@@ -234,52 +247,96 @@
 			</table>
 		</c:if>
 
-		<div style="font-size: 16pt; padding: 8px;">拍品信息</div>
-		<table class="table table-hover table-condensed">
-			<tr>
-				<th width="14%">拍品编号</th>
-				<td width="36%">${order.product.pno}</td>
-				<th width="14%">所属分类</th>
-				<td width="36%">${order.product.cname}</td>
-			</tr>
-			<tr>
-				<th>开拍时间</th>
-				<td>
-					<fmt:formatDate value="${order.product.startingTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-				<th>截拍时间</th>
-				<td>
-					<fmt:formatDate value="${order.product.realDeadline}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-			</tr>
-			<tr>
-				<th>拍品状态</th>
-				<td>
-					${order.product.statusZh}
-				</td>
-				<th>封存状态</th>
-				<td>
-					<c:choose>
-						<c:when test="${order.product.isClose}">已封存</c:when>
-						<c:otherwise>未封存</c:otherwise>
-					</c:choose>
-				</td>
-			</tr>
-			<tr>
-				<th>拍品内容</th>
-				<td colspan="3">
-					${order.product.content}
-				</td>
-			</tr>
-			<tr>
-				<th>拍品图片</th>
-				<td colspan="3" class="pImageSlide">
-					<c:forEach items="${order.product.files}" var="file">
-						<img src="${file.fileHandleUrl}" i="${file.fileHandleUrl}" style="width: 200px; height: 150px; margin: 1px;"/>
-					</c:forEach>
-				</td>
-			</tr>
-		</table>
+		<c:if test="${!order.isIntermediary and !empty product}">
+			<div style="font-size: 16pt; padding: 8px;">拍品信息</div>
+			<table class="table table-hover table-condensed">
+				<tr>
+					<th width="14%">拍品编号</th>
+					<td width="36%">${product.pno}</td>
+					<th width="14%">所属分类</th>
+					<td width="36%">${product.cname}</td>
+				</tr>
+				<tr>
+					<th>开拍时间</th>
+					<td>
+						<fmt:formatDate value="${product.startingTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					</td>
+					<th>截拍时间</th>
+					<td>
+						<fmt:formatDate value="${product.realDeadline}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					</td>
+				</tr>
+				<tr>
+					<th>拍品状态</th>
+					<td>
+							${product.statusZh}
+					</td>
+					<th>封存状态</th>
+					<td>
+						<c:choose>
+							<c:when test="${product.isClose}">已封存</c:when>
+							<c:otherwise>未封存</c:otherwise>
+						</c:choose>
+					</td>
+				</tr>
+				<tr>
+					<th>拍品内容</th>
+					<td colspan="3">
+						${product.content}
+					</td>
+				</tr>
+				<tr>
+					<th valign="top">拍品图片</th>
+					<td colspan="3" class="pImageSlide">
+						<c:forEach items="${product.files}" var="file">
+							<img src="${file.fileHandleUrl}" i="${file.fileHandleUrl}" style="width: 200px; height: 150px; margin: 1px;"/>
+						</c:forEach>
+					</td>
+				</tr>
+			</table>
+		</c:if>
+
+		<c:if test="${order.isIntermediary and !empty intermediary}">
+			<div style="font-size: 16pt; padding: 8px;">中介交易信息</div>
+			<table class="table table-hover table-condensed">
+				<tr>
+					<th width="14%">交易编号</th>
+					<td width="36%">${intermediary.imNo}</td>
+					<th width="14%">创建时间</th>
+					<td width="36%"><fmt:formatDate value="${intermediary.addtime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+				</tr>
+				<tr>
+					<th width="12%"><%=TzcForumBbs.ALIAS_BBS_TYPE%></th>
+					<td width="38%">
+						${intermediary.bbs.bbsTypeZh}
+					</td>
+					<th width="12%">所属分类</th>
+					<td width="38%">
+						${intermediary.bbs.categoryName}
+					</td>
+				</tr>
+				<tr>
+					<th><%=TzcForumBbs.ALIAS_BBS_TITLE%></th>
+					<td colspan="3">
+						${intermediary.bbs.bbsTitle}
+					</td>
+				</tr>
+				<tr>
+					<th valign="top"><%=TzcForumBbs.ALIAS_BBS_CONTENT%></th>
+					<td colspan="3">
+						${intermediary.bbs.bbsContent}
+					</td>
+				</tr>
+				<tr>
+					<th valign="top">帖子图片</th>
+					<td colspan="3" class="pImageSlide">
+						<c:forEach items="${intermediary.bbs.files}" var="file">
+							<img src="${file.fileHandleUrl}" i="${file.fileHandleUrl}" style="width: 200px; height: 150px; margin: 1px;"/>
+						</c:forEach>
+					</td>
+				</tr>
+			</table>
+		</c:if>
 
 		<c:if test="${order.isXiaoer}">
 			<div style="font-size: 16pt; padding: 8px;">小二介入信息</div>

@@ -1,9 +1,6 @@
 package jb.service;
 
-import jb.pageModel.ZcOrder;
-import jb.pageModel.DataGrid;
-import jb.pageModel.PageHelper;
-import jb.pageModel.ZcProduct;
+import jb.pageModel.*;
 
 import java.util.List;
 import java.util.Map;
@@ -71,4 +68,5 @@ public interface ZcOrderServiceI {
 	 */
 	void transform(ZcOrder zcOrder);
 
+	OrderProductInfo getProductInfo(ZcOrder order);
 }

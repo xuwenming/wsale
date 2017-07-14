@@ -238,6 +238,24 @@
                 </div>
             </div>
 
+            <div id="imPopup" class="weui-popup-container">
+                <div class="weui-popup-overlay"></div>
+                <div class="weui-popup-modal" style="overflow: hidden;">
+                    <div class="modal-content" style="padding-top: 0; margin-top: 0px; overflow: hidden;">
+                        <div style="background-color:#fff; padding: 0 5px;margin-bottom:10px;">
+                            <div style="float:right;padding: 10px 0px;width:15%; text-align:center;color: green;" class="intermediary">
+                                提 交
+                            </div>
+                            <div style="width:80%; padding: 10px;" class="close-popup">
+                                <span style="padding: 10px 0px;">关 闭</span>
+                            </div>
+                        </div>
+                        <input class="onlyNum" style="margin:5px 0;background-color: #fff;" type="tel" maxlength="5" placeholder="必填，请输入交易金额..." id="amount"/>
+                        <textarea style="margin:2px 0px; background-color: #fff;" maxlength="100" placeholder="非必填，请输入交易备注..." id="remark"></textarea>
+                    </div>
+                </div>
+            </div>
+
             <div style="margin:10px;">
                 <div style="width:20%; text-align:center;display:inline-block;vertical-align:top;">
                     <div>
@@ -306,7 +324,15 @@
                             <c:otherwise>
                                 <div class="btn-con">
                                     <div class="btn-con-lf"><span class="share-icon jiage-operate" style="width: 100%;">分享给朋友们</span></div>
-                                    <div class="btn-con-rg"><span class="jiage-operate makeQr">生成二维码</span></div>
+                                    <c:choose>
+                                        <c:when test="${user.self}">
+                                            <div class="btn-con-rg"><span class="jiage-operate makeQr">生成二维码</span></div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="btn-con-rg"><span class="jiage-operate im-btn">中介交易</span></div>
+                                        </c:otherwise>
+                                    </c:choose>
+
                                 </div>
                             </c:otherwise>
                         </c:choose>
@@ -630,7 +656,34 @@
 
             $('.makeQr').bind('click', openQrcode);
 
+            $('.im-btn').click(function(){
+                $.confirm("申请中介交易请事先与卖家确定，是否继续?", "系统提示", function() {
+                    $('#imPopup').wePopup();
+                });
+            });
+
+            $('.intermediary').bind('click', intermediary);
         });
+
+        function intermediary() {
+            var amount = $('#amount').val();
+            if(Util.checkEmpty(amount) || amount == 0) {
+                $('#amount').val('');
+                $('#amount').focus();
+                return;
+            }
+
+            $.closePopup();
+            ajaxPost('api/apiIntermediary/addIntermediary', {bbsId:'${bbs.id}', sellUserId:'${bbs.addUserId}', amount: (amount*100).toFixed(0), remark:$('#remark').val()}, function(data) {
+                if(data.success) {
+                    $.alert("申请成功，等待卖家处理！", "系统提示！");
+                } else {
+                    $.alert(data.msg, "系统提示！");
+                }
+            }, function(){
+                $.loading.load({type:3, msg:'正在提交...'});
+            });
+        }
 
         function openQrcode() {
             ajaxPost('api/userController/getQR', {content:removeQueDefault(location.href), objectId:'${bbs.id}', objectType:'BBS'}, function(data) {

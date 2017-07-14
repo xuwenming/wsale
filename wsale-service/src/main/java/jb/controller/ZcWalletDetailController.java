@@ -199,6 +199,10 @@ public class ZcWalletDetailController extends BaseController {
 		Json j = new Json();
 		// 获取提现充值密码
 		String privateKey = (String)request.getSession().getAttribute(RSAUtil.PRIVATE_KEY);
+		if(privateKey == null) {
+			j.setMsg("操作失败，请刷新或关闭当前浏览器重新打开！");
+			return j;
+		}
 		checkPwd = RSAUtil.decryptByPravite(checkPwd, privateKey);
 
 		User admin = userService.get(Constants.MANAGERADMIN);
@@ -273,6 +277,10 @@ public class ZcWalletDetailController extends BaseController {
 
 		// 获取提现充值密码
 		String privateKey = (String)request.getSession().getAttribute(RSAUtil.PRIVATE_KEY);
+		if(privateKey == null) {
+			j.setMsg("操作失败，请刷新或关闭当前浏览器重新打开！");
+			return j;
+		}
 		checkPwd = RSAUtil.decryptByPravite(checkPwd, privateKey);
 
 		User admin = userService.get(Constants.MANAGERADMIN);

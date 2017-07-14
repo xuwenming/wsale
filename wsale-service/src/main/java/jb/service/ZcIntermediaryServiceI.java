@@ -57,4 +57,5 @@ public interface ZcIntermediaryServiceI {
 
 	public List<ZcIntermediary> query(ZcIntermediary zcIntermediary);
 
+	ZcIntermediary getDetail(String id);
 }

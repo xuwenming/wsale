@@ -57,7 +57,6 @@ public class Order10StateImpl implements OrderState {
         ZcPayOrder payOrder = zcPayOrderService.get(po);
         if(payOrder != null) {
             ZcProduct product = zcProductService.get(zcOrder.getProductId());
-//            zcPayOrderService.updateWallet(product.getAddUserId(), payOrder.getTotalFee());
             // 新增钱包收支明细
             ZcWalletDetail walletDetail = new ZcWalletDetail();
             walletDetail.setUserId(product.getAddUserId());

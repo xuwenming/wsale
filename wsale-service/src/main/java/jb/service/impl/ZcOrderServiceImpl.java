@@ -1,11 +1,14 @@
 package jb.service.impl;
 
 import jb.absx.F;
+import jb.dao.BaseDaoI;
 import jb.dao.ZcOrderDaoI;
 import jb.model.TzcOrder;
 import jb.pageModel.*;
 import jb.service.BasedataServiceI;
+import jb.service.ZcIntermediaryServiceI;
 import jb.service.ZcOrderServiceI;
+import jb.service.ZcProductServiceI;
 import jb.service.impl.order.OrderState;
 import jb.util.Constants;
 import jb.util.DateUtil;
@@ -35,10 +38,19 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 	@Autowired
 	private BasedataServiceI basedataService;
 
+	@Autowired
+	private ZcProductServiceI zcProductService;
+
+	@Autowired
+	private ZcIntermediaryServiceI zcIntermediaryService;
+
 	@Override
 	public DataGrid dataGrid(ZcOrder zcOrder, PageHelper ph) {
 		List<ZcOrder> ol = new ArrayList<ZcOrder>();
 		String hql = " from TzcOrder t ";
+		if(!F.empty(zcOrder.getPno()) || !F.empty(zcOrder.getSellerUserId()) || !F.empty(zcOrder.getBuyerUserId())) {
+			hql = "select distinct t from TzcOrder t,TzcProduct p, TzcIntermediary im ";
+		}
 		DataGrid dg = dataGridQuery(hql, ph, zcOrder, zcOrderDao);
 		@SuppressWarnings("unchecked")
 		List<TzcOrder> l = dg.getRows();
@@ -52,6 +64,290 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 		dg.setRows(ol);
 		return dg;
 	}
+
+	@Override
+	protected DataGrid dataGridQuery(String hql, PageHelper ph, ZcOrder zcOrder, BaseDaoI dao) {
+		DataGrid dg = new DataGrid();
+		Map<String, Object> params = new HashMap<String, Object>();
+		String where = whereHql(zcOrder, params);
+		List<TzcOrder> l = dao.find(hql  + where + orderHql(ph), params, ph.getPage(), ph.getRows());
+		if(!F.empty(zcOrder.getPno()) || !F.empty(zcOrder.getSellerUserId()) || !F.empty(zcOrder.getBuyerUserId())) {
+			dg.setTotal(dao.count("select count(distinct t.id) " + hql.substring(hql.indexOf("from")) + where, params));
+		} else {
+			dg.setTotal(dao.count("select count(*) " + hql + where, params));
+		}
+
+		dg.setRows(l);
+		return dg;
+	}
+
+	protected String whereHql(ZcOrder zcOrder, Map<String, Object> params) {
+		String whereHql = "";	
+		if (zcOrder != null) {
+			whereHql += " where 1=1 ";
+
+			if(!F.empty(zcOrder.getPno()) || !F.empty(zcOrder.getSellerUserId()) || !F.empty(zcOrder.getBuyerUserId())) {
+				if(!F.empty(zcOrder.getPno())) {
+					whereHql += " and (t.productId = p.id and p.pno like :pno) or (t.productId = im.id and im.imNo like :pno)";
+					params.put("pno", "%%" + zcOrder.getPno() + "%%");
+				}
+				if(!F.empty(zcOrder.getSellerUserId())) {
+					whereHql += " and (t.productId = p.id and p.addUserId = :sellerUserId) or (t.productId = im.id and im.sellUserId = :sellerUserId)";
+					params.put("sellerUserId", zcOrder.getSellerUserId());
+				}
+				if(!F.empty(zcOrder.getBuyerUserId())) {
+					whereHql += " and (t.productId = p.id and p.userId = :buyerUserId) or (t.productId = im.id and im.userId = :buyerUserId)";
+					params.put("buyerUserId", zcOrder.getBuyerUserId());
+				}
+			}
+
+			if (!F.empty(zcOrder.getOrderNo())) {
+				whereHql += " and t.orderNo like :orderNo";
+				params.put("orderNo", "%%" + zcOrder.getOrderNo() + "%%");
+			}		
+			if (!F.empty(zcOrder.getProductId())) {
+				whereHql += " and t.productId = :productId";
+				params.put("productId", zcOrder.getProductId());
+			}		
+			if (!F.empty(zcOrder.getPayStatus())) {
+				whereHql += " and t.payStatus = :payStatus";
+				params.put("payStatus", zcOrder.getPayStatus());
+			}		
+			if (!F.empty(zcOrder.getSendStatus())) {
+				whereHql += " and t.sendStatus = :sendStatus";
+				params.put("sendStatus", zcOrder.getSendStatus());
+			}		
+			if (!F.empty(zcOrder.getBackStatus())) {
+				whereHql += " and t.backStatus = :backStatus";
+				params.put("backStatus", zcOrder.getBackStatus());
+			}		
+			if (!F.empty(zcOrder.getOrderStatus())) {
+				whereHql += " and t.orderStatus = :orderStatus";
+				params.put("orderStatus", zcOrder.getOrderStatus());
+			}
+			if(zcOrder.getIsCommented() != null) {
+				whereHql += " and t.isCommented = :isCommented";
+				params.put("isCommented", zcOrder.getIsCommented());
+			}
+			if(zcOrder.getIsIntermediary() != null) {
+				whereHql += " and t.isIntermediary = :isIntermediary";
+				params.put("isIntermediary", zcOrder.getIsIntermediary());
+			}
+			if (!F.empty(zcOrder.getAddUserId())) {
+				whereHql += " and (exists (select 1 from TzcProduct p where p.id = t.productId and p.isDeleted = 0 and t.isIntermediary = 0 and (p.addUserId = :addUserId or p.userId = :addUserId))";
+				whereHql += " or exists (select 1 from TzcIntermediary i where i.id = t.productId and t.isIntermediary = 1 and (i.sellUserId = :addUserId or i.userId = :addUserId)))";
+				params.put("addUserId", zcOrder.getAddUserId());
+			}
+			if(zcOrder.getAddtime() != null) {
+				whereHql += " and date_format(t.addtime, '%Y-%m-%d %H:%i:%s') = :addtime";
+				params.put("addtime", DateUtil.format(zcOrder.getAddtime(), Constants.DATE_FORMAT));
+			}
+			if(zcOrder.getPaytime() != null) {
+				whereHql += " and date_format(t.paytime, '%Y-%m-%d %H:%i:%s') = :paytime";
+				params.put("paytime", DateUtil.format(zcOrder.getPaytime(), Constants.DATE_FORMAT));
+			}
+			if(zcOrder.getIsXiaoer() != null && zcOrder.getIsXiaoer()) {
+				whereHql += " and exists (select 1 from TzcOrderXiaoer xr where xr.orderId = t.id and xr.status = 'XS01') and t.orderStatus != 'OS10' and t.orderStatus != 'OS15'";
+			}
+		}
+		return whereHql;
+	}
+
+	@Override
+	public void add(ZcOrder zcOrder) {
+		zcOrder.setId(jb.absx.UUID.uuid());
+		TzcOrder t = new TzcOrder();
+		BeanUtils.copyProperties(zcOrder, t);
+		zcOrderDao.save(t);
+	}
+
+	@Override
+	public ZcOrder get(String id) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		TzcOrder t = zcOrderDao.get("from TzcOrder t  where t.id = :id", params);
+		ZcOrder o = new ZcOrder();
+		BeanUtils.copyProperties(t, o);
+		return o;
+	}
+
+	@Override
+	public void edit(ZcOrder zcOrder) {
+		TzcOrder t = zcOrderDao.get(TzcOrder.class, zcOrder.getId());
+		if (t != null) {
+			zcOrder.setProductId(t.getProductId());
+			zcOrder.setOrderNo(t.getOrderNo());
+			zcOrder.setIsIntermediary(t.getIsIntermediary());
+			MyBeanUtils.copyProperties(zcOrder, t, new String[] { "id" , "addtime" },true);
+
+			if(F.empty(zcOrder.getReturnApplyReason()) && !F.empty(t.getReturnApplyReason()))
+				zcOrder.setReturnApplyReason(t.getReturnApplyReason());
+		}
+	}
+
+	@Override
+	public void delete(String id) {
+		zcOrderDao.delete(zcOrderDao.get(TzcOrder.class, id));
+	}
+
+	@Override
+	public List<ZcOrder> query(ZcOrder zcOrder) {
+		List<ZcOrder> ol = new ArrayList<ZcOrder>();
+		String hql = " from TzcOrder t ";
+		@SuppressWarnings("unchecked")
+		List<TzcOrder> l = query(hql, zcOrder, zcOrderDao);
+		if (l != null && l.size() > 0) {
+			for (TzcOrder t : l) {
+				ZcOrder o = new ZcOrder();
+				BeanUtils.copyProperties(t, o);
+				ol.add(o);
+			}
+		}
+		return ol;
+	}
+
+	@Override
+	public List<ZcOrder> query(ZcOrder zcOrder, String otherWhere) {
+		List<ZcOrder> ol = new ArrayList<ZcOrder>();
+		Map<String, Object> params = new HashMap<String, Object>();
+		String hql = " from TzcOrder t ";
+		otherWhere = F.empty(otherWhere) ? "" : otherWhere;
+		List<TzcOrder> l = zcOrderDao.find(hql + whereHql(zcOrder, params) + otherWhere, params);
+		if (l != null && l.size() > 0) {
+			for (TzcOrder t : l) {
+				ZcOrder o = new ZcOrder();
+				BeanUtils.copyProperties(t, o);
+				ol.add(o);
+			}
+		}
+		return ol;
+	}
+
+	@Override
+	public ZcOrder get(ZcOrder zcOrder) {
+		String hql = " from TzcOrder t ";
+		@SuppressWarnings("unchecked")
+		List<TzcOrder> l = query(hql, zcOrder, zcOrderDao);
+		ZcOrder o = null;
+		if (CollectionUtils.isNotEmpty(l)) {
+			o = new ZcOrder();
+			BeanUtils.copyProperties(l.get(0), o);
+		}
+		return o;
+	}
+
+	@Override
+	public Map<String, Object> orderCount(String userId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("addUserId", userId);
+		String sql = "select count(case when t.pay_status='PS01' and t.order_status='OS01' then t.id end)  unpay_count, "
+				+ " count(case when t.send_status='SS03' and t.order_status='OS05' then t.id end)  unreceipt_count, "
+				+ " count(case when t.send_status='SS01' and t.order_status='OS02' then t.id end)  undeliver_count, "
+				+ " count(case when t.isCommented=0 and t.order_status='OS10' and exists(select 1 from zc_product p1 where p1.id=t.product_id and p1.user_id = :addUserId) then t.id end)  uncomment_count "
+				+ " from zc_order t where (exists (select 1 from zc_product p where p.id = t.product_id and p.isDeleted = 0 and t.is_intermediary = 0 and (p.addUserId = :addUserId or p.user_id = :addUserId))"
+				+ " or exists (select 1 from zc_intermediary i where i.id = t.product_id and t.is_intermediary = 1 and (i.sell_user_id = :addUserId or i.user_id = :addUserId)))";
+		List<Map> l = zcOrderDao.findBySql2Map(sql, params);
+		return l.get(0);
+	}
+
+	@Override
+	public Map<String, Object> orderAmountCount(String userId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("addUserId", userId);
+		String sql = "select ifnull(sum(case when t.pay_status='PS01' and t.order_status='OS01' then t.total_price end), 0) unpay_amount, "
+				+ " ifnull(sum(case when t.send_status='SS03' and t.order_status='OS05' then t.total_price end), 0) unreceipt_amount, "
+				+ " ifnull(sum(case when t.send_status='SS01' and t.order_status='OS02' then t.total_price end), 0) undeliver_amount "
+				+ " from zc_order t "
+				+ " left join zc_product p on p.id = t.product_id and t.is_intermediary = 0 "
+				+ " left join zc_intermediary i on i.id = t.product_id and t.is_intermediary = 1 "
+				+ " where (p.isDeleted = 0 and (p.addUserId = :addUserId or p.user_id = :addUserId)) or (i.sell_user_id = :addUserId or i.user_id = :addUserId)";
+		List<Map> l = zcOrderDao.findBySql2Map(sql, params);
+		return l.get(0);
+	}
+
+	@Override
+	public Map<String, Object> orderStatusCount(String userId) {
+		try{
+			Map<String, Object> result = new HashMap<String, Object>();
+			BaseData baseData = new BaseData();
+			baseData.setBasetypeCode("RA");
+			List<BaseData> bds = basedataService.getBaseDatas(baseData);
+			if(CollectionUtils.isNotEmpty(bds)) {
+				for(BaseData bd : bds) {
+					String desc = bd.getDescription().replaceAll("：", ":");
+					if(userId.equals(desc.split(":")[1])) {
+						String[] nums = bd.getName().split("-");
+						result.put("OS10",   BigInteger.valueOf(Long.valueOf(nums[0])));
+						result.put("B_OS15", BigInteger.valueOf(Long.valueOf(nums[1])));
+						result.put("S_OS15", BigInteger.valueOf(Long.valueOf(nums[2])));
+						break;
+					}
+				}
+				if(!result.isEmpty()) return result;
+			}
+
+		} catch (Exception e) {
+			System.out.println("用户-信誉违约设置方法orderStatusCount有错误！");
+		}
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("addUserId", userId);
+		String sql = "select count(case when t.order_status='OS10' and (t.face_status is null or t.face_status <> 'FS02') then t.id end) OS10, " // 信誉排除当面交易
+				+ " count(case when p.addUserId = :addUserId and t.order_status='OS15' and t.order_close_reason = 'OC002' then t.id end)  S_OS15, "
+				+ " count(case when p.user_id = :addUserId and t.order_status='OS15' and t.order_close_reason = 'OC001' then t.id end)  B_OS15 "
+				+ " from zc_order t "
+				+ " left join zc_product p on p.id = t.product_id and t.is_intermediary = 0 "
+				+ " left join zc_intermediary i on i.id = t.product_id and t.is_intermediary = 1 "
+				+ " where (p.isDeleted = 0 and (p.addUserId = :addUserId or p.user_id = :addUserId)) or (i.sell_user_id = :addUserId or i.user_id = :addUserId)";
+		List<Map> l = zcOrderDao.findBySql2Map(sql, params);
+		return l.get(0);
+	}
+
+	@Override
+	public void transform(ZcOrder zcOrder) {
+		OrderState orderState;
+		String state;
+		if(F.empty(zcOrder.getId())){
+			orderState = orderStateMap.get("order01StateImpl");
+			orderState.handle(zcOrder);
+		}else{
+			ZcOrder zcOrder1 = get(zcOrder.getId());
+			state = zcOrder1.getOrderStatus().replace("OS","");
+			orderState = orderStateMap.get("order"+state+"StateImpl");
+			orderState.next(zcOrder).handle(zcOrder);
+		}
+	}
+
+	@Override
+	public OrderProductInfo getProductInfo(ZcOrder order) {
+		OrderProductInfo info = new OrderProductInfo();
+		if(order.getIsIntermediary()) {
+			ZcIntermediary im = zcIntermediaryService.getDetail(order.getProductId());
+			info.setId(im.getBbs().getId());
+			info.setPno(im.getImNo());
+			info.setIcon(im.getBbs().getIcon());
+			info.setContent(im.getBbs().getBbsTitle());
+			info.setSellerUserId(im.getSellUserId());
+			info.setBuyerUserId(im.getUserId());
+			info.setStartingTime(im.getAddtime());
+		} else {
+			ZcProduct p = zcProductService.get(order.getProductId(), null);
+			info.setId(p.getId());
+			info.setPno(p.getPno());
+			info.setIcon(p.getIcon());
+			info.setContent(p.getContent());
+			info.setSellerUserId(p.getAddUserId());
+			info.setBuyerUserId(p.getUserId());
+			info.setStartingTime(p.getStartingTime());
+			info.setHammerTime(p.getHammerTime());
+			info.setMargin(p.getMargin());
+		}
+		info.setTotalPrice(order.getTotalPrice());
+
+		return info;
+	}
+
+
 	// TODO (james) 高级搜索(小二介入问题存在争议需探讨)
 	@Override
 	public DataGrid dataGridComp(ZcOrder zcOrder, ZcProduct zcProduct,Boolean isXiaoer, PageHelper ph) {
@@ -162,215 +458,6 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 		BigInteger count = zcOrderDao.countBySql(buffer1.toString(), params);
 		dg.setTotal(count == null ? 0 : count.longValue());
 		return dg;
-	}
-
-	protected String whereHql(ZcOrder zcOrder, Map<String, Object> params) {
-		String whereHql = "";	
-		if (zcOrder != null) {
-			whereHql += " where 1=1 ";
-			if (!F.empty(zcOrder.getOrderNo())) {
-				whereHql += " and t.orderNo like :orderNo";
-				params.put("orderNo", "%%" + zcOrder.getOrderNo() + "%%");
-			}		
-			if (!F.empty(zcOrder.getProductId())) {
-				whereHql += " and t.productId = :productId";
-				params.put("productId", zcOrder.getProductId());
-			}		
-			if (!F.empty(zcOrder.getPayStatus())) {
-				whereHql += " and t.payStatus = :payStatus";
-				params.put("payStatus", zcOrder.getPayStatus());
-			}		
-			if (!F.empty(zcOrder.getSendStatus())) {
-				whereHql += " and t.sendStatus = :sendStatus";
-				params.put("sendStatus", zcOrder.getSendStatus());
-			}		
-			if (!F.empty(zcOrder.getBackStatus())) {
-				whereHql += " and t.backStatus = :backStatus";
-				params.put("backStatus", zcOrder.getBackStatus());
-			}		
-			if (!F.empty(zcOrder.getOrderStatus())) {
-				whereHql += " and t.orderStatus = :orderStatus";
-				params.put("orderStatus", zcOrder.getOrderStatus());
-			}
-			if(zcOrder.getIsCommented() != null) {
-				whereHql += " and t.isCommented = :isCommented";
-				params.put("isCommented", zcOrder.getIsCommented());
-			}
-			if (!F.empty(zcOrder.getAddUserId())) {
-				whereHql += " and exists (select 1 from TzcProduct p where p.id = t.productId and p.isDeleted = 0 and (p.addUserId = :addUserId or p.userId = :addUserId))";
-				params.put("addUserId", zcOrder.getAddUserId());
-			}
-			if(zcOrder.getAddtime() != null) {
-				whereHql += " and date_format(t.addtime, '%Y-%m-%d %H:%i:%s') = :addtime";
-				params.put("addtime", DateUtil.format(zcOrder.getAddtime(), Constants.DATE_FORMAT));
-			}
-			if(zcOrder.getPaytime() != null) {
-				whereHql += " and date_format(t.paytime, '%Y-%m-%d %H:%i:%s') = :paytime";
-				params.put("paytime", DateUtil.format(zcOrder.getPaytime(), Constants.DATE_FORMAT));
-			}
-			if(zcOrder.getIsXiaoer() != null && zcOrder.getIsXiaoer()) {
-				whereHql += " and exists (select 1 from TzcOrderXiaoer xr where xr.orderId = t.id and xr.status = 'XS01') and t.orderStatus != 'OS10' and t.orderStatus != 'OS15'";
-			}
-		}
-		return whereHql;
-	}
-
-	@Override
-	public void add(ZcOrder zcOrder) {
-		zcOrder.setId(jb.absx.UUID.uuid());
-		TzcOrder t = new TzcOrder();
-		BeanUtils.copyProperties(zcOrder, t);
-		zcOrderDao.save(t);
-	}
-
-	@Override
-	public ZcOrder get(String id) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", id);
-		TzcOrder t = zcOrderDao.get("from TzcOrder t  where t.id = :id", params);
-		ZcOrder o = new ZcOrder();
-		BeanUtils.copyProperties(t, o);
-		return o;
-	}
-
-	@Override
-	public void edit(ZcOrder zcOrder) {
-		TzcOrder t = zcOrderDao.get(TzcOrder.class, zcOrder.getId());
-		if (t != null) {
-			zcOrder.setProductId(t.getProductId());
-			zcOrder.setOrderNo(t.getOrderNo());
-			MyBeanUtils.copyProperties(zcOrder, t, new String[] { "id" , "addtime" },true);
-
-			if(F.empty(zcOrder.getReturnApplyReason()) && !F.empty(t.getReturnApplyReason()))
-				zcOrder.setReturnApplyReason(t.getReturnApplyReason());
-		}
-	}
-
-	@Override
-	public void delete(String id) {
-		zcOrderDao.delete(zcOrderDao.get(TzcOrder.class, id));
-	}
-
-	@Override
-	public List<ZcOrder> query(ZcOrder zcOrder) {
-		List<ZcOrder> ol = new ArrayList<ZcOrder>();
-		String hql = " from TzcOrder t ";
-		@SuppressWarnings("unchecked")
-		List<TzcOrder> l = query(hql, zcOrder, zcOrderDao);
-		if (l != null && l.size() > 0) {
-			for (TzcOrder t : l) {
-				ZcOrder o = new ZcOrder();
-				BeanUtils.copyProperties(t, o);
-				ol.add(o);
-			}
-		}
-		return ol;
-	}
-
-	@Override
-	public List<ZcOrder> query(ZcOrder zcOrder, String otherWhere) {
-		List<ZcOrder> ol = new ArrayList<ZcOrder>();
-		Map<String, Object> params = new HashMap<String, Object>();
-		String hql = " from TzcOrder t ";
-		otherWhere = F.empty(otherWhere) ? "" : otherWhere;
-		List<TzcOrder> l = zcOrderDao.find(hql + whereHql(zcOrder, params) + otherWhere, params);
-		if (l != null && l.size() > 0) {
-			for (TzcOrder t : l) {
-				ZcOrder o = new ZcOrder();
-				BeanUtils.copyProperties(t, o);
-				ol.add(o);
-			}
-		}
-		return ol;
-	}
-
-	@Override
-	public ZcOrder get(ZcOrder zcOrder) {
-		String hql = " from TzcOrder t ";
-		@SuppressWarnings("unchecked")
-		List<TzcOrder> l = query(hql, zcOrder, zcOrderDao);
-		ZcOrder o = null;
-		if (CollectionUtils.isNotEmpty(l)) {
-			o = new ZcOrder();
-			BeanUtils.copyProperties(l.get(0), o);
-		}
-		return o;
-	}
-
-	@Override
-	public Map<String, Object> orderCount(String userId) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("addUserId", userId);
-		String sql = "select count(case when t.pay_status='PS01' and t.order_status='OS01' then t.id end)  unpay_count, "
-				+ " count(case when t.send_status='SS03' and t.order_status='OS05' then t.id end)  unreceipt_count, "
-				+ " count(case when t.send_status='SS01' and t.order_status='OS02' then t.id end)  undeliver_count, "
-				+ " count(case when t.isCommented=0 and t.order_status='OS10' and exists(select 1 from zc_product p1 where p1.id=t.product_id and p1.user_id = :addUserId) then t.id end)  uncomment_count "
-				+ " from zc_order t where exists (select 1 from zc_product p where p.id = t.product_id and p.isDeleted = 0 and (p.addUserId = :addUserId or p.user_id = :addUserId))";
-		List<Map> l = zcOrderDao.findBySql2Map(sql, params);
-		return l.get(0);
-	}
-
-	@Override
-	public Map<String, Object> orderAmountCount(String userId) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("addUserId", userId);
-		String sql = "select ifnull(sum(case when t.pay_status='PS01' and t.order_status='OS01' then p.current_price end), 0) unpay_amount, "
-				+ " ifnull(sum(case when t.send_status='SS03' and t.order_status='OS05' then p.current_price end), 0) unreceipt_amount, "
-				+ " ifnull(sum(case when t.send_status='SS01' and t.order_status='OS02' then p.current_price end), 0) undeliver_amount "
-				+ " from zc_product p left join zc_order t on t.product_id = p.id "
-				+ " where p.isDeleted = 0 and (p.addUserId = :addUserId or p.user_id = :addUserId)";
-		List<Map> l = zcOrderDao.findBySql2Map(sql, params);
-		return l.get(0);
-	}
-
-	@Override
-	public Map<String, Object> orderStatusCount(String userId) {
-		try{
-			Map<String, Object> result = new HashMap<String, Object>();
-			BaseData baseData = new BaseData();
-			baseData.setBasetypeCode("RA");
-			List<BaseData> bds = basedataService.getBaseDatas(baseData);
-			if(CollectionUtils.isNotEmpty(bds)) {
-				for(BaseData bd : bds) {
-					String desc = bd.getDescription().replaceAll("：", ":");
-					if(userId.equals(desc.split(":")[1])) {
-						String[] nums = bd.getName().split("-");
-						result.put("OS10",   BigInteger.valueOf(Long.valueOf(nums[0])));
-						result.put("B_OS15", BigInteger.valueOf(Long.valueOf(nums[1])));
-						result.put("S_OS15", BigInteger.valueOf(Long.valueOf(nums[2])));
-						break;
-					}
-				}
-				if(!result.isEmpty()) return result;
-			}
-
-		} catch (Exception e) {
-			System.out.println("用户-信誉违约设置方法orderStatusCount有错误！");
-		}
-
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("addUserId", userId);
-		String sql = "select count(case when t.order_status='OS10' and (t.face_status is null or t.face_status <> 'FS02') then t.id end) OS10, " // 信誉排除当面交易
-				+ " count(case when p.addUserId = :addUserId and t.order_status='OS15' and t.order_close_reason = 'OC002' then t.id end)  S_OS15, "
-				+ " count(case when p.user_id = :addUserId and t.order_status='OS15' and t.order_close_reason = 'OC001' then t.id end)  B_OS15 "
-				+ " from zc_order t left join zc_product p on p.id = t.product_id where p.isDeleted = 0 and (p.addUserId = :addUserId or p.user_id = :addUserId)";
-		List<Map> l = zcOrderDao.findBySql2Map(sql, params);
-		return l.get(0);
-	}
-
-	@Override
-	public void transform(ZcOrder zcOrder) {
-		OrderState orderState;
-		String state;
-		if(F.empty(zcOrder.getId())){
-			orderState = orderStateMap.get("order01StateImpl");
-			orderState.handle(zcOrder);
-		}else{
-			ZcOrder zcOrder1 = get(zcOrder.getId());
-			state = zcOrder1.getOrderStatus().replace("OS","");
-			orderState = orderStateMap.get("order"+state+"StateImpl");
-			orderState.next(zcOrder).handle(zcOrder);
-		}
 	}
 
 }

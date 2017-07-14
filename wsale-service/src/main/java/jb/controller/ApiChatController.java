@@ -496,4 +496,27 @@ public class ApiChatController extends BaseController {
 		return dataGrid;
 	}
 
+	/**
+	 * 获取未读消息数
+	 * @return
+	 */
+	@RequestMapping("/unreadCount")
+	@ResponseBody
+	public Json unreadCount(HttpServletRequest request) {
+		Json j = new Json();
+		try{
+			SessionInfo s = getSessionInfo(request);
+			ZcChatMsg msg = new ZcChatMsg();
+			msg.setToUserId(s.getId());
+			msg.setUnread(true);
+			j.setObj(zcChatMsgService.count(msg) + zcNoticeService.getUnreadCount(s.getId()));
+			j.success();
+			j.setMsg("获取成功");
+		}catch(Exception e){
+			j.fail();
+			e.printStackTrace();
+		}
+		return j;
+	}
+
 }

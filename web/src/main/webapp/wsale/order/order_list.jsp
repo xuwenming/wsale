@@ -198,7 +198,6 @@
 
         function buildOrder(order) {
             var viewData = Util.cloneJson(order);
-//            viewData.product.icon = base + order.product.icon;
             viewData.nickname = order.isBuyer ?  order.seller.nickname + '(卖家)' : order.buyer.nickname + '(买家)';
             var btnHtml = '', payDownTime = 0, otherDownTime = 0, otherDownMsg = '';
             if(order.payStatus == 'PS01') { // 待付款
@@ -208,15 +207,15 @@
                     viewData.orderStatusTime = '失败时间：' + new Date(order.orderStatusTime.replace(/-/g,"/")).format('MM月dd日 HH:mm');
                 } else if(order.orderStatus == 'OS10') {
                     viewData.statusName = order.orderStatusZh;
-                    viewData.orderStatusName = '交易金额：￥' + order.product.hammerPrice.toFixed(2);
+                    viewData.orderStatusName = '交易金额：￥' + order.totalPrice.toFixed(2);
                     viewData.orderStatusTime = '交易类型：当面交易';
                     if(!order.isCommented && order.isBuyer)
                         btnHtml = '<span class="commentBtn">去评价</span>';
                 } else {
                     viewData.statusName = order.orderStatusZh;
-                    viewData.orderStatusName = '成交金额：￥' + order.product.hammerPrice.toFixed(2);
+                    viewData.orderStatusName = '成交金额：￥' + order.totalPrice.toFixed(2);
                     if(order.isBuyer) {
-                        if(!order.faceStatus)
+                        if(!order.isIntermediary && !order.faceStatus)
                             btnHtml = '<span class="dmjyBtn">当面交易</span>';
                         else if(order.faceStatus && order.faceStatus == 'FS01')
                             viewData.statusName = '当面交易申请中';
@@ -233,7 +232,7 @@
             } else {
                 if(order.backStatus && order.orderStatus != 'OS10' && order.orderStatus != 'OS15') { // 退货申请中且订单未结束
                     if(order.backStatus == 'RS01') { // 申请中
-                        viewData.orderStatusName = '交易金额：￥' + order.product.hammerPrice.toFixed(2);
+                        viewData.orderStatusName = '交易金额：￥' + order.totalPrice.toFixed(2);
                         viewData.orderStatusTime = '申请时间：' + new Date(order.returnApplyTime.replace(/-/g,"/")).format('MM月dd日 HH:mm');
                         if(order.isBuyer) {
                             viewData.statusName = '申请退货';
@@ -246,7 +245,7 @@
                             otherDownMsg = '确认截止';
                         }
                     } else if(order.backStatus == 'RS02') { // 拒接退货
-                        viewData.orderStatusName = '交易金额：￥' + order.product.hammerPrice.toFixed(2);
+                        viewData.orderStatusName = '交易金额：￥' + order.totalPrice.toFixed(2);
                         viewData.orderStatusTime = '拒绝时间：' + new Date(order.returnConfirmTime.replace(/-/g,"/")).format('MM月dd日 HH:mm');
                         if(order.isBuyer) {
                             if(order.isXiaoer) {
@@ -279,7 +278,7 @@
                             }
                         }
                     } else if(order.backStatus == 'RS03') { // 同意退货
-                        viewData.orderStatusName = '交易金额：￥' + order.product.hammerPrice.toFixed(2);
+                        viewData.orderStatusName = '交易金额：￥' + order.totalPrice.toFixed(2);
                         viewData.orderStatusTime = '同意时间：' + new Date(order.returnConfirmTime.replace(/-/g,"/")).format('MM月dd日 HH:mm');
                         if(order.isBuyer) {
                             viewData.statusName = '同意退货';
@@ -290,7 +289,7 @@
                         otherDownTime = (new Date(order.returnConfirmTime.replace(/-/g,"/")).getTime() + 5*24*60*60*1000) - nowTime;
                         otherDownMsg = '发货截止';
                     } else if(order.backStatus == 'RS04') { // 退货已发货
-                        viewData.orderStatusName = '交易金额：￥' + order.product.hammerPrice.toFixed(2);
+                        viewData.orderStatusName = '交易金额：￥' + order.totalPrice.toFixed(2);
                         viewData.orderStatusTime = '退货时间：' + new Date(order.returnDeliverTime.replace(/-/g,"/")).format('MM月dd日 HH:mm');
                         if(order.isBuyer) {
                             if(order.isXiaoer) {
@@ -334,7 +333,7 @@
                 } else {
                     if(order.orderStatus == 'OS10') {
                         viewData.statusName = order.orderStatusZh;
-                        viewData.orderStatusName = '交易金额：￥' + order.product.hammerPrice.toFixed(2);
+                        viewData.orderStatusName = '交易金额：￥' + order.totalPrice.toFixed(2);
                         viewData.orderStatusTime = '收货时间：' + new Date(order.receiveTime.replace(/-/g,"/")).format('MM月dd日 HH:mm');
                         if(!order.isCommented && order.isBuyer)
                             btnHtml = '<span class="commentBtn">去评价</span>';
@@ -345,7 +344,7 @@
                     } else {
                         if(order.sendStatus == 'SS01') { // 卖家待发货
                             viewData.statusName = order.orderStatusZh;
-                            viewData.orderStatusName = '交易金额：￥' + order.product.hammerPrice.toFixed(2);
+                            viewData.orderStatusName = '交易金额：￥' + order.totalPrice.toFixed(2);
                             viewData.orderStatusTime = '付款时间：' + new Date(order.paytime.replace(/-/g,"/")).format('MM月dd日 HH:mm');
                             if(order.isBuyer) {
                                // btnHtml = '<span class="thBtn">退货</span>';
@@ -357,7 +356,7 @@
                         } else if(order.sendStatus == 'SS03') { // 卖家已发货
                             var deliverTime = new Date(order.deliverTime.replace(/-/g,"/"));
                             viewData.statusName = order.orderStatusZh;
-                            viewData.orderStatusName = '交易金额：￥' + order.product.hammerPrice.toFixed(2);
+                            viewData.orderStatusName = '交易金额：￥' + order.totalPrice.toFixed(2);
                             viewData.orderStatusTime = '发货时间：' + deliverTime.format('MM月dd日 HH:mm');
                             // 发货三天后显示退货按钮
                             if(order.isBuyer) {
@@ -371,7 +370,7 @@
                             otherDownMsg = '确认收货剩余';
                         } else { // 买家已收货
                             viewData.statusName = order.orderStatusZh;
-                            viewData.orderStatusName = '交易金额：￥' + order.product.hammerPrice.toFixed(2);
+                            viewData.orderStatusName = '交易金额：￥' + order.totalPrice.toFixed(2);
                             viewData.orderStatusTime = '收货时间：' + new Date(order.receiveTime.replace(/-/g,"/")).format('MM月dd日 HH:mm');
                             if(!order.isCommented && order.isBuyer)
                                 btnHtml = '<span class="commentBtn">去评价</span>';
@@ -381,6 +380,8 @@
             }
             var dom = Util.cloneDom("order_template", order, viewData);
             $("#order-list").append(dom);
+
+            if(order.isIntermediary) dom.find('.intermediary').show();
 
             if(order.isBuyer) {
                 if(order.seller.mobile && order.seller.mobile != 'undefined') {
@@ -451,7 +452,7 @@
         // 申请退货
         function thFun(event) {
             var order = event.data;
-            href('api/apiOrder/toBackApply?orderId=' + order.id + '&productId=' + order.productId);
+            href('api/apiOrder/toBackApply?orderId=' + order.id + '&productId=' + order.product.id);
             /*var order = event.data;
             $.confirm("是否申请退货?", "系统提示", function() {
                 ajaxPost('api/apiOrder/backApply', {id:order.id}, function(data){
@@ -543,7 +544,7 @@
         // 申请小二
         function sqxrFun(event) {
             var order = event.data;
-            href('api/apiOrder/xiaoer?orderId=' + order.id + '&productId=' + order.productId);
+            href('api/apiOrder/xiaoer?orderId=' + order.id);
         }
         // 撤销小二
         function cxxrFun(event) {
@@ -621,7 +622,7 @@
             addressParams.orderId = order.id;
             ajaxPost('api/apiOrder/addAddress', addressParams, function(data){
                 if(data.success) {
-                    href('api/pay/toPay?objectId='+order.id+'&objectType=PO05&totalFee=' + order.product.hammerPrice + '&userId=' + order.product.addUserId);
+                    href('api/pay/toPay?objectId='+order.id+'&objectType=PO05&totalFee=' + order.totalPrice + '&userId=' + order.product.sellerUserId + '&isIntermediary=' + order.isIntermediary);
                 } else {
                     $.toptip(data.msg);
                 }

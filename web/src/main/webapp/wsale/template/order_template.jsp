@@ -9,6 +9,7 @@
 		<div class="normal-text userShop">
 			<img class="dianpu-icon" src="${pageContext.request.contextPath}/wsale/images/dianpu-icon.png" />
 			<span name="nickname" class="nickname"></span>
+			<span class="intermediary" style="padding: 0 5px;font-size: 12px;color:#ff0000;  border: 1px solid #ff0000;border-radius: 10px; display: none;">中介</span>
 			<img class="more-icon" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
 		</div>
 	</div>

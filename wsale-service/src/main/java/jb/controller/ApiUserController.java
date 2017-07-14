@@ -96,6 +96,12 @@ public class ApiUserController extends BaseController {
 	@Autowired
 	private ZcBbsCommentServiceI zcBbsCommentService;
 
+	@Autowired
+	private ZcIntermediaryServiceI zcIntermediaryService;
+
+	@Autowired
+	private ZcNoticeServiceI zcNoticeService;
+
 	/**
 	 * 获取用户信息
 	 * http://localhost:8080/api/userController/get?tokenId=1D96DACB84F21890ED9F4928FA8B352B
@@ -265,6 +271,13 @@ public class ApiUserController extends BaseController {
 				List<ZcProduct> products = zcProductService.query(p);
 				request.setAttribute("auction_in_count", CollectionUtils.isEmpty(products) ? 0 : products.size());
 
+				// 中介交易待处理数量
+				ZcIntermediary im = new ZcIntermediary();
+				im.setStatus("IS01");
+				im.setSellUserId(s.getId());
+				List<ZcIntermediary> ims = zcIntermediaryService.query(im);
+				request.setAttribute("im_count", CollectionUtils.isEmpty(ims) ? 0 : ims.size());
+
 				// 订单数量统计
 				Map<String, Object> order_count = zcOrderService.orderCount(s.getId());
 				request.setAttribute("order_count", order_count);
@@ -288,7 +301,7 @@ public class ApiUserController extends BaseController {
 				ZcChatMsg msg = new ZcChatMsg();
 				msg.setToUserId(s.getId());
 				msg.setUnread(true);
-				request.setAttribute("chat_unread_count", zcChatMsgService.count(msg));
+				request.setAttribute("chat_unread_count", zcChatMsgService.count(msg) + zcNoticeService.getUnreadCount(s.getId()));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

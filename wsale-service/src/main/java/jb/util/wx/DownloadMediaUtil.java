@@ -117,7 +117,7 @@ public class DownloadMediaUtil {
             String error = String.format("上传头像失败：%s", e);
             System.out.println(error);
         }
-        return null;
+        return headimgurl;
     }
 
     public static String downloadHeadImage(String headimgurl) {

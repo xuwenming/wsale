@@ -15,6 +15,8 @@ import jb.service.*;
 import jb.service.impl.CompletionFactory;
 import jb.service.impl.SendWxMessageImpl;
 import jb.util.ConfigUtil;
+import jb.util.Constants;
+import jb.util.RSAUtil;
 import jb.util.Util;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -198,8 +200,24 @@ public class ZcOfflineTransferController extends BaseController {
 	 */
 	@RequestMapping("/edit")
 	@ResponseBody
-	public Json edit(ZcOfflineTransfer zcOfflineTransfer, String oldHandleStatus, HttpServletRequest request) {
+	public Json edit(ZcOfflineTransfer zcOfflineTransfer, String oldHandleStatus, String checkPwd, HttpServletRequest request) {
 		Json j = new Json();
+
+		// 获取提现充值密码
+		String privateKey = (String)request.getSession().getAttribute(RSAUtil.PRIVATE_KEY);
+		if(privateKey == null) {
+			j.setMsg("操作失败，请刷新或关闭当前浏览器重新打开！");
+			return j;
+		}
+		checkPwd = RSAUtil.decryptByPravite(checkPwd, privateKey);
+
+		User admin = userService.get(Constants.MANAGERADMIN);
+		if(F.empty(checkPwd) || !checkPwd.equals(admin.getHxPassword())) {
+			j.fail();
+			j.setMsg("校验密码错误");
+			return j;
+		}
+
 		String handleUserId = ((SessionInfo) request.getSession().getAttribute(ConfigUtil.getSessionInfoName())).getId();
 
 		// 处理成功，自动充值到余额

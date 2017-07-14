@@ -60,7 +60,7 @@ public class ApiPayController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/toPay")
-	public String toPay(ZcPayOrder payOrder, String userId, HttpServletRequest request) {
+	public String toPay(ZcPayOrder payOrder, String userId, Boolean isIntermediary, HttpServletRequest request) {
 		SessionInfo s = getSessionInfo(request);
 		request.setAttribute("payOrder", payOrder);
 		// 附加参数类型
@@ -77,10 +77,30 @@ public class ApiPayController extends BaseController {
 		request.setAttribute("wallet", wallet);
 
 		double serviceFee = 0;
-		if("PO05".equals(payOrder.getObjectType()) && !F.empty(userId) && payOrder.getTotalFee() >= 10) { // 拍品订单支付
-			User user = userService.getByZc(userId);
-			int serviceFeePer = user.getServiceFeePer();
-			serviceFee = (new BigDecimal(payOrder.getTotalFee()).multiply(new BigDecimal(serviceFeePer).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP))).doubleValue();
+		if("PO05".equals(payOrder.getObjectType()) && !F.empty(userId) && isIntermediary != null) { // 拍品订单支付
+			int serviceFeePer = 0;
+			if(isIntermediary) { // 中介百分比读取数据字典
+				try {
+					serviceFeePer = Integer.valueOf(Application.getString("AF10"));
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+			} else {
+				User user = userService.getByZc(userId);
+				serviceFeePer = user.getServiceFeePer();
+				if(serviceFeePer == 0) {
+					try {
+						serviceFeePer = Integer.valueOf(Application.getString("AF20"));
+					} catch (Exception e) {
+						System.out.println(e.getMessage());
+					}
+				}
+			}
+
+			if(serviceFeePer > 0) {
+				serviceFee = (new BigDecimal(payOrder.getTotalFee()).multiply(new BigDecimal(serviceFeePer).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP))).doubleValue();
+				if(serviceFee < 5) serviceFee = 5; // 最低收取5元
+			}
 		}
 		request.setAttribute("serviceFee", serviceFee);
 

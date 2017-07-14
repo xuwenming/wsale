@@ -29,7 +29,7 @@
 		</script>
 	</c:if>
 <script type="text/javascript">
-	var dataGrid, productCombogrid;
+	var dataGrid, productCombogrid, sellerCombogrid, buyerCombogrid;
 	$(function() {
 		dataGrid = $('#dataGrid').datagrid({
 			url : '${pageContext.request.contextPath}/zcOrderController/dataGrid',
@@ -66,6 +66,14 @@
 					return product.pno;
 				}
 				},{
+				field : 'isIntermediary',
+				title : '是否中介',
+				width : 30,
+				formatter : function(value, row, index) {
+					if(value) return '<font color="#f6383a;">是</font>';
+					else return '否';
+				}
+				},{
 				field : 'seller',
 				title : '卖家',
 				width : 50,
@@ -82,13 +90,9 @@
 					return buyer.nickname;
 				}
 				},{
-				field : 'hammerPrice',
+				field : 'totalPrice',
 				title : '订单金额(元)',
-				width : 50,
-				formatter : function(value, row, index) {
-					var product = row.product;
-					return product.hammerPrice;
-				}
+				width : 50
 				},{
 				field : 'payStatusZh',
 				title : '<%=TzcOrder.ALIAS_PAY_STATUS%>',
@@ -111,7 +115,7 @@
 				formatter : function (value, row, index) {
 					var str = row.orderStatusZh;
 					if(row.orderStatus == 'OS02') str = '<font color="orange">' + row.orderStatusZh + '</font>';
-					else if(row.orderStatus == 'OS05') str = '<font color="#8a2be2;">' + row.orderStatusZh + '</font>';
+					else if(row.orderStatus == 'OS05') str = '<font color="#08c;">' + row.orderStatusZh + '</font>';
 					else if(row.orderStatus == 'OS10') str = '<font color="#4cd964;">' + row.orderStatusZh + '</font>';
 					else if(row.orderStatus == 'OS15') str =  '<font color="red">' + row.orderStatusZh + '</font>';
 
@@ -185,6 +189,50 @@
 
 		productCombogrid.next('span').find('input').focus(function(){
 			productCombogrid.combogrid("showPanel");
+		});
+
+		sellerCombogrid = $('#sellerUserId').combogrid({
+			url:'${pageContext.request.contextPath}/userController/queryUsers',
+			panelWidth:510,
+			width : 140,
+			height : 29,
+			idField:'id',
+			textField:'nickname',
+			mode:'remote',
+			method:'post',
+			nowrap : true,
+			striped:true,
+			columns:[[
+				{field:'nickname',title:'昵称',width:200},
+				{field:'mobile',title:'手机号',width:150},
+				{field:'wechatNo',title:'微信号',width:150}
+			]]
+		});
+
+		sellerCombogrid.next('span').find('input').focus(function(){
+			sellerCombogrid.combogrid("showPanel");
+		});
+
+		buyerCombogrid = $('#buyerUserId').combogrid({
+			url:'${pageContext.request.contextPath}/userController/queryUsers',
+			panelWidth:510,
+			width : 140,
+			height : 29,
+			idField:'id',
+			textField:'nickname',
+			mode:'remote',
+			method:'post',
+			nowrap : true,
+			striped:true,
+			columns:[[
+				{field:'nickname',title:'昵称',width:200},
+				{field:'mobile',title:'手机号',width:150},
+				{field:'wechatNo',title:'微信号',width:150}
+			]]
+		});
+
+		buyerCombogrid.next('span').find('input').focus(function(){
+			buyerCombogrid.combogrid("showPanel");
 		});
 	});
 
@@ -343,7 +391,7 @@
 </head>
 <body>
 	<div class="easyui-layout" data-options="fit : true,border : false">
-		<div data-options="region:'north',title:'查询条件',border:false" style="height: 70px; overflow: hidden;">
+		<div data-options="region:'north',title:'查询条件',border:false" style="height: 110px; overflow: hidden;">
 			<form id="searchForm">
 				<input type="hidden" name="isXiaoer" id="isXiaoer" value="0">
 				<table class="table table-hover table-condensed" style="display: none;">
@@ -354,11 +402,32 @@
 							</td>
 							<td>
 								拍品编号：
-								<input id="productId" name="productId"/>
+								<!--<input id="productId" name="productId"/>-->
+								<input type="text" name="pno" maxlength="36" class="span2"/>
 							</td>
 							<td>
 								订单状态：
 								<jb:select dataType="OS" name="orderStatus"></jb:select>
+							</td>
+
+						</tr>
+						<tr>
+							<td>
+								卖家：
+								<input id="sellerUserId" name="sellerUserId"/>
+							</td>
+							<td>
+								买家：
+								<input id="buyerUserId" name="buyerUserId"/>
+							</td>
+							<td>
+								是否中介：
+								<select name="isIntermediary" class="easyui-combobox"
+										data-options="width:140,height:29,editable:false,panelHeight:'auto'">
+									<option value="">不限</option>
+									<option value="1">是</option>
+									<option value="0">否</option>
+								</select>
 							</td>
 
 						</tr>

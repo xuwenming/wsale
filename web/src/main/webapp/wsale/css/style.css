@@ -3304,15 +3304,15 @@ div.weui-popup-modal{
 /*网页版登录提示*/
 .login-tishi{
 	width:145px;
-	margin:10px auto;
-	padding:5px 8px;
-	background-color: #888;
+	margin:10px auto 0;
+	padding:3px 12px 3px 6px;
+	background-color: #555;
 	color:#fff;
 	border-radius: 6px;
 	line-height: 30px;
 	text-align: center;
 	font-size: 14px;
-	font-weight: 100;
+	display: none;
 }
 .login-tishi>img{
 	width:16px;
@@ -3323,7 +3323,7 @@ div.weui-popup-modal{
 .login-tishi sup{
 	float:left;
 	position: relative;
-	left:120px;
+	left:118px;
 	top:4px;
 	width:6px;
 	height: 6px;

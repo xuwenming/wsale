@@ -57,30 +57,32 @@ public class Order02StateImpl implements OrderState {
         orderService.edit(zcOrder);
 
         // 退回付款人保证金
-        final CompletionService completionService = CompletionFactory.initCompletion();
-        completionService.submit(new Task<ZcOrder, Boolean>(zcOrder) {
-            @Override
-            public Boolean call() throws Exception {
-                ZcProduct product = zcProductService.get(getD().getProductId());
-                if(product.getMargin() > 0 && !F.empty(product.getUserId())) {
-                    ZcProductMargin q = new ZcProductMargin();
-                    q.setProductId(product.getId());
-                    q.setPayStatus("PS02");
-                    q.setBuyUserId(product.getUserId());
-                    ZcProductMargin margin = zcProductMarginService.get(q);
-                    if(margin != null &&  F.empty(margin.getRefundNo())) {
-                        ZcPayOrder payOrder = new ZcPayOrder();
-                        payOrder.setObjectId(margin.getId());
-                        payOrder.setObjectType("PO08");
-                        zcPayOrderService.refund(payOrder, "保证金退回", margin);
+        if(!zcOrder.getIsIntermediary()) {
+            final CompletionService completionService = CompletionFactory.initCompletion();
+            completionService.submit(new Task<ZcOrder, Boolean>(zcOrder) {
+                @Override
+                public Boolean call() throws Exception {
+                    ZcProduct product = zcProductService.get(getD().getProductId());
+                    if(product.getMargin() > 0 && !F.empty(product.getUserId())) {
+                        ZcProductMargin q = new ZcProductMargin();
+                        q.setProductId(product.getId());
+                        q.setPayStatus("PS02");
+                        q.setBuyUserId(product.getUserId());
+                        ZcProductMargin margin = zcProductMarginService.get(q);
+                        if(margin != null &&  F.empty(margin.getRefundNo())) {
+                            ZcPayOrder payOrder = new ZcPayOrder();
+                            payOrder.setObjectId(margin.getId());
+                            payOrder.setObjectType("PO08");
+                            zcPayOrderService.refund(payOrder, "保证金退回", margin);
 
-                        // 保证金退回通知
-                        sendWxMessage.sendMarginRefundTemplateMessage(margin, "订单已支付");
+                            // 保证金退回通知
+                            sendWxMessage.sendMarginRefundTemplateMessage(margin, "订单已支付");
+                        }
                     }
+                    return true;
                 }
-                return true;
-            }
-        });
+            });
+        }
 
         // 付款成功通知卖家发货
         sendWxMessage.sendDeliverSTemplateMessage(zcOrder, 0);

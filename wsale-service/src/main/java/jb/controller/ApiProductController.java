@@ -716,6 +716,7 @@ public class ApiProductController extends BaseController {
 			// 生成订单
 			ZcOrder order = new ZcOrder();
 			order.setProductId(product.getId());
+			order.setTotalPrice(currentPrice);
 			order01State.handle(order);
 
 			p.setStatus("PT04");
@@ -769,6 +770,7 @@ public class ApiProductController extends BaseController {
 					// 生成订单
 					ZcOrder order = new ZcOrder();
 					order.setProductId(product.getId());
+					order.setTotalPrice(bid);
 					order01State.handle(order);
 
 					p1.setRealDeadline(now);
@@ -838,6 +840,7 @@ public class ApiProductController extends BaseController {
 				// 拍卖截止时间
 				TemplateData keyword2 = new TemplateData();
 				keyword2.setValue(DateUtil.format(product.getRealDeadline(), "MM月dd日 HH:mm"));
+				keyword2.setColor("#0000E3");
 				data.put("keyword2", keyword2);
 
 				temp.setData(data);
@@ -1056,6 +1059,7 @@ public class ApiProductController extends BaseController {
 							// 生成订单
 							ZcOrder order = new ZcOrder();
 							order.setProductId(productId);
+							order.setTotalPrice(bid);
 							order01State.handle(order);
 
 							p1.setRealDeadline(now);

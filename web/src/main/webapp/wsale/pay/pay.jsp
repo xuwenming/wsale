@@ -126,7 +126,7 @@
     </div><!-- /page -->
 
     <script type="text/javascript">
-        var index = 0, realName = null, idNo = null, payPassword = null;
+        var index = 0, payPassword = null;
         $(function(){
             $('#payBtn').bind('click', pay);
 
@@ -281,8 +281,6 @@
                                 ]
                             });
                         } else {
-                            realName = wallet.realName;
-                            idNo = wallet.idNo;
                             payPassword = wallet.payPassword;
 
                             $('.mask-layer-2, .pwd-dialog').show();
@@ -291,21 +289,6 @@
                         $.toptip(data.msg);
                     }
                 });
-                /*if(Util.checkEmpty($('#realName').val()) || Util.checkEmpty($('#idNo').val())) {
-                    $.modal({
-                        title: "系统提示！",
-                        text: "您的身份信息尚不完善",
-                        buttons: [
-                            { text: "取消", className: "default" },
-                            { text: "去完善", onClick: function(){
-                                href('api/apiWallet/toEditIdentity');
-                            } },
-                        ]
-                    });
-                    return;
-                }
-                 $('.mask-layer-2, .pwd-dialog').show();
-                 */
 
             }
 

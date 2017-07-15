@@ -42,8 +42,6 @@
                 <div class="faxian-list">
                     <a class="faxian-link resetPwd">
                         <input type="hidden" value="${wallet.id}" id="id">
-                        <input type="hidden" value="${wallet.realName}" id="realName">
-                        <input type="hidden" value="${wallet.idNo}" id="idNo">
                         <input type="hidden" value="${wallet.payPassword}" id="payPassword">
                         <div class="money-more">
                             <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
@@ -79,39 +77,53 @@
         var index = 0, pay_password = '', verify_pwd = '';
         $(function(){
             $('.resetPwd').click(function(){
-                if(Util.checkEmpty($('#realName').val()) || Util.checkEmpty($('#idNo').val())) {
-                    $.modal({
-                        title: "系统提示！",
-                        text: "您的身份信息尚不完善",
-                        buttons: [
-                            { text: "取消", className: "default" },
-                            { text: "去完善", onClick: function(){
-                                href('api/apiWallet/toEditIdentity');
-                            } },
-                        ]
-                    });
-                    return;
-                }
-
-                $('.mask-layer-2, .pwd-dialog').show();
+                ajaxPost('api/apiWallet/getWallet', {}, function(data){
+                    if(data.success) {
+                        var wallet = data.obj;
+                        if(!wallet.realName || !wallet.idNo) {
+                            $.modal({
+                                title: "系统提示！",
+                                text: "您的身份信息尚不完善",
+                                buttons: [
+                                    { text: "取消", className: "default" },
+                                    { text: "去完善", onClick: function(){
+                                        href('api/apiWallet/toEditIdentity');
+                                    } }
+                                ]
+                            });
+                        } else {
+                            $('#payPassword').val(wallet.payPassword);
+                            $('.mask-layer-2, .pwd-dialog').show();
+                        }
+                    } else {
+                        $.toptip(data.msg);
+                    }
+                });
             });
 
             $('.forgetPwd').click(function(){
-                if(Util.checkEmpty($('#realName').val()) || Util.checkEmpty($('#idNo').val())) {
-                    $.modal({
-                        title: "系统提示！",
-                        text: "您的身份信息尚不完善",
-                        buttons: [
-                            { text: "取消", className: "default" },
-                            { text: "去完善", onClick: function(){
-                                href('api/apiWallet/toEditIdentity');
-                            } },
-                        ]
-                    });
-                    return;
-                }
-
-                href('api/apiWallet/forgetPwd');
+                ajaxPost('api/apiWallet/getWallet', {}, function(data){
+                    if(data.success) {
+                        var wallet = data.obj;
+                        if(!wallet.realName || !wallet.idNo) {
+                            $.modal({
+                                title: "系统提示！",
+                                text: "您的身份信息尚不完善",
+                                buttons: [
+                                    { text: "取消", className: "default" },
+                                    { text: "去完善", onClick: function(){
+                                        href('api/apiWallet/toEditIdentity');
+                                    } }
+                                ]
+                            });
+                        } else {
+                            $('#payPassword').val(wallet.payPassword);
+                            href('api/apiWallet/forgetPwd');
+                        }
+                    } else {
+                        $.toptip(data.msg);
+                    }
+                });
             });
 
             $('#keyboard li').click(function() {

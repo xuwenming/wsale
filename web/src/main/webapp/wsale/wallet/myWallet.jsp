@@ -41,8 +41,6 @@
                         <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/chongzhi-icon.png" class="faxian-lefticon" /> 充值</div>
                     </a>
                     <a class="faxian-link cash">
-                        <input type="hidden" value="${wallet.realName}" id="realName">
-                        <input type="hidden" value="${wallet.idNo}" id="idNo">
                         <div class="money-more">
                             <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
                         </div>
@@ -96,20 +94,27 @@
     <script type="text/javascript">
         $(function(){
             $('.cash').click(function(){
-                if(Util.checkEmpty($('#realName').val()) || Util.checkEmpty($('#idNo').val())) {
-                    $.modal({
-                        title: "系统提示！",
-                        text: "您的身份信息尚不完善",
-                        buttons: [
-                            { text: "取消", className: "default" },
-                            { text: "去完善", onClick: function(){
-                                href('api/apiWallet/toEditIdentity');
-                            } }
-                        ]
-                    });
-                    return;
-                }
-                href('api/apiWallet/cash');
+                ajaxPost('api/apiWallet/getWallet', {}, function(data){
+                    if(data.success) {
+                        var wallet = data.obj;
+                        if(!wallet.realName || !wallet.idNo) {
+                            $.modal({
+                                title: "系统提示！",
+                                text: "您的身份信息尚不完善",
+                                buttons: [
+                                    { text: "取消", className: "default" },
+                                    { text: "去完善", onClick: function(){
+                                        href('api/apiWallet/toEditIdentity');
+                                    } }
+                                ]
+                            });
+                        } else {
+                            href('api/apiWallet/cash');
+                        }
+                    } else {
+                        $.toptip(data.msg);
+                    }
+                });
             });
         });
     </script>

@@ -88,7 +88,7 @@
 						<fmt:formatDate value="${log.addtime}" pattern="yyyy-MM-dd HH:mm:ss"/>
 						<c:choose>
 							<c:when test="${log.logType == 'IL01' || log.logType == 'IL04'}">买家 <font color="blue">${zcIntermediary.buyerUserName}</font></c:when>
-							<c:otherwise><font color="blue">卖家 ${zcIntermediary.sellerUserName}</font></c:otherwise>
+							<c:otherwise>卖家 <font color="blue">${zcIntermediary.sellerUserName}</font></c:otherwise>
 						</c:choose>
 						${log.logTypeZh}
 						<c:if test="${!empty log.content}">

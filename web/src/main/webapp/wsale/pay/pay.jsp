@@ -104,9 +104,6 @@
                             </div>
                         </div>-->
                         <div class="pay-list pay-choose">
-                            <input type="hidden" value="${wallet.realName}" id="realName">
-                            <input type="hidden" value="${wallet.idNo}" id="idNo">
-                            <input type="hidden" value="${wallet.payPassword}" id="payPassword">
                             <a style="color:#fff;" class="chongzhi-btn">充值</a>
                             <img class="choose-icon" src="${pageContext.request.contextPath}/wsale/images/weixuanzhong-icon.png" data-flag="false" /> <img class="pay-way" src="${pageContext.request.contextPath}/wsale/images/yuee-icon.png" />
                             <div class="way-content">
@@ -189,7 +186,7 @@
                             check_pass_word += $(this).find('input').val();
                         });
 
-                        if(md5(check_pass_word) != $('#payPassword').val()) {
+                        if(md5(check_pass_word) != payPassword) {
                             success = false;
                             $.alert("支付密码输入错误，请再试一次！", "系统提示！", function(){
                                 index = 0;

@@ -77,7 +77,7 @@
                         currPage ++;
                     } else {
                         if(result.total == 0)
-                            $(".collect-list").append(Util.noDate(2, '这里还没有内容'));
+                            $(".collect-list").append(Util.noDate(2, '这里还没有内容<br>前往论坛进行收藏吧'));
                     }
 
                     if(result.rows.length >= rows) {

@@ -82,7 +82,7 @@
                         currPage ++;
                     } else {
                         if(result.total == 0)
-                            $(".comments").append(Util.noDate(2, '这里还没有内容'));
+                            $(".comments").append(Util.noDate(2, '这里还没有内容<br>前往论坛进行评论吧'));
                     }
 
                     if(result.rows.length >= rows) {

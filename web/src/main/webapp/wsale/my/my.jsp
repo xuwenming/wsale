@@ -19,6 +19,18 @@
             width: 8px;
             height: 8px;
         }
+        .new-link{
+            position: relative;
+        }
+        .new-link .new {
+            width: 28px;
+            height: 28px;
+            top: 0;
+            left: 0;
+            position: absolute;
+            background-image: url('${pageContext.request.contextPath}/wsale/images/new.png');
+            background-size: cover;
+        }
     </style>
 </head>
 <body>
@@ -137,7 +149,7 @@
                         </div>
                         <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/xiaoshoubaobiao-icon.png" class="faxian-lefticon" /> 销售报表</div>
                     </a>-->
-                    <a href="javascript:href('api/apiIntermediary/myIntermediary');" class="faxian-link">
+                    <a href="javascript:href('api/apiIntermediary/myIntermediary');" class="faxian-link new-link">
                         <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/im-icon.png" class="faxian-lefticon" />
                             <div>中介交易</div>
                             <div>
@@ -145,16 +157,19 @@
                                 <%--<img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />--%>
                             </div>
                         </div>
+                        <div class="new"></div>
                     </a>
-                    <a href="javascript:href('api/userController/myCollect');" class="faxian-link">
+                    <a href="javascript:href('api/userController/myCollect');" class="faxian-link new-link">
                         <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/shoucang-icon.png" class="faxian-lefticon" />
                             <div>收藏</div>
                         </div>
+                        <div class="new"></div>
                     </a>
-                    <a href="javascript:href('api/userController/myComment');" class="faxian-link">
+                    <a href="javascript:href('api/userController/myComment');" class="faxian-link new-link">
                         <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/pinglun-icon.png" class="faxian-lefticon" />
                             <div>评论</div>
                         </div>
+                        <div class="new"></div>
                     </a>
                     <a href="javascript:href('api/userController/myFans');" class="faxian-link">
                         <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/fensi-icon.png" class="faxian-lefticon" />

@@ -118,7 +118,7 @@
                     currPage ++;
                 } else {
                     if(result.total == 0)
-                        $(".imList").append(Util.noDate(2, '这里还没有内容'));
+                        $(".imList").append(Util.noDate(2, '这里还没有内容<br>前往论坛申请交易哟'));
                 }
 
                 if(result.rows.length >= rows) {

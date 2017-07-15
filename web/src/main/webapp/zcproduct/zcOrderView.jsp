@@ -21,7 +21,7 @@
 				<th width="14%">订单号</th>
 				<td width="36%">${order.orderNo}</td>
 				<th width="14%">交易金额</th>
-				<td width="36%">${order.product.hammerPrice}</td>
+				<td width="36%">${order.totalPrice}</td>
 			</tr>
 			<tr>
 				<th>卖家</th>

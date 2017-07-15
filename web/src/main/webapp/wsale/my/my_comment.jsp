@@ -78,10 +78,6 @@
                             build(comment);
                         }
 
-                        $(".comments .lazy").lazyload({
-                            placeholder : base + 'wsale/images/lazyload.png'
-                        });
-
                         loading = false;
                         currPage ++;
                     } else {
@@ -138,6 +134,10 @@
                 }
                 $.cookie('myComment', JSON.stringify({scrollTop:$(window).scrollTop(), currPage:currPage-1}));
                 href('api/bbsController/bbsDetail?id=' + bbs.id);
+            });
+
+            dom.find(".lazy").lazyload({
+                placeholder : base + 'wsale/images/lazyload.png'
             });
         }
     </script>

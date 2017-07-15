@@ -293,11 +293,11 @@
                     if(result.rows.length != 0) {
                         for(var i in result.rows) {
                             var productDetail = result.rows[i];
-                            buildProductDetail(productDetail);
+                            var dom = buildProductDetail(productDetail);
+                            dom.find(".lazy").lazyload({
+                                placeholder : base + 'wsale/images/lazyload.png'
+                            });
                         }
-                        $(".lazy").lazyload({
-                            placeholder : base + 'wsale/images/lazyload.png'
-                        });
 
                         loading = false;
                         pCurrPage ++;

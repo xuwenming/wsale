@@ -108,10 +108,6 @@
                             buildProduct(product);
                         }
 
-                        $(".bestProducts .lazy").lazyload({
-                            placeholder : base + 'wsale/images/lazyload.png'
-                        });
-
                         loading = false;
                         currPage ++;
                     } else {
@@ -170,6 +166,10 @@
             dom.find('.jingxuan-img').click(product.id, function(event){
                 $.cookie('home_best_product', JSON.stringify({scrollTop:$(window).scrollTop(), currPage:currPage-1}));
                 href('api/apiProductController/productDetail?id=' + event.data);
+            });
+
+            dom.find(".lazy").lazyload({
+                placeholder : base + 'wsale/images/lazyload.png'
             });
         }
     </script>

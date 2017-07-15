@@ -339,9 +339,6 @@
                             var product = result.rows[i].zcProduct;
                             buildProduct(product, type);
                         }
-                        $(".lazy").lazyload({
-                            placeholder : base + 'wsale/images/lazyload.png'
-                        });
 
                         loading = false;
                         currPage ++;
@@ -379,6 +376,9 @@
             dom.find('.cbp-vm-image').click(product.id, function(event){
                 $.cookie('my', JSON.stringify({num:$("li.wodepaipin-active").index(), scrollTop:$(window).scrollTop(), currPage:currPage-1}));
                 href('api/apiProductController/productDetail?id=' + event.data);
+            });
+            dom.find(".lazy").lazyload({
+                placeholder : base + 'wsale/images/lazyload.png'
             });
             return dom;
         }

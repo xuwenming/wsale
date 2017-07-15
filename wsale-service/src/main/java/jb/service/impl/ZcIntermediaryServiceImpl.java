@@ -57,8 +57,8 @@ public class ZcIntermediaryServiceImpl extends BaseServiceImpl<ZcIntermediary> i
 		if (zcIntermediary != null) {
 			whereHql += " where 1=1 ";
 			if (!F.empty(zcIntermediary.getImNo())) {
-				whereHql += " and t.imNo = :imNo";
-				params.put("imNo", zcIntermediary.getImNo());
+				whereHql += " and t.imNo like :imNo";
+				params.put("imNo", "%%" + zcIntermediary.getImNo() + "%%");
 			}		
 			if (!F.empty(zcIntermediary.getBbsId())) {
 				whereHql += " and t.bbsId = :bbsId";

@@ -134,10 +134,6 @@
                             buildBbs(bbs);
                         }
 
-                        $(".topBbsList .lazy").lazyload({
-                            placeholder : base + 'wsale/images/lazyload.png'
-                        });
-
                         loading = false;
                         currPage ++;
                     }
@@ -189,6 +185,10 @@
             dom.click(bbs.id, function(event){
                 $.cookie('topBbs', JSON.stringify({scrollTop:$(window).scrollTop(), currPage:currPage-1}));
                 href('api/bbsController/bbsDetail?id=' + event.data);
+            });
+
+            dom.find(".lazy").lazyload({
+                placeholder : base + 'wsale/images/lazyload.png'
             });
         }
 

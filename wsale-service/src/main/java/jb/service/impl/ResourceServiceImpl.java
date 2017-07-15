@@ -149,6 +149,7 @@ public class ResourceServiceImpl implements ResourceServiceI {
 		Tuser user = userDao.get(Tuser.class, sessionInfo.getId());
 		Set<Trole> roles = user.getTroles();
 		for (Trole r : roles) {
+			if(!"0".equals(r.getId())) continue; // 只给超管分配
 			r.getTresources().add(t);
 		}
 	}

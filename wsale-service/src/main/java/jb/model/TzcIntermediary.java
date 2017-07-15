@@ -25,13 +25,13 @@ public class TzcIntermediary implements java.io.Serializable,IEntity{
 	public static final String TABLE_ALIAS = "ZcIntermediary";
 	public static final String ALIAS_ID = "主键";
 	public static final String ALIAS_IM_NO = "交易编号";
-	public static final String ALIAS_BBS_ID = "帖子ID";
-	public static final String ALIAS_SELL_USER_ID = "卖家id";
-	public static final String ALIAS_USER_ID = "买家id";
+	public static final String ALIAS_BBS_ID = "帖子标题";
+	public static final String ALIAS_SELL_USER_ID = "卖家";
+	public static final String ALIAS_USER_ID = "买家";
 	public static final String ALIAS_AMOUNT = "交易金额";
 	public static final String ALIAS_REMARK = "备注";
 	public static final String ALIAS_STATUS = "状态";
-	public static final String ALIAS_ADDTIME = "创建时间";
+	public static final String ALIAS_ADDTIME = "申请时间";
 	
 	//date formats
 	public static final String FORMAT_ADDTIME = jb.util.Constants.DATE_FORMAT_FOR_ENTITY;

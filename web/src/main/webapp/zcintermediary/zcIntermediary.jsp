@@ -24,7 +24,7 @@
 	</script>
 </c:if>
 <script type="text/javascript">
-	var dataGrid;
+	var dataGrid, bbsCombogrid, sellerCombogrid, buyerCombogrid;
 	$(function() {
 		dataGrid = $('#dataGrid').datagrid({
 			url : '${pageContext.request.contextPath}/zcIntermediaryController/dataGrid',
@@ -35,7 +35,7 @@
 			idField : 'id',
 			pageSize : 10,
 			pageList : [ 10, 20, 30, 40, 50 ],
-			sortName : 'id',
+			sortName : 'addtime',
 			sortOrder : 'desc',
 			checkOnSelect : false,
 			selectOnCheck : false,
@@ -49,41 +49,50 @@
 				width : 150,
 				hidden : true
 				}, {
+				field : 'addtime',
+				title : '<%=TzcIntermediary.ALIAS_ADDTIME%>',
+				width : 50,
+				sortable : true
+				}, {
 				field : 'imNo',
 				title : '<%=TzcIntermediary.ALIAS_IM_NO%>',
-				width : 50		
+				width : 50,
+				formatter : function (value, row, index) {
+					return '<a onclick="viewIM(\'' + row.id + '\', \''+row.imNo+'\')">' + row.imNo + '</a>';
+				}
 				}, {
-				field : 'bbsId',
+				field : 'bbsTitle',
 				title : '<%=TzcIntermediary.ALIAS_BBS_ID%>',
-				width : 50		
+				width : 80
 				}, {
-				field : 'sellUserId',
+				field : 'sellerUserName',
 				title : '<%=TzcIntermediary.ALIAS_SELL_USER_ID%>',
 				width : 50		
 				}, {
-				field : 'userId',
+				field : 'buyerUserName',
 				title : '<%=TzcIntermediary.ALIAS_USER_ID%>',
 				width : 50		
 				}, {
 				field : 'amount',
 				title : '<%=TzcIntermediary.ALIAS_AMOUNT%>',
-				width : 50		
+				width : 50,
+				formatter:function(value){
+					return $.fenToYuan(value);
+				}
 				}, {
-				field : 'remark',
-				title : '<%=TzcIntermediary.ALIAS_REMARK%>',
-				width : 50		
-				}, {
-				field : 'status',
+				field : 'statusZh',
 				title : '<%=TzcIntermediary.ALIAS_STATUS%>',
-				width : 50		
-				}, {
-				field : 'addtime',
-				title : '<%=TzcIntermediary.ALIAS_ADDTIME%>',
-				width : 50		
+				width : 50,
+				formatter : function (value, row, index) {
+					if(row.status == 'IS02') return '<font color="#4cd964;">' + row.statusZh + '</font>';
+					else if(row.status == 'IS03') return '<font color="#f6383a;">' + row.statusZh + '</font>';
+					else return row.statusZh;
+				}
 			}, {
 				field : 'action',
 				title : '操作',
 				width : 100,
+				hidden : true,
 				formatter : function(value, row, index) {
 					var str = '';
 					if ($.canEdit) {
@@ -107,6 +116,73 @@
 
 				$(this).datagrid('tooltip');
 			}
+		});
+
+		bbsCombogrid = $('#bbsId').combogrid({
+			url:'${pageContext.request.contextPath}/zcForumBbsController/queryBbs',
+			panelWidth:520,
+			width : 140,
+			height : 29,
+			idField:'id',
+			textField:'bbsTitle',
+			mode:'remote',
+			method:'post',
+			nowrap : true,
+			striped:true,
+			columns:[[
+				{field:'bbsTitle',title:'标题',width:200},
+				{field:'categoryName',title:'所属分类',width:80},
+				{field:'bbsTypeZh',title:'类别',width:80},
+				{field:'addUserName',title:'发帖人',width:140}
+			]]
+		});
+
+		bbsCombogrid.next('span').find('input').focus(function(){
+			bbsCombogrid.combogrid("showPanel");
+		});
+
+		sellerCombogrid = $('#sellUserId').combogrid({
+			url:'${pageContext.request.contextPath}/userController/queryUsers',
+			panelWidth:510,
+			width : 140,
+			height : 29,
+			idField:'id',
+			textField:'nickname',
+			mode:'remote',
+			method:'post',
+			nowrap : true,
+			striped:true,
+			columns:[[
+				{field:'nickname',title:'昵称',width:200},
+				{field:'mobile',title:'手机号',width:150},
+				{field:'wechatNo',title:'微信号',width:150}
+			]]
+		});
+
+		sellerCombogrid.next('span').find('input').focus(function(){
+			sellerCombogrid.combogrid("showPanel");
+		});
+
+		buyerCombogrid = $('#userId').combogrid({
+			url:'${pageContext.request.contextPath}/userController/queryUsers',
+			panelWidth:510,
+			width : 140,
+			height : 29,
+			idField:'id',
+			textField:'nickname',
+			mode:'remote',
+			method:'post',
+			nowrap : true,
+			striped:true,
+			columns:[[
+				{field:'nickname',title:'昵称',width:200},
+				{field:'mobile',title:'手机号',width:150},
+				{field:'wechatNo',title:'微信号',width:150}
+			]]
+		});
+
+		buyerCombogrid.next('span').find('input').focus(function(){
+			buyerCombogrid.combogrid("showPanel");
 		});
 	});
 
@@ -153,6 +229,20 @@
 				}
 			} ]
 		});
+	}
+
+	function viewIM(id, imNo) {
+		var href = '${pageContext.request.contextPath}/zcIntermediaryController/view?id=' + id,
+				title = '交易详情-' + imNo, t = parent.$("#index_tabs");
+		if(t.tabs('exists', title)) {
+			t.tabs('select', title);
+		} else {
+			t.tabs('add', {
+				title : title,
+				content : '<iframe src="' + href + '" frameborder="0" scrolling="auto" style="width:100%;height:98%;"></iframe>',
+				closable : true
+			});
+		}
 	}
 
 	function viewFun(id) {
@@ -212,46 +302,31 @@
 </head>
 <body>
 	<div class="easyui-layout" data-options="fit : true,border : false">
-		<div data-options="region:'north',title:'查询条件',border:false" style="height: 110px; overflow: hidden;">
+		<div data-options="region:'north',title:'查询条件',border:false" style="height: 70px; overflow: hidden;">
 			<form id="searchForm">
 				<table class="table table-hover table-condensed" style="display: none;">
 						<tr>	
 							<td>
 								<%=TzcIntermediary.ALIAS_IM_NO%>：
-											<input type="text" name="imNo" maxlength="64" class="span2"/>
+								<input type="text" name="imNo" maxlength="64" class="span2"/>
 							</td>
 							<td>
 								<%=TzcIntermediary.ALIAS_BBS_ID%>：
-											<input type="text" name="bbsId" maxlength="36" class="span2"/>
+								<input id="bbsId" name="bbsId"/>
 							</td>
 							<td>
 								<%=TzcIntermediary.ALIAS_SELL_USER_ID%>：
-											<input type="text" name="sellUserId" maxlength="36" class="span2"/>
+								<input id="sellUserId" name="sellUserId"/>
 							</td>
 							<td>
 								<%=TzcIntermediary.ALIAS_USER_ID%>：
-											<input type="text" name="userId" maxlength="36" class="span2"/>
-							</td>
-						</tr>	
-						<tr>	
-							<td>
-								<%=TzcIntermediary.ALIAS_AMOUNT%>：
-											<input type="text" name="amount" maxlength="19" class="span2"/>
-							</td>
-							<td>
-								<%=TzcIntermediary.ALIAS_REMARK%>：
-											<input type="text" name="remark" maxlength="500" class="span2"/>
+								<input id="userId" name="userId"/>
 							</td>
 							<td>
 								<%=TzcIntermediary.ALIAS_STATUS%>：
-											<jb:select dataType="IS" name="status"></jb:select>	
+								<jb:select dataType="IS" name="status"></jb:select>
 							</td>
-							<td>
-								<%=TzcIntermediary.ALIAS_ADDTIME%>：
-								<input type="text" class="span2" onclick="WdatePicker({dateFmt:'<%=TzcIntermediary.FORMAT_ADDTIME%>'})" id="addtimeBegin" name="addtimeBegin"/>
-								<input type="text" class="span2" onclick="WdatePicker({dateFmt:'<%=TzcIntermediary.FORMAT_ADDTIME%>'})" id="addtimeEnd" name="addtimeEnd"/>
-							</td>
-						</tr>	
+						</tr>
 				</table>
 			</form>
 		</div>
@@ -261,9 +336,9 @@
 	</div>
 	<div id="toolbar" style="display: none;">
 		<c:if test="${fn:contains(sessionInfo.resourceList, '/zcIntermediaryController/addPage')}">
-			<a onclick="addFun();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'bug_add'">添加</a>
+			<!--<a onclick="addFun();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'bug_add'">添加</a>-->
 		</c:if>
-		<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'brick_add',plain:true" onclick="searchFun();">过滤条件</a><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'brick_delete',plain:true" onclick="cleanFun();">清空条件</a>
+		<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'brick_add',plain:true" onclick="searchFun();">查询</a><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'brick_delete',plain:true" onclick="cleanFun();">清空条件</a>
 		<c:if test="${fn:contains(sessionInfo.resourceList, '/zcIntermediaryController/download')}">
 			<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'server_go',plain:true" onclick="downloadTable();">导出</a>		
 			<form id="downloadTable" target="downloadIframe" method="post" style="display: none;">

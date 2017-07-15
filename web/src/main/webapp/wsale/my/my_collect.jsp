@@ -73,10 +73,6 @@
                             buildBbs(bbs);
                         }
 
-                        $(".collect-list .lazy").lazyload({
-                            placeholder : base + 'wsale/images/lazyload.png'
-                        });
-
                         loading = false;
                         currPage ++;
                     } else {
@@ -131,6 +127,10 @@
             dom.click(bbs.id, function(event){
                 $.cookie('myCollect', JSON.stringify({scrollTop:$(window).scrollTop(), currPage:currPage-1}));
                 href('api/bbsController/bbsDetail?id=' + event.data);
+            });
+
+            dom.find(".lazy").lazyload({
+                placeholder : base + 'wsale/images/lazyload.png'
             });
         }
     </script>

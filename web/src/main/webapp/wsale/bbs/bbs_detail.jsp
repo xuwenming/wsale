@@ -88,6 +88,7 @@
             </ul>
         </div>
         <div role="main" class="ui-content jqm-content jqm-fullwidth">
+            <input type="hidden" id="bindMobile" value="${sessionInfo.mobile}" />
             <%--<img src="${pageContext.request.contextPath}/wsale/images/subscribe/bbs-icon.jpg" class="subscribe bbs-detail-layer-img"/>--%>
 
             <div class="mask-layer bbs-detail-layer" style="z-index: 1001;">
@@ -133,6 +134,28 @@
                     <li>举报</li>
                 </ul>
             </div>-->
+
+            <div id="bindMobilePopup" class="weui-popup-container popup-bottom">
+                <div class="weui-popup-overlay"></div>
+                <div class="weui-popup-modal" style="height: 240px; overflow: hidden;">
+                    <div class="toolbar">
+                        <div class="toolbar-inner">
+                            <a href="javascript:;" class="picker-button close-popup" style="color: #e64340;font-size: .85rem;">关闭</a>
+                            <h1 class="title">绑定手机号</h1>
+                        </div>
+                    </div>
+                    <div class="modal-content">
+                        <input class="onlyNum" style="margin:10px 0;background-color: #fff;" type="tel" maxlength="11" placeholder="请输入您的手机号码..." id="mobile"/>
+                        <input class="onlyNum" style="margin:10px 0;background-color: #fff;" type="tel" maxlength="6" placeholder="请输入验证码..."  id="vcode"/>
+                        <div style="float:right;width:90px;text-align:center; margin: -45px 10px;font-size: 15px;border: 1px solid #f0f0f0;padding: 5px 10px" id="vcode-btn">
+                            点击获取
+                        </div>
+                        <div style="text-align: center;">
+                            <a class="bottom-btn" style="color: #fff;font-size: 16px;" id="bindMobileBtn">确认</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div id="sharePopup" class="weui-popup-container popup-bottom">
                 <div class="weui-popup-overlay"></div>
@@ -242,7 +265,7 @@
                 <div class="weui-popup-overlay"></div>
                 <div class="weui-popup-modal" style="overflow: hidden;">
                     <div class="modal-content" style="padding-top: 0; margin-top: 0px; overflow: hidden;">
-                        <div style="background-color:#fff; padding: 0 5px;margin-bottom:10px;">
+                        <div style="background-color:#fff; padding: 0 5px;margin-bottom: 10px;">
                             <div style="float:right;padding: 10px 0px;width:15%; text-align:center;color: green;" class="intermediary">
                                 提 交
                             </div>
@@ -250,8 +273,14 @@
                                 <span style="padding: 10px 0px;">关 闭</span>
                             </div>
                         </div>
+
                         <input class="onlyNum" style="margin:5px 0;background-color: #fff;" type="tel" maxlength="5" placeholder="必填，请输入交易金额..." id="amount"/>
                         <textarea style="margin:2px 0px; background-color: #fff;" maxlength="100" placeholder="非必填，请输入交易备注..." id="remark"></textarea>
+                        <div style="font-size: 12px; padding: 5px;color: #a3621b;">
+                            申请须知：<br>
+                            1、请您申请前与卖家确认交易价格;<br>
+                            2、成交支付时会收取一定的技术服务费;
+                        </div>
                     </div>
                 </div>
             </div>
@@ -413,7 +442,7 @@
         var isShare = ${isShare}, isCollect = ${isCollect};
         var replyComment = null, replyState = true;
         var categoryId = null;
-        var st = 0;
+        var st = 0, time = 59, timeInterval;
         $(function() {
             // 帖子关闭或删除返回首页
             if((!$.authOnOff && '${bbs.bbsStatus}' == 'BS02') || ${bbs.isDeleted}) {
@@ -657,13 +686,74 @@
             $('.makeQr').bind('click', openQrcode);
 
             $('.im-btn').click(function(){
-                $.confirm("申请中介交易请事先与卖家确定，是否继续?", "系统提示", function() {
-                    $('#imPopup').wePopup();
-                });
+                if(!$("#bindMobile").val()) {
+                    $('#bindMobilePopup').wePopup();
+                    return;
+                }
+
+                $('#imPopup').wePopup();
             });
 
             $('.intermediary').bind('click', intermediary);
+
+            $('#vcode-btn').bind('click', sendVCode);
+            $('#bindMobileBtn').bind('click', bindMobile);
         });
+
+        function bindMobile() {
+            var mobile = $('#mobile').val();
+            if(!Util.checkPhone(mobile)) {
+                $.toptip('请输入正确的手机号码');
+                return;
+            }
+            var vcode = $('#vcode').val();
+            if(Util.checkEmpty(vcode)) {
+                $.toptip('请输入验证码');
+                return;
+            }
+            ajaxPost('api/userController/edit', {mobile : mobile, vcode : vcode}, function(data){
+                if(data.success) {
+                    $.toptip('绑定成功', 'success');
+                    $("#bindMobile").val(mobile);
+                    $.closePopup();
+                } else {
+                    $.toptip(data.msg);
+                }
+            });
+        }
+
+        function sendVCode() {
+            var mobile = $('#mobile').val();
+            if(!Util.checkPhone(mobile)) {
+                $.toptip('请输入正确的手机号码', 'error');
+                $('#mobile').focus();
+                return;
+            }
+            $('#vcode-btn').unbind('click').html('重发（<span id=\"time\">'+time+'</span>）');
+            time--;
+            timeInterval = setInterval(function(){
+                $("#time").html(time);
+                if(time == 0) {
+                    clearInterval(timeInterval);
+                    $("#vcode-btn").bind("click", sendVCode).html("点击获取");
+                    time = 59;
+                } else {
+                    time -- ;
+                }
+            }, 1000);
+
+            ajaxPost('api/userController/sendVCode', {mobile:mobile, checkMobile:true}, function(data){
+                if(data.success) {
+                    $.toptip('验证码已发送至手机', 'success');
+                } else {
+                    $.toptip(data.msg, 'error');
+                    clearInterval(timeInterval);
+                    $("#vcode-btn").bind("click", sendVCode).html("点击获取");
+                    time = 59;
+                }
+            });
+
+        }
 
         function intermediary() {
             var amount = $('#amount').val();

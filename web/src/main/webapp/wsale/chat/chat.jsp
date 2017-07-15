@@ -488,7 +488,7 @@
                }, 200);
             }
 
-            $(".lazy").lazyload({
+            dom.find(".lazy").lazyload({
                 placeholder : base + 'wsale/images/lazyload.png'
             });
             //$.mobile.silentScroll($(document).height());

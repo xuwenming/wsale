@@ -137,10 +137,6 @@
                         buildTopic(topic);
                     }
 
-                    $(".topicList .lazy").lazyload({
-                        placeholder : base + 'wsale/images/lazyload.png'
-                    });
-
                     loading = false;
                     currPage ++;
                 } else {
@@ -182,6 +178,10 @@
         dom.click(topic.id, function(event){
             $.cookie('topic_list', JSON.stringify({scrollTop:$(window).scrollTop(), currPage:currPage-1}));
             href('api/apiTopic/topicDetail?id=' + event.data);
+        });
+
+        dom.find(".lazy").lazyload({
+            placeholder : base + 'wsale/images/lazyload.png'
         });
     }
 

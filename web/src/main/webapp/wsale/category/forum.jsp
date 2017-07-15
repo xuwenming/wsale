@@ -408,9 +408,6 @@
                             var bbs = result.rows[i];
                             buildBbs(bbs);
                         }
-                        $(".bbsList .lazy").lazyload({
-                            placeholder : base + 'wsale/images/lazyload.png'
-                        });
 
                         loading = false;
                         currPage ++;
@@ -477,6 +474,10 @@
                 $.cookie('forum', JSON.stringify({topTab:topTab,bbsType:bbsType,isSp:isSp, scrollTop:$(window).scrollTop(), currPage:currPage-1}));
                 href('api/bbsController/bbsDetail?id=' + bbs.id);
             });
+
+            dom.find(".lazy").lazyload({
+                placeholder : base + 'wsale/images/lazyload.png'
+            });
         }
 
         function drawProduct(load, loadRows) {
@@ -492,11 +493,6 @@
                             var dom = buildProduct(product);
                             $(".defaultProducts").append(dom);
                         }
-
-
-                        $(".defaultProducts .lazy").lazyload({
-                            placeholder : base + 'wsale/images/lazyload.png'
-                        });
 
                         loading = false;
                         currPage ++;
@@ -536,9 +532,6 @@
                             var dom = buildProduct(product);
                             $(".bestProducts").append(dom);
                         }
-                        $(".bestProducts .lazy").lazyload({
-                            placeholder : base + 'wsale/images/lazyload.png'
-                        });
 
                         loading = false;
                         currPage ++;
@@ -597,6 +590,10 @@
             });
 
             addTimer(dom.find('.cbp-vm-time'), product.deadlineLen);
+
+            dom.find(".lazy").lazyload({
+                placeholder : base + 'wsale/images/lazyload.png'
+            });
             return dom;
         }
 

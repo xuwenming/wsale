@@ -179,9 +179,6 @@
                             var product = type == 3 ? result.rows[i].zcProduct : result.rows[i];
                             buildProduct(product, type);
                         }
-                        $(".lazy").lazyload({
-                            placeholder : base + 'wsale/images/lazyload.png'
-                        });
 
                         loading = false;
                         currPage ++;
@@ -222,6 +219,10 @@
                 dom.find('.others-time').show();
                 addTimer(dom.find('.others-time'), product.deadlineLen);
             }
+
+            dom.find(".lazy").lazyload({
+                placeholder : base + 'wsale/images/lazyload.png'
+            });
             return dom;
         }
 

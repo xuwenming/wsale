@@ -1,5 +1,6 @@
 package jb.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import jb.absx.F;
 import jb.model.Tuser;
 import jb.pageModel.*;
@@ -9,6 +10,8 @@ import jb.util.EnumConstants;
 import jb.util.Util;
 import jb.util.oss.OSSUtil;
 import jb.util.wx.DownloadMediaUtil;
+import jb.util.wx.HttpUtil;
+import jb.util.wx.WeixinUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -434,14 +437,14 @@ public class ApiImageTransferController extends BaseController {
 
 				User user = new User();
 				user.setUtype("UT02");
-				List<User> list = (List<User>) userService.dataGrid(user, ph).getRows();
+				List<User> list = (List<User>) userService.dataGridSimple(user, ph, " and (t.headImage is null or t.headImage = '') ").getRows();
+				//List<User> list = (List<User>) userService.dataGrid(user, ph).getRows();
 				if(CollectionUtils.isNotEmpty(list)) {
 					count = list.size();
 					for(User o : list) {
-						if(!F.empty(o.getHeadImage()) && o.getHeadImage().indexOf("wx.qlogo.cn") > 0) {
-							o.setHeadImage(DownloadMediaUtil.downloadHeadImage(o.getHeadImage(), o.getName()));
-							userService.updateHeadImage(o);
-						}
+						JSONObject jsonObject = JSONObject.parseObject(HttpUtil.httpsRequest(WeixinUtil.getUserInfoUrl(o.getName(), null), "GET", null));
+						o.setHeadImage(DownloadMediaUtil.downloadHeadImage(jsonObject.getString("headimgurl")));
+						userService.updateHeadImage(o);
 					}
 				}
 

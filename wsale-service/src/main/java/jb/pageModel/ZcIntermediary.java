@@ -26,6 +26,9 @@ public class ZcIntermediary implements java.io.Serializable {
 	private Boolean isBuyer; // 是否买家
 	private User imUser; // 列表显示用户
 	private String content; // 操作备注
+	private String bbsTitle;
+	private String sellerUserName;
+	private String buyerUserName;
 
 	public String getStatusZh() {
 		return Application.getString(status);
@@ -142,5 +145,29 @@ public class ZcIntermediary implements java.io.Serializable {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public String getBbsTitle() {
+		return bbsTitle;
+	}
+
+	public void setBbsTitle(String bbsTitle) {
+		this.bbsTitle = bbsTitle;
+	}
+
+	public String getSellerUserName() {
+		return sellerUserName;
+	}
+
+	public void setSellerUserName(String sellerUserName) {
+		this.sellerUserName = sellerUserName;
+	}
+
+	public String getBuyerUserName() {
+		return buyerUserName;
+	}
+
+	public void setBuyerUserName(String buyerUserName) {
+		this.buyerUserName = buyerUserName;
 	}
 }

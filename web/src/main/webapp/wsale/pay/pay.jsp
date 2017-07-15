@@ -129,7 +129,7 @@
     </div><!-- /page -->
 
     <script type="text/javascript">
-        var index = 0;
+        var index = 0, realName = null, idNo = null, payPassword = null;
         $(function(){
             $('#payBtn').bind('click', pay);
 
@@ -268,7 +268,33 @@
                     // 删除订单
                 });
             } else {
-                if(Util.checkEmpty($('#realName').val()) || Util.checkEmpty($('#idNo').val())) {
+
+                ajaxPost('api/apiWallet/getWallet', {}, function(data){
+                    if(data.success) {
+                        var wallet = data.obj;
+                        if(!wallet.realName || !wallet.idNo) {
+                            $.modal({
+                                title: "系统提示！",
+                                text: "您的身份信息尚不完善",
+                                buttons: [
+                                    { text: "取消", className: "default" },
+                                    { text: "去完善", onClick: function(){
+                                        href('api/apiWallet/toEditIdentity');
+                                    } }
+                                ]
+                            });
+                        } else {
+                            realName = wallet.realName;
+                            idNo = wallet.idNo;
+                            payPassword = wallet.payPassword;
+
+                            $('.mask-layer-2, .pwd-dialog').show();
+                        }
+                    } else {
+                        $.toptip(data.msg);
+                    }
+                });
+                /*if(Util.checkEmpty($('#realName').val()) || Util.checkEmpty($('#idNo').val())) {
                     $.modal({
                         title: "系统提示！",
                         text: "您的身份信息尚不完善",
@@ -281,7 +307,9 @@
                     });
                     return;
                 }
-                $('.mask-layer-2, .pwd-dialog').show();
+                 $('.mask-layer-2, .pwd-dialog').show();
+                 */
+
             }
 
         }

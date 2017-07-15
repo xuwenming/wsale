@@ -6,6 +6,8 @@ import jb.pageModel.*;
 import jb.service.*;
 import jb.service.impl.RedisUserServiceImpl;
 import jb.util.*;
+import jb.util.MD5Util;
+import jb.util.wx.*;
 import net.sf.json.JSON;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +71,37 @@ public class ApiWalletController extends BaseController {
 		request.setAttribute("order_amount_count", order_amount_count);
 
 		return "/wsale/wallet/myWallet";
+	}
+
+	/**
+	 * 获取钱包信息
+	 *
+	 * @param
+	 * @return
+	 */
+	@RequestMapping("/getWallet")
+	@ResponseBody
+	public Json getWallet(HttpServletRequest request) {
+		Json j = new Json();
+		try{
+			SessionInfo s = getSessionInfo(request);
+			// 可用余额
+			ZcWallet q = new ZcWallet();
+			q.setUserId(s.getId());
+			ZcWallet wallet = zcWalletService.get(q);
+			if(wallet == null) {
+				wallet = new ZcWallet();
+				wallet.setAmount(0.0);
+			}
+
+			j.setObj(wallet);
+			j.success();
+		}catch(Exception e){
+			j.setMsg("获取钱包接口异常！");
+			j.fail();
+			e.printStackTrace();
+		}
+		return j;
 	}
 
 	/**

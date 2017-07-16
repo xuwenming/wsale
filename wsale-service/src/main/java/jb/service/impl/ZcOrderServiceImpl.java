@@ -178,6 +178,7 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 			zcOrder.setProductId(t.getProductId());
 			zcOrder.setOrderNo(t.getOrderNo());
 			zcOrder.setIsIntermediary(t.getIsIntermediary());
+			zcOrder.setTotalPrice(t.getTotalPrice());
 			MyBeanUtils.copyProperties(zcOrder, t, new String[] { "id" , "addtime" },true);
 
 			if(F.empty(zcOrder.getReturnApplyReason()) && !F.empty(t.getReturnApplyReason()))

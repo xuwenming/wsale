@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import jb.absx.F;
 import jb.util.Constants;
 import jb.util.EnumConstants;
+import jb.util.Util;
 import jb.util.oss.OSSUtil;
 import org.apache.commons.io.FileUtils;
 
@@ -108,8 +109,14 @@ public class DownloadMediaUtil {
                 JSONObject jsonObject = JSONObject.parseObject(HttpUtil.httpsRequest(WeixinUtil.getUserInfoUrl(openid, null), "GET", null));
                 return downloadHeadImage(jsonObject.getString("headimgurl"));
             }
+            String filePath = "";
+            if(headimgurl.indexOf("mmopen") > -1) {
+                filePath = headimgurl.substring(headimgurl.indexOf("mmopen"));
+            } else {
+                filePath = "mmopen/" + Util.CreateNoncestr(64) + "/0";
+            }
 
-            String result = OSSUtil.putInputStream(OSSUtil.bucketName, conn.getInputStream(), headimgurl.substring(headimgurl.indexOf("mmopen")));
+            String result = OSSUtil.putInputStream(OSSUtil.bucketName, conn.getInputStream(), filePath);
             conn.disconnect();
 
             return result;

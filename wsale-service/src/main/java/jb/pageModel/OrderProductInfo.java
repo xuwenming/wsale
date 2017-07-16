@@ -23,6 +23,7 @@ public class OrderProductInfo implements java.io.Serializable {
 	private String sellerUserId;
 	private String buyerUserId;
 	private Date startingTime;
+	private Date realDeadline;
 	private Date hammerTime;
 	private Double totalPrice;
 	private Double margin;
@@ -87,6 +88,14 @@ public class OrderProductInfo implements java.io.Serializable {
 
 	public void setStartingTime(Date startingTime) {
 		this.startingTime = startingTime;
+	}
+
+	public Date getRealDeadline() {
+		return realDeadline;
+	}
+
+	public void setRealDeadline(Date realDeadline) {
+		this.realDeadline = realDeadline;
 	}
 
 	public Date getHammerTime() {

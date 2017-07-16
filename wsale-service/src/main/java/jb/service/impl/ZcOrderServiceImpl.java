@@ -340,6 +340,7 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 			info.setSellerUserId(p.getAddUserId());
 			info.setBuyerUserId(p.getUserId());
 			info.setStartingTime(p.getStartingTime());
+			info.setRealDeadline(p.getRealDeadline());
 			info.setHammerTime(p.getHammerTime());
 			info.setMargin(p.getMargin());
 		}

@@ -417,8 +417,9 @@ public class ZcOrderController extends BaseController {
 			xiaoer.setStatus("XS02");
 			zcOrderXiaoerService.edit(xiaoer);
 			ZcOrder order = zcOrderService.get(xiaoer.getOrderId());
-			ZcProduct product = zcProductService.get(order.getProductId());
-			String content = product.getContent();
+			OrderProductInfo product = zcOrderService.getProductInfo(order);
+			//ZcProduct product = zcProductService.get(order.getProductId());
+			String content = product.getContentLine();
 			content = content.length() > 20 ? content.substring(0, 20) + "..." : content;
 			if(xiaoer.getIdType() == 1) {
 				// 卖家拒绝退货超过3天则交易完成结束订单
@@ -430,7 +431,7 @@ public class ZcOrderController extends BaseController {
 				}
 
 				// 给买家发送小二撤回消息
-				sendWxMessage.sendCustomMessageByUserId(product.getUserId(), "您的拍品\""+content+"\"申请的小儿介入被小二驳回，如有疑问请移步，“站务公告”--“投诉纠纷版”申诉。");
+				sendWxMessage.sendCustomMessageByUserId(product.getBuyerUserId(), "您的拍品\""+content+"\"申请的小儿介入被小二驳回，如有疑问请移步，“站务公告”--“投诉纠纷版”申诉。");
 			} else {
 				// 买家退货发货超过14天则自动退款结束订单
 				if(!"OS15".equals(order.getOrderStatus()) && new Date().getTime() - order.getReturnDeliverTime().getTime() > 14*24*60*60*1000) {
@@ -444,7 +445,7 @@ public class ZcOrderController extends BaseController {
 				}
 
 				// 给卖家发送小二撤回消息
-				sendWxMessage.sendCustomMessageByUserId(product.getAddUserId(), "您的拍品\""+content+"\"申请的小儿介入被小二驳回，如有疑问请移步，“站务公告”--“投诉纠纷版”申诉。");
+				sendWxMessage.sendCustomMessageByUserId(product.getSellerUserId(), "您的拍品\""+content+"\"申请的小儿介入被小二驳回，如有疑问请移步，“站务公告”--“投诉纠纷版”申诉。");
 			}
 
 			j.success();
@@ -472,9 +473,10 @@ public class ZcOrderController extends BaseController {
 			zcOrderService.edit(order);
 
 			// 新增订单退货地址（卖家）
-			ZcProduct product = zcProductService.get(order.getProductId());
+			OrderProductInfo product = zcOrderService.getProductInfo(order);
+			//ZcProduct product = zcProductService.get(order.getProductId());
 			ZcAddress address = new ZcAddress();
-			address.setUserId(product.getAddUserId());
+			address.setUserId(product.getSellerUserId());
 			address.setAtype(2); // 退货地址
 			address.setOrderId("-1");
 			address = zcAddressService.get(address);
@@ -483,10 +485,10 @@ public class ZcOrderController extends BaseController {
 				zcAddressService.add(address);
 			}
 
-			String content = product.getContent();
+			String content = product.getContentLine();
 			content = content.length() > 20 ? content.substring(0, 20) + "..." : content;
-			// 给卖家发送小二撤回消息
-			sendWxMessage.sendCustomMessageByUserId(product.getUserId(), "您的拍品\""+content+"\"申请的小二介入已受理，小二已同意您的退货，您可以去交易中心发货退回拍品。");
+			// 给买家发送小二撤回消息
+			sendWxMessage.sendCustomMessageByUserId(product.getBuyerUserId(), "您的拍品\""+content+"\"申请的小二介入已受理，小二已同意您的退货，您可以去交易中心发货退回拍品。");
 
 			j.success();
 			j.setMsg("操作成功");

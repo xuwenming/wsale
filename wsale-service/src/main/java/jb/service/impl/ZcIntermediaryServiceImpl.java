@@ -114,6 +114,8 @@ public class ZcIntermediaryServiceImpl extends BaseServiceImpl<ZcIntermediary> i
 			MyBeanUtils.copyProperties(zcIntermediary, t, new String[] { "id" , "addtime" },true);
 			zcIntermediary.setAmount(t.getAmount());
 			zcIntermediary.setBbsId(t.getBbsId());
+			zcIntermediary.setSellUserId(t.getSellUserId());
+			zcIntermediary.setUserId(t.getUserId());
 		}
 	}
 

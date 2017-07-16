@@ -109,12 +109,14 @@ public class DownloadMediaUtil {
                 JSONObject jsonObject = JSONObject.parseObject(HttpUtil.httpsRequest(WeixinUtil.getUserInfoUrl(openid, null), "GET", null));
                 return downloadHeadImage(jsonObject.getString("headimgurl"));
             }
-            String filePath = "";
-            if(headimgurl.indexOf("mmopen") > -1) {
-                filePath = headimgurl.substring(headimgurl.indexOf("mmopen"));
-            } else {
-                filePath = "mmopen/" + Util.CreateNoncestr(64) + "/0";
-            }
+            String filePath = "mmopen/" + Util.CreateNoncestr(64) + "/zcys/" + Util.CreateNoncestr(16);
+//            if(headimgurl.indexOf("mmopen") > -1) {
+//                filePath = headimgurl.substring(headimgurl.indexOf("mmopen"));
+//            } else if(headimgurl.indexOf("mmhead") > -1) {
+//                filePath = headimgurl.substring(headimgurl.indexOf("mmhead"));
+//            }else {
+//                filePath = "mmopen/" + Util.CreateNoncestr(64) + "/zcys/" + Util.CreateNoncestr();
+//            }
 
             String result = OSSUtil.putInputStream(OSSUtil.bucketName, conn.getInputStream(), filePath);
             conn.disconnect();

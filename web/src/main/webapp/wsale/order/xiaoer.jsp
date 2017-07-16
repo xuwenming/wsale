@@ -42,7 +42,15 @@
                             </div>
                             <div class="dingdan-info">
                                 <div>成交金额：￥<fmt:formatNumber type="number" value="${product.totalPrice}" pattern="0.00" maxFractionDigits="2"/></div>
-                                <div>截拍时间：<fmt:formatDate value="${product.realDeadline}" pattern="MM-dd HH:mm"/></div>
+                                <c:choose>
+                                    <c:when test="${empty product.realDeadline}">
+                                        <div>成交时间：<fmt:formatDate value="${product.startingTime}" pattern="MM-dd HH:mm"/></div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div>截拍时间：<fmt:formatDate value="${product.realDeadline}" pattern="MM-dd HH:mm"/></div>
+                                    </c:otherwise>
+                                </c:choose>
+
                             </div>
                         </div>
                     </div>

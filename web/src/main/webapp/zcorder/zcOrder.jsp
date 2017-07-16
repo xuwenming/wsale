@@ -135,22 +135,22 @@
 					if ($.canEdit) {
 						//str += $.formatString('<img onclick="editFun(\'{0}\');" src="{1}" title="编辑"/>', row.id, '${pageContext.request.contextPath}/style/images/extjs_icons/bug/bug_edit.png');
 					}
-					str += '&nbsp;';
+					//str += '&nbsp;';
 					if ($.canDelete) {
 						//str += $.formatString('<img onclick="deleteFun(\'{0}\');" src="{1}" title="删除"/>', row.id, '${pageContext.request.contextPath}/style/images/extjs_icons/bug/bug_delete.png');
 					}
-					str += '&nbsp;';
+					//str += '&nbsp;';
 					if ($.canView) {
 						//str += $.formatString('<img onclick="viewFun(\'{0}\');" src="{1}" title="查看"/>', row.id, '${pageContext.request.contextPath}/style/images/extjs_icons/bug/bug_link.png');
 						str += '<a onclick="viewFun(\'' + row.id + '\')">查看</a>';
 					}
 					var xr = row.xiaoer;
 					if(row.isXiaoer && xr.status == 'XS01') {
-						str += '&nbsp;&nbsp;&nbsp;&nbsp;';
+						str += '&nbsp;';
 						if ($.canCancelXr) {
 							str += $.formatString('<a onclick="cancelXrFun(\'{0}\', \'{1}\', \'{2}\');" style="color:red;cursor: pointer;" title="撤销小二">撤销小二</a>', row.id, row.xiaoer.id, row.xiaoer.idType);
 							if(row.xiaoer.idType == 1) {
-								str += '&nbsp;&nbsp;&nbsp;&nbsp;';
+								str += '&nbsp;';
 								str += $.formatString('<a onclick="agreeBack(\'{0}\', \'{1}\');" style="color:red;cursor: pointer;" title="同意退货">同意退货</a>', row.id, row.productId);
 							}
 						}

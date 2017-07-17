@@ -70,19 +70,22 @@ public class NewAuctionTask {
     }
 
     /**
-     * 查询1分钟内发布的拍品，真实推送
+     * 查询5分钟内发布的拍品，真实推送
      */
     private void executeReal() {
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MINUTE, -1);
+        cal.add(Calendar.MINUTE, -5);
         ZcProduct q = new ZcProduct();
         q.setStartingTime(cal.getTime());
         q.setStatus("PT03");
         q.setIsDeleted(false);
         List<ZcProduct> products = zcProductService.query(q);
+        List<String> addUserIds = new ArrayList<String>();
         if(CollectionUtils.isNotEmpty(products)) {
             CompletionService completionService = CompletionFactory.initCompletion();
             for(ZcProduct product : products) {
+                if(addUserIds.contains(product.getAddUserId())) continue; // 5分钟内同一个发布人只推送一次
+                addUserIds.add(product.getAddUserId());
                 completionService.submit(new Task<ZcProduct, Object>(product) {
                     @Override
                     public Boolean call() throws Exception {

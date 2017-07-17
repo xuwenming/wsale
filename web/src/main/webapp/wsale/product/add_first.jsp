@@ -92,7 +92,7 @@
                             <div style="padding: 12px 0;" class="product-style">
                                 <div style="float:right;line-height: 25px;">
                                     <input type="hidden" name="categoryId" value="${product.categoryId}">
-                                    <span id="categoryName">
+                                    <span id="categoryName" style="color:#F56A22;">
                                         <c:choose>
                                             <c:when test="${not empty categoryName}">${categoryName}</c:when>
                                             <c:otherwise>请选择</c:otherwise>

@@ -280,7 +280,8 @@
                             申请须知：<br>
                             1、请您申请前与卖家确认交易价格;<br>
                             2、一旦交易产生会影响买卖双方的信誉点或违约点;<br>
-                            3、订单支付时存在一定的技术服务费，以官方公告为准。
+                            3、订单支付时存在一定的技术服务费，以官方公告为准;<br>
+                            4、交易前请截下帖子图片以留作产生纠纷时的凭证。
                         </div>
                     </div>
                 </div>
@@ -359,7 +360,7 @@
                                             <div class="btn-con-rg"><span class="jiage-operate makeQr">生成二维码</span></div>
                                         </c:when>
                                         <c:otherwise>
-                                            <div class="btn-con-rg"><span class="jiage-operate im-btn">中介交易</span></div>
+                                            <div class="btn-con-rg btn-con-rg2"><span class="jiage-operate im-btn">中介交易</span></div>
                                         </c:otherwise>
                                     </c:choose>
 

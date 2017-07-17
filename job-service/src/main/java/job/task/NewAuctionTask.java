@@ -49,7 +49,8 @@ public class NewAuctionTask {
         CompletionService completionService = CompletionFactory.initCompletion();
         Calendar cal = Calendar.getInstance();
         int hour = cal.get(Calendar.HOUR_OF_DAY);
-        if(hour > 9 && hour < 24) {
+        int minute = cal.get(Calendar.MINUTE);
+        if(hour > 9 && hour < 24 && (minute == 0 || minute == 30)) {
             completionService.submit(new Task<Object, Object>(null) {
                 @Override
                 public Boolean call() throws Exception {

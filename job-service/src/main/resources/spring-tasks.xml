@@ -23,7 +23,7 @@
 
 	<task:scheduled-tasks scheduler="myScheduler">
 		<!-- 每5分钟 -->
-		<task:scheduled ref="newAuctionTask" method="work" cron="0 */30 * * * ?" />
+		<task:scheduled ref="newAuctionTask" method="work" cron="0 */1 * * * ?" />
 		<!-- 每5秒 -->
 		<task:scheduled ref="productTask" method="work" cron="0/5 * * * * ?" />
 		<task:scheduled ref="orderTask" method="work" cron="0/5 * * * * ?" />

@@ -271,10 +271,10 @@
                                     viewData.statusName = '等待小二处理';
                                     viewData.orderStatusTime = '小二介入：' + new Date(xiaoer.addtime.replace(/-/g,"/")).format('MM月dd日 HH:mm');
                                 } else {
-                                    viewData.statusName = '待收货';
+                                    viewData.statusName = '拒绝退货';
                                 }
                             } else {
-                                viewData.statusName = '待收货';
+                                viewData.statusName = '拒绝退货';
                             }
                         }
                     } else if(order.backStatus == 'RS03') { // 同意退货

@@ -61,7 +61,7 @@ public class Order10StateImpl implements OrderState {
             if(payOrder.getServiceFee() > 0) serviceFee = ((double)payOrder.getServiceFee())/100;
             walletDetail.setAmount(payOrder.getTotalFee() - serviceFee); // 收入扣除服务费
             walletDetail.setWtype("WT07"); // 拍品收入
-            walletDetail.setDescription("拍品订单");
+            walletDetail.setDescription(zcOrder.getIsIntermediary() ? "中介交易" : "拍品订单");
             walletDetail.setChannel("CS02");
             zcWalletDetailService.addAndUpdateWallet(walletDetail);
         }

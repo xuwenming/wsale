@@ -213,7 +213,7 @@ public class ApiIntermediaryController extends BaseController {
 			ZcIntermediary im = new ZcIntermediary();
 			im.setBbsId(zcIntermediary.getBbsId());
 			im.setStatus("IS02,IS04");
-			if(zcIntermediaryService.query(im) != null) {
+			if(CollectionUtils.isNotEmpty(zcIntermediaryService.query(im))) {
 				j.setMsg("您申请的交易正在交易中或已交易完成！");
 				j.fail();
 				return j;

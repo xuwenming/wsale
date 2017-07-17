@@ -415,7 +415,7 @@ public class ApiForumBbsController extends BaseController {
 			ZcIntermediary im = new ZcIntermediary();
 			im.setBbsId(bbs.getId());
 			im.setStatus("IS02,IS04");
-			if(zcIntermediaryService.query(im) != null) {
+			if(CollectionUtils.isNotEmpty(zcIntermediaryService.query(im))) {
 				imable = false;
 			}
 

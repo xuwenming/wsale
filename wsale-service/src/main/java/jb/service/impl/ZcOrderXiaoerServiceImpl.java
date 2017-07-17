@@ -76,7 +76,11 @@ public class ZcOrderXiaoerServiceImpl extends BaseServiceImpl<ZcOrderXiaoer> imp
 			if (!F.empty(zcOrderXiaoer.getUpdateUserId())) {
 				whereHql += " and t.updateUserId = :updateUserId";
 				params.put("updateUserId", zcOrderXiaoer.getUpdateUserId());
-			}		
+			}
+			if(zcOrderXiaoer.getIdType() != null) {
+				whereHql += " and t.idType = :idType";
+				params.put("idType", zcOrderXiaoer.getIdType());
+			}
 		}	
 		return whereHql;
 	}

@@ -492,6 +492,9 @@
                             var product = result.rows[i];
                             var dom = buildProduct(product);
                             $(".defaultProducts").append(dom);
+                            dom.find(".lazy").lazyload({
+                                placeholder : base + 'wsale/images/lazyload.png'
+                            });
                         }
 
                         loading = false;
@@ -531,6 +534,9 @@
                             var product = result.rows[i].zcProduct;
                             var dom = buildProduct(product);
                             $(".bestProducts").append(dom);
+                            dom.find(".lazy").lazyload({
+                                placeholder : base + 'wsale/images/lazyload.png'
+                            });
                         }
 
                         loading = false;
@@ -591,9 +597,6 @@
 
             addTimer(dom.find('.cbp-vm-time'), product.deadlineLen);
 
-            dom.find(".lazy").lazyload({
-                placeholder : base + 'wsale/images/lazyload.png'
-            });
             return dom;
         }
 

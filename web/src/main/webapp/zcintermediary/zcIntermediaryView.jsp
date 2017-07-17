@@ -87,13 +87,18 @@
 					<td>
 						<fmt:formatDate value="${log.addtime}" pattern="yyyy-MM-dd HH:mm:ss"/>
 						<c:choose>
-							<c:when test="${log.logType == 'IL01' || log.logType == 'IL04'}">买家 <font color="blue">${zcIntermediary.buyerUserName}</font></c:when>
-							<c:otherwise>卖家 <font color="blue">${zcIntermediary.sellerUserName}</font></c:otherwise>
+							<c:when test="${log.logType == 'IL05'}">交易完成</c:when>
+							<c:otherwise>
+								<c:choose>
+									<c:when test="${log.logType == 'IL01' || log.logType == 'IL04'}">买家 <font color="blue">${zcIntermediary.buyerUserName}</font></c:when>
+									<c:when test="${log.logType == 'IL02' || log.logType == 'IL03'}">卖家 <font color="blue">${zcIntermediary.sellerUserName}</font></c:when>
+								</c:choose>
+								${log.logTypeZh}
+								<c:if test="${!empty log.content}">
+									- ${log.content}
+								</c:if>
+							</c:otherwise>
 						</c:choose>
-						${log.logTypeZh}
-						<c:if test="${!empty log.content}">
-							- ${log.content}
-						</c:if>
 					</td>
 				</tr>
 			</c:forEach>

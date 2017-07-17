@@ -80,7 +80,7 @@
 				</tr>
 				<tr>
 					<th>icon</th>
-					<td><input name="icon" id="icon" type="hidden" class="span2"
+					<td colspan="3"><input name="icon" id="icon" type="hidden" class="span2"
 						value=""> <img class="img-preview" src="" width="50"
 						height="50" /> <input type="file" id="upLoadFileAddress" name="iconFile">
 					</td>

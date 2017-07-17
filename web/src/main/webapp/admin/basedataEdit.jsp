@@ -81,7 +81,7 @@
 				</tr>
 				<tr>
 					<th>icon</th>
-					<td><img class="img-preview"
+					<td colspan="3"><img class="img-preview"
 						src="${basedata.icon}" width="50" height="50" /> <input
 						type="file" id="upLoadFileAddress" name="iconFile"></td>
 				</tr>

@@ -1,9 +1,7 @@
 package jb.service.impl.order;
 
-import jb.pageModel.OrderProductInfo;
-import jb.pageModel.ZcOrder;
-import jb.pageModel.ZcPayOrder;
-import jb.pageModel.ZcWalletDetail;
+import jb.pageModel.*;
+import jb.service.ZcIntermediaryLogServiceI;
 import jb.service.ZcOrderServiceI;
 import jb.service.ZcPayOrderServiceI;
 import jb.service.ZcWalletDetailServiceI;
@@ -29,6 +27,9 @@ public class Order10StateImpl implements OrderState {
     private ZcPayOrderServiceI zcPayOrderService;
 
     @Autowired
+    private ZcIntermediaryLogServiceI zcIntermediaryLogService;
+
+    @Autowired
     private SendWxMessageImpl sendWxMessage;
 
     @Override
@@ -45,6 +46,19 @@ public class Order10StateImpl implements OrderState {
         zcOrder.setSendStatus("SS02"); // 已收货
         zcOrder.setReceiveTime(now);
         orderService.edit(zcOrder);
+
+        // 中介交易修改交易状态
+        if(zcOrder.getIsIntermediary()) {
+            ZcIntermediary im = new ZcIntermediary();
+            im.setId(zcOrder.getProductId());
+            im.setStatus("IS02");
+
+            ZcIntermediaryLog log = new ZcIntermediaryLog();
+            log.setLogType("IL05");
+            log.setIntermediary(im);
+
+            zcIntermediaryLogService.addAndUpdateIM(log);
+        }
 
         // 钱打到商家账号
         ZcPayOrder po = new ZcPayOrder();

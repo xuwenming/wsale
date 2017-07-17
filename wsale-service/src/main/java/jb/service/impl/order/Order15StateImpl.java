@@ -34,6 +34,9 @@ public class Order15StateImpl implements OrderState {
     private ZcProductMarginServiceI zcProductMarginService;
 
     @Autowired
+    private ZcIntermediaryLogServiceI zcIntermediaryLogService;
+
+    @Autowired
     private SendWxMessageImpl sendWxMessage;
 
     @Override
@@ -50,12 +53,25 @@ public class Order15StateImpl implements OrderState {
             orderService.edit(zcOrder);
 
             // 修改拍品状态:已失败
-            if (!zcOrder.getIsIntermediary() && !F.empty(zcOrder.getProductId())) {
-                ZcProduct p = new ZcProduct();
-                p.setId(zcOrder.getProductId());
-                p.setStatus("PT06");
-                p.setUpdatetime(new Date());
-                zcProductService.edit(p);
+            if (!F.empty(zcOrder.getProductId())) {
+                if(zcOrder.getIsIntermediary()) {
+                    ZcIntermediary im = new ZcIntermediary();
+                    im.setId(zcOrder.getProductId());
+                    im.setStatus("IS03");
+
+                    ZcIntermediaryLog log = new ZcIntermediaryLog();
+                    log.setLogType("IL06");
+                    log.setContent(zcOrder.getOrderCloseReasonZh());
+                    log.setIntermediary(im);
+
+                    zcIntermediaryLogService.addAndUpdateIM(log);
+                } else {
+                    ZcProduct p = new ZcProduct();
+                    p.setId(zcOrder.getProductId());
+                    p.setStatus("PT06");
+                    p.setUpdatetime(new Date());
+                    zcProductService.edit(p);
+                }
             }
 
             // 退款

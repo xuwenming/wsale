@@ -85,7 +85,8 @@
 				width : 50,
 				formatter : function (value, row, index) {
 					if(row.status == 'IS02') return '<font color="#4cd964;">' + row.statusZh + '</font>';
-					else if(row.status == 'IS03') return '<font color="#f6383a;">' + row.statusZh + '</font>';
+					else if(row.status == 'IS04') return '<font color="#f6383a;">' + row.statusZh + '</font>';
+					else if(row.status == 'IS03') return '<font color="red">' + row.statusZh + '</font>';
 					else return row.statusZh;
 				}
 			}, {

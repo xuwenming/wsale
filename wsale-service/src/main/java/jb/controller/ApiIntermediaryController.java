@@ -274,7 +274,7 @@ public class ApiIntermediaryController extends BaseController {
 		Json j = new Json();
 		try{
 			SessionInfo s = getSessionInfo(request);
-			zcIntermediary.setStatus("IS02");
+			zcIntermediary.setStatus("IS04"); // 交易中
 
 			ZcIntermediaryLog log = new ZcIntermediaryLog();
 			log.setUserId(s.getId());

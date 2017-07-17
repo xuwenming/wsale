@@ -47,6 +47,12 @@
                                     <c:when test="${log.logType == 'IL04'}">
                                         <img src="${pageContext.request.contextPath}/wsale/images/fail-icon.png" />
                                     </c:when>
+                                    <c:when test="${log.logType == 'IL05'}">
+                                        <img src="${pageContext.request.contextPath}/wsale/images/jiaoyiok-icon.png" />
+                                    </c:when>
+                                    <c:when test="${log.logType == 'IL06'}">
+                                        <img src="${pageContext.request.contextPath}/wsale/images/fail-icon.png" />
+                                    </c:when>
                                 </c:choose>
                             </div>
                             <div class="pingjia-text">
@@ -64,6 +70,12 @@
                                         </c:when>
                                         <c:when test="${log.logType == 'IL04'}">
                                             取消时间：
+                                        </c:when>
+                                        <c:when test="${log.logType == 'IL05'}">
+                                            完成时间：
+                                        </c:when>
+                                        <c:when test="${log.logType == 'IL06'}">
+                                            失败时间：
                                         </c:when>
                                     </c:choose>
                                     <fmt:formatDate value="${log.addtime}" pattern="yyyy-MM-dd HH:mm"/>
@@ -107,7 +119,7 @@
                                         <div class="agreeEnd"></div>
                                     </c:when>
                                     <c:when test="${intermediary.status == 'IS02'}">
-                                        <div>同意时间：<fmt:formatDate value="${intermediary.lastLog.addtime}" pattern="yyyy-MM-dd HH:mm"/></div>
+                                        <div>完成时间：<fmt:formatDate value="${intermediary.lastLog.addtime}" pattern="yyyy-MM-dd HH:mm"/></div>
                                     </c:when>
                                     <c:when test="${intermediary.status == 'IS03'}">
                                         <div>取消时间：<fmt:formatDate value="${intermediary.lastLog.addtime}" pattern="yyyy-MM-dd HH:mm"/></div>
@@ -117,6 +129,9 @@
                                                 - ${intermediary.lastLog.content}
                                             </c:if>
                                         </div>
+                                    </c:when>
+                                    <c:when test="${intermediary.status == 'IS04'}">
+                                        <div>同意时间：<fmt:formatDate value="${intermediary.lastLog.addtime}" pattern="yyyy-MM-dd HH:mm"/></div>
                                     </c:when>
                                 </c:choose>
                             </div>

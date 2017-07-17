@@ -8,7 +8,7 @@
     <jsp:include page="../inc.jsp"></jsp:include>
     <style>
         .wode-paipintitle li{
-            width: 25%;
+            width: 20%;
             font-size: 14px;
         }
     </style>
@@ -40,6 +40,7 @@
             <div>
                 <ul class="wode-paipintitle">
                     <li class="wodepaipin-active">待处理</li>
+                    <li>交易中</li>
                     <li>已完成</li>
                     <li>已取消</li>
                 </ul>
@@ -101,8 +102,10 @@
         if(type == 1) {
             params.status = 'IS01';
         } else if(type == 2) {
-            params.status = 'IS02';
+            params.status = 'IS04';
         } else if(type == 3) {
+            params.status = 'IS02';
+        } else if(type == 4) {
             params.status = 'IS03';
         }
         ajaxPost('api/apiIntermediary/intermediaryList', params, function(data){
@@ -151,7 +154,7 @@
             agreeBtn = '<li class="agreeBtn">同意交易</li>',
             refuseBtn = '<li class="refuseBtn">拒绝交易</li>';
         if(type == 1) {
-            viewData.time = '申请时间：' + new Date(intermediary.lastLog.addtime.replace(/-/g,"/")).format('MM月dd日 HH:mm');
+            viewData.time = '申请时间：';
             otherDownTime = (new Date(intermediary.lastLog.addtime.replace(/-/g,"/")).getTime() + 72*60*60*1000) - nowTime;
             otherDownMsg = '同意截止';
             if(intermediary.isBuyer) {
@@ -160,13 +163,17 @@
                 btnHtml = agreeBtn + refuseBtn;
             }
         } else if(type == 2) {
-            viewData.time = '同意时间：' + new Date(intermediary.lastLog.addtime.replace(/-/g,"/")).format('MM月dd日 HH:mm');
+            viewData.time = '同意时间：';
         } else if(type == 3) {
-            viewData.time = '取消时间：' + new Date(intermediary.lastLog.addtime.replace(/-/g,"/")).format('MM月dd日 HH:mm');
+            viewData.time = '完成时间：';
+        } else if(type == 4) {
+            viewData.time = '取消时间：';
             otherDownMsg = '取消原因：' + intermediary.lastLog.logTypeZh;
             if(intermediary.lastLog.content)
                 otherDownMsg += ' - ' + intermediary.lastLog.content;
         }
+        viewData.time += new Date(intermediary.lastLog.addtime.replace(/-/g,"/")).format('MM月dd日 HH:mm');
+
         var dom = Util.cloneDom("im_template", intermediary, viewData);
         $(".imList").append(dom);
 

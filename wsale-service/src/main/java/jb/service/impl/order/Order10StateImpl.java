@@ -1,12 +1,11 @@
 package jb.service.impl.order;
 
+import jb.pageModel.OrderProductInfo;
 import jb.pageModel.ZcOrder;
 import jb.pageModel.ZcPayOrder;
-import jb.pageModel.ZcProduct;
 import jb.pageModel.ZcWalletDetail;
 import jb.service.ZcOrderServiceI;
 import jb.service.ZcPayOrderServiceI;
-import jb.service.ZcProductServiceI;
 import jb.service.ZcWalletDetailServiceI;
 import jb.service.impl.SendWxMessageImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +27,6 @@ public class Order10StateImpl implements OrderState {
 
     @Autowired
     private ZcPayOrderServiceI zcPayOrderService;
-
-    @Autowired
-    private ZcProductServiceI zcProductService;
 
     @Autowired
     private SendWxMessageImpl sendWxMessage;
@@ -56,10 +52,10 @@ public class Order10StateImpl implements OrderState {
         po.setObjectType("PO05");
         ZcPayOrder payOrder = zcPayOrderService.get(po);
         if(payOrder != null) {
-            ZcProduct product = zcProductService.get(zcOrder.getProductId());
+            OrderProductInfo product = orderService.getProductInfo(zcOrder);
             // 新增钱包收支明细
             ZcWalletDetail walletDetail = new ZcWalletDetail();
-            walletDetail.setUserId(product.getAddUserId());
+            walletDetail.setUserId(product.getSellerUserId());
             walletDetail.setOrderNo(payOrder.getOrderNo());
             double serviceFee = 0;
             if(payOrder.getServiceFee() > 0) serviceFee = ((double)payOrder.getServiceFee())/100;

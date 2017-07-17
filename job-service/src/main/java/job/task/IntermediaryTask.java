@@ -70,7 +70,7 @@ public class IntermediaryTask {
                         zcIntermediaryLogService.addAndUpdateIM(log);
 
                         // 给买家推送拒绝交易通知
-                        sendWxMessage.sendIMResultTemplateMessage(im);
+                        sendWxMessage.sendIMResultTemplateMessage(im, log.getLogType());
 
                         return true;
                     }

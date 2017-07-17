@@ -291,7 +291,7 @@ public class ApiIntermediaryController extends BaseController {
 			order01State.handle(order);
 
 			// 给买家推送同意交易通知
-			sendWxMessage.sendIMResultTemplateMessage(zcIntermediary);
+			sendWxMessage.sendIMResultTemplateMessage(zcIntermediary, log.getLogType());
 
 			j.success();
 			j.setMsg("操作成功");
@@ -324,7 +324,7 @@ public class ApiIntermediaryController extends BaseController {
 			zcIntermediaryLogService.addAndUpdateIM(log);
 
 			// 给买家推送拒绝交易通知
-			sendWxMessage.sendIMResultTemplateMessage(zcIntermediary);
+			sendWxMessage.sendIMResultTemplateMessage(zcIntermediary, log.getLogType());
 
 			j.success();
 			j.setMsg("操作成功");

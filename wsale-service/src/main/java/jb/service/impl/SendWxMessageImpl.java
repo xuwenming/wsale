@@ -1393,7 +1393,7 @@ public class SendWxMessageImpl {
         });
     }
 
-    public void sendIMResultTemplateMessage(final ZcIntermediary intermediary) {
+    public void sendIMResultTemplateMessage(final ZcIntermediary intermediary, final String type) {
         final CompletionService completionService = CompletionFactory.initCompletion();
 
         completionService.submit(new Task<Object, Boolean>(null) {
@@ -1404,8 +1404,8 @@ public class SendWxMessageImpl {
                 // 买家
                 User buyer = userService.getByZc(intermediary.getUserId());
                 boolean agree = false, refuse = false;
-                if("IS02".equals(intermediary.getStatus())) agree = true;
-                else if("IS04".equals(intermediary.getStatus())) refuse = true;
+                if("IL02".equals(type)) agree = true;
+                else if("IL03".equals(type)) refuse = true;
 
                 String bbsTitle = bbs.getBbsTitle();
                 bbsTitle = bbsTitle.length() > 20 ? bbsTitle.substring(0, 20) + "..." : bbsTitle;

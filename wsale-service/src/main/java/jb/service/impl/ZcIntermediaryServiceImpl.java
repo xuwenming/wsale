@@ -77,8 +77,17 @@ public class ZcIntermediaryServiceImpl extends BaseServiceImpl<ZcIntermediary> i
 				params.put("remark", zcIntermediary.getRemark());
 			}		
 			if (!F.empty(zcIntermediary.getStatus())) {
-				whereHql += " and t.status = :status";
-				params.put("status", zcIntermediary.getStatus());
+				int i = 0;
+				for(String str : zcIntermediary.getStatus().split(",")) {
+					if(F.empty(str)) continue;
+					if(i == 0) whereHql += " and (t.status = :status" + i;
+					else whereHql += " or t.status = :status" + i;
+
+					params.put("status" + i, str);
+
+					i++;
+				}
+				whereHql += ")";
 			}
 			if(zcIntermediary.getAddtime() != null) {
 				whereHql += " and date_format(t.addtime, '%Y-%m-%d %H:%i:%s') = :addtime";

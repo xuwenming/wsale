@@ -359,8 +359,11 @@
                                         <c:when test="${user.self}">
                                             <div class="btn-con-rg"><span class="jiage-operate makeQr">生成二维码</span></div>
                                         </c:when>
-                                        <c:otherwise>
+                                        <c:when test="${!user.self and imable}">
                                             <div class="btn-con-rg btn-con-rg2"><span class="jiage-operate im-btn">中介交易</span></div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="btn-con-rg btn-con-rg3"><span class="jiage-operate im-btn">中介交易</span></div>
                                         </c:otherwise>
                                     </c:choose>
 
@@ -688,6 +691,11 @@
             $('.makeQr').bind('click', openQrcode);
 
             $('.im-btn').click(function(){
+                if($(this).parent().hasClass('btn-con-rg3')) {
+                    $.alert("该帖子正在交易中或已交易完成！", "系统提示！");
+                    return;
+                }
+
                 if(!$("#bindMobile").val()) {
                     $('#bindMobilePopup').wePopup();
                     return;

@@ -62,6 +62,9 @@ public class ApiForumBbsController extends BaseController {
 	@Autowired
 	private ZcCollectServiceI zcCollectService;
 
+	@Autowired
+	private ZcIntermediaryServiceI zcIntermediaryService;
+
 	/**
 	 * 跳转至帖子发布页
 	 * @return
@@ -361,14 +364,6 @@ public class ApiForumBbsController extends BaseController {
 
 			User user = userService.get(bbs.getAddUserId(), s.getId());
 
-			// 获取评论列表
-//			PageHelper ph = new PageHelper();
-//			ph.setPage(1);
-//			ph.setRows(10);
-//			ZcBbsComment comment = new ZcBbsComment();
-//			comment.setBbsId(bbs.getId());
-//			DataGrid comments = commentDataGrid(ph, comment, s.getId());
-
 			ZcReward reward = new ZcReward();
 			reward.setObjectType(EnumConstants.OBJECT_TYPE.BBS.getCode());
 			reward.setObjectId(bbs.getId());
@@ -415,13 +410,22 @@ public class ApiForumBbsController extends BaseController {
 				request.setAttribute("categorys", categorys);
 			}
 
+			// 查询交易中或交易完成的中介交易
+			boolean imable = true;
+			ZcIntermediary im = new ZcIntermediary();
+			im.setBbsId(bbs.getId());
+			im.setStatus("IS02,IS04");
+			if(zcIntermediaryService.query(im) != null) {
+				imable = false;
+			}
+
 			request.setAttribute("rewards", rewards);
 			request.setAttribute("bbs", bbs);
 			request.setAttribute("user", user);
 			request.setAttribute("backCustom", backCustom);
 			request.setAttribute("sessionInfo", s);
 			request.setAttribute("fromShare", fromShare);
-//			request.setAttribute("comments", comments);
+			request.setAttribute("imable", imable);
 
 			// 判断用户是否关注公众号
 			request.setAttribute("subscribe", WeixinUtil.getSubscribe(s.getName()));

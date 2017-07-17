@@ -920,6 +920,12 @@ textarea.ui-input-text{
 .btn-con-rg2 .jiage-operate{
 	background-color: #3da8f5;
 }
+.btn-con-rg3{
+	border: 1px solid #aaa;
+}
+.btn-con-rg3 .jiage-operate{
+	background-color: #aaa;
+}
 
 .notify{
 	height: 38px;

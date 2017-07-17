@@ -125,7 +125,7 @@ public class NewAuctionTask {
                             b = true;
                             break;
                         }
-                        if (len == 3) break;
+                        if (count >= 10 && len == 3) break;
                         products.add(t);
                         len++;
                     }

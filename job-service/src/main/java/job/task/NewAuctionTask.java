@@ -70,11 +70,11 @@ public class NewAuctionTask {
     }
 
     /**
-     * 查询5分钟内发布的拍品，真实推送
+     * 查询1分钟内发布的拍品，真实推送
      */
     private void executeReal() {
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MINUTE, -5);
+        cal.add(Calendar.MINUTE, -1);
         ZcProduct q = new ZcProduct();
         q.setStartingTime(cal.getTime());
         q.setStatus("PT03");

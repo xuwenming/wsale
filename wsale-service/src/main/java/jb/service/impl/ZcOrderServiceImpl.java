@@ -244,7 +244,7 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 		String sql = "select count(case when t.pay_status='PS01' and t.order_status='OS01' then t.id end)  unpay_count, "
 				+ " count(case when t.send_status='SS03' and t.order_status='OS05' then t.id end)  unreceipt_count, "
 				+ " count(case when t.send_status='SS01' and t.order_status='OS02' then t.id end)  undeliver_count, "
-				+ " count(case when t.isCommented=0 and t.order_status='OS10' and exists(select 1 from zc_product p1 where p1.id=t.product_id and p1.user_id = :addUserId) then t.id end)  uncomment_count "
+				+ " count(case when t.isCommented=0 and t.order_status='OS10' and (exists(select 1 from zc_product p1 where p1.id=t.product_id and p1.user_id = :addUserId) or exists(select 1 from zc_intermediary p1 where i1.id=t.product_id and i1.user_id = :addUserId)) then t.id end)  uncomment_count "
 				+ " from zc_order t where (exists (select 1 from zc_product p where p.id = t.product_id and p.isDeleted = 0 and t.is_intermediary = 0 and (p.addUserId = :addUserId or p.user_id = :addUserId))"
 				+ " or exists (select 1 from zc_intermediary i where i.id = t.product_id and t.is_intermediary = 1 and (i.sell_user_id = :addUserId or i.user_id = :addUserId)))";
 		List<Map> l = zcOrderDao.findBySql2Map(sql, params);

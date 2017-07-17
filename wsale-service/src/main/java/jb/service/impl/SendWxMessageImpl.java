@@ -1053,7 +1053,7 @@ public class SendWxMessageImpl {
                 }
 
                 temp.setTouser(buyer.getName());
-                temp.setUrl(PathUtil.getUrlPath("api/apiOrder/orderDetail?id=" + order.getId()));
+                temp.setUrl(PathUtil.getUrlPath("api/apiOrder/myOrder?type=2"));
                 temp.setTemplate_id(WeixinUtil.BACK_RESULT_TEMPLATE_ID);
 
                 Map<String, TemplateData> data = new HashMap<String, TemplateData>();

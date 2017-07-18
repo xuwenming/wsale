@@ -62,6 +62,11 @@ public class ZcOrder implements java.io.Serializable {
 	private Boolean isXiaoer; // 是否申请小二介入
 	private ZcOrderXiaoer xiaoer; // 订单小二介入
 
+	public String getIsIntermediaryZh() {
+		if(isIntermediary) return "是";
+		else return "否";
+	}
+
 	public String getPayStatusZh() {
 		return Application.getString(this.payStatus);
 	}

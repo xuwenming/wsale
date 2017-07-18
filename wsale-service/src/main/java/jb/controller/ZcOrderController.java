@@ -8,6 +8,7 @@ import jb.service.impl.CompletionFactory;
 import jb.service.impl.SendWxMessageImpl;
 import jb.service.impl.order.OrderState;
 import jb.util.ConfigUtil;
+import jb.util.DateUtil;
 import jb.util.EnumConstants;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 
@@ -184,11 +186,20 @@ public class ZcOrderController extends BaseController {
 	 */
 	@RequestMapping("/download")
 	public void download(ZcOrder zcOrder, PageHelper ph,String downloadFields,HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
-		DataGrid dg = dataGrid(zcOrder,ph);		
+		DataGrid dg = dataGrid(zcOrder,ph);
+		List<ZcOrder> list = (List<ZcOrder>) dg.getRows();
+		if(!CollectionUtils.isEmpty(list)) {
+			for(ZcOrder order : list) {
+				order.setPno(order.getProduct().getPno());
+				order.setSellerUserId(order.getSeller().getNickname());
+				order.setBuyerUserId(order.getBuyer().getNickname());
+			}
+		}
 		downloadFields = downloadFields.replace("&quot;", "\"");
 		downloadFields = downloadFields.substring(1,downloadFields.length()-1);
 		List<Colum> colums = JSON.parseArray(downloadFields, Colum.class);
-		downloadTable(colums, dg, response);
+		String fileName = "订单管理-" + DateUtil.format(new Date(), "yyyyMMddHHmmss");
+		downloadTable(colums, dg,new String(URLDecoder.decode(fileName, "UTF-8").getBytes(), "ISO8859-1"), response);
 	}
 	/**
 	 * 跳转到添加ZcOrder页面

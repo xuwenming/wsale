@@ -66,15 +66,15 @@
 					return product.pno;
 				}
 				},{
-				field : 'isIntermediary',
+				field : 'isIntermediaryZh',
 				title : '是否中介',
 				width : 30,
 				formatter : function(value, row, index) {
-					if(value) return '<font color="#f6383a;">是</font>';
+					if(row.isIntermediary) return '<font color="#f6383a;">是</font>';
 					else return '否';
 				}
 				},{
-				field : 'seller',
+				field : 'buyerUserId',
 				title : '卖家',
 				width : 50,
 				formatter : function(value, row, index) {
@@ -82,7 +82,7 @@
 					return seller.nickname;
 				}
 				},{
-				field : 'buyer',
+				field : 'buyerUserId',
 				title : '买家',
 				width : 50,
 				formatter : function(value, row, index) {

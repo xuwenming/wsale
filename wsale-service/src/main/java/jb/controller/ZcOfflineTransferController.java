@@ -205,7 +205,7 @@ public class ZcOfflineTransferController extends BaseController {
 
 		// 获取提现充值密码
 		String privateKey = (String)request.getSession().getAttribute(RSAUtil.PRIVATE_KEY);
-		if(privateKey == null) {
+		if(F.empty(privateKey)) {
 			j.setMsg("操作失败，请刷新或关闭当前浏览器重新打开！");
 			return j;
 		}

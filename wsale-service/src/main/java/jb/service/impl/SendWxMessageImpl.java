@@ -583,7 +583,7 @@ public class SendWxMessageImpl {
         data.put("keyword3", keyword3);
         // 备注
         TemplateData remark = new TemplateData();
-        remark.setValue("\n提醒：请您再收到退货后，再退款给买家(发货14天后，将自动确认退款给买家)");
+        remark.setValue("\n提醒：请您再收到退货后，再退款给买家(发货10天后，将自动确认退款给买家)");
         data.put("remark", remark);
 
         temp.setData(data);
@@ -612,7 +612,7 @@ public class SendWxMessageImpl {
 
         Map<String, TemplateData> data = new HashMap<String, TemplateData>();
         TemplateData first = new TemplateData();
-        first.setValue("尊敬的『"+buyer.getNickname()+"』，卖家已将拍品\""+content+"\"发出，请于14天内进行确认收货或者退回操作，逾期将自动结束交易并打款给卖家。\n");
+        first.setValue("尊敬的『"+buyer.getNickname()+"』，卖家已将拍品\""+content+"\"发出，请于10天内进行确认收货或者退回操作，逾期将自动结束交易并打款给卖家。\n");
         data.put("first", first);
         // 订单编号
         TemplateData keyword1 = new TemplateData();

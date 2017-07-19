@@ -51,6 +51,9 @@ public class ApiIntermediaryController extends BaseController {
 	@javax.annotation.Resource(name = "order01StateImpl")
 	private OrderState order01State;
 
+	@Autowired
+	private ZcShieldorfansServiceI zcShieldorfansService;
+
 	/**
 	 * 跳转至我的中介交易
 	 * type 1-待处理；2-已完成；3-已取消；
@@ -229,6 +232,13 @@ public class ApiIntermediaryController extends BaseController {
 			log.setIntermediary(zcIntermediary);
 
 			zcIntermediaryLogService.addAndUpdateIM(log);
+
+			// 加关注
+			ZcShieldorfans shieldorfans = new ZcShieldorfans();
+			shieldorfans.setObjectType("FS");
+			shieldorfans.setObjectById(zcIntermediary.getSellUserId());
+			shieldorfans.setObjectId(zcIntermediary.getUserId());
+			zcShieldorfansService.addOrUpdate(shieldorfans, true);
 
 			// 给卖家发送中介交易提醒
 			sendWxMessage.sendIMPayTemplateMessage(zcIntermediary, 0);

@@ -33,7 +33,7 @@ public class OrderTask {
 
     private final static long TIME_1 = 3*24*60*60*1000;
     private final static long TIME_2 = 5*24*60*60*1000;
-    private final static long TIME_3 = 14*24*60*60*1000;
+    private final static long TIME_3 = 10*24*60*60*1000;
 
     @Autowired
     private ZcOrderServiceI zcOrderService;
@@ -93,7 +93,7 @@ public class OrderTask {
         completionService.submit(new Task<Object, Object>(null) {
                 @Override
             public Boolean call() throws Exception {
-                execute6(); // 买家已退货发货，卖家14天不确认退款或不申请小二则判定退货成功
+                execute6(); // 买家已退货发货，卖家10天不确认退款或不申请小二则判定退货成功
                 return true;
             }
         });

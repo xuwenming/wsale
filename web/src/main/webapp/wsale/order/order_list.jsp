@@ -314,13 +314,13 @@
                                 } else {
                                     viewData.statusName = '买家退货已发';
                                     btnHtml = '<span class="tkBtn">确认退款</span>';
-                                    otherDownTime = (new Date(order.returnDeliverTime.replace(/-/g,"/")).getTime() + 14*24*60*60*1000) - nowTime;
+                                    otherDownTime = (new Date(order.returnDeliverTime.replace(/-/g,"/")).getTime() + 10*24*60*60*1000) - nowTime;
                                     otherDownMsg = '确认截止';
                                 }
                             } else {
                                 viewData.statusName = '买家退货已发';
                                 btnHtml = '<span class="sqxrBtn">申请小二</span><span class="tkBtn">确认退款</span>';
-                                otherDownTime = (new Date(order.returnDeliverTime.replace(/-/g,"/")).getTime() + 14*24*60*60*1000) - nowTime;
+                                otherDownTime = (new Date(order.returnDeliverTime.replace(/-/g,"/")).getTime() + 10*24*60*60*1000) - nowTime;
                                 otherDownMsg = '确认截止';
                             }
                         }
@@ -360,7 +360,7 @@
                             viewData.orderStatusTime = '发货时间：' + deliverTime.format('MM月dd日 HH:mm');
                             // 发货三天后显示退货按钮
                             if(order.isBuyer) {
-                                if(nowTime - deliverTime.getTime() >= 72*60*60*1000) {
+                                if(nowTime - deliverTime.getTime() >= 24*60*60*1000) {
                                     btnHtml = '<span class="thBtn">申请退货</span><span class="shBtn">确认收货</span>';
                                 } else {
                                     btnHtml = '<span class="shBtn">确认收货</span>';

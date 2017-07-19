@@ -388,7 +388,7 @@
                 }
                 if(time.length > 19)
                     time = time.substring(0, 19);
-                var receiveDownTime = (new Date(time.replace(/-/g,"/")).getTime() + 14*24*60*60*1000) - new Date().getTime();
+                var receiveDownTime = (new Date(time.replace(/-/g,"/")).getTime() + 10*24*60*60*1000) - new Date().getTime();
                 addTimer($('.receiveEnd'), receiveDownTime/1000, msg);
             }
             if($('.comment').length > 0) {

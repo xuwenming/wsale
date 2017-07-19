@@ -74,7 +74,7 @@
 					else return '否';
 				}
 				},{
-				field : 'buyerUserId',
+				field : 'sellerUserId',
 				title : '卖家',
 				width : 50,
 				formatter : function(value, row, index) {
@@ -115,7 +115,7 @@
 				formatter : function (value, row, index) {
 					var str = row.orderStatusZh;
 					if(row.orderStatus == 'OS02') str = '<font color="orange">' + row.orderStatusZh + '</font>';
-					else if(row.orderStatus == 'OS05') str = '<font color="#08c;">' + row.orderStatusZh + '</font>';
+					else if(row.orderStatus == 'OS05') str = '<font style="color:#1AAFF0;">' + row.orderStatusZh + '</font>';
 					else if(row.orderStatus == 'OS10') str = '<font color="#4cd964;">' + row.orderStatusZh + '</font>';
 					else if(row.orderStatus == 'OS15') str =  '<font color="red">' + row.orderStatusZh + '</font>';
 

@@ -59,12 +59,12 @@
             <div class="foo-add"><img src="${pageContext.request.contextPath}/wsale/images/add-icon.png" alt=""/>添加图片</div>
             <div class="foo-or">
               <div class="foo-or-a">
-                <img src="${pageContext.request.contextPath}/wsale/images/e-up-b.png" style="display: none">
-                <img src="${pageContext.request.contextPath}/wsale/images/e-up.png" alt=""/>
+                <img src="${pageContext.request.contextPath}/wsale/images/e-up-b.png">
+                <img src="${pageContext.request.contextPath}/wsale/images/e-up.png" style="display:none;">
               </div>
               <div  class="foo-or-b">
                 <img src="${pageContext.request.contextPath}/wsale/images/e-down-b.png">
-                <img src="${pageContext.request.contextPath}/wsale/images/e-down.png" style="display: none">
+                <img src="${pageContext.request.contextPath}/wsale/images/e-down.png">
               </div>
             </div>
           </div>
@@ -92,8 +92,8 @@
         <div class="foo-add"><img src="${pageContext.request.contextPath}/wsale/images/add-icon.png" alt=""/>添加图片</div>
         <div class="foo-or">
           <div class="foo-or-a">
-            <img src="${pageContext.request.contextPath}/wsale/images/e-up-b.png" style="display: none">
-            <img src="${pageContext.request.contextPath}/wsale/images/e-up.png" alt=""/>
+            <img src="${pageContext.request.contextPath}/wsale/images/e-up-b.png">
+            <img src="${pageContext.request.contextPath}/wsale/images/e-up.png">
           </div>
           <div  class="foo-or-b">
             <img src="${pageContext.request.contextPath}/wsale/images/e-down-b.png">
@@ -129,8 +129,8 @@
         <div class="foo-add"><img src="${pageContext.request.contextPath}/wsale/images/add-icon.png" alt=""/>添加图片</div>
         <div class="foo-or">
           <div class="foo-or-a">
-            <img src="${pageContext.request.contextPath}/wsale/images/e-up-b.png" style="display: none">
-            <img src="${pageContext.request.contextPath}/wsale/images/e-up.png" alt=""/>
+            <img src="${pageContext.request.contextPath}/wsale/images/e-up-b.png">
+            <img src="${pageContext.request.contextPath}/wsale/images/e-up.png" style="display: none">
           </div>
           <div  class="foo-or-b">
             <img src="${pageContext.request.contextPath}/wsale/images/e-down-b.png">

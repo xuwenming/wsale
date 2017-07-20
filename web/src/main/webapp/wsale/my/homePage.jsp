@@ -41,7 +41,7 @@
                 <!--<div id="qrcode" style="display: none;"></div>-->
                 <div class="xinxi-topInfo">
                     <c:if test="${!user.self}"><div class="zhuye-guanzhu"><img src="${pageContext.request.contextPath}/wsale/images/quxiaoguanzhu-icon.png" /></div></c:if>
-                    <img src="${user.headImage}" class="wode-userimg xinxi-bgimg" onclick="href('api/apiShop/shop?userId=${user.id}');"/>
+                    <img src="${user.headImage}" class="wode-userimg xinxi-bgimg" src="${user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'"  onclick="href('api/apiShop/shop?userId=${user.id}');"/>
                     <img src="${pageContext.request.contextPath}/wsale/images/p-${user.positionId}.png" class="wode-userflag" />
                     <div class="xinxi-username">${user.nickname}</div>
                     <div class="xinxi-userinfo">

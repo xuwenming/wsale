@@ -3,7 +3,7 @@
 <%--聊天列表 --%>
 <div id="chat_list_template" class="qunfa-info" style="display: none;">
 	<div class="left-touxiang">
-		<img class="sysinfo-icon" name="friendUser" data-name="headImage"/>
+		<img class="sysinfo-icon" name="friendUser" data-name="headImage" src="${user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'" />
 	</div>
 	<div class="text-right grayright-text" name="lastTimeStr">
 	</div>

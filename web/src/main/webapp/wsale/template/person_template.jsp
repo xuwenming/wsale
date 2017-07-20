@@ -11,7 +11,7 @@
 <!-- 粉丝/屏蔽列表 -->
 <div id="shieldorfans_template" class="faxian-link" style="display: none;">
 	<div class="left-touxiang">
-		<img class="fensi-touxiang" name="headImage"/>
+		<img src="${user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'"  class="fensi-touxiang" name="headImage"/>
 	</div>
 	<div class="right-guanzhu">
 		<span class="guanzhu-btn" name="btnName"></span>

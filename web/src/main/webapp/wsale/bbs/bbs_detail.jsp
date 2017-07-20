@@ -290,7 +290,7 @@
             <div style="margin:10px;">
                 <div style="width:20%; text-align:center;display:inline-block;vertical-align:top;">
                     <div>
-                        <img class="lazy" data-original="${user.headImage}" style="width:100%;" onclick="href('api/userController/homePage?userId=${user.id}');"/>
+                        <img class="lazy" src="${user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'"  data-original="${user.headImage}" style="width:100%;" onclick="href('api/userController/homePage?userId=${user.id}');"/>
                         <div style="margin-top:-20px; text-align:right;width:100%;">
                             <img src="${pageContext.request.contextPath}/wsale/images/p-${user.positionId}.png" style="width:50%;" />
 

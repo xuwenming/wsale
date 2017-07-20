@@ -34,7 +34,7 @@
                     <div style=" font-size:18px; font-weight:normal;">${user.nickname}</div>
                     <div class="ppxq-userdesc" style="margin-top:20px;color:#666;font-weight:normal; font-size:12px;">${not empty user.bardian ? user.bardian : '这个人很懒，什么也没说'}</div>
                 </div>
-                <img class="ppxq-title" src="${user.headImage}" onclick="href('api/userController/homePage?userId=${user.id}');"/>
+                <img class="ppxq-title" src="${user.headImage}" src="${user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'"   onclick="href('api/userController/homePage?userId=${user.id}');"/>
             </div>
         </div><!-- /header -->
         <div role="main" class="ui-content jqm-content jqm-fullwidth">
@@ -150,7 +150,7 @@
             <div class="ppxq-detail">
                 <div class="ppxq-leftinfo">
                     <div>
-                        <img class="ppxq-touxiang" src="${user.headImage}" onclick="href('api/userController/homePage?userId=${user.id}');"/>
+                        <img class="ppxq-touxiang" src="${user.headImage}" src="${user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'"   onclick="href('api/userController/homePage?userId=${user.id}');"/>
                         <div class="ppxq-level">
                             <img src="${pageContext.request.contextPath}/wsale/images/p-${user.positionId}.png" style="width:50%;" />
                         </div>

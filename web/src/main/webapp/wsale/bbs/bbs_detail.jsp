@@ -397,7 +397,7 @@
                             <div style="display:inline-block; line-height: 1.2;" class="dashang-user">
                                 <c:forEach items="${rewards}" var="reward" varStatus="vs">
                                     <!--<div class="dashang-list">-->
-                                        <img style="width:30px;height:30px;" src="${reward.user.headImage}" onclick="href('api/userController/homePage?userId=${reward.user.id}');"/>
+                                        <img style="width:30px;height:30px;" src="${reward.user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'"  onclick="href('api/userController/homePage?userId=${reward.user.id}');"/>
                                         <!--<div>￥${reward.rewardFee}</div>
                                     </div>-->
                                 </c:forEach>
@@ -1237,7 +1237,7 @@
                         wxPayCall(params, function(){
                             $('.bbsReward').text(parseInt($('.bbsReward').text()) + 1);
                             //$('.dashang-user').prepend('<div class="dashang-list"><img style="width:35px;height:35px;" src="${sessionInfo.headImage}" /><div>￥'+rewardFee+'</div></div>');
-                            $('.dashang-user').prepend('<img style="width:35px;height:35px;" src="${sessionInfo.headImage}" />');
+                            $('.dashang-user').prepend('<img style="width:35px;height:35px;" src="${sessionInfo.headImage}"'+' onerror="this.src='+'${pageContext.request.contextPath}/wsale/images/user-default.png"'+' />');
                             if($('.dashang-sanjiao').is(':hidden')) {
                                 $('.dashang-sanjiao, .dashang-content').show();
                             }

@@ -28,7 +28,7 @@
             <div class="home-content" style="margin:0; text-align:left; ">
                 <a href="javascript:href('api/userController/homePage?userId=${user.id}');" class="wode-userinfo">
                     <div class="wode-touxiang">
-                        <img src="${user.headImage}" style="border:2px solid #fff;" class="wode-userimg" />
+                        <img src="${user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'" style="border:2px solid #fff;" class="wode-userimg" />
                         <img src="${pageContext.request.contextPath}/wsale/images/p-${user.positionId}.png" class="wode-userflag" />
                     </div>
                     <div style="float:right;margin-top:20px;">

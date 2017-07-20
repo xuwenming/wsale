@@ -102,7 +102,7 @@
 <div id="product_detail_template" class="qbpp-detail" style="display: none;">
 	<div class="ppxq-leftinfo">
 		<div>
-			<img class="ppxq-touxiang" name="user" data-name="headImage" />
+			<img class="ppxq-touxiang" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'"  name="user" data-name="headImage" />
 			<div class="ppxq-level">
 				<img name="user" data-name="positionIcon" style="width:50%;" />
 			</div>

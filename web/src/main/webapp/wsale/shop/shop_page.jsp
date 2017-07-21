@@ -37,7 +37,7 @@
                         </c:if>
                     </div>
                 </div>
-                <img class="ppxq-title" src="${user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'"  />
+                <img class="ppxq-title" src="${user.headImage}" />
             </div>
         </div><!-- /header -->
         <div role="main" class="ui-content jqm-content jqm-fullwidth">

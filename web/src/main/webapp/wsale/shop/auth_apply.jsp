@@ -12,7 +12,7 @@
             <div class="home-content" style="margin:0; text-align:left;">
                 <div class="top-info">
                     <div class="wode-touxiang">
-                        <img src="${user.headImage}" style="border:2px solid #fff;" class="wode-userimg" src="${user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'" />
+                        <img src="${user.headImage}" style="border:2px solid #fff;" class="wode-userimg" />
                     </div>
                     <div class="renzheng-flag">
                         <c:choose>

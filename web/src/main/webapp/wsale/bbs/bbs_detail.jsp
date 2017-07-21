@@ -290,7 +290,7 @@
             <div style="margin:10px;">
                 <div style="width:20%; text-align:center;display:inline-block;vertical-align:top;">
                     <div>
-                        <img class="lazy" src="${user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'"  data-original="${user.headImage}" style="width:100%;" onclick="href('api/userController/homePage?userId=${user.id}');"/>
+                        <img class="lazy" data-original="${user.headImage}" style="width:100%;" onclick="href('api/userController/homePage?userId=${user.id}');"/>
                         <div style="margin-top:-20px; text-align:right;width:100%;">
                             <img src="${pageContext.request.contextPath}/wsale/images/p-${user.positionId}.png" style="width:50%;" />
 
@@ -397,7 +397,7 @@
                             <div style="display:inline-block; line-height: 1.2;" class="dashang-user">
                                 <c:forEach items="${rewards}" var="reward" varStatus="vs">
                                     <!--<div class="dashang-list">-->
-                                        <img style="width:30px;height:30px;" src="${reward.user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'"  onclick="href('api/userController/homePage?userId=${reward.user.id}');"/>
+                                        <img style="width:30px;height:30px;" src="${reward.user.headImage}" onclick="href('api/userController/homePage?userId=${reward.user.id}');"/>
                                         <!--<div>￥${reward.rewardFee}</div>
                                     </div>-->
                                 </c:forEach>
@@ -1237,7 +1237,7 @@
                         wxPayCall(params, function(){
                             $('.bbsReward').text(parseInt($('.bbsReward').text()) + 1);
                             //$('.dashang-user').prepend('<div class="dashang-list"><img style="width:35px;height:35px;" src="${sessionInfo.headImage}" /><div>￥'+rewardFee+'</div></div>');
-                            $('.dashang-user').prepend('<img style="width:35px;height:35px;" src="${sessionInfo.headImage}"'+' onerror="this.src='+'${pageContext.request.contextPath}/wsale/images/user-default.png"'+' />');
+                            $('.dashang-user').prepend('<img style="width:35px;height:35px;" src="${sessionInfo.headImage}" />');
                             if($('.dashang-sanjiao').is(':hidden')) {
                                 $('.dashang-sanjiao, .dashang-content').show();
                             }

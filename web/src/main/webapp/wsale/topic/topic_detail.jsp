@@ -67,7 +67,7 @@
                             <p>
                                 <c:choose>
                                     <c:when test="${topic.user.utype == 'UT02'}">
-                                        <img src="${topic.user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'" />
+                                        <img src="${topic.user.headImage}" />
                                     </c:when>
                                     <c:otherwise>
                                         <img src="${pageContext.request.contextPath}/wsale/images/logo.png"/>

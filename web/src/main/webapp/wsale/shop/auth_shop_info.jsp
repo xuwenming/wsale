@@ -59,7 +59,7 @@
                             <div class="upload-shopimg">
                                 <c:choose>
                                     <c:when test="${!empty shop.logoUrl}"><img width="50" height="50" src="${shop.logoUrl}" /></c:when>
-                                    <c:when test="${!empty headImage}"><img width="50" height="50" src="${headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'"  /></c:when>
+                                    <c:when test="${!empty headImage}"><img width="50" height="50" src="${headImage}" /></c:when>
                                     <c:otherwise><img class="upload-jia" src="${pageContext.request.contextPath}/wsale/images/add-img-large.png" /></c:otherwise>
                                 </c:choose>
                                 <!--<img width="50" height="50" src="${headImage}" />-->

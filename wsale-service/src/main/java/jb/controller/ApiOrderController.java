@@ -645,7 +645,7 @@ public class ApiOrderController extends BaseController {
     @RequestMapping("/toBackApply")
     public String toBackApply(String orderId, String productId, HttpServletRequest request) {
         ZcOrder order = zcOrderService.get(orderId);
-        Date receiveDownTime = DateUtil.addDayToDate(order.getDeliverTime(), 14);
+        Date receiveDownTime = DateUtil.addDayToDate(order.getDeliverTime(), 10);
         request.setAttribute("receiveDownTime", receiveDownTime);
 
         OrderProductInfo product = zcOrderService.getProductInfo(order);
@@ -858,7 +858,7 @@ public class ApiOrderController extends BaseController {
     @RequestMapping("/toRefund")
     public String toRefund(String orderId, HttpServletRequest request) {
         ZcOrder order = zcOrderService.get(orderId);
-        Date returnDeliverTime = DateUtil.addDayToDate(order.getReturnDeliverTime(), 14);
+        Date returnDeliverTime = DateUtil.addDayToDate(order.getReturnDeliverTime(), 10);
         order.setReturnDeliverTime(returnDeliverTime);
         request.setAttribute("order", order);
 
@@ -987,7 +987,7 @@ public class ApiOrderController extends BaseController {
                 }
             } else {
                 // 买家退货发货超过14天则自动退款结束订单
-                if(!"OS15".equals(order.getOrderStatus()) && new Date().getTime() - order.getReturnDeliverTime().getTime() > 14*24*60*60*1000) {
+                if(!"OS15".equals(order.getOrderStatus()) && new Date().getTime() - order.getReturnDeliverTime().getTime() > 10*24*60*60*1000) {
                     return refund(order);
                 }
             }

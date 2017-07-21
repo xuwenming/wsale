@@ -1,8 +1,12 @@
 package jb.controller;
 
 import com.alibaba.fastjson.JSON;
+import jb.absx.F;
 import jb.pageModel.*;
+import jb.service.UserServiceI;
 import jb.service.ZcProtectionServiceI;
+import jb.util.Constants;
+import jb.util.RSAUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,6 +32,8 @@ public class ZcProtectionController extends BaseController {
 	@Autowired
 	private ZcProtectionServiceI zcProtectionService;
 
+	@Autowired
+	private UserServiceI userService;
 
 	/**
 	 * 跳转到ZcProtection管理页面
@@ -81,9 +88,9 @@ public class ZcProtectionController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/addPage")
-	public String addPage(HttpServletRequest request) {
-		ZcProtection zcProtection = new ZcProtection();
-		zcProtection.setId(jb.absx.UUID.uuid());
+	public String addPage(String userId, String protectionType, HttpServletRequest request) {
+		request.setAttribute("userId", userId);
+		request.setAttribute("protectionType", protectionType);
 		return "/zcprotection/zcProtectionAdd";
 	}
 
@@ -94,9 +101,27 @@ public class ZcProtectionController extends BaseController {
 	 */
 	@RequestMapping("/add")
 	@ResponseBody
-	public Json add(ZcProtection zcProtection) {
-		Json j = new Json();		
-		zcProtectionService.add(zcProtection);
+	public Json add(ZcProtection zcProtection, String checkPwd, HttpServletRequest request) {
+		Json j = new Json();
+
+		// 获取提现充值密码
+		String privateKey = (String)request.getSession().getAttribute(RSAUtil.PRIVATE_KEY);
+		if(F.empty(privateKey)) {
+			j.setMsg("操作失败，请刷新或关闭当前浏览器重新打开！");
+			return j;
+		}
+		checkPwd = RSAUtil.decryptByPravite(checkPwd, privateKey);
+
+		User admin = userService.get(Constants.MANAGERADMIN);
+		if(F.empty(checkPwd) || !checkPwd.equals(admin.getHxPassword())) {
+			j.fail();
+			j.setMsg("校验密码错误");
+			return j;
+		}
+
+		zcProtection.setPayStatus("PS02");
+		zcProtection.setPaytime(new Date());
+		zcProtectionService.addAndUpdateWallet(zcProtection);
 		j.setSuccess(true);
 		j.setMsg("添加成功！");		
 		return j;

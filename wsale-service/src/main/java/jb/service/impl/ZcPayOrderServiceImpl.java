@@ -92,8 +92,8 @@ public class ZcPayOrderServiceImpl extends BaseServiceImpl<ZcPayOrder> implement
 		if (zcPayOrder != null) {
 			whereHql += " where 1=1 ";
 			if (!F.empty(zcPayOrder.getOrderNo())) {
-				whereHql += " and t.orderNo = :orderNo";
-				params.put("orderNo", zcPayOrder.getOrderNo());
+				whereHql += " and t.orderNo like :orderNo";
+				params.put("orderNo", "%%" + zcPayOrder.getOrderNo() + "%%");
 			}		
 			if (!F.empty(zcPayOrder.getObjectType())) {
 				whereHql += " and t.objectType = :objectType";

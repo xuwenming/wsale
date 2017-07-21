@@ -1,8 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="jb.model.TzcForumBbs" %>
-<%@ page import="jb.model.TzcBbsLog" %>
-<%@ page import="jb.model.TzcBbsComment" %>
-<%@ page import="jb.model.TzcBbsReward" %>
+<%@ page import="jb.model.TzcPayOrder" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -39,15 +36,23 @@
 					}, grid: null
 				}, 1: {
 					invoke: function () {
-						gridMap.handle(this,loadCommentDataGrid);
+						gridMap.handle(this,loadAddressDataGrid);
 					}, grid: null
 				}, 2: {
 					invoke: function () {
-						gridMap.handle(this,loadRewardDataGrid);
+						gridMap.handle(this,loadPayOrderDataGrid);
 					}, grid: null
 				}, 3: {
 					invoke: function () {
-						gridMap.handle(this,loadLogDataGrid);
+						gridMap.handle(this,loadAttedDataGrid);
+					}, grid: null
+				}, 4: {
+					invoke: function () {
+						gridMap.handle(this,loadFansDataGrid);
+					}, grid: null
+				}, 5: {
+					invoke: function () {
+						gridMap.handle(this,loadShieldorsDataGrid);
 					}, grid: null
 				}
 			};
@@ -58,9 +63,9 @@
 			});
 		});
 
-		function loadCommentDataGrid() {
-			return $('#commentDataGrid').datagrid({
-				url : '${pageContext.request.contextPath}/zcBbsCommentController/dataGrid?bbsId=${zcForumBbs.id}',
+		function loadAddressDataGrid() {
+			return $('#addressDataGrid').datagrid({
+				url : '${pageContext.request.contextPath}/zcAddressController/dataGridByUser?userId=${user.id}&orderId=-1',
 				fit : true,
 				fitColumns : true,
 				border : false,
@@ -83,73 +88,156 @@
 					hidden : true
 				}, {
 					field : 'addtime',
-					title : '<%=TzcBbsComment.ALIAS_ADDTIME%>',
-					width : 50,
-					sortable : true
-				}, {
-					field : 'userName',
-					title : '<%=TzcBbsComment.ALIAS_USER_ID%>',
+					title : '创建时间',
 					width : 50
 				}, {
-					field : 'comment',
-					title : '<%=TzcBbsComment.ALIAS_COMMENT%>',
-					width : 100,
-					formatter : function(value, row, index) {
+					field : 'atype',
+					title : '类型',
+					width : 30,
+					formatter:function(value){
 						var str = "";
-						if(value && row.ctype == 'IMAGE'){
-							str = "<img class=\"imageS\" style=\"height: 60px;width: 80px;\" src=\""+value+"\" i=\""+value+"\" />";
-						} else str = value;
+						if(value == 1) str = "收货地址";
+						else str = "退货地址";
 						return str;
 					}
-				} ] ],
-				onLoadSuccess : function() {
-					$('.imageS').simpleSlide();
-				}
-			});
-		}
-		function loadRewardDataGrid() {
-			return $('#rewardDataGrid').datagrid({
-				url : '${pageContext.request.contextPath}/zcBbsRewardController/dataGrid?bbsId=${zcForumBbs.id}',
-				fit : true,
-				fitColumns : true,
-				border : false,
-				pagination : true,
-				idField : 'id',
-				pageSize : 10,
-				pageList : [ 10, 20, 30, 40, 50 ],
-				sortName : 'addtime',
-				sortOrder : 'desc',
-				checkOnSelect : false,
-				selectOnCheck : false,
-				nowrap : false,
-				striped : true,
-				rownumbers : true,
-				singleSelect : true,
-				columns : [ [ {
-					field : 'id',
-					title : '编号',
-					width : 150,
-					hidden : true
-				}, {
-					field : 'addtime',
-					title : '<%=TzcBbsReward.ALIAS_ADDTIME%>',
-					width : 80,
-					sortable:true
 				}, {
 					field : 'userName',
-					title : '<%=TzcBbsReward.ALIAS_USER_ID%>',
-					width : 80
+					title : '姓名',
+					width : 30
 				}, {
-					field : 'rewardFee',
-					title : '<%=TzcBbsReward.ALIAS_REWARD_FEE%>',
-					width : 50,
-					sortable:true
+					field : 'telNumber',
+					title : '联系电话',
+					width : 30
+				}, {
+					field : 'detailInfo',
+					title : '详细地址',
+					width : 100,
+					formatter:function(value, row, index){
+						return row.provinceName + row.cityName + row.countyName + row.detailInfo;
+					}
 				} ] ]
 			});
 		}
-		function loadLogDataGrid() {
-			return $('#logDataGrid').datagrid({
-				url : '${pageContext.request.contextPath}/zcBbsLogController/dataGrid?bbsId=${zcForumBbs.id}',
+		function loadPayOrderDataGrid() {
+			return $('#payOrderDataGrid').datagrid({
+				url : '${pageContext.request.contextPath}/zcPayOrderController/dataGridByUser?userId=${user.id}',
+				fit : true,
+				fitColumns : true,
+				border : false,
+				pagination : true,
+				idField : 'id',
+				pageSize : 10,
+				pageList : [ 10, 20, 30, 40, 50 ],
+				sortName : 'addtime',
+				sortOrder : 'desc',
+				checkOnSelect : false,
+				selectOnCheck : false,
+				nowrap : true,
+				striped : true,
+				rownumbers : true,
+				singleSelect : true,
+				columns : [ [ {
+					field : 'id',
+					title : '编号',
+					width : 150,
+					hidden : true
+				}, {
+					field : 'addtime',
+					title : '<%=TzcPayOrder.ALIAS_ADDTIME%>',
+					width : 50,
+					sortable : true
+				}, {
+					field : 'orderNo',
+					title : '<%=TzcPayOrder.ALIAS_ORDER_NO%>',
+					width : 50
+				}, {
+					field : 'totalFee',
+					title : '<%=TzcPayOrder.ALIAS_TOTAL_FEE%>',
+					width : 50,
+					sortable : true
+				}, {
+					field : 'serviceFee',
+					title : '技术服务费',
+					width : 50,
+					formatter:function(value){
+						return $.fenToYuan(value);
+					}
+				}, {
+					field : 'objectTypeZh',
+					title : '<%=TzcPayOrder.ALIAS_OBJECT_TYPE%>',
+					width : 50,
+					formatter : function(value, row, index) {
+						if(row.objectType == 'PO05') return '<a onclick="viewOrderFun(\'' + row.objectId + '\')">'+value+'</a>';
+						else return value;
+					}
+				}, {
+					field : 'channelZh',
+					title : '<%=TzcPayOrder.ALIAS_CHANNEL%>',
+					width : 50
+				}, {
+					field : 'payStatusZh',
+					title : '<%=TzcPayOrder.ALIAS_PAY_STATUS%>',
+					width : 50,
+					formatter : function(value, row, index) {
+						if(row.payStatus == 'PS02') return '<font color="#4cd964;">' + row.payStatusZh + '</font>';
+						return row.payStatusZh;
+					}
+				}, {
+					field : 'paytime',
+					title : '支付时间',
+					width : 50,
+					sortable : true
+				}, {
+					field : 'refundNo',
+					title : '退款单号',
+					width : 50
+				}, {
+					field : 'refundFee',
+					title : '退款金额',
+					width : 50,
+					formatter:function(value){
+						if(!value) return "";
+						return $.fenToYuan(value);
+					}
+				}, {
+					field : 'refundtime',
+					title : '退款时间',
+					width : 50,
+					sortable : true
+				}, {
+					field : 'refTransactionNo',
+					title : '第三方支付订单号',
+					width : 50
+				} ] ],
+				toolbar: [{
+					text:'查询',
+					iconCls: 'brick_add',
+					handler: function(){
+						$('#payOrderDataGrid').datagrid('load', $.serializeObject($('#payOrderSearchForm')));
+					}
+				},'-',{
+					text:'清空条件',
+					iconCls: 'brick_delete',
+					handler: function(){
+						$('#payOrderSearchForm input').val('');
+						$('#payOrderDataGrid').datagrid('load', {});
+					}
+				}]
+			});
+		}
+
+		function loadAttedDataGrid() {
+			return loadShieldorfansDataGrid($('#attedDataGrid'), '${pageContext.request.contextPath}/zcShieldorfansController/dataGridByUser?objectId=${user.id}&objectType=FS', 1);
+		}
+		function loadFansDataGrid() {
+			return loadShieldorfansDataGrid($('#fansDataGrid'), '${pageContext.request.contextPath}/zcShieldorfansController/dataGridByUser?objectById=${user.id}&objectType=FS', 2);
+		}
+		function loadShieldorsDataGrid() {
+			return loadShieldorfansDataGrid($('#shieldorsDataGrid'), '${pageContext.request.contextPath}/zcShieldorfansController/dataGridByUser?objectId=${user.id}&objectType=SD', 1);
+		}
+		function loadShieldorfansDataGrid(dom, url, type) {
+			return dom.datagrid({
+				url : url,
 				fitColumns: true,
 				fit:true,
 				border: false,
@@ -172,37 +260,30 @@
 					hidden : true
 				}, {
 					field : 'addtime',
-					title : '<%=TzcBbsLog.ALIAS_ADDTIME%>',
-					width : 50,
+					title : '创建时间',
+					width : 30,
 					sortable : true
 				}, {
-					field : 'userName',
-					title : '<%=TzcBbsLog.ALIAS_USER_ID%>',
-					width : 50
-				}, {
-					field : 'logTypeZh',
-					title : '<%=TzcBbsLog.ALIAS_LOG_TYPE%>',
-					width : 50
-				}, {
-					field : 'content',
-					title : '<%=TzcBbsLog.ALIAS_CONTENT%>',
-					width : 100
-				} ] ],
-				toolbar: [{
-					text:'查询',
-					iconCls: 'brick_add',
-					handler: function(){
-						$('#logDataGrid').datagrid('load', $.serializeObject($('#logSearchForm')));
+					field : 'nickname',
+					title : '用户昵称',
+					width : 50,
+					formatter : function(value, row, index) {
+						var str = "";
+						if(type == 1) str = row.objectByName;
+						else str = row.objectName;
+						return str;
 					}
-				},'-',{
-					text:'清空条件',
-					iconCls: 'brick_delete',
-					handler: function(){
-						$('#logSearchForm input').val('');
-						$('#logDataGrid').datagrid('load', {});
-					}
-				}]
+				} ] ]
 
+			});
+		}
+
+		function viewOrderFun(id) {
+			parent.$.modalDialog({
+				title : '查看数据',
+				width : 780,
+				height : 500,
+				href : '${pageContext.request.contextPath}/zcOrderController/view?id=' + id
 			});
 		}
 	</script>
@@ -308,18 +389,46 @@
 					</table>
 				</div>
 				<div title="地址管理">
-					<table ></table>
+					<table id="addressDataGrid"></table>
 				</div>
-				<div title="信息1">
-					<table ></table>
+				<div title="支付记录">
+					<div class="easyui-layout" data-options="fit : true,border : false">
+						<div data-options="region:'north',title:'查询条件',border:false" style="height: 70px; overflow: hidden;">
+							<form id="payOrderSearchForm">
+								<table class="table table-hover table-condensed">
+									<td>
+										交易单号：
+										<input type="text" name="orderNo" class="span2"/>
+									</td>
+									<td>
+										支付状态：
+										<jb:select dataType="PS" name="payStatus"></jb:select>
+									</td>
+									<td>
+										支付类型：
+										<jb:select dataType="PO" name="objectType"></jb:select>
+									</td>
+									<td>
+										支付渠道：
+										<jb:select dataType="CS" name="channel"></jb:select>
+									</td>
+								</table>
+							</form>
+						</div>
+						<div data-options="region:'center',border:false">
+							<table id="payOrderDataGrid"></table>
+						</div>
+					</div>
 				</div>
-				<div title="信息2">
-					<table ></table>
+				<div title="关注列表">
+					<table id="attedDataGrid"></table>
 				</div>
-				<div title="信息3">
-					<table ></table>
+				<div title="粉丝列表">
+					<table id="fansDataGrid"></table>
 				</div>
-
+				<div title="屏蔽列表">
+					<table id="shieldorsDataGrid"></table>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -293,10 +293,7 @@
                     if(result.rows.length != 0) {
                         for(var i in result.rows) {
                             var productDetail = result.rows[i];
-                            var dom = buildProductDetail(productDetail);
-                            dom.find(".lazy").lazyload({
-                                placeholder : base + 'wsale/images/lazyload.png'
-                            });
+                            buildProductDetail(productDetail);
                         }
 
                         loading = false;
@@ -785,11 +782,13 @@
 
             for(var i=0; i<files.length; i++) {
 //                elm.append('<img class="lazy ppxq-imglist" data-original="'+files[i].fileHandleUrl+'" />\n');
-                elm.append('<div class="atted-content-img lazy '+oneImg+'" data-original="'+files[i].fileHandleUrl+'"></div>\n')
+                elm.append('<div class="atted-content-img lazy '+oneImg+'" data-original="'+files[i].fileHandleUrl+'"></div>\n');
                 items.push(files[i].fileHandleUrl);
             }
 
-            elm.find('.atted-content-img').click(function(){
+            elm.find('.atted-content-img').lazyload({
+                placeholder : base + 'wsale/images/lazyload.png'
+            }).click(function(){
                 if('${subscribe}' == 0) {
                     $('.mask-layer, .subscribe').show();
                     addSubscribeLog(product.id);
@@ -809,6 +808,10 @@
             if(likes.total > likes.rows.length)
                 $div.append('<img class="moreLike down" style="width: 29px; height: 29px; border: 1px solid #9A9DA5;" src="${pageContext.request.contextPath}/wsale/images/down-icon.png" />');
             elm.html($div);
+
+            elm.find('.lazy').lazyload({
+                placeholder : base + 'wsale/images/lazyload.png'
+            });
         }
 
         function drawAuction(elm, product, load) {

@@ -1577,4 +1577,68 @@ public class SendWxMessageImpl {
             }
         });
     }
+
+    /**
+     * 资金变动通知
+     * @param
+     */
+    public void sendFundChangeTemplateMessage(final ZcProtection zcProtection) {
+        final CompletionService completionService = CompletionFactory.initCompletion();
+
+        completionService.submit(new Task<Object, Boolean>(null) {
+            @Override
+            public Boolean call() throws Exception {
+                WxTemplate temp = new WxTemplate();
+                User user = userService.getByZc(zcProtection.getUserId());
+
+                String remarkStr;
+                if("PN01".equals(zcProtection.getProtectionType())) { // 充值
+                    remarkStr = "来自后台充值！";
+                } else if("PN02".equals(zcProtection.getProtectionType())) { // 扣除
+                    remarkStr = "来自后台扣除！";
+                    if(!F.empty(zcProtection.getReason())) remarkStr += "扣除原因：" + zcProtection.getReason() + "。";
+                    remarkStr += "如有疑问请联系集东集西客服";
+                } else { // 提现到余额
+                    remarkStr = "来自后台操作，已提现到您的余额请注意查收！";
+                }
+
+                Map<String, TemplateData> data = new HashMap<String, TemplateData>();
+
+                temp.setTouser(user.getName());
+                temp.setUrl(PathUtil.getUrlPath("api/apiWallet/myProtection"));
+                temp.setTemplate_id(WeixinUtil.FUND_CHANGE_TEMPLATE_ID);
+
+                TemplateData first = new TemplateData();
+                first.setValue("尊敬的『" + user.getNickname() + "』，您的账户资金发生以下变动！\n");
+                data.put("first", first);
+
+                // 类型
+                TemplateData keyword1 = new TemplateData();
+                keyword1.setValue("消保金" + zcProtection.getProtectionTypeZh());
+                keyword1.setColor("#0000E3");
+                data.put("keyword1", keyword1);
+
+                // 金额
+                TemplateData keyword2 = new TemplateData();
+                keyword2.setValue(zcProtection.getPrice() + "元");
+                keyword2.setColor("#0000E3");
+                data.put("keyword2", keyword2);
+
+                // 时间
+                TemplateData keyword3 = new TemplateData();
+                keyword3.setValue(DateUtil.format(zcProtection.getAddtime(), Constants.DATE_FORMAT));
+                data.put("keyword3", keyword3);
+
+                // 备注
+                TemplateData remark = new TemplateData();
+                remark.setValue("\n备注：" + remarkStr);
+                data.put("remark", remark);
+
+                temp.setData(data);
+
+                WeixinUtil.sendTemplateMessage(temp);
+                return true;
+            }
+        });
+    }
 }

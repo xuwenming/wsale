@@ -28,8 +28,15 @@ public class ZcPayOrder implements java.io.Serializable {
 	private boolean isRefundServiceFee;
 	private String attachType;
 
+	public String getObjectTypeZh() {
+		return Application.getString(this.objectType);
+	}
 	public String getChannelZh() {
 		return Application.getString(this.channel);
+	}
+
+	public String getPayStatusZh() {
+		return Application.getString(this.payStatus);
 	}
 	public void setId(String value) {
 		this.id = value;

@@ -14,6 +14,30 @@
 					text : '数据处理中，请稍后....'
 				});
 				var isValid = $(this).form('validate');
+
+				if(isValid && $('#price').val() == 0) {
+					isValid = false;
+					alert('金额不允许为0！');
+				}
+
+				var checkPwd = "", checkPwdInp = $('#checkPwdInp').val();
+				if(checkPwdInp != '') {
+					$.ajax({
+						type: "GET",
+						url: "${pageContext.request.contextPath}/userController/getPublicKey",
+						dataType: "json",
+						async : false,
+						success:function (data) {
+							if(data.success) {
+								var encrypt = new JSEncrypt();
+								encrypt.setPublicKey(data.obj);
+								checkPwd = encrypt.encrypt($('#checkPwdInp').val());
+							}
+						}
+					});
+				}
+				$('#checkPwd').val(checkPwd);
+
 				if (!isValid) {
 					parent.$.messager.progress('close');
 				}
@@ -33,61 +57,31 @@
 	});
 </script>
 <div class="easyui-layout" data-options="fit:true,border:false">
-	<div data-options="region:'center',border:false" title="" style="overflow: auto;">	
-		<form id="form" method="post">		
-				<input type="hidden" name="id"/>
+	<div data-options="region:'center',border:false" title="" style="overflow: auto;">
+		<form id="form" method="post">
+			<input type="hidden" name="userId" value = "${userId}"/>
+			<input type="hidden" name="protectionType" value = "${protectionType}"/>
 			<table class="table table-hover table-condensed">
-				<tr>	
-					<th><%=TzcProtection.ALIAS_USER_ID%></th>	
-					<td>
-											<input class="span2" name="userId" type="text"/>
-					</td>							
-					<th><%=TzcProtection.ALIAS_PROTECTION_TYPE%></th>	
-					<td>
-											<jb:select dataType="PT" name="protectionType"></jb:select>	
-					</td>							
-				</tr>	
-				<tr>	
-					<th><%=TzcProtection.ALIAS_PRICE%></th>	
-					<td>
-											<input class="span2" name="price" type="text"/>
-					</td>							
-					<th><%=TzcProtection.ALIAS_REASON%></th>	
-					<td>
-											<input class="span2" name="reason" type="text"/>
-					</td>							
-				</tr>	
-				<tr>	
-					<th><%=TzcProtection.ALIAS_PAY_STATUS%></th>	
-					<td>
-											<jb:select dataType="PS" name="payStatus"></jb:select>	
-					</td>							
-					<th><%=TzcProtection.ALIAS_PAYTIME%></th>	
-					<td>
-					<input name="paytime" type="text" onclick="WdatePicker({dateFmt:'<%=TzcProtection.FORMAT_PAYTIME%>'})"  maxlength="0" class="span " />
-					</td>							
-				</tr>	
-				<tr>	
-					<th><%=TzcProtection.ALIAS_ADD_USER_ID%></th>	
-					<td>
-											<input class="span2" name="addUserId" type="text"/>
-					</td>							
-					<th><%=TzcProtection.ALIAS_ADDTIME%></th>	
-					<td>
-					<input name="addtime" type="text" onclick="WdatePicker({dateFmt:'<%=TzcProtection.FORMAT_ADDTIME%>'})"  maxlength="0" class="span " />
-					</td>							
-				</tr>	
-				<tr>	
-					<th><%=TzcProtection.ALIAS_UPDATE_USER_ID%></th>	
-					<td>
-											<input class="span2" name="updateUserId" type="text"/>
-					</td>							
-					<th><%=TzcProtection.ALIAS_UPDATETIME%></th>	
-					<td>
-					<input name="updatetime" type="text" onclick="WdatePicker({dateFmt:'<%=TzcProtection.FORMAT_UPDATETIME%>'})"  maxlength="0" class="span " />
-					</td>							
-				</tr>	
-			</table>		
+				<th width="12%">金额</th>
+				<td colspan="3">
+					<input name="price" value="1000" class="easyui-numberspinner"
+						   style="width: 140px; height: 29px;" required="required"
+						   data-options="editable:true">
+				</td>
+				<tr>
+					<th valign="top">备注</th>
+					<td colspan="3">
+						<textarea style="width: 510px;height: 60px;" name="reason"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<th>校验密码<font color="red" id="msg">*</font></th>
+					<td colspan="3">
+						<input id="checkPwd" name="checkPwd" type="hidden" />
+						<input id="checkPwdInp" type="password" class="easyui-validatebox span2" data-options="required:true" maxlength="20"/>
+					</td>
+				</tr>
+			</table>
 		</form>
 	</div>
 </div>

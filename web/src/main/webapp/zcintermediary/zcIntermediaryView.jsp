@@ -66,7 +66,7 @@
 				<th><%=TzcIntermediary.ALIAS_STATUS%></th>
 				<td>
 					${zcIntermediary.statusZh}
-					<c:if test="${zcIntermediary.status == 'IS02'}">
+					<c:if test="${zcIntermediary.status == 'IS02' or zcIntermediary.status == 'IS04'}">
 						<a href="javascript:void(0);" class="easyui-linkbutton"  onclick="viewOrder();">查看订单</a>
 					</c:if>
 				</td>

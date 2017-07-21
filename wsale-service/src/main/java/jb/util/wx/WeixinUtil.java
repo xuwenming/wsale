@@ -191,6 +191,11 @@ public class WeixinUtil {
 	 */
 	public static String MARGIN_REFUND_TEMPLATE_ID;
 
+	/**
+	 * 资金变动通知
+	 */
+	public static String FUND_CHANGE_TEMPLATE_ID;
+
 	static {
 		AUTH_FAIL_TEMPLATE_ID = Application.getString("TM001");
 		OFFLINE_TRANSFER_TEMPLATE_ID = Application.getString("TM002");
@@ -214,6 +219,7 @@ public class WeixinUtil {
 		TRANSACTION_TEMPLATE_ID = Application.getString("TM020");
 		PAY_REMIND_TEMPLATE_ID = Application.getString("TM021");
 		MARGIN_REFUND_TEMPLATE_ID = Application.getString("TM022");
+		FUND_CHANGE_TEMPLATE_ID = Application.getString("TM023");
 	}
 
 	public static String CreateNoncestr(int length) {

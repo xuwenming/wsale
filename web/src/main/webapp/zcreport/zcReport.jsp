@@ -39,7 +39,7 @@
 			sortOrder : 'desc',
 			checkOnSelect : false,
 			selectOnCheck : false,
-			nowrap : false,
+			nowrap : true,
 			striped : true,
 			rownumbers : true,
 			singleSelect : true,

@@ -24,8 +24,8 @@ public class TzcPayOrder implements java.io.Serializable,IEntity{
 	//alias
 	public static final String TABLE_ALIAS = "ZcPayOrder";
 	public static final String ALIAS_ID = "主键";
-	public static final String ALIAS_ORDER_NO = "订单编号";
-	public static final String ALIAS_OBJECT_TYPE = "类型";
+	public static final String ALIAS_ORDER_NO = "交易单号";
+	public static final String ALIAS_OBJECT_TYPE = "支付类型";
 	public static final String ALIAS_OBJECT_ID = "业务id";
 	public static final String ALIAS_CHANNEL = "支付渠道";
 	public static final String ALIAS_TOTAL_FEE = "支付金额";

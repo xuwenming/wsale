@@ -53,9 +53,57 @@
 				field : 'reason',
 				title : '备注',
 				width : 100
-			}  ] ]
+			}  ] ],
+			toolbar: [{
+				text:'充值',
+				iconCls: 'brick_add',
+				handler: function(){
+					//recharge();
+					edit('PN01');
+				}
+			},'-',{
+				text:'提现',
+				iconCls: 'brick_delete',
+				handler: function(){
+					edit('PN03');
+				}
+			},'-',{
+				text:'扣除',
+				iconCls: 'brick_delete',
+				handler: function(){
+					edit('PN02');
+				}
+			}]
 		});
 	});
+
+	function edit(type) {
+		var title, text;
+		if(type == 'PN01') {
+			title = '消保金充值';
+			text = '充值';
+		} else if(type == 'PN02') {
+			title = '消保金扣除';
+			text = '扣除';
+		} else {
+			title = '消保金提现';
+			text = '提现';
+		}
+		parent.$.modalDialog({
+			title : title,
+			width : 650,
+			height : 260,
+			href : '${pageContext.request.contextPath}/zcProtectionController/addPage?userId=${userId}&protectionType=' + type,
+			buttons : [ {
+				text : text,
+				handler : function() {
+					parent.$.modalDialog.openner_dataGrid = dataGrid;//因为添加成功之后，需要刷新这个dataGrid，所以先预定义好
+					var f = parent.$.modalDialog.handler.find('#form');
+					f.submit();
+				}
+			} ]
+		});
+	}
 </script>
 </head>
 <body>

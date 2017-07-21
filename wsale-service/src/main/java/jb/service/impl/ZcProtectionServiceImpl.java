@@ -1,30 +1,41 @@
 package jb.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import jb.absx.F;
 import jb.dao.ZcProtectionDaoI;
 import jb.model.TzcProtection;
-import jb.pageModel.ZcProtection;
 import jb.pageModel.DataGrid;
 import jb.pageModel.PageHelper;
+import jb.pageModel.ZcProtection;
+import jb.pageModel.ZcWalletDetail;
 import jb.service.ZcProtectionServiceI;
-
+import jb.service.ZcWalletDetailServiceI;
+import jb.service.ZcWalletServiceI;
+import jb.util.MyBeanUtils;
+import jb.util.Util;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import jb.util.MyBeanUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ZcProtectionServiceImpl extends BaseServiceImpl<ZcProtection> implements ZcProtectionServiceI {
 
 	@Autowired
 	private ZcProtectionDaoI zcProtectionDao;
+
+	@Autowired
+	private ZcWalletServiceI zcWalletService;
+
+	@Autowired
+	private ZcWalletDetailServiceI zcWalletDetailService;
+
+	@Autowired
+	private SendWxMessageImpl sendWxMessage;
 
 	@Override
 	public DataGrid dataGrid(ZcProtection zcProtection, PageHelper ph) {
@@ -83,6 +94,35 @@ public class ZcProtectionServiceImpl extends BaseServiceImpl<ZcProtection> imple
 		TzcProtection t = new TzcProtection();
 		BeanUtils.copyProperties(zcProtection, t);
 		zcProtectionDao.save(t);
+		zcProtection.setAddtime(t.getAddtime());
+	}
+
+	@Override
+	public void addAndUpdateWallet(ZcProtection zcProtection) {
+		add(zcProtection);
+
+		if("PN01".equals(zcProtection.getProtectionType())) {// 充值
+			// 修改用户消保金余额
+			zcWalletService.updateProtection(zcProtection.getUserId(), zcProtection.getPrice());
+		} else if("PN02".equals(zcProtection.getProtectionType())) { // 扣除
+			// 修改用户消保金余额
+			zcWalletService.updateProtection(zcProtection.getUserId(), -zcProtection.getPrice());
+		} else { // 提现到余额
+			zcWalletService.updateProtection(zcProtection.getUserId(), -zcProtection.getPrice());
+
+			// 新增钱包收支明细
+			ZcWalletDetail walletDetail = new ZcWalletDetail();
+			walletDetail.setUserId(zcProtection.getUserId());
+			walletDetail.setOrderNo(Util.CreateWalletNo());
+			walletDetail.setAmount(zcProtection.getPrice());
+			walletDetail.setWtype("WT11"); // 消保金转入
+			walletDetail.setDescription("消保金提现转入");
+			walletDetail.setChannel("CS04");
+			zcWalletDetailService.addAndUpdateWallet(walletDetail);
+		}
+
+		// 发送资金变动通知
+		sendWxMessage.sendFundChangeTemplateMessage(zcProtection);
 	}
 
 	@Override

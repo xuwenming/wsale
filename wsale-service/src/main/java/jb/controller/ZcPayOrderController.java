@@ -56,6 +56,18 @@ public class ZcPayOrderController extends BaseController {
 	public DataGrid dataGrid(ZcPayOrder zcPayOrder, PageHelper ph) {
 		return zcPayOrderService.dataGrid(zcPayOrder, ph);
 	}
+
+	/**
+	 * 获取ZcPayOrder数据表格
+	 *
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping("/dataGridByUser")
+	@ResponseBody
+	public DataGrid dataGridByUser(ZcPayOrder zcPayOrder, PageHelper ph) {
+		return zcPayOrderService.dataGrid(zcPayOrder, ph);
+	}
 	/**
 	 * 获取ZcPayOrder数据表格excel
 	 * 

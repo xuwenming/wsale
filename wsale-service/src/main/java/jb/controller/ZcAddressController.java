@@ -56,6 +56,13 @@ public class ZcAddressController extends BaseController {
 	public DataGrid dataGrid(ZcAddress zcAddress, PageHelper ph) {
 		return zcAddressService.dataGrid(zcAddress, ph);
 	}
+
+	@RequestMapping("/dataGridByUser")
+	@ResponseBody
+	public DataGrid dataGridByUser(ZcAddress zcAddress, PageHelper ph) {
+		return zcAddressService.dataGrid(zcAddress, ph);
+	}
+
 	/**
 	 * 获取ZcAddress数据表格excel
 	 * 

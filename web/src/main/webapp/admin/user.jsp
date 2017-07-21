@@ -198,7 +198,8 @@
 				parent.$.messager.progress('close');
 
 				$(this).datagrid('tooltip');
-			},
+			}
+			/*,
 			onRowContextMenu : function(e, rowIndex, rowData) {
 				e.preventDefault();
 				$(this).datagrid('unselectAll').datagrid('uncheckAll');
@@ -207,7 +208,7 @@
 					left : e.pageX,
 					top : e.pageY
 				});
-			}
+			}*/
 		});
 	});
 

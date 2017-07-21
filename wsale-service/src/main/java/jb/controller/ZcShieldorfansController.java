@@ -1,18 +1,28 @@
 package jb.controller;
 
 import com.alibaba.fastjson.JSON;
+import jb.absx.F;
 import jb.pageModel.*;
+import jb.service.UserServiceI;
 import jb.service.ZcShieldorfansServiceI;
+import jb.service.impl.CompletionFactory;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import wsale.concurrent.CacheKey;
+import wsale.concurrent.CompletionService;
+import wsale.concurrent.Task;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -28,6 +38,8 @@ public class ZcShieldorfansController extends BaseController {
 	@Autowired
 	private ZcShieldorfansServiceI zcShieldorfansService;
 
+	@Autowired
+	private UserServiceI userService;
 
 	/**
 	 * 跳转到ZcShieldorfans管理页面
@@ -48,7 +60,51 @@ public class ZcShieldorfansController extends BaseController {
 	@RequestMapping("/dataGrid")
 	@ResponseBody
 	public DataGrid dataGrid(ZcShieldorfans zcShieldorfans, PageHelper ph) {
-		return zcShieldorfansService.dataGrid(zcShieldorfans, ph);
+		zcShieldorfans.setIsDeleted(false);
+		DataGrid dataGrid = zcShieldorfansService.dataGrid(zcShieldorfans, ph);
+		List<ZcShieldorfans> list = (List<ZcShieldorfans>) dataGrid.getRows();
+		if(!CollectionUtils.isEmpty(list)) {
+			final CompletionService completionService = CompletionFactory.initCompletion();
+			for(ZcShieldorfans sd : list) {
+				if(!F.empty(sd.getObjectId()))
+					completionService.submit(new Task<ZcShieldorfans, User>(new CacheKey("user", sd.getObjectId()), sd) {
+						@Override
+						public User call() throws Exception {
+							User user = userService.getByZc(getD().getObjectId());
+							return user;
+						}
+
+						protected void set(ZcShieldorfans d, User v) {
+							if (v != null)
+								d.setObjectName(v.getNickname());
+						}
+
+					});
+				if(!F.empty(sd.getObjectById()))
+					completionService.submit(new Task<ZcShieldorfans, User>(new CacheKey("user", sd.getObjectById()), sd) {
+						@Override
+						public User call() throws Exception {
+							User user = userService.getByZc(getD().getObjectById());
+							return user;
+						}
+
+						protected void set(ZcShieldorfans d, User v) {
+							if (v != null)
+								d.setObjectByName(v.getNickname());
+						}
+
+					});
+
+			}
+			completionService.sync();
+		}
+		return dataGrid;
+	}
+
+	@RequestMapping("/dataGridByUser")
+	@ResponseBody
+	public DataGrid dataGridByUser(ZcShieldorfans zcShieldorfans, PageHelper ph) {
+		return dataGrid(zcShieldorfans, ph);
 	}
 	/**
 	 * 获取ZcShieldorfans数据表格excel

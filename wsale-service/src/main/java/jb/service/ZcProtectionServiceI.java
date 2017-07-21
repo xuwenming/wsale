@@ -57,4 +57,5 @@ public interface ZcProtectionServiceI {
 
 	public List<ZcProtection> query(ZcProtection zcProtection);
 
+	void addAndUpdateWallet(ZcProtection zcProtection);
 }

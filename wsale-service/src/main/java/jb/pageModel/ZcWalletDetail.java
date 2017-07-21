@@ -35,10 +35,11 @@ public class ZcWalletDetail implements java.io.Serializable {
 
 	// 是否收入
 	public boolean getIsIncome() {
-		// 充值、打赏收入、拍品订单收入、交易退款、保证金转入、提现退回
+		// 充值、打赏收入、拍品订单收入、交易退款、保证金转入、提现退回、消保金提现转入
 		if("WT01".equals(this.wtype) || "WT05".equals(this.wtype)
 				|| "WT07".equals(this.wtype) || "WT04".equals(this.wtype)
-				|| "WT09".equals(this.wtype) || "WT10".equals(this.wtype))
+				|| "WT09".equals(this.wtype) || "WT10".equals(this.wtype)
+				|| "WT11".equals(this.wtype))
 			return true;
 		return false;
 	}

@@ -42,7 +42,7 @@
                 <div class="ppxq-content">
                     <div style=" font-size:18px; font-weight:normal;">${user.nickname}</div>
                 </div>
-                <img class="ppxq-title" src="${user.headImage}" onclick="href('api/userController/homePage?userId=${user.id}');"/>
+                <img class="ppxq-title" src="${user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'" onclick="href('api/userController/homePage?userId=${user.id}');"/>
             </div>
         </div><!-- /header -->
         <div role="main" class="ui-content jqm-content jqm-fullwidth">
@@ -631,7 +631,7 @@
                         if($likeList.find("img").length == 0) {
                             $div.css({'background-color':'#f0f0f0', 'padding': '4px'});
                         }
-                        $div.prepend('<img class="touxiang-list" src="${sessionInfo.headImage}" id="${sessionInfo.id}" onclick="href(\'api/userController/homePage?userId=${sessionInfo.id}\');"/>\n');
+                        $div.prepend('<img class="touxiang-list" src="${sessionInfo.headImage}"'+' onerror="this.src='+'${pageContext.request.contextPath}/wsale/images/user-default.png"'+' id="${sessionInfo.id}" onclick="href(\'api/userController/homePage?userId=${sessionInfo.id}\');"/>\n');
                     }
                 }
             });
@@ -650,7 +650,7 @@
                             for(var i=0; i<likes.length; i++) {
                                 var like = likes[i], clazz = '';
                                 if(i >= 12) clazz = 'more';
-                                $likeList.find('.moreLike').before('<img class="touxiang-list '+clazz+'" src="'+like.user.headImage+'" id="'+like.user.id+'" onclick="href(\'api/userController/homePage?userId='+like.user.id+'\');" />\n');
+                                $likeList.find('.moreLike').before('<img class="touxiang-list '+clazz+'" src="'+like.user.headImage+' onerror="this.src='+'${pageContext.request.contextPath}/wsale/images/user-default.png"' +'" id="'+like.user.id+'" onclick="href(\'api/userController/homePage?userId='+like.user.id+'\');" />\n');
                             }
                         }
                     });
@@ -836,7 +836,7 @@
             var $div = $('<div style="margin:5px 0px; background-color:#f0f0f0;padding:4px;"></div>');
             for(var i=0; i<likes.rows.length; i++) {
                 var like = likes.rows[i];
-                $div.append('<img class="lazy touxiang-list" data-original="'+like.user.headImage+'" id="'+like.user.id+'" onclick="href(\'api/userController/homePage?userId='+like.user.id+'\');"/>\n');
+                $div.append('<img class="lazy touxiang-list"'+' onerror="this.src='+'${pageContext.request.contextPath}/wsale/images/user-default.png"'+' data-original="'+like.user.headImage+'" id="'+like.user.id+'" onclick="href(\'api/userController/homePage?userId='+like.user.id+'\');"/>\n');
             }
             if(likes.total > likes.rows.length)
                 $div.append('<img class="moreLike down" style="width: 29px; height: 29px; border: 1px solid #9A9DA5;" src="${pageContext.request.contextPath}/wsale/images/down-icon.png" />');

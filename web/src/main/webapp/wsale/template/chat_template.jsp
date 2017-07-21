@@ -3,7 +3,7 @@
 <%--聊天列表 --%>
 <div id="chat_list_template" class="qunfa-info" style="display: none;">
 	<div class="left-touxiang">
-		<img class="sysinfo-icon" name="friendUser" data-name="headImage"/>
+		<img class="sysinfo-icon" name="friendUser" data-name="headImage" src="${user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'" />
 	</div>
 	<div class="text-right grayright-text" name="lastTimeStr">
 	</div>
@@ -21,7 +21,7 @@
 		<span class="sixin-time" name="addtime">2015-02-02 12:33</span>
 	</div>
 	<div class="sixin-leftcontent">
-		<img class="sixin-leftimg" name="user" data-name="headImage" />
+		<img class="sixin-leftimg" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'"  name="user" data-name="headImage" />
 		<div class="sixin-record left-margin">
 			<div class="triangle-left"></div>
 			<span name="content"></span>
@@ -35,7 +35,7 @@
 		<span class="sixin-time" name="addtime">2015-02-02 12:33</span>
 	</div>
 	<div class="sixin-rightcontent">
-		<img class="sixin-rightimg" name="user" data-name="headImage"/>
+		<img class="sixin-rightimg" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'"  name="user" data-name="headImage"/>
 		<div class="sixin-record right-margin">
 			<div class="triangle-right"></div>
 			<span name="content"></span>

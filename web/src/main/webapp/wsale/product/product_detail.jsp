@@ -34,7 +34,7 @@
                     <div style=" font-size:18px; font-weight:normal;">${user.nickname}</div>
                     <div class="ppxq-userdesc" style="margin-top:20px;color:#666;font-weight:normal; font-size:12px;">${not empty user.bardian ? user.bardian : '这个人很懒，什么也没说'}</div>
                 </div>
-                <img class="ppxq-title" src="${user.headImage}" onclick="href('api/userController/homePage?userId=${user.id}');"/>
+                <img class="ppxq-title" src="${user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'"   onclick="href('api/userController/homePage?userId=${user.id}');"/>
             </div>
         </div><!-- /header -->
         <div role="main" class="ui-content jqm-content jqm-fullwidth">
@@ -150,7 +150,7 @@
             <div class="ppxq-detail">
                 <div class="ppxq-leftinfo">
                     <div>
-                        <img class="ppxq-touxiang" src="${user.headImage}" onclick="href('api/userController/homePage?userId=${user.id}');"/>
+                        <img class="ppxq-touxiang" src="${user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'"   onclick="href('api/userController/homePage?userId=${user.id}');"/>
                         <div class="ppxq-level">
                             <img src="${pageContext.request.contextPath}/wsale/images/p-${user.positionId}.png" style="width:50%;" />
                         </div>
@@ -249,7 +249,7 @@
                             <c:when test="${likes.total > 0}">
                                 <div style="margin:5px 0px; background-color:#f0f0f0;padding:4px;">
                                     <c:forEach items="${likes.rows}" var="like" varStatus="vs">
-                                        <img class="lazy touxiang-list" data-original="${like.user.headImage}" id="${like.user.id}" onclick="href('api/userController/homePage?userId=${like.user.id}');"/>
+                                        <img class="lazy touxiang-list" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'" data-original="${like.user.headImage}" id="${like.user.id}" onclick="href('api/userController/homePage?userId=${like.user.id}');"/>
                                     </c:forEach>
                                     <c:if test="${likes.total > likes.rows.size()}">
                                         <img class="moreLike down" style="width: 29px; height: 29px; border: 1px solid #9A9DA5;" src="${pageContext.request.contextPath}/wsale/images/down-icon.png" />
@@ -508,7 +508,7 @@
                             if($(".likeList img").length == 0) {
                                 $div.css({'background-color':'#f0f0f0', 'padding': '4px'});
                             }
-                            $div.prepend('<img class="touxiang-list" src="${sessionInfo.headImage}" id="${sessionInfo.id}" onclick="href(\'api/userController/homePage?userId=${sessionInfo.id}\');"/>\n');
+                            $div.prepend('<img class="touxiang-list" src="${sessionInfo.headImage}"'+' onerror="this.src='+'${pageContext.request.contextPath}/wsale/images/user-default.png"' +' id="${sessionInfo.id}" onclick="href(\'api/userController/homePage?userId=${sessionInfo.id}\');"/>\n');
                         }
                     }
                 });
@@ -917,7 +917,7 @@
                             for(var i=0; i<likes.length; i++) {
                                 var like = likes[i], clazz = '';
                                 if(i >= 12) clazz = 'more';
-                                $('.moreLike').before('<img class="touxiang-list '+clazz+'" src="'+like.user.headImage+'" id="'+like.user.id+'" onclick="href(\'api/userController/homePage?userId='+like.user.id+'\');" />\n');
+                                $('.moreLike').before('<img class="touxiang-list '+clazz+'" src="'+like.user.headImage+' onerror="this.src='+'${pageContext.request.contextPath}/wsale/images/user-default.png"'+ ' id="'+like.user.id+'" onclick="href(\'api/userController/homePage?userId='+like.user.id+'\');" />\n');
                             }
                         }
                     });

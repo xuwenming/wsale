@@ -67,7 +67,7 @@
                             <p>
                                 <c:choose>
                                     <c:when test="${topic.user.utype == 'UT02'}">
-                                        <img src="${topic.user.headImage}"/>
+                                        <img src="${topic.user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'" />
                                     </c:when>
                                     <c:otherwise>
                                         <img src="${pageContext.request.contextPath}/wsale/images/logo.png"/>
@@ -137,7 +137,7 @@
 
                     <ul class="rewardUsers">
                         <c:forEach items="${rewards}" var="reward" varStatus="vs">
-                            <li><img src="${reward.user.headImage}"/></li>
+                            <li><img src="${reward.user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'" /></li>
                         </c:forEach>
                     </ul>
                     <div class="gengduo hide"><span>更多</span></div>

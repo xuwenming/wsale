@@ -2,7 +2,7 @@
 <%--评论列表--%>
 <div id="comment_template" style="border-top:10px solid #f5f5f5;clear: both;padding:10px 10px 0px 10px;display: none;">
 	<div class="bbs-com-img">
-		<img class="lazy" style="width:62px;height: 62px;" name="user" data-name="headImage"/>
+		<img class="lazy" src="${user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'" style="width:62px;height: 62px;" name="user" data-name="headImage"/>
 		<div style="margin-top:-20px; text-align:right;width:100%;">
 			<img name="user" data-name="positionIcon" style="width:50%;">
 		</div>
@@ -25,7 +25,7 @@
 <%--我的评论列表--%>
 <li id="my_comment_template" style="display: none;">
 	<div class="speak-li-left">
-		<img class="lazy" name="headImage"/>
+		<img class="lazy" name="headImage" src="${user.headImage}" onerror="this.src='${pageContext.request.contextPath}/wsale/images/user-default.png'" />
 	</div>
 	<div class="speak-li-right">
 		<div class="speak-content">

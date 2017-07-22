@@ -345,7 +345,7 @@ public class ApiPayController extends BaseController {
 	@RequestMapping("/transfers")
 	@ResponseBody
 	public Json transfers(ZcPayOrder payOrder, String bankAccount, String bankPhone,
-  			String bankIdNo, String bankCard, HttpServletRequest request) {
+  			String bankIdNo, String bankName, String bankCard, HttpServletRequest request) {
 		Json j = new Json();
 		try{
 			SessionInfo s = getSessionInfo(request);
@@ -368,6 +368,7 @@ public class ApiPayController extends BaseController {
 			if(!F.empty(bankAccount)) walletDetail.setBankAccount(bankAccount);
 			if(!F.empty(bankPhone)) walletDetail.setBankPhone(bankPhone);
 			if(!F.empty(bankIdNo)) walletDetail.setBankIdNo(bankIdNo);
+			if(!F.empty(bankName)) walletDetail.setBankName(bankName);
 			if(!F.empty(bankCard)) walletDetail.setBankCard(bankCard);
 
 			walletDetail.setWtype("WT02"); // 提现

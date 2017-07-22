@@ -25,6 +25,7 @@ public class ZcWalletDetail implements java.io.Serializable {
 	private java.lang.String bankAccount;
 	private java.lang.String bankPhone;
 	private java.lang.String bankIdNo;
+	private String bankName;
 	private java.lang.String bankCard;
 
 	private String userName;
@@ -204,6 +205,14 @@ public class ZcWalletDetail implements java.io.Serializable {
 
 	public void setBankIdNo(String bankIdNo) {
 		this.bankIdNo = bankIdNo;
+	}
+
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
 	}
 
 	public String getBankCard() {

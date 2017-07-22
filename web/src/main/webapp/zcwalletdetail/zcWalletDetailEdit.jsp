@@ -68,8 +68,14 @@
 					</tr>
 					<tr>
 						<th>身份证</th>
-						<td>
+						<td colspan="3">
 							${zcWalletDetail.bankIdNo}
+						</td>
+					</tr>
+					<tr>
+						<th>开户银行</th>
+						<td>
+							${zcWalletDetail.bankName}
 						</td>
 						<th>银行卡号</th>
 						<td>

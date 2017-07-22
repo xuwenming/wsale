@@ -74,6 +74,7 @@ public class TzcWalletDetail implements java.io.Serializable,IEntity{
 	private java.lang.String bankAccount;
 	private java.lang.String bankPhone;
 	private java.lang.String bankIdNo;
+	private String bankName;
 	private java.lang.String bankCard;
 	//columns END
 
@@ -239,6 +240,15 @@ public class TzcWalletDetail implements java.io.Serializable,IEntity{
 
 	public void setBankIdNo(String bankIdNo) {
 		this.bankIdNo = bankIdNo;
+	}
+
+	@Column(name = "bank_name", unique = false, nullable = true, insertable = true, updatable = true, length = 18)
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
 	}
 
 	@Column(name = "bank_card", unique = false, nullable = true, insertable = true, updatable = true, length = 36)

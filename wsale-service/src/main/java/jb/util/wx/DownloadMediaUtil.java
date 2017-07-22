@@ -93,7 +93,7 @@ public class DownloadMediaUtil {
     }
 
     public static String downloadHeadImage(String headimgurl, String openid) {
-        if(F.empty(headimgurl)) return null;
+        if(F.empty(headimgurl)) return OSSUtil.cdnUrl + "mmopen/headimage/user-default.png";
 
         try {
             URL url = new URL(headimgurl);
@@ -125,6 +125,7 @@ public class DownloadMediaUtil {
         } catch (Exception e) {
             String error = String.format("上传头像失败：%s", e);
             System.out.println(error);
+            headimgurl = OSSUtil.cdnUrl + "mmopen/headimage/user-default.png";
         }
         return headimgurl;
     }

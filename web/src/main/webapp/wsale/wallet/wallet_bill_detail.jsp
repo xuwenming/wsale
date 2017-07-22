@@ -90,6 +90,12 @@
                                 </a>
                                 <a class="faxian-link">
                                     <div class="right-value normal-text">
+                                            ${detail.bankName}
+                                    </div>
+                                    <div class="normal-text">开户银行</div>
+                                </a>
+                                <a class="faxian-link">
+                                    <div class="right-value normal-text">
                                             ${detail.bankCard}
                                     </div>
                                     <div class="normal-text">银行卡号</div>

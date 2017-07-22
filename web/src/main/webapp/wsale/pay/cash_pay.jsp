@@ -46,7 +46,7 @@
 
                 <div id="bankPopup" class="weui-popup-container popup-bottom">
                     <div class="weui-popup-overlay"></div>
-                    <div class="weui-popup-modal" style="height: 360px;overflow: hidden; text-align: center;">
+                    <div class="weui-popup-modal" style="height: 400px;overflow: hidden; text-align: center;">
                         <div class="toolbar">
                             <div class="toolbar-inner">
                                 <a href="javascript:;" class="picker-button close-popup" style="color: #e64340;font-size: .85rem;">关闭</a>
@@ -70,9 +70,15 @@
                                 </a>
                                 <a class="faxian-link" style="padding: 14px;">
                                     <div class="list-right">
-                                        <input type="text" placeholder="请输入身份证号" id="bankIdNo" value="${walletDetail.bankIdNo}" maxlength="18"/>
+                                        <input type="number" placeholder="请输入身份证号" id="bankIdNo" value="${walletDetail.bankIdNo}" maxlength="18"/>
                                     </div>
                                     <div class="normal-text">身份证号</div>
+                                </a>
+                                <a class="faxian-link" style="padding: 14px;">
+                                    <div class="list-right">
+                                        <input type="text" placeholder="请输入开户银行名称" id="bankName" value="${walletDetail.bankName}" maxlength="18"/>
+                                    </div>
+                                    <div class="normal-text">开户银行名称</div>
                                 </a>
                                 <a class="faxian-link" style="padding: 14px;">
                                     <div class="list-right">
@@ -139,7 +145,7 @@
 
             $('.guanzhu-ok').click(function(){
                 var bankAccount = $('#bankAccount').val(), bankPhone = $('#bankPhone').val(),
-                    bankIdNo = $('#bankIdNo').val(), bankCard = $('#bankCard').val();
+                    bankIdNo = $('#bankIdNo').val(), bankName = $('#bankName').val(), bankCard = $('#bankCard').val();
                 if(Util.checkEmpty(bankAccount)) {
                     $('#bankAccount').focus();
                     return;
@@ -150,6 +156,10 @@
                 }
                 if(Util.checkEmpty(bankIdNo)) {
                     $('#bankIdNo').focus();
+                    return;
+                }
+                if(Util.checkEmpty(bankName)) {
+                    $('#bankName').focus();
                     return;
                 }
                 if(Util.checkEmpty(bankCard)) {
@@ -217,6 +227,7 @@
                                 params.bankAccount = $('#bankAccount').val();
                                 params.bankPhone = $('#bankPhone').val();
                                 params.bankIdNo = $('#bankIdNo').val();
+                                params.bankName = $('#bankName').val();
                                 params.bankCard = $('#bankCard').val();
                             }
                             ajaxPost('api/pay/transfers', params, function(data){

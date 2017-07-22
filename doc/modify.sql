@@ -364,5 +364,10 @@ ALTER TABLE `zc_order`
 update zc_order o set total_price = (select p.hammer_price from zc_product p where p.id = o.product_id)
 
 
+-- -----------------------------------------------------
+--   snow.xu 20170721
+-- -----------------------------------------------------
+update tuser set head_image='http://img10.zcys2016.com/mmopen/headimage/user-default.png' where head_image is null or head_image = ''
 
-
+ALTER TABLE `zc_wallet_detail`
+  ADD COLUMN `bank_name`  varchar(18) NULL COMMENT '开户行名称' AFTER `bank_id_no`;

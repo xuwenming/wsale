@@ -63,7 +63,7 @@ public class ProductTask {
                             // 生成订单
                             ZcOrder order = new ZcOrder();
                             order.setProductId(getD().getId());
-                            order.setTotalPrice(getD().getHammerPrice());
+                            order.setTotalPrice(auction.getBid());
                             order01State.handle(order);
 
                             // 截拍

@@ -366,7 +366,7 @@
                                     btnHtml = '<span class="shBtn">确认收货</span>';
                                 }
                             }
-                            otherDownTime = (new Date(order.deliverTime.replace(/-/g,"/")).getTime() + 14*24*60*60*1000) - nowTime;
+                            otherDownTime = (new Date(order.deliverTime.replace(/-/g,"/")).getTime() + 10*24*60*60*1000) - nowTime;
                             otherDownMsg = '确认收货剩余';
                         } else { // 买家已收货
                             viewData.statusName = order.orderStatusZh;

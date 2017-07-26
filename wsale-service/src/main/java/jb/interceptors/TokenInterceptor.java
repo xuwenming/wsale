@@ -137,6 +137,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 				if(sessionInfo != null) {
 					if(sessionInfo.getIsDeleted()) {
 						request.setAttribute("type", "isDeleted");
+						request.setAttribute("nickname", sessionInfo.getNickname());
 						request.getRequestDispatcher("/api/apiCommon/error").forward(request, response);
 						return false;
 					}

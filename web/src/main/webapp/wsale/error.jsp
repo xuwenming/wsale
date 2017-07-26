@@ -39,7 +39,7 @@
       <c:when test="${type == 'isDeleted'}">
         <p>您的账号<span>已被封号</span></p>
         <p><span>解封</span>请联系在线客服或拨打客服电话</p>
-        <p>客服电话：<span><a href="tel:0579-82586020">0579-82586020</a></span></p>
+        <p>客服电话：<span><a href="tel:0579-82586020" style="text-decoration: none;color: red;">0579-82586020</a></span></p>
       </c:when>
       <c:otherwise>
         <p><span>微信扫描</span> 二维码</p>

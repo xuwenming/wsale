@@ -24,6 +24,7 @@ public class User implements java.io.Serializable {
 	private java.lang.Boolean isPayBond;
 	private java.lang.String utype;
 	private java.lang.Boolean isDeleted;
+	private Date blocktime;
 	private Date createdatetime;
 	private Date modifydatetime;
 	private java.lang.Boolean isGag;
@@ -192,6 +193,14 @@ public class User implements java.io.Serializable {
 
 	public void setIsDeleted(Boolean isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+
+	public Date getBlocktime() {
+		return blocktime;
+	}
+
+	public void setBlocktime(Date blocktime) {
+		this.blocktime = blocktime;
 	}
 
 	public Date getCreatedatetime() {

@@ -87,6 +87,17 @@
 							<span style="color: red;">(*拍品成交时收取买方技术服务费百分比)</span>
 						</td>
 					</tr>
+					<tr>
+						<th>是否封号</th>
+						<td colspan="3">
+							<select name="isDeleted" class="easyui-combobox"
+									data-options="width:140,height:29,editable:false,panelHeight:'auto'">
+								<option value="0" <c:if test="${!user.isDeleted}">selected="selected"</c:if>>否</option>
+								<option value="1" <c:if test="${user.isDeleted}">selected="selected"</c:if>>是</option>
+							</select>
+							<span style="color: red;">(*选择封号前后端将无法正常登陆)</span>
+						</td>
+					</tr>
 				</c:if>
 			</table>
 		</form>

@@ -137,7 +137,15 @@
 				title : '是否禁言',
 				width : 50,
 				formatter : function(value, row, index) {
-					if(value) return '是';
+					if(value) return '<font color="#f6383a;">是</font>';
+					else return '否'
+				}
+			}, {
+				field : 'isDeleted',
+				title : '是否封号',
+				width : 50,
+				formatter : function(value, row, index) {
+					if(value) return '<font color="#f6383a;">是</font>';
 					else return '否'
 				}
 			}, {
@@ -171,7 +179,7 @@
 							str += $.formatString('<img onclick="grantFun(\'{0}\');" src="{1}" title="授权"/>', row.id, '${pageContext.request.contextPath}/style/images/extjs_icons/key.png');
 						}
 						str += '&nbsp;';
-						if (row.id != '0' && $.canDelete) {
+						if (row.id != '0' && $.canDelete && row.utype == 'UT01') {
 							str += $.formatString('<img onclick="deleteFun(\'{0}\');" src="{1}" title="删除"/>', row.id, '${pageContext.request.contextPath}/style/images/extjs_icons/cancel.png');
 						}
 						str += '&nbsp;';
@@ -485,6 +493,18 @@
 							<input type="text" name="mobile" class="span2" />
 						</td>
 						<td>
+							类型：
+							<select name="utype" class="easyui-combobox"
+									data-options="width:140,height:29,editable:false,panelHeight:'auto'">
+								<option value="">不限</option>
+								<option value="UT01">后端</option>
+								<option value="UT02">前端</option>
+								<option value="UT03">模拟</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
 							是否禁言：
 							<select name="isGag" class="easyui-combobox"
 									data-options="width:140,height:29,editable:false,panelHeight:'auto'">
@@ -493,16 +513,13 @@
 								<option value="0">否</option>
 							</select>
 						</td>
-					</tr>
-					<tr>
 						<td>
-							类型：
-							<select name="utype" class="easyui-combobox"
+							是否封号：
+							<select name="isDeleted" class="easyui-combobox"
 									data-options="width:140,height:29,editable:false,panelHeight:'auto'">
 								<option value="">不限</option>
-								<option value="UT01">后端</option>
-								<option value="UT02">前端</option>
-								<option value="UT03">模拟</option>
+								<option value="1">是</option>
+								<option value="0">否</option>
 							</select>
 						</td>
 						<td colspan="4">
@@ -537,8 +554,8 @@
 		</c:if>
 		<c:if
 			test="${fn:contains(sessionInfo.resourceList, '/userController/batchDelete')}">
-			<a onclick="batchDeleteFun();" href="javascript:void(0);"
-				class="easyui-linkbutton" data-options="plain:true,iconCls:'delete'">批量删除</a>
+			<!--<a onclick="batchDeleteFun();" href="javascript:void(0);"
+				class="easyui-linkbutton" data-options="plain:true,iconCls:'delete'">批量删除</a>-->
 		</c:if>
 		<a href="javascript:void(0);" class="easyui-linkbutton"
 			data-options="iconCls:'brick_add',plain:true" onclick="searchFun();">查询</a><a

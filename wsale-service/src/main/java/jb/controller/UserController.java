@@ -84,6 +84,11 @@ public class UserController extends BaseController {
 		user.setPwd(RSAUtil.decryptByPravite(user.getPwd(), privateKey));
 		User u = userService.login(user);
 		if (u != null) {
+			if(u.getIsDeleted()) {
+				j.setMsg("登陆失败，账号不存在或已被查封！");
+				return j;
+			}
+
 			j.setSuccess(true);
 			j.setMsg("登陆成功！");
 

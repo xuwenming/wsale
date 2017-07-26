@@ -55,6 +55,7 @@ public class Tuser implements java.io.Serializable {
 	private java.lang.Boolean isPayBond;
 	private String utype;
 	private java.lang.Boolean isDeleted;
+	private Date blocktime;
 	private java.lang.Boolean isGag;
 	private java.lang.String hxPassword;
 	private java.lang.Boolean hxStatus;
@@ -243,6 +244,15 @@ public class Tuser implements java.io.Serializable {
 
 	public void setIsDeleted(Boolean isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+
+	@Column(name = "blocktime", unique = false, nullable = true, insertable = true, updatable = true, length = 19)
+	public Date getBlocktime() {
+		return blocktime;
+	}
+
+	public void setBlocktime(Date blocktime) {
+		this.blocktime = blocktime;
 	}
 
 	@Column(name = "isAuth", unique = false, nullable = true, insertable = true, updatable = true, length = 0)

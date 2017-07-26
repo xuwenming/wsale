@@ -237,7 +237,7 @@ public class UserServiceImpl implements UserServiceI {
 	private String whereHql(User user, Map<String, Object> params) {
 		String hql = "";
 		if (user != null) {
-			hql += " where t.isDeleted = 0 ";
+			hql += " where 1=1 ";
 			if (user.getName() != null) {
 				hql += " and t.name like :name";
 				params.put("name", "%%" + user.getName() + "%%");
@@ -253,6 +253,10 @@ public class UserServiceImpl implements UserServiceI {
 			if(user.getIsGag() != null) {
 				hql += " and t.isGag = :isGag";
 				params.put("isGag", user.getIsGag());
+			}
+			if(user.getIsDeleted() != null) {
+				hql += " and t.isDeleted = :isDeleted";
+				params.put("isDeleted", user.getIsDeleted());
 			}
 			if(!F.empty(user.getUtype())) {
 				hql += " and t.utype = :utype";

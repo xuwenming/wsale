@@ -120,7 +120,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 				String userAgent = request.getHeader("user-agent");
 				if(!F.empty(userAgent) && userAgent.indexOf("MicroMessenger") == -1) {
 					request.setAttribute("redirect_uri", redirect_uri);
-//					request.setAttribute("type", "token_expire");
+					request.setAttribute("type", "token_expire");
 					request.getRequestDispatcher("/api/apiCommon/error").forward(request, response);
 				} else
 					response.sendRedirect("https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+ URLEncoder.encode(redirect_uri, "UTF-8") +"&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect");
@@ -135,6 +135,12 @@ public class TokenInterceptor implements HandlerInterceptor {
 				}
 				SessionInfo sessionInfo = userService.loginByWx(code, snsapi_userinfo);
 				if(sessionInfo != null) {
+					if(sessionInfo.getIsDeleted()) {
+						request.setAttribute("type", "isDeleted");
+						request.getRequestDispatcher("/api/apiCommon/error").forward(request, response);
+						return false;
+					}
+
 					request.setAttribute(TokenManage.TOKEN_FIELD, tokenManage.buildToken(sessionInfo));
 					tokenManage.buildToken(code, new SessionInfo()); // 防止重复登录验证
 				} else {

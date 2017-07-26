@@ -23,6 +23,7 @@ public class SessionInfo implements java.io.Serializable {
 	private String mobile; // 手机号
 	private String utype;
 	private Boolean isGag;
+	private Boolean isDeleted;
 	private Boolean isAuth;
 	private Boolean isPayBond;
 	private String hxPassword;
@@ -128,6 +129,14 @@ public class SessionInfo implements java.io.Serializable {
 
 	public void setIsGag(Boolean isGag) {
 		this.isGag = isGag;
+	}
+
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 	public Boolean getIsPayBond() {

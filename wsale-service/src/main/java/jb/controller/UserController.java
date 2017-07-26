@@ -602,6 +602,11 @@ public class UserController extends BaseController {
 		if(o instanceof SessionInfo) {
 			SessionInfo sessionInfo = (SessionInfo) o;
 			cache.removeCacheData(uuid);
+			if(sessionInfo.getIsDeleted()) {
+				j.setMsg("invalid");
+				j.fail();
+				return j;
+			}
 			session.setAttribute(ConfigUtil.getSessionInfoName(), sessionInfo);
 			j.setMsg("ok");
 			j.success();

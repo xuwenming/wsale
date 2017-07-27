@@ -64,12 +64,17 @@
 				}, {
 				field : 'seq',
 				title : '<%=TzcCategory.ALIAS_SEQ%>',
-				width : 20,
+				width : 30,
+				sortable : true
+				}, {
+				field : 'hotSeq',
+				title : '热门排序',
+				width : 30,
 				sortable : true
 				}, {
 				field : 'autoRead',
 				title : '阅读增量',
-				width : 50
+				width : 30
 				}, {
 				field : 'chiefModeratorName',
 				title : '<%=TzcCategory.ALIAS_CHIEF_MODERATOR_ID%>',

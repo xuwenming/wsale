@@ -357,6 +357,18 @@
 								<c:if test="${!user.isGag}">否</c:if>
 							</td>
 						</tr>
+						<c:if test="${user.utype == 'UT02'}">
+							<tr>
+								<th>店铺排序</th>
+								<td>
+									${user.shopSeq}
+								</td>
+								<th>成交额</th>
+								<td>
+									${turnover}
+								</td>
+							</tr>
+						</c:if>
 						<tr>
 							<th>职务</th>
 							<td>

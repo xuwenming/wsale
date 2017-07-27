@@ -412,7 +412,7 @@ textarea.ui-input-text{
 	text-align:center;
 	width:30%; 
 	background-color:#fff; 
-	margin:0 1% 10px 1%;
+	margin:0 1% 10px 2%;
 	display:inline-block;
 }
 .guanzhu-touxiang{
@@ -438,6 +438,9 @@ textarea.ui-input-text{
 .guanzhu-score{
 	font-size:12px;
 	color:#bbb;
+}
+.guanzhu-score-1{
+	font-size:12px;
 }
 
 /*精选*/

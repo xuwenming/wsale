@@ -86,6 +86,15 @@ public class ZcCategoryServiceImpl extends BaseServiceImpl<ZcCategory> implement
 				whereHql += " and t.isDeleted = :isDeleted";
 				params.put("isDeleted", zcCategory.getIsDeleted());
 			}
+
+			if(zcCategory.getHotSeq() != null) {
+				if(zcCategory.getHotSeq() == 0) {
+					whereHql += " and t.hotSeq = 0";
+				} else {
+					whereHql += " and t.hotSeq >= :hotSeq and t.pid != 0";
+					params.put("hotSeq", zcCategory.getHotSeq());
+				}
+			}
 		}
 		return whereHql;
 	}
@@ -184,6 +193,21 @@ public class ZcCategoryServiceImpl extends BaseServiceImpl<ZcCategory> implement
 				if(F.empty(o.getPid()) || "0".equals(o.getPid())) {
 					o.setState("closed");
 				}
+				ol.add(o);
+			}
+		}
+		return ol;
+	}
+
+	@Override
+	public List<ZcCategory> queryHot(ZcCategory r) {
+		List<ZcCategory> ol = new ArrayList<ZcCategory>();
+		String hql = " from TzcCategory t ";
+		List<TzcCategory> l = query(hql, r, zcCategoryDao, "hotSeq desc, t.seq", "asc");
+		if (l != null && l.size() > 0) {
+			for (TzcCategory t : l) {
+				ZcCategory o = new ZcCategory();
+				BeanUtils.copyProperties(t, o);
 				ol.add(o);
 			}
 		}

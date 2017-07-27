@@ -1403,7 +1403,9 @@ public class ApiProductController extends BaseController {
 	 */
 	@RequestMapping("/productManage")
 	public String productManage(boolean isDraft, HttpServletRequest request) {
+		SessionInfo s = getSessionInfo(request);
 		request.setAttribute("isDraft", isDraft); // 是否定位草稿箱tab
+		request.setAttribute("isAuth", s.getIsAuth()); // 是否实名认证
 		return "/wsale/product/product_manage";
 	}
 

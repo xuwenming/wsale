@@ -483,7 +483,7 @@
         function drawProduct(load, loadRows) {
             if(load) $(".defaultProducts").empty();
             $(document.body).destroyInfinite();
-            var params = {categoryId : $("#categoryId").val(), page:(loadRows && 1) || currPage, rows:loadRows || rows, status:'PT03'};
+            var params = {categoryId : $("#categoryId").val(), page:(loadRows && 1) || currPage, rows:loadRows || rows, status:'PT03', authFlag : true};
             ajaxPost('api/apiProductController/productList', params, function(data){
                 if(data.success) {
                     var result = data.obj;

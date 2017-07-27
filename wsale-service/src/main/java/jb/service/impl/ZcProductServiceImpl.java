@@ -166,6 +166,10 @@ public class ZcProductServiceImpl extends BaseServiceImpl<ZcProduct> implements 
 				params.put("id", zcProduct.getId());
 			}
 
+			if(zcProduct.getAuthFlag() != null && zcProduct.getAuthFlag()) {
+				whereHql += " and exists (select 1 from Tuser u where u.id = t.addUserId and u.isAuth = 1)";
+			}
+
 			// 查询关注人拍品列表条件
 			if(!F.empty(zcProduct.getAtteId())) {
 				whereHql += " and t.addUserId = sf.objectById and sf.objectType='FS' and (sf.objectId = :atteId or t.addUserId = :atteId) ";
@@ -351,6 +355,11 @@ public class ZcProductServiceImpl extends BaseServiceImpl<ZcProduct> implements 
 			}
 		}
 		return ol;
+	}
+
+	@Override
+	public Map<String, Integer> getCountBiddingNum(String[] userIds) {
+		return zcProductDao.getCountBiddingNum(userIds);
 	}
 
 	@Override

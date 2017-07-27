@@ -282,6 +282,10 @@ public class UserServiceImpl implements UserServiceI {
 				hql += " and (t.nickname like :q or t.mobile like :q or t.wechatNo like :q)";
 				params.put("q", "%%" + user.getQ() + "%%");
 			}
+			if(user.getShopSeq() != null) {
+				hql += " and t.shopSeq >= :shopSeq";
+				params.put("shopSeq", user.getShopSeq());
+			}
 		}
 		return hql;
 	}

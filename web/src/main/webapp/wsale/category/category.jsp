@@ -15,18 +15,21 @@
             <div class="home-content" style="margin:0;">
                 <div style="width:25%; display:inline-block; vertical-align:top;">
                     <ul id="fenlei-list">
+                        <c:if test="${hotCategorys.size() > 0}"><li class="hot">热门分类</li></c:if>
                         <c:forEach items="${categorys}" var="category" varStatus="vs">
-                            <li <c:if test="${vs.index == 0}">class="fenlei-active"</c:if> categoryId="${category.id}">${category.name} </li>
+                            <li categoryId="${category.id}">${category.name} </li>
                         </c:forEach>
                     </ul>
                 </div>
                 <div style="width:73%;margin-top:10px; text-align:left;display:inline-block; vertical-align:top; float:right;">
-                    <div style="position: fixed;">
-                        <div id="childCategory">
-                            <c:forEach items="${childCategorys}" var="childCategory" varStatus="vs">
+                    <div style="position: fixed;max-width: 450px;width: 70%;">
+                        <div id="childCategory" style="display: none;">
+                        </div>
+                        <div id="hotCategory" style="display: none;">
+                            <c:forEach items="${hotCategorys}" var="childCategory" varStatus="vs">
                                 <a class="fenlei-imglist" style="display:inline-block;" categoryId="${childCategory.id}">
                                     <img class="lazy" data-original="${childCategory.icon}" width="72" height="72" style="border-radius: 6px;"/>
-                                    <div>${childCategory.name}</div>
+                                    <div style="min-width: 70px;">${childCategory.name}</div>
                                 </a>
                             </c:forEach>
                         </div>
@@ -51,7 +54,7 @@
 
     </div>
     <script type="text/javascript">
-        var scrollTop = 0;
+        var scrollTop = 0, hotSize = ${hotCategorys.size()} || 0;
         $(function(){
             $( "[data-role='navbar'] ul li:eq(1) a").addClass('ui-btn-active');
             $("img.lazy").lazyload({
@@ -59,13 +62,23 @@
             });
             $("#fenlei-list li").bind("click", function(){
                 if($(this).hasClass("fenlei-active")) return;
-                $('.mask-layer-1').show();
                 $(this).addClass("fenlei-active");
                 $(this).siblings().removeClass("fenlei-active");
-                drawChildCategory($(this).attr("categoryId"));
+                if($(this).hasClass('hot')) {
+                    $('#hotCategory').show();
+                    $('#hotCategory img').css('display', 'inline');
+                    $('#childCategory').hide();
+                } else {
+                    $('#hotCategory').hide();
+                    $('#childCategory').show();
+                    $('.mask-layer-1').show();
+                    drawChildCategory($(this).attr("categoryId"));
+                }
             });
 
-            $("#childCategory").on("click", "a", function(){
+            $("#fenlei-list li:eq(0)").click();
+
+            $("#childCategory,#hotCategory").on("click", "a", function(){
                 $.cookie('category', JSON.stringify({scrollTop:$(window).scrollTop(), categoryId:$("#fenlei-list li.fenlei-active").attr('categoryId')}));
                 href('api/apiCategoryController/forum?id=' + $(this).attr("categoryId"));
             });
@@ -76,7 +89,8 @@
                 obj = $.parseJSON(obj);
                 scrollTop = obj.scrollTop;
                 var categoryId = obj.categoryId;
-                $("#fenlei-list li[categoryId="+categoryId+"]").click();
+                if(categoryId) $("#fenlei-list li[categoryId="+categoryId+"]").click();
+                else $("#fenlei-list li:eq(0)").click();
             }
         });
 

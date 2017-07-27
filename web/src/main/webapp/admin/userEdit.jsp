@@ -79,6 +79,15 @@
 						</td>
 					</tr>
 					<tr>
+						<th>店铺排序</th>
+						<td colspan="3">
+							<input name="shopSeq" value="${user.shopSeq}" class="easyui-numberspinner"
+								   style="width: 140px; height: 29px;" required="required"
+								   data-options="editable:true,min:0">
+							<span style="color: red;">(*大于1上钻石店铺，数值越大排序越靠前)</span>
+						</td>
+					</tr>
+					<tr>
 						<th>费用</th>
 						<td colspan="3">
 							<input name="serviceFeePer" value="${user.serviceFeePer}" class="easyui-numberspinner"

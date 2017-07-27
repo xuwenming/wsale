@@ -53,6 +53,7 @@ public class TzcCategory implements java.io.Serializable,IEntity{
 	private String summary;
 	//
 	private Integer seq;
+	private Integer hotSeq;
 	//@Length(max=36)
 	private String pid;
 	//@Length(max=500)
@@ -124,7 +125,16 @@ public class TzcCategory implements java.io.Serializable,IEntity{
 	public void setSeq(Integer seq) {
 		this.seq = seq;
 	}
-	
+
+	@Column(name = "hot_seq", unique = false, nullable = true, insertable = true, updatable = true, length = 10)
+	public Integer getHotSeq() {
+		return hotSeq;
+	}
+
+	public void setHotSeq(Integer hotSeq) {
+		this.hotSeq = hotSeq;
+	}
+
 	@Column(name = "pid", unique = false, nullable = true, insertable = true, updatable = true, length = 36)
 	public String getPid() {
 		return this.pid;

@@ -19,9 +19,18 @@
 <body>
     <div data-role="page" class="jqm-demos">
         <div role="main" class="ui-content jqm-content jqm-fullwidth">
-            <div style="padding:0px 10px;" class="hotBbsList">
+            <c:if test="${!isHomeHot}">
+                <div style="border-bottom:10px solid #f5f5f5;">
+                    <div>
+                        <ul class="tab-title">
+                            <li <c:if test="${empty bbsType}">class="titletab-active"</c:if> style="width:20%;margin:0 10px;font-size: 15px;" onclick="replace('api/bbsController/hotBbs');">主题</li>
+                            <li <c:if test="${!empty bbsType}">class="titletab-active"</c:if> style="width:20%;margin:0 10px;font-size: 15px;" onclick="replace('api/bbsController/hotBbs?bbsType=BT03');">讲堂</li>
+                        </ul>
+                    </div>
+                </div>
+            </c:if>
 
-            </div>
+            <div style="padding:0px 10px;" class="hotBbsList"></div>
 
             <div class="home-content">
                 <div class="weui-infinite-scroll">

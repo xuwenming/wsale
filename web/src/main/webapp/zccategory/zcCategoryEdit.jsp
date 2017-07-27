@@ -106,6 +106,17 @@
 						<input id="chiefModeratorId" name="chiefModeratorId"/>
 					</td>
 				</tr>
+				<c:if test="${zcCategory.pid != '0'}">
+					<tr>
+						<th>热门分类</th>
+						<td colspan="3">
+							<input name="hotSeq" value="${zcCategory.hotSeq}" class="easyui-numberspinner"
+								   style="width: 140px; height: 29px;" required="required"
+								   data-options="editable:true" >
+							<span style="color: red;">(*大于0上热门，数值越大越靠前)</span>
+						</td>
+					</tr>
+				</c:if>
 				<c:if test="${zcCategory.pid == '0'}">
 					<tr>
 						<th>阅读增量</th>

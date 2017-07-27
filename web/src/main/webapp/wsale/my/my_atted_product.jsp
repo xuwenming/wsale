@@ -111,7 +111,7 @@
                 <div>
                     <ul class="tab-title">
                         <li class="titletab-active" style="width:20%;margin:0 10px;font-size: 15px;">拍品</li>
-                        <li style="width:20%;margin:0 10px;font-size: 15px;" onclick="href('api/apiHomeController/myAttedBbs');">主题</li>
+                        <li style="width:20%;margin:0 10px;font-size: 15px;" onclick="replace('api/apiHomeController/myAttedBbs');">主题</li>
                     </ul>
                 </div>
             </div>

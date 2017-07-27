@@ -4,13 +4,18 @@ import jb.absx.F;
 import jb.listener.Application;
 import jb.pageModel.*;
 import jb.service.*;
+import jb.service.impl.CompletionFactory;
 import jb.util.wx.WeixinUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import wsale.concurrent.CompletionService;
+import wsale.concurrent.Task;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,6 +43,9 @@ public class ApiShopController extends BaseController {
 
 	@Autowired
 	private ZcShieldorfansServiceI zcShieldorfansService;
+
+	@Autowired
+	private ZcProductServiceI zcProductService;
 
 	/**
 	 * 跳转-店铺信息
@@ -135,6 +143,15 @@ public class ApiShopController extends BaseController {
 	}
 
 	/**
+	 * 跳转-首页钻石店铺
+	 * @return
+	 */
+	@RequestMapping("/starShop")
+	public String starShop(HttpServletRequest request) {
+		return "/wsale/shop/star_shop";
+	}
+
+	/**
 	 * 保存店铺设置
 	 * @param request
 	 * @return
@@ -189,6 +206,63 @@ public class ApiShopController extends BaseController {
 			j.success();
 			j.setMsg("操作成功");
 			j.setObj(address.getId());
+		} catch (Exception e) {
+			j.fail();
+			e.printStackTrace();
+		}
+
+		return j;
+	}
+
+	/**
+	 * 获取钻石店铺列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/starShopList")
+	@ResponseBody
+	public Json starShopList(User user, PageHelper ph, HttpServletRequest request) {
+		Json j = new Json();
+		try {
+			ph.setSort("shopSeq");
+			ph.setOrder("desc");
+
+			user.setIsDeleted(false);
+			user.setShopSeq(1);
+			DataGrid dataGrid = userService.dataGrid(user, ph);
+			List<User> list = (List<User>) dataGrid.getRows();
+			if(!CollectionUtils.isEmpty(list)) {
+				String[] userIds = new String[list.size()];
+				int i = 0;
+				for (User u : list) {
+					userIds[i] = u.getId();
+					i++;
+				}
+				Map<String, Integer> biddingNumMap = zcProductService.getCountBiddingNum(userIds);
+				final CompletionService completionService = CompletionFactory.initCompletion();
+				for (User u : list) {
+					Integer num = biddingNumMap.get(u.getId());
+					if(num != null) u.setBiddingNums(num);
+					// 成交额
+					completionService.submit(new Task<User, Double>(u) {
+						@Override
+						public Double call() throws Exception {
+							return zcOrderService.getTurnover(getD().getId());
+						}
+
+						protected void set(User d, Double v) {
+							if (v != null) {
+								d.setTurnover(v);
+							}
+						}
+					});
+				}
+				completionService.sync();
+			}
+
+			j.setObj(dataGrid);
+			j.success();
+			j.setMsg("操作成功");
 		} catch (Exception e) {
 			j.fail();
 			e.printStackTrace();

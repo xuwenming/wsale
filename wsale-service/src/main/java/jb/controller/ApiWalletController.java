@@ -138,6 +138,7 @@ public class ApiWalletController extends BaseController {
 			}
 		//}
 		request.setAttribute("cashNum", cashNum < 0 ? 0 : cashNum);
+		request.setAttribute("isAuth", s.getIsAuth());
 
 		return "/wsale/wallet/cash";
 	}

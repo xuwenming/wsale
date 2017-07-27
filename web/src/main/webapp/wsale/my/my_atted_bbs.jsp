@@ -12,7 +12,7 @@
             <div style="border-bottom:10px solid #f5f5f5;">
                 <div>
                     <ul class="tab-title">
-                        <li style="width:20%;margin:0 10px;font-size: 15px;" onclick="href('api/apiHomeController/myAttedProduct');">拍品</li>
+                        <li style="width:20%;margin:0 10px;font-size: 15px;" onclick="replace('api/apiHomeController/myAttedProduct');">拍品</li>
                         <li class="titletab-active" style="width:20%;margin:0 10px;font-size: 15px;">主题</li>
                     </ul>
                 </div>

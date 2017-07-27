@@ -31,6 +31,7 @@ public class User implements java.io.Serializable {
 	private java.lang.String hxPassword;
 	private java.lang.Boolean hxStatus;
 	private Integer serviceFeePer;
+	private Integer shopSeq;
 
 	private Date createdatetimeStart;
 	private Date createdatetimeEnd;
@@ -52,6 +53,8 @@ public class User implements java.io.Serializable {
 
 	private java.lang.Double walletAmount;
 	private java.lang.Double protection;
+	private int biddingNums;
+	private double turnover;
 
 	public String getUtypeZh() {
 		if("UT01".equals(utype)) return "后端";
@@ -251,6 +254,14 @@ public class User implements java.io.Serializable {
 		this.serviceFeePer = serviceFeePer;
 	}
 
+	public Integer getShopSeq() {
+		return shopSeq;
+	}
+
+	public void setShopSeq(Integer shopSeq) {
+		this.shopSeq = shopSeq;
+	}
+
 	public Date getCreatedatetimeStart() {
 		return createdatetimeStart;
 	}
@@ -385,5 +396,21 @@ public class User implements java.io.Serializable {
 
 	public void setWalletAmount(Double walletAmount) {
 		this.walletAmount = walletAmount;
+	}
+
+	public int getBiddingNums() {
+		return biddingNums;
+	}
+
+	public void setBiddingNums(int biddingNums) {
+		this.biddingNums = biddingNums;
+	}
+
+	public double getTurnover() {
+		return turnover;
+	}
+
+	public void setTurnover(double turnover) {
+		this.turnover = turnover;
 	}
 }

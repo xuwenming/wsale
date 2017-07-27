@@ -195,6 +195,19 @@
 
         // 申请分类精选
         function cbFun(event) {
+            if(${!isAuth}) {
+                $.modal({
+                    title: "系统提示",
+                    text: "您尚未实名认证！",
+                    buttons: [
+                        { text: "取消", className: "default"},
+                        { text: "去认证", onClick: function(){
+                            href('api/apiAuth/authApply');
+                        } }
+                    ]
+                });
+                return;
+            }
             $.modal({
                 title: "申请须知",
                 text: "<font style='font-size: 8pt;'>一.您申请的是分类版面的精选藏品&nbsp;<br>二.条件：包退、描述相符、认证和&nbsp;<br>消保金用户&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;<br>三.时间：审核通过后的24小时&#12288;&#12288;<br>四.申请未通过，费用退回余额&#12288;&#12288;&nbsp;</font><br><br>是否继续支付？",
@@ -211,6 +224,19 @@
 
         // 申请首页精选
         function hbFun(event) {
+            if(${!isAuth}) {
+                $.modal({
+                    title: "系统提示",
+                    text: "您尚未实名认证！",
+                    buttons: [
+                        { text: "取消", className: "default"},
+                        { text: "去认证", onClick: function(){
+                            href('api/apiAuth/authApply');
+                        } }
+                    ]
+                });
+                return;
+            }
             $.modal({
                 title: "申请须知",
                 text: "<font style='font-size: 8pt;'>一.您申请的是首页精选拍品&#12288;&#12288;&#12288;&nbsp;<br>二.条件：包退、描述相符、认证和&nbsp;<br>消保金用户&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;<br>三.时间：审核通过后的24小时&#12288;&#12288;<br>四.申请未通过，费用退回余额&#12288;&#12288;&nbsp;</font><br><br>是否继续支付？",

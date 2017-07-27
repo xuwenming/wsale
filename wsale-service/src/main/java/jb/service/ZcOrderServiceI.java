@@ -61,6 +61,7 @@ public interface ZcOrderServiceI {
 	Map<String,Object> orderCount(String userId);
 	Map<String,Object> orderAmountCount(String userId);
 	Map<String, Object> orderStatusCount(String userId);
+	Double getTurnover(String userId);
 
 	/**
 	 * 订单状态转换

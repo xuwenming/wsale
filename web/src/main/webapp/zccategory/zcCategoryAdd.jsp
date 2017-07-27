@@ -118,9 +118,18 @@
 					</td>
 				</tr>
 				<tr>
+					<th>热门分类</th>
+					<td colspan="3">
+						<input name="hotSeq" value="0" class="easyui-numberspinner"
+							   style="width: 140px; height: 29px;" required="required"
+							   data-options="editable:true" >
+						<span style="color: red;">(*大于0上热门，数值越大越靠前；只针对二级分类有效)</span>
+					</td>
+				</tr>
+				<tr>
 					<th>阅读增量</th>
 					<td colspan="3">
-						<input name="autoRead" value="${zcCategory.autoRead}" class="easyui-numberspinner"
+						<input name="autoRead" class="easyui-numberspinner"
 							   style="width: 140px; height: 29px;" required="required"
 							   data-options="editable:true" >
 						<span style="color: red;">(*如果输入n则每次增加n次；输入-n则每次增加1-n之间随机次数；二级分类输入无效)</span>

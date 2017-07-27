@@ -149,6 +149,15 @@
 					else return '否'
 				}
 			}, {
+				field : 'shopSeq',
+				title : '店铺排序',
+				width : 50,
+				sortable : true,
+				formatter : function(value, row, index) {
+					if(value > 0) return '<font color="#f6383a;">'+value+'</font>';
+					else return value;
+				}
+			}, {
 				field : 'createdatetime',
 				title : '创建时间',
 				width : 100,
@@ -484,11 +493,11 @@
 			<form id="searchForm">
 				<table class="table table-hover table-condensed" style="display: none;">
 					<tr>
-						<td width="30%">
+						<td>
 							昵称：
 							<input type="text" name="nickname" placeholder="可以模糊查询昵称" class="span2" />
 						</td>
-						<td width="30%">
+						<td>
 							手机号：
 							<input type="text" name="mobile" class="span2" />
 						</td>
@@ -501,6 +510,11 @@
 								<option value="UT02">前端</option>
 								<option value="UT03">模拟</option>
 							</select>
+						</td>
+						<td>
+							店铺排序 >=
+							<input name="shopSeq" class="easyui-numberspinner"
+								   style="width: 140px; height: 29px;" data-options="editable:true" >
 						</td>
 					</tr>
 					<tr>

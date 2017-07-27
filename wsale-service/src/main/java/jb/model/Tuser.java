@@ -60,6 +60,7 @@ public class Tuser implements java.io.Serializable {
 	private java.lang.String hxPassword;
 	private java.lang.Boolean hxStatus;
 	private Integer serviceFeePer;
+	private Integer shopSeq;
 
 	public Tuser() {
 	}
@@ -305,5 +306,14 @@ public class Tuser implements java.io.Serializable {
 
 	public void setServiceFeePer(Integer serviceFeePer) {
 		this.serviceFeePer = serviceFeePer;
+	}
+
+	@Column(name = "shop_seq", unique = false, nullable = true, insertable = true, updatable = true, length = 10)
+	public Integer getShopSeq() {
+		return shopSeq;
+	}
+
+	public void setShopSeq(Integer shopSeq) {
+		this.shopSeq = shopSeq;
 	}
 }

@@ -51,12 +51,19 @@ public class ApiCategoryController extends BaseController {
 		c.setPid("0");
 		c.setIsDeleted(false);
 		List<ZcCategory> categorys = zcCategoryService.query(c);
-		if(CollectionUtils.isNotEmpty(categorys)) {
-			c.setPid(categorys.get(0).getId());
-			List<ZcCategory> childCategorys = zcCategoryService.query(c);
-			request.setAttribute("childCategorys", childCategorys);
-		}
+//		if(CollectionUtils.isNotEmpty(categorys)) {
+//			c.setPid(categorys.get(0).getId());
+//			List<ZcCategory> childCategorys = zcCategoryService.query(c);
+//			request.setAttribute("childCategorys", childCategorys);
+//		}
+		// 查询热门分类：hotSeq>0
+		c = new ZcCategory();
+		c.setIsDeleted(false);
+		c.setHotSeq(1);
+		List<ZcCategory> hotCategorys = zcCategoryService.queryHot(c);
+
 		request.setAttribute("categorys", categorys);
+		request.setAttribute("hotCategorys", hotCategorys);
 
 		return "/wsale/category/category";
 	}
@@ -114,6 +121,7 @@ public class ApiCategoryController extends BaseController {
 		product.setCategoryId(id);
 		product.setIsDeleted(false);
 		product.setStatus("PT03");
+		product.setAuthFlag(true);
 		long pCount = zcProductService.getCount(product);
 
 		// 查询分类精选拍品数量

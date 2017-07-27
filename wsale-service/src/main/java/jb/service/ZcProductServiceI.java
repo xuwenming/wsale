@@ -5,6 +5,7 @@ import jb.pageModel.DataGrid;
 import jb.pageModel.PageHelper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -68,4 +69,6 @@ public interface ZcProductServiceI {
 	long getCount(ZcProduct product);
 
 	List<ZcProduct> getListByIds(String... productIds);
+
+	Map<String, Integer> getCountBiddingNum(String[] userIds);
 }

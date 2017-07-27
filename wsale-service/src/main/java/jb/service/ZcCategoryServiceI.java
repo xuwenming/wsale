@@ -54,4 +54,6 @@ public interface ZcCategoryServiceI {
 	public void delete(ZcCategory zcCategory);
 
 	List<ZcCategory> query(ZcCategory c);
+
+	List<ZcCategory> queryHot(ZcCategory c);
 }

@@ -371,3 +371,11 @@ update tuser set head_image='http://img10.zcys2016.com/mmopen/headimage/user-def
 
 ALTER TABLE `zc_wallet_detail`
   ADD COLUMN `bank_name`  varchar(18) NULL COMMENT '开户行名称' AFTER `bank_id_no`;
+
+-- -----------------------------------------------------
+--   snow.xu 20170726
+-- -----------------------------------------------------
+ALTER TABLE `zc_category`
+  ADD COLUMN `hot_seq`  int NULL DEFAULT 0 COMMENT '热门排序' AFTER `seq`;
+ALTER TABLE `tuser`
+  ADD COLUMN `shop_seq`  int NULL DEFAULT 0 COMMENT '钻石店铺排序' AFTER `service_fee_per`;

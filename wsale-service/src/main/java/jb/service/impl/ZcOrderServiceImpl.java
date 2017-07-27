@@ -305,6 +305,24 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 	}
 
 	@Override
+	public Double getTurnover(String userId) {
+		double turnover = 0;
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("addUserId", userId);
+		String sql = "select sum(t.total_price) as turnover "
+				+ " from zc_order t "
+				+ " left join zc_product p on p.id = t.product_id and t.is_intermediary = 0 "
+				+ " left join zc_intermediary i on i.id = t.product_id and t.is_intermediary = 1 "
+				+ " where t.order_status='OS10' and (t.face_status is null or t.face_status <> 'FS02') and (p.isDeleted = 0 and (p.addUserId = :addUserId or p.user_id = :addUserId)) or (i.sell_user_id = :addUserId or i.user_id = :addUserId)";
+		List<Map> l = zcOrderDao.findBySql2Map(sql, params);
+		if(CollectionUtils.isNotEmpty(l)) {
+			Map map = l.get(0);
+			turnover = (Double)map.get("turnover");
+		}
+		return turnover;
+	}
+
+	@Override
 	public void transform(ZcOrder zcOrder) {
 		OrderState orderState;
 		String state;

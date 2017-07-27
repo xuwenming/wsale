@@ -13,6 +13,7 @@ public class ZcCategory implements java.io.Serializable {
 	private String icon;
 	private String summary;
 	private Integer seq;
+	private Integer hotSeq;
 	private String pid;
 	private String forumIntroduce;
 	private String chiefModeratorId;
@@ -71,6 +72,15 @@ public class ZcCategory implements java.io.Serializable {
 	public Integer getSeq() {
 		return this.seq;
 	}
+
+	public Integer getHotSeq() {
+		return hotSeq;
+	}
+
+	public void setHotSeq(Integer hotSeq) {
+		this.hotSeq = hotSeq;
+	}
+
 	public void setPid(String pid) {
 		this.pid = pid;
 	}

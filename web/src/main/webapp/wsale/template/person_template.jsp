@@ -8,6 +8,16 @@
 	</div>
 </div>
 
+<%--钻石店铺列表--%>
+<div id="star_shop_template" class="guanzhu-content" style="display: none;">
+	<div class="guanzhu-name info-xinxi" name="nickname" style="margin-top: 5px;"></div>
+	<img class="guanzhu-touxiang" name="headImage" style="margin-top: 5px;"/>
+	<div class="guanzhu-score-1">在拍：<span class="guanzhu-name" name="biddingNums"></span></div>
+	<div class="guanzhu-level">
+		<span class="guanzhu-score-1">成交额：<scope class="guanzhu-name" name="turnover">0</scope></span>
+	</div>
+</div>
+
 <!-- 粉丝/屏蔽列表 -->
 <div id="shieldorfans_template" class="faxian-link" style="display: none;">
 	<div class="left-touxiang">

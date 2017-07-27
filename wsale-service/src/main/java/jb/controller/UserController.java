@@ -5,10 +5,7 @@ import com.aliyun.mns.model.TopicMessage;
 import jb.absx.F;
 import jb.listener.Application;
 import jb.pageModel.*;
-import jb.service.ResourceServiceI;
-import jb.service.RoleServiceI;
-import jb.service.UserServiceI;
-import jb.service.ZcWalletServiceI;
+import jb.service.*;
 import jb.service.impl.CompletionFactory;
 import jb.service.impl.RedisUserServiceImpl;
 import jb.service.impl.SendWxMessageImpl;
@@ -61,6 +58,9 @@ public class UserController extends BaseController {
 
 	@Autowired
 	private SendWxMessageImpl sendWxMessage;
+
+	@Autowired
+	private ZcOrderServiceI zcOrderService;
 
 	/**
 	 * 用户登录
@@ -307,6 +307,11 @@ public class UserController extends BaseController {
 			user.setProtection(wallet.getProtection());
 		}
 		request.setAttribute("user", user);
+
+		if("UT02".equals(user.getUtype())) {
+			request.setAttribute("turnover", zcOrderService.getTurnover(id));
+		}
+
 		return "/admin/userView";
 	}
 

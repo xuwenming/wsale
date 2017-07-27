@@ -19,8 +19,25 @@
                     </div>
                 </div>
                 <div style="font-size: 12px;color: #999;text-align: right;margin: 8px;">
-                    本次提现最大金额：￥<fmt:formatNumber type="number" value="${wallet.amount}" pattern="0.00" maxFractionDigits="2"/>元，今日余：${cashNum}次
+                    本次提现最大金额：
+                    <c:choose>
+                        <c:when test="${isAuth}">
+                            ￥<fmt:formatNumber type="number" value="${wallet.amount}" pattern="0.00" maxFractionDigits="2"/>元
+                        </c:when>
+                        <c:when test="${!isAuth and wallet.amount < 1000}">
+                            ￥<fmt:formatNumber type="number" value="${wallet.amount}" pattern="0.00" maxFractionDigits="2"/>元
+                        </c:when>
+                        <c:otherwise>
+                            ￥<fmt:formatNumber type="number" value="1000" pattern="0.00" maxFractionDigits="2"/>元
+                        </c:otherwise>
+                    </c:choose>
+                    ，今日余：${cashNum}次
                 </div>
+                <c:if test="${!isAuth and wallet.amount > 1000}">
+                    <div style="font-size: 12px;color: #999;text-align: right;margin: 8px;">
+                        实名可提现最大金额：￥<fmt:formatNumber type="number" value="${wallet.amount}" pattern="0.00" maxFractionDigits="2"/>元
+                    </div>
+                </c:if>
                 <div style="margin-top:30px;">
                     <a class="bottom-btn" style="color:#fff; margin-bottom:10px;">下一步</a>
                 </div>
@@ -51,7 +68,9 @@
                     $.alert("提现金额不能少于1元！", "系统提示！");
                     return;
                 }
-                if(amount > ${wallet.amount}) {
+                var isAuth = ${isAuth}, wAmount = ${wallet.amount};
+                if(!isAuth && wAmount > 1000) wAmount = 1000;
+                if(amount > wAmount) {
                     $.alert("提现金额超限，请重新输入！", "系统提示！");
                     return;
                 }

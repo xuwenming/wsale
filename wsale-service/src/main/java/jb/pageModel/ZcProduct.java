@@ -64,6 +64,8 @@ public class ZcProduct implements java.io.Serializable {
 	private int auctionNum; // 出价次数
 	private User user; // 发布人
 
+	private Boolean authFlag; // 分类频道收录实名标记
+
 	public String getStatusZh() {
 		return Application.getString(this.status);
 	}
@@ -431,5 +433,13 @@ public class ZcProduct implements java.io.Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Boolean getAuthFlag() {
+		return authFlag;
+	}
+
+	public void setAuthFlag(Boolean authFlag) {
+		this.authFlag = authFlag;
 	}
 }

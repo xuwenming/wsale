@@ -280,7 +280,9 @@ public class ApiProductController extends BaseController {
 			// 推送消息
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("集东集西藏品：").append("\n\n");
-			buffer.append(zcProduct.getContentLine()).append("\n");
+			String content = zcProduct.getContentLine();
+			content = content.length() > 100 ? content.substring(0, 100) + "..." : content;
+			buffer.append(content).append("\n");
 			buffer.append("截拍时间：" + deadlineStr).append("\n");
 			buffer.append("点击链接出价").append("\n");
 			String url = PathUtil.getUrlPath("api/apiProductController/productDetail?id=" + zcProduct.getId());

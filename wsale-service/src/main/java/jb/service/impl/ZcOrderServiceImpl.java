@@ -317,7 +317,8 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 		List<Map> l = zcOrderDao.findBySql2Map(sql, params);
 		if(CollectionUtils.isNotEmpty(l)) {
 			Map map = l.get(0);
-			turnover = (Double)map.get("turnover");
+			if(map.get("turnover") != null)
+				turnover = (Double)map.get("turnover");
 		}
 		return turnover;
 	}

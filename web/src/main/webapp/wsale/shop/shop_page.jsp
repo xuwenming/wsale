@@ -278,7 +278,7 @@
             var shareData = {
                 title:title,
                 desc:"推荐给您一个好店铺，快来看看一起把货掏回家吧！",
-                link:removeQueDefault(location.href),
+                link:server_url + base + 'api/apiShop/shop?userId=${user.id}',
                 imgUrl:'${user.headImage}'
             };
             JWEIXIN.onMenuShareAppMessage(shareData);

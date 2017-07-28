@@ -420,7 +420,7 @@
                 //desc:"『${user.nickname}』的臻藏艺术个人主页",
                 title:"『${user.nickname}』的集东集西个人主页",
                 desc : "",
-                link:removeQueDefault(location.href),
+                link:server_url + base + 'api/userController/homePage?userId=${user.id}',
                 imgUrl:'${user.headImage}'
             };
             JWEIXIN.onMenuShareAppMessage(shareData);

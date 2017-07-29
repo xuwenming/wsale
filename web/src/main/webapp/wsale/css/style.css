@@ -415,6 +415,13 @@ textarea.ui-input-text{
 	margin:0 1% 10px 2%;
 	display:inline-block;
 }
+.guanzhu-content-1{
+	text-align:center;
+	width:46%;
+	background-color:#fff;
+	margin:0 2% 10px 2%;
+	display:inline-block;
+}
 .guanzhu-touxiang{
 	width:60px;
 	height:60px; 

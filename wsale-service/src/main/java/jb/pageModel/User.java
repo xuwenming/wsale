@@ -1,6 +1,7 @@
 package jb.pageModel;
 
 import java.util.Date;
+import java.util.Map;
 
 import jb.util.PathUtil;
 
@@ -54,7 +55,7 @@ public class User implements java.io.Serializable {
 	private java.lang.Double walletAmount;
 	private java.lang.Double protection;
 	private int biddingNums;
-	private double turnover;
+	private Map<String, Double> turnover;
 
 	public String getUtypeZh() {
 		if("UT01".equals(utype)) return "后端";
@@ -406,11 +407,11 @@ public class User implements java.io.Serializable {
 		this.biddingNums = biddingNums;
 	}
 
-	public double getTurnover() {
+	public Map<String, Double> getTurnover() {
 		return turnover;
 	}
 
-	public void setTurnover(double turnover) {
+	public void setTurnover(Map<String, Double> turnover) {
 		this.turnover = turnover;
 	}
 }

@@ -305,20 +305,25 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 	}
 
 	@Override
-	public Double getTurnover(String userId) {
-		double turnover = 0;
+	public Map<String, Double> getTurnover(String userId) {
+		Map<String, Double> turnover = new HashMap<String, Double>();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("addUserId", userId);
-		String sql = "select sum(t.total_price) as turnover "
+		String sql = "select sum(case when t.order_status='OS10' and (t.face_status is null or t.face_status <> 'FS02') then t.total_price end) realTurnover, "
+				+ " sum(case when t.order_status='OS10' then t.total_price end) turnover "
 				+ " from zc_order t "
 				+ " left join zc_product p on p.id = t.product_id and t.is_intermediary = 0 "
 				+ " left join zc_intermediary i on i.id = t.product_id and t.is_intermediary = 1 "
-				+ " where t.order_status='OS10' and (t.face_status is null or t.face_status <> 'FS02') and (p.isDeleted = 0 and (p.addUserId = :addUserId or p.user_id = :addUserId)) or (i.sell_user_id = :addUserId or i.user_id = :addUserId)";
+				+ " where (p.isDeleted = 0 and (p.addUserId = :addUserId or p.user_id = :addUserId)) or (i.sell_user_id = :addUserId or i.user_id = :addUserId)";
 		List<Map> l = zcOrderDao.findBySql2Map(sql, params);
+		double zero = 0;
 		if(CollectionUtils.isNotEmpty(l)) {
 			Map map = l.get(0);
-			if(map.get("turnover") != null)
-				turnover = (Double)map.get("turnover");
+			if(map.get("realTurnover") == null) turnover.put("realTurnover", zero);
+			else turnover.put("realTurnover", (Double)map.get("realTurnover"));
+
+			if(map.get("turnover") == null) turnover.put("turnover", zero);
+			else turnover.put("turnover", (Double)map.get("turnover"));
 		}
 		return turnover;
 	}

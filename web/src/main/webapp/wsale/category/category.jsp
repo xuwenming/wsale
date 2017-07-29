@@ -22,7 +22,7 @@
                     </ul>
                 </div>
                 <div style="width:73%;margin-top:10px; text-align:left;display:inline-block; vertical-align:top; float:right;">
-                    <div style="position: fixed;max-width: 450px;width: 70%;">
+                    <div style="position: fixed;max-width: 450px;width: 70%;" id="categoryData">
                         <div id="childCategory" style="display: none;">
                         </div>
                         <div id="hotCategory" style="display: none;">
@@ -68,6 +68,11 @@
                     $('#hotCategory').show();
                     $('#hotCategory img').css('display', 'inline');
                     $('#childCategory').hide();
+                    if($("#categoryData").height() > $(document).height()-$('#bottombar').height()) {
+                        $("#categoryData").css({'position':'initial', 'width':'initial'});
+                    } else {
+                        $("#categoryData").css({'position':'fixed', 'width':'70%'});
+                    }
                 } else {
                     $('#hotCategory').hide();
                     $('#childCategory').show();
@@ -121,6 +126,8 @@
 
                     $(".home-content .weui-infinite-scroll").hide();
                     $('.mask-layer-1').hide();
+
+                    $("#categoryData").css({'position':'fixed', 'width':'70%'});
                 }
             });
         }

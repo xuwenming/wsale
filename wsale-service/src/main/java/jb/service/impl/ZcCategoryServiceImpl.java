@@ -91,7 +91,7 @@ public class ZcCategoryServiceImpl extends BaseServiceImpl<ZcCategory> implement
 				if(zcCategory.getHotSeq() == 0) {
 					whereHql += " and t.hotSeq = 0";
 				} else {
-					whereHql += " and t.hotSeq >= :hotSeq and t.pid != 0";
+					whereHql += " and t.hotSeq >= :hotSeq and t.pid != '0'";
 					params.put("hotSeq", zcCategory.getHotSeq());
 				}
 			}

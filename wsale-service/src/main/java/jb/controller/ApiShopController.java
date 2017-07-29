@@ -244,13 +244,13 @@ public class ApiShopController extends BaseController {
 					Integer num = biddingNumMap.get(u.getId());
 					if(num != null) u.setBiddingNums(num);
 					// 成交额
-					completionService.submit(new Task<User, Double>(u) {
+					completionService.submit(new Task<User, Map<String, Double>>(u) {
 						@Override
-						public Double call() throws Exception {
+						public Map<String, Double> call() throws Exception {
 							return zcOrderService.getTurnover(getD().getId());
 						}
 
-						protected void set(User d, Double v) {
+						protected void set(User d, Map<String, Double> v) {
 							if (v != null) {
 								d.setTurnover(v);
 							}

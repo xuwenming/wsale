@@ -302,7 +302,7 @@
 							<td width="20%">
 								${user.nickname}
 							</td>
-							<th width="5%">性别</th>
+							<th width="8%">性别</th>
 							<td width="20%">
 								<c:choose>
 									<c:when test="${user.sex == 1}">男</c:when>
@@ -310,7 +310,7 @@
 									<c:otherwise>未知</c:otherwise>
 								</c:choose>
 							</td>
-							<th width="5%">头像</th>
+							<th width="8%">头像</th>
 							<td align="left" rowspan="5" class="imageSlide">
 								<img src="${user.headImage}" i="${user.headImage}" width="100" height="100"/>
 							</td>
@@ -363,9 +363,13 @@
 								<td>
 									${user.shopSeq}
 								</td>
-								<th>成交额</th>
+								<th>平台成交额</th>
 								<td>
-									${turnover}
+									${turnover.realTurnover}
+								</td>
+								<th>全部成交额</th>
+								<td>
+									${turnover.turnover}
 								</td>
 							</tr>
 						</c:if>

@@ -53,7 +53,7 @@
     <script type="text/javascript">
         var loading = true;
         var currPage = 1;
-        var rows = 30;
+        var rows = 20;
 
         $(function(){
             $(document.body).infinite().on("infinite", function() {
@@ -106,6 +106,21 @@
                 href('api/apiShop/shop?userId=' + event.data);
             });
         }
+
+        wx.ready(function () {
+            JWEIXIN.showOptionMenu();
+            var shareData = {
+                title:"诚信店铺，真品保证！",
+                desc:"集东集西--诚信店铺，真品保证！",
+                link:removeQueDefault(location.href),
+                imgUrl:server_url + base + 'wsale/images/logo.png'
+            };
+            JWEIXIN.onMenuShareAppMessage(shareData);
+            JWEIXIN.onMenuShareTimeline(shareData);
+            JWEIXIN.onMenuShareQQ(shareData);
+            JWEIXIN.onMenuShareWeibo(shareData);
+            JWEIXIN.onMenuShareQZone(shareData);
+        });
     </script>
 </body>
 

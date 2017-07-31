@@ -49,9 +49,9 @@
 		<span class="xinpin-time" name="newtime"></span>
 	</div>
 	<div class="info-content">
-		<div class="info-title">
-			<img class="lazy" name="product" data-name="icon"/>
-			<span class="normal-text" name="product" data-name="content"></span>
+		<div class="info-title" style=" height: 50px;">
+			<div style="float: left;"><img class="lazy" name="product" data-name="icon"/></div>
+			<div class="normal-text line-two" name="product" data-name="content"></div>
 		</div>
 		<div class="sysinfo-detail">
 			<div class="sysinfo-more">

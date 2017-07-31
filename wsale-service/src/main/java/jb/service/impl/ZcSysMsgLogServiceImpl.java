@@ -28,6 +28,7 @@ public class ZcSysMsgLogServiceImpl extends BaseServiceImpl<ZcSysMsgLog> impleme
 	@Autowired
 	private ZcSysMsgLogDaoI zcSysMsgLogDao;
 
+	@Autowired
 	private ZcSysMsgServiceI zcSysMsgService;
 
 	@Override

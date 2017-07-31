@@ -57,17 +57,13 @@ public class ZcSysMsgLogServiceImpl extends BaseServiceImpl<ZcSysMsgLog> impleme
 				whereHql += " and t.sysMsgId = :sysMsgId";
 				params.put("sysMsgId", zcSysMsgLog.getSysMsgId());
 			}		
-			if (!F.empty(zcSysMsgLog.getMtype())) {
-				whereHql += " and t.mtype = :mtype";
-				params.put("mtype", zcSysMsgLog.getMtype());
-			}		
-			if (!F.empty(zcSysMsgLog.getTimeUnit())) {
-				whereHql += " and t.timeUnit = :timeUnit";
-				params.put("timeUnit", zcSysMsgLog.getTimeUnit());
-			}		
+			if (!F.empty(zcSysMsgLog.getTitle())) {
+				whereHql += " and t.title like :title";
+				params.put("title", "%%" + zcSysMsgLog.getTitle() + "%%");
+			}
 			if (!F.empty(zcSysMsgLog.getContent())) {
-				whereHql += " and t.content = :content";
-				params.put("content", zcSysMsgLog.getContent());
+				whereHql += " and t.content like :content";
+				params.put("content", "%%" + zcSysMsgLog.getContent() + "%%");
 			}
 		}	
 		return whereHql;

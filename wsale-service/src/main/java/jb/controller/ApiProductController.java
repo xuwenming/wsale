@@ -853,7 +853,7 @@ public class ApiProductController extends BaseController {
 
 				// 插入系统消息表
 				ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
-				sysMsgLog.setMtype("SM01"); // 出价成功
+				sysMsgLog.setTitle("有新的出价！");
 				sysMsgLog.setContent("您的拍品，『" + buyer.getNickname() + "』出价￥" + product.getCurrentPrice() + "元，目前领先！");
 				sysMsgLog.setUrl("api/apiProductController/productDetail?id=" + product.getId());
 
@@ -922,7 +922,7 @@ public class ApiProductController extends BaseController {
 
 						// 插入系统消息表
 						ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
-						sysMsgLog.setMtype("SM02"); // 出价被超
+						sysMsgLog.setTitle("出价被超越！");
 						sysMsgLog.setContent("您的出价￥"+exceed.getBid()+"已被超越！");
 						sysMsgLog.setUrl("api/apiProductController/productDetail?id=" + product.getId());
 

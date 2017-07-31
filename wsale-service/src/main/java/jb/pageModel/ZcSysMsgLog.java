@@ -9,8 +9,7 @@ public class ZcSysMsgLog implements java.io.Serializable {
 
 	private java.lang.String id;	
 	private java.lang.String sysMsgId;	
-	private java.lang.String mtype;	
-	private java.lang.String timeUnit;	
+	private java.lang.String title;
 	private java.lang.String content;
 	private String url;
 	private java.lang.Boolean isRead;	
@@ -34,20 +33,15 @@ public class ZcSysMsgLog implements java.io.Serializable {
 	public java.lang.String getSysMsgId() {
 		return this.sysMsgId;
 	}
-	public void setMtype(java.lang.String mtype) {
-		this.mtype = mtype;
+
+	public String getTitle() {
+		return title;
 	}
-	
-	public java.lang.String getMtype() {
-		return this.mtype;
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
-	public void setTimeUnit(java.lang.String timeUnit) {
-		this.timeUnit = timeUnit;
-	}
-	
-	public java.lang.String getTimeUnit() {
-		return this.timeUnit;
-	}
+
 	public void setContent(java.lang.String content) {
 		this.content = content;
 	}

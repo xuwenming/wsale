@@ -41,10 +41,8 @@ public class TzcSysMsgLog implements java.io.Serializable,IEntity{
 	private java.lang.String id;
 	//@Length(max=36)
 	private java.lang.String sysMsgId;
-	//@Length(max=4)
-	private java.lang.String mtype;
-	//@Length(max=20)
-	private java.lang.String timeUnit;
+	//@Length(max=100)
+	private java.lang.String title;
 	//@Length(max=500)
 	private java.lang.String content;
 	private String url;
@@ -80,25 +78,16 @@ public class TzcSysMsgLog implements java.io.Serializable,IEntity{
 	public void setSysMsgId(java.lang.String sysMsgId) {
 		this.sysMsgId = sysMsgId;
 	}
-	
-	@Column(name = "mtype", unique = false, nullable = true, insertable = true, updatable = true, length = 4)
-	public java.lang.String getMtype() {
-		return this.mtype;
+
+	@Column(name = "title", unique = false, nullable = true, insertable = true, updatable = true, length = 100)
+	public String getTitle() {
+		return title;
 	}
-	
-	public void setMtype(java.lang.String mtype) {
-		this.mtype = mtype;
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
-	
-	@Column(name = "time_unit", unique = false, nullable = true, insertable = true, updatable = true, length = 20)
-	public java.lang.String getTimeUnit() {
-		return this.timeUnit;
-	}
-	
-	public void setTimeUnit(java.lang.String timeUnit) {
-		this.timeUnit = timeUnit;
-	}
-	
+
 	@Column(name = "content", unique = false, nullable = true, insertable = true, updatable = true, length = 500)
 	public java.lang.String getContent() {
 		return this.content;

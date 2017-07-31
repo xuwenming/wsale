@@ -18,7 +18,7 @@
         <div role="main" class="ui-content jqm-content jqm-fullwidth">
             <div class="home-content" style="margin:0;">
                 <div style="text-align: left;background-color: #fff;">
-                    <a href="" class="sysinfo-link">
+                    <a href="javascript:href('api/apiSysMsg/sysMsg');" class="sysinfo-link">
                         <div class="left-touxiang">
                             <img class="sysinfo-icon" src="${pageContext.request.contextPath}/wsale/images/sysinfo-icon.png" />
                         </div>

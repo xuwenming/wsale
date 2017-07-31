@@ -1,6 +1,8 @@
 package jb.pageModel;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("serial")
 public class ZcSysMsg implements java.io.Serializable {
@@ -15,7 +17,8 @@ public class ZcSysMsg implements java.io.Serializable {
 	private Date newtime;			
 	private Date addtime;			
 
-	
+	private List<ZcSysMsgLog> sysMsgLogs;
+	private Map<String, Object> product;
 
 	public void setId(java.lang.String value) {
 		this.id = value;
@@ -70,4 +73,19 @@ public class ZcSysMsg implements java.io.Serializable {
 		return this.addtime;
 	}
 
+	public List<ZcSysMsgLog> getSysMsgLogs() {
+		return sysMsgLogs;
+	}
+
+	public void setSysMsgLogs(List<ZcSysMsgLog> sysMsgLogs) {
+		this.sysMsgLogs = sysMsgLogs;
+	}
+
+	public Map<String, Object> getProduct() {
+		return product;
+	}
+
+	public void setProduct(Map<String, Object> product) {
+		this.product = product;
+	}
 }

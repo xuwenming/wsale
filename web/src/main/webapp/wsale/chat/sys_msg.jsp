@@ -13,7 +13,13 @@
     
         <div id="index-content" role="main" class="ui-content jqm-content jqm-fullwidth">
             <div class="home-content">
-                <div>
+                <div class="sysMsgList">
+                </div>
+                <div class="weui-infinite-scroll">
+                    <div class="infinite-preloader"></div>
+                    正在加载中
+                </div>
+                <!--<div>
                     <div class="xinpin-datetime">
                         <span class="xinpin-time">2015-02-02 12:33</span>
                     </div>
@@ -67,7 +73,7 @@
                             </div>
                             <div>
                                 <span style="background-color: #fc4f1e; color: #fff; padding: 1px 4px;">1</span>
-                                <span class="normal-text">卖家最新消息</span>
+                                <span class="normal-text">买家最新消息</span>
                             </div>
                             <div class="grayright-text sysinfo-contnet">
                                 <img class="sys-timeicon" src="${pageContext.request.contextPath}/wsale/images/time-icon.png" /> <span>sorry，拍卖失败！</span>
@@ -89,7 +95,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
 
@@ -106,22 +112,97 @@
         <jsp:include page="../template/chat_template.jsp"></jsp:include>
     </div><!-- /page -->
     <script type="text/javascript">
+        var loading = true, currPage = 1, rows = 5;
         $(function(){
-            /*系统信息*/
-            $(".info-show").click(function(){
-                var infoflag = $(this).attr("data-flag");
+            $(document.body).infinite().on("infinite", function() {
+                if(loading) return;
+                loading = true;
+                setTimeout(function() {
+                    drawSysMsg();
+                }, 20);
+            });
+
+            drawSysMsg();
+
+            $(".sysMsgList").on('click', '.sysinfo-more', function(){
+                var $img = $(this).find('img');
+                var infoflag = $img.attr("data-flag");
                 if(infoflag == "down"){
-                    $(this).parent().parent().find(".hide-info").show();
-                    $(this).attr("data-flag","up");
-                    $(this).attr("src",base + "wsale/images/up-icon.png");
+                    $(this).parent().find(".hide-info").show();
+                    $img.attr("data-flag","up");
+                    $img.attr("src",base + "wsale/images/up-icon.png");
                 }
                 if(infoflag == "up"){
-                    $(this).parent().parent().find(".hide-info").hide();
-                    $(this).attr("data-flag","down");
-                    $(this).attr("src",base + "wsale/images/down-icon.png");
+                    $(this).parent().find(".hide-info").hide();
+                    $img.attr("data-flag","down");
+                    $img.attr("src",base + "wsale/images/down-icon.png");
                 }
             });
         });
+
+        function drawSysMsg() {
+            ajaxPost('api/apiSysMsg/sysMsgList', {page:currPage, rows:rows}, function(data){
+                if(data.success) {
+                    var result = data.obj;
+                    if(result.rows.length != 0) {
+                        for(var i in result.rows) {
+                            var sysMsg = result.rows[i];
+                            buildSysMsg(sysMsg);
+                        }
+
+                        loading = false;
+                        currPage ++;
+                    } else {
+                        if(result.total == 0)
+                            $(".sysMsgList").append(Util.noDate(1, '消息是空的'));
+                    }
+                    if(result.rows.length >= rows) {
+                        $(".home-content .weui-infinite-scroll").show();
+                    } else {
+                        $(document.body).destroyInfinite();
+                        $(".home-content .weui-infinite-scroll").hide();
+                    }
+                } else {
+                    $(document.body).destroyInfinite();
+                    $(".home-content .weui-infinite-scroll").hide();
+                }
+            });
+        }
+
+        function buildSysMsg(sysMsg) {
+            var viewData = Util.cloneJson(sysMsg);
+            viewData.newtime = new Date(sysMsg.newtime.replace(/-/g,"/")).format('yyyy年MM月dd日');
+            viewData.msgCount = sysMsg.sysMsgLogs.length;
+            viewData.msgType = sysMsg.idType == 1 ? '买家最新消息' : '卖家最新消息';
+
+            var dom = Util.cloneDom("sys_msg_template", sysMsg, viewData);
+            dom.find('.info-content').addClass(sysMsg.idType == 2 ? 'info-one' : 'info-two');
+            $(".sysMsgList").append(dom);
+
+            drawSysMsgLog(dom.find('.sysMsgLogs'), sysMsg.sysMsgLogs);
+
+            dom.find('.info-title').click(sysMsg, function(event){
+                var sysMsg = event.data;
+                if(sysMsg.objectType == 'PRODUCT')
+                    href('api/apiProductController/productDetail?id=' + sysMsg.objectId);
+            });
+
+            dom.find(".lazy").lazyload({
+                placeholder : base + 'wsale/images/lazyload.png'
+            });
+        }
+
+        function drawSysMsgLog(elm, sysMsgLogs) {
+
+            for(var i=0; i<sysMsgLogs.length; i++) {
+                var hide = i == 0 ? '' : 'hide-info', sysMsgLog = sysMsgLogs[i];
+                var html = '<div class="grayright-text sysinfo-contnet '+hide+'" onclick="href(\''+sysMsgLog.url+'\');">'
+                        + '<img class="sys-timeicon" src="${pageContext.request.contextPath}/wsale/images/time-icon.png" /> <span>'+sysMsgLog.title+'</span>'
+                        + '<div>'+sysMsgLog.content+'</div>'
+                        + '<div class="sysinfo-time">'+Util.getTime(sysMsgLog.addtime)+'</div></div>';
+                elm.append(html);
+            }
+        }
     </script>
 </body>
 

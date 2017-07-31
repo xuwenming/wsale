@@ -2440,6 +2440,8 @@ p.order-right-middle{
 }
 .sysinfo-more img{
 	width:22px;
+	padding-left: 20px;
+	padding-top: 5px;
 }
 .sysinfo-contnet{
 	margin-top:10px;
@@ -2459,6 +2461,16 @@ p.order-right-middle{
 }
 .info-two{
 	border-top:5px solid #f6bb2b;
+}
+.info-one .msgCount{
+	background-color: #fc4f1e;
+	color: #fff;
+	padding: 1px 4px;
+}
+.info-two .msgCount{
+	background-color: #f6bb2b;
+	color: #fff;
+	padding: 1px 4px;
 }
 .hide-info{
 	display:none;

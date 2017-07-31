@@ -43,3 +43,44 @@
 	</div>
 </div>
 
+<%--系统消息 --%>
+<div id="sys_msg_template" style="display: none;">
+	<div class="xinpin-datetime">
+		<span class="xinpin-time" name="newtime"></span>
+	</div>
+	<div class="info-content">
+		<div class="info-title">
+			<img class="lazy" name="product" data-name="icon"/>
+			<span class="normal-text" name="product" data-name="content"></span>
+		</div>
+		<div class="sysinfo-detail">
+			<div class="sysinfo-more">
+				<img data-flag="down" src="${pageContext.request.contextPath}/wsale/images/down-icon.png" />
+			</div>
+			<div>
+				<span class="msgCount" name="msgCount"></span>
+				<span class="normal-text" name="msgType"></span>
+			</div>
+			<div class="sysMsgLogs"></div>
+			<!--<div class="grayright-text sysinfo-contnet">
+				<img class="sys-timeicon" src="${pageContext.request.contextPath}/wsale/images/time-icon.png" /> <span>sorry，拍卖失败！</span>
+				<div>
+					尊敬的李玉先生，你的拍品“和田玉”在截止时间内无人出价，你可以在右下角“客户服务”寻求帮助。
+				</div>
+				<div class="sysinfo-time">
+					16小时前
+				</div>
+			</div>
+			<div class="grayright-text sysinfo-contnet hide-info">
+				<img class="sys-timeicon" src="${pageContext.request.contextPath}/wsale/images/time-icon.png" /> <span>拍卖一小时结束</span>
+				<div>
+					您好，您的拍品“和田玉”将于23:00结束，分享到微信有助于成交
+				</div>
+				<div class="sysinfo-time">
+					16小时前
+				</div>
+			</div>-->
+		</div>
+	</div>
+</div>
+

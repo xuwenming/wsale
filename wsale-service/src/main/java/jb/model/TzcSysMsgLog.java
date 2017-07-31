@@ -47,6 +47,7 @@ public class TzcSysMsgLog implements java.io.Serializable,IEntity{
 	private java.lang.String timeUnit;
 	//@Length(max=500)
 	private java.lang.String content;
+	private String url;
 	//
 	private java.lang.Boolean isRead;
 	//
@@ -106,7 +107,16 @@ public class TzcSysMsgLog implements java.io.Serializable,IEntity{
 	public void setContent(java.lang.String content) {
 		this.content = content;
 	}
-	
+
+	@Column(name = "url", unique = false, nullable = true, insertable = true, updatable = true, length = 500)
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	@Column(name = "is_read", unique = false, nullable = true, insertable = true, updatable = true, length = 0)
 	public java.lang.Boolean getIsRead() {
 		return this.isRead;

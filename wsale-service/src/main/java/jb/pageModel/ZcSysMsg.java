@@ -10,7 +10,8 @@ public class ZcSysMsg implements java.io.Serializable {
 	private java.lang.String id;	
 	private java.lang.String objectType;	
 	private java.lang.String objectId;	
-	private java.lang.String userId;	
+	private java.lang.String userId;
+	private Integer idType;
 	private Date newtime;			
 	private Date addtime;			
 
@@ -42,7 +43,15 @@ public class ZcSysMsg implements java.io.Serializable {
 	public void setUserId(java.lang.String userId) {
 		this.userId = userId;
 	}
-	
+
+	public Integer getIdType() {
+		return idType;
+	}
+
+	public void setIdType(Integer idType) {
+		this.idType = idType;
+	}
+
 	public java.lang.String getUserId() {
 		return this.userId;
 	}

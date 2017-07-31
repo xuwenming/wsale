@@ -9,11 +9,13 @@ import java.util.Map;
 import jb.absx.F;
 import jb.dao.ZcSysMsgLogDaoI;
 import jb.model.TzcSysMsgLog;
+import jb.pageModel.ZcSysMsg;
 import jb.pageModel.ZcSysMsgLog;
 import jb.pageModel.DataGrid;
 import jb.pageModel.PageHelper;
 import jb.service.ZcSysMsgLogServiceI;
 
+import jb.service.ZcSysMsgServiceI;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class ZcSysMsgLogServiceImpl extends BaseServiceImpl<ZcSysMsgLog> impleme
 
 	@Autowired
 	private ZcSysMsgLogDaoI zcSysMsgLogDao;
+
+	private ZcSysMsgServiceI zcSysMsgService;
 
 	@Override
 	public DataGrid dataGrid(ZcSysMsgLog zcSysMsgLog, PageHelper ph) {
@@ -75,6 +79,27 @@ public class ZcSysMsgLogServiceImpl extends BaseServiceImpl<ZcSysMsgLog> impleme
 		TzcSysMsgLog t = new TzcSysMsgLog();
 		BeanUtils.copyProperties(zcSysMsgLog, t);
 		zcSysMsgLogDao.save(t);
+	}
+
+	@Override
+	public void addLogAndMsg(ZcSysMsgLog sysMsgLog) {
+		ZcSysMsg sysMsg = sysMsgLog.getSysMsg();
+		sysMsg.setNewtime(new Date());
+
+		ZcSysMsg exist = new ZcSysMsg();
+		exist.setObjectType(sysMsg.getObjectType());
+		exist.setObjectId(sysMsg.getObjectId());
+		exist.setUserId(sysMsg.getUserId());
+		exist = zcSysMsgService.get(exist);
+		if(exist == null) {
+			zcSysMsgService.add(sysMsg);
+		} else {
+			sysMsg.setId(exist.getId());
+			zcSysMsgService.edit(sysMsg);
+		}
+
+		sysMsgLog.setSysMsgId(sysMsg.getId());
+		add(sysMsgLog);
 	}
 
 	@Override

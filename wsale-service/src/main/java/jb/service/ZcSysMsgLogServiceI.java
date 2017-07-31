@@ -57,4 +57,5 @@ public interface ZcSysMsgLogServiceI {
 
 	public List<ZcSysMsgLog> query(ZcSysMsgLog zcSysMsgLog);
 
+	void addLogAndMsg(ZcSysMsgLog sysMsgLog);
 }

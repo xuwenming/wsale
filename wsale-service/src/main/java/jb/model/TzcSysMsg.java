@@ -45,6 +45,7 @@ public class TzcSysMsg implements java.io.Serializable,IEntity{
 	private java.lang.String objectId;
 	//@Length(max=36)
 	private java.lang.String userId;
+	private Integer idType;
 	//
 	private java.util.Date newtime;
 	//
@@ -94,6 +95,15 @@ public class TzcSysMsg implements java.io.Serializable,IEntity{
 	
 	public void setUserId(java.lang.String userId) {
 		this.userId = userId;
+	}
+
+	@Column(name = "id_type", unique = false, nullable = true, insertable = true, updatable = true, length = 1)
+	public Integer getIdType() {
+		return idType;
+	}
+
+	public void setIdType(Integer idType) {
+		this.idType = idType;
 	}
 	
 

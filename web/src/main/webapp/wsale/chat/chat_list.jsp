@@ -13,11 +13,11 @@
     </style>
 </head>
 <body>
-    <div data-role="page" class="jqm-demos" id="main">
+    <div data-role="page" class="jqm-demos" id="main" style="background-color: #f5f5f5;">
 
         <div role="main" class="ui-content jqm-content jqm-fullwidth">
             <div class="home-content" style="margin:0;">
-                <div class="info-content">
+                <div style="text-align: left;background-color: #fff;">
                     <a href="" class="sysinfo-link">
                         <div class="left-touxiang">
                             <img class="sysinfo-icon" src="${pageContext.request.contextPath}/wsale/images/sysinfo-icon.png" />
@@ -49,10 +49,10 @@
                     </c:if>
                     <div id="chat_list">
                     </div>
-                    <div class="weui-infinite-scroll">
-                        <div class="infinite-preloader"></div>
-                        努力加载中
-                    </div>
+                </div>
+                <div class="weui-infinite-scroll">
+                    <div class="infinite-preloader"></div>
+                    努力加载中
                 </div>
             </div>
 

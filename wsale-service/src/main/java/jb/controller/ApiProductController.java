@@ -77,6 +77,9 @@ public class ApiProductController extends BaseController {
 	@Autowired
 	private SendWxMessageImpl sendWxMessage;
 
+	@Autowired
+	private ZcSysMsgLogServiceI zcSysMsgLogService;
+
 	/**
 	 * 发布拍品-跳转第一页
 	 * http://localhost:8080/api/apiProductController/toFirst?tokenId=1D96DACB84F21890ED9F4928FA8B352B
@@ -847,6 +850,23 @@ public class ApiProductController extends BaseController {
 
 				temp.setData(data);
 				WeixinUtil.sendTemplateMessage(temp);
+
+				// 插入系统消息表
+				ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+				sysMsgLog.setMtype("SM01"); // 出价成功
+				sysMsgLog.setContent("您的拍品，『" + buyer.getNickname() + "』出价￥" + product.getCurrentPrice() + "元，目前领先！");
+				sysMsgLog.setUrl("api/apiProductController/productDetail?id=" + product.getId());
+
+				ZcSysMsg sysMsg = new ZcSysMsg();
+				sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.PRODUCT.getCode());
+				sysMsg.setObjectId(product.getId());
+				sysMsg.setUserId(seller.getId());
+				sysMsg.setIdType(2); // 卖家
+
+				sysMsgLog.setSysMsg(sysMsg);
+
+				zcSysMsgLogService.addLogAndMsg(sysMsgLog);
+
 				return true;
 			}
 		});
@@ -899,6 +919,22 @@ public class ApiProductController extends BaseController {
 
 						temp.setData(data);
 						WeixinUtil.sendTemplateMessage(temp);
+
+						// 插入系统消息表
+						ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+						sysMsgLog.setMtype("SM02"); // 出价被超
+						sysMsgLog.setContent("您的出价￥"+exceed.getBid()+"已被超越！");
+						sysMsgLog.setUrl("api/apiProductController/productDetail?id=" + product.getId());
+
+						ZcSysMsg sysMsg = new ZcSysMsg();
+						sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.PRODUCT.getCode());
+						sysMsg.setObjectId(product.getId());
+						sysMsg.setUserId(u.getId());
+						sysMsg.setIdType(1); // 买家
+
+						sysMsgLog.setSysMsg(sysMsg);
+
+						zcSysMsgLogService.addLogAndMsg(sysMsgLog);
 					}
 				}
 				return true;

@@ -284,20 +284,6 @@
 			$(".mask-layer,.pingbi-cancel").click(function(){
 				$(".mask-layer,.guanzhu-dialog").hide();
 			});
-			/*系统信息*/
-			$(".info-show").click(function(){
-				var infoflag = $(this).attr("data-flag");
-				if(infoflag == "down"){
-					$(this).parent().parent().find(".hide-info").show();
-					$(this).attr("data-flag","up");
-					$(this).attr("src","images/up-icon.png");
-				}
-				if(infoflag == "up"){
-					$(this).parent().parent().find(".hide-info").hide();
-					$(this).attr("data-flag","down");
-					$(this).attr("src","images/down-icon.png");
-				}
-			});
 
 			/*视图模式切换*/
 			$("body").on("click",".cbp-vm-icon", function(){

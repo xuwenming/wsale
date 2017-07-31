@@ -5,7 +5,7 @@
 <html>
 <head>
     <title>系统消息</title>
-    <jsp:include page="../chat_inc.jsp"></jsp:include>
+    <jsp:include page="../inc.jsp"></jsp:include>
 
 </head>
 <body>
@@ -19,83 +19,6 @@
                     <div class="infinite-preloader"></div>
                     正在加载中
                 </div>
-                <!--<div>
-                    <div class="xinpin-datetime">
-                        <span class="xinpin-time">2015-02-02 12:33</span>
-                    </div>
-                    <div class="info-content info-two">
-                        <div class="info-title">
-                            <img src="${pageContext.request.contextPath}/wsale/images/touxiang1-icon.png" />
-                            <span class="normal-text">和田玉</span>
-                        </div>
-                        <div class="sysinfo-detail">
-                            <div class="sysinfo-more">
-                                <img class="info-show" data-flag="down" src="${pageContext.request.contextPath}/wsale/images/down-icon.png" />
-                            </div>
-                            <div>
-                                <span style="background-color: #f6bb2b; color: #fff; padding: 1px 4px;">2</span>
-                                <span class="normal-text">卖家最新消息</span>
-                            </div>
-                            <div class="grayright-text sysinfo-contnet">
-                                <img class="sys-timeicon" src="${pageContext.request.contextPath}/wsale/images/time-icon.png" /> <span>sorry，拍卖失败！</span>
-                                <div>
-                                    尊敬的李玉先生，你的拍品“和田玉”在截止时间内无人出价，你可以在右下角“客户服务”寻求帮助。
-                                </div>
-                                <div class="sysinfo-time">
-                                    16小时前
-                                </div>
-                            </div>
-                            <div class="grayright-text sysinfo-contnet hide-info">
-                                <img class="sys-timeicon" src="${pageContext.request.contextPath}/wsale/images/time-icon.png" /> <span>拍卖一小时结束</span>
-                                <div>
-                                    您好，您的拍品“和田玉”将于23:00结束，分享到微信有助于成交
-                                </div>
-                                <div class="sysinfo-time">
-                                    16小时前
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="xinpin-datetime">
-                        <span class="xinpin-time">2015-02-02 12:33</span>
-                    </div>
-                    <div class="info-content info-one">
-                        <div class="info-title">
-                            <img src="${pageContext.request.contextPath}/wsale/images/touxiang1-icon.png" />
-                            <span class="normal-text">和田玉</span>
-                        </div>
-                        <div class="sysinfo-detail">
-                            <div class="sysinfo-more">
-                                <img class="info-show" data-flag="down" src="${pageContext.request.contextPath}/wsale/images/down-icon.png" />
-                            </div>
-                            <div>
-                                <span style="background-color: #fc4f1e; color: #fff; padding: 1px 4px;">1</span>
-                                <span class="normal-text">买家最新消息</span>
-                            </div>
-                            <div class="grayright-text sysinfo-contnet">
-                                <img class="sys-timeicon" src="${pageContext.request.contextPath}/wsale/images/time-icon.png" /> <span>sorry，拍卖失败！</span>
-                                <div>
-                                    尊敬的李玉先生，你的拍品“和田玉”在截止时间内无人出价，你可以在右下角“客户服务”寻求帮助。
-                                </div>
-                                <div class="sysinfo-time">
-                                    16小时前
-                                </div>
-                            </div>
-                            <div class="grayright-text sysinfo-contnet hide-info">
-                                <img class="sys-timeicon" src="${pageContext.request.contextPath}/wsale/images/time-icon.png" /> <span>拍卖一小时结束</span>
-                                <div>
-                                    您好，您的拍品“和田玉”将于23:00结束，分享到微信有助于成交
-                                </div>
-                                <div class="sysinfo-time">
-                                    16小时前
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>-->
             </div>
         </div>
 

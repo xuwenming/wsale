@@ -77,7 +77,7 @@
                         currPage ++;
                     } else {
                         if(result.total == 0)
-                            $(".sysMsgList").append(Util.noDate(1, '消息是空的'));
+                            $(".sysMsgList").append(Util.noDate(1, '消息是空的<br>这里为您呈现历史交易消息'));
                     }
                     if(result.rows.length >= rows) {
                         $(".home-content .weui-infinite-scroll").show();

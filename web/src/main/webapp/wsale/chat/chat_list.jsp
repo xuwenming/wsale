@@ -23,7 +23,8 @@
                             <img class="sysinfo-icon" src="${pageContext.request.contextPath}/wsale/images/sysinfo-icon.png" />
                         </div>
                         <div class="info-right">
-                            <span style="padding: 0 4px;font-size: 14px;color:#fff;background-color:#ff0000;border-radius: 10px;">new</span>
+                            <span><img src="${pageContext.request.contextPath}/wsale/images/new-1.png" style="position: absolute;margin-left: -35px;margin-top: 3px;width: 32px;"/></span>
+                            <%--<span style="padding: 0 4px;font-size: 14px;color:#fff;background-color:#ff0000;border-radius: 10px;">new</span>--%>
                             <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
                         </div>
                         <div class="normal-text sysinfo-text">

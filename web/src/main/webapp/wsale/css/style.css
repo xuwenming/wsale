@@ -2422,8 +2422,8 @@ p.order-right-middle{
 	font-size:14px;
 }
 .info-title img{
-	width:50px;
-	height:50px;
+	width:100px;
+	height:100px;
 	vertical-align:top;
 	margin-right:10px;
 }
@@ -2470,7 +2470,7 @@ p.order-right-middle{
 .info-two .msgCount{
 	background-color: #f6bb2b;
 	color: #fff;
-	padding: 1px 4px;
+	padding: 1px 5px;
 }
 .hide-info{
 	display:none;
@@ -2778,6 +2778,10 @@ p.order-right-middle{
 .big-text{
 	color:#555;
 	font-size:14px;
+}
+.big-text-1{
+	color:#555;
+	font-size:16px;
 }
 .pay-smallval{
 	color:#fa471e;

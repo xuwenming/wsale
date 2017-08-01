@@ -49,9 +49,9 @@
 		<span class="xinpin-time" name="newtime"></span>
 	</div>
 	<div class="info-content">
-		<div class="info-title" style=" height: 50px;">
+		<div class="info-title" style=" height: 100px;">
 			<div style="float: left;"><img class="lazy" name="product" data-name="icon"/></div>
-			<div class="normal-text line-two" name="product" data-name="content"></div>
+			<div class="big-text-1 line-two" style="-webkit-line-clamp: 4;" name="product" data-name="content"></div>
 		</div>
 		<div class="sysinfo-detail">
 			<div class="sysinfo-more">
@@ -59,7 +59,7 @@
 			</div>
 			<div>
 				<span class="msgCount" name="msgCount"></span>
-				<span class="normal-text" name="msgType"></span>
+				<span class="big-text-1" name="msgType"></span>
 			</div>
 			<div class="sysMsgLogs"></div>
 		</div>

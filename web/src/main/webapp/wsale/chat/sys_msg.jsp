@@ -119,7 +119,7 @@
 
             for(var i=0; i<sysMsgLogs.length; i++) {
                 var hide = i == 0 ? '' : 'hide-info', sysMsgLog = sysMsgLogs[i];
-                var html = '<div class="grayright-text sysinfo-contnet '+hide+'" onclick="href(\''+sysMsgLog.url+'\');">'
+                var html = '<div class="big-text sysinfo-contnet '+hide+'" onclick="href(\''+sysMsgLog.url+'\');">'
                         + '<img class="sys-timeicon" src="${pageContext.request.contextPath}/wsale/images/time-icon.png" /> <span>'+sysMsgLog.title+'</span>'
                         + '<div>'+sysMsgLog.content+'</div>'
                         + '<div class="sysinfo-time">'+Util.getTime(sysMsgLog.addtime)+'</div></div>';

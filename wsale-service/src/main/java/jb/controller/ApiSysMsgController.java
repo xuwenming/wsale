@@ -1,9 +1,7 @@
 package jb.controller;
 
 import jb.pageModel.*;
-import jb.service.ZcProductServiceI;
-import jb.service.ZcSysMsgLogServiceI;
-import jb.service.ZcSysMsgServiceI;
+import jb.service.*;
 import jb.service.impl.CompletionFactory;
 import jb.util.EnumConstants;
 import org.apache.commons.collections.CollectionUtils;
@@ -36,6 +34,13 @@ public class ApiSysMsgController extends BaseController {
 
 	@Autowired
 	private ZcProductServiceI zcProductService;
+
+	@Autowired
+	private ZcForumBbsServiceI zcForumBbsService;
+
+	@Autowired
+	private ZcFileServiceI zcFileService;
+
 
 	/**
 	 * 跳转至系统消息
@@ -86,6 +91,20 @@ public class ApiSysMsgController extends BaseController {
 								product.put("id", p.getId());
 								product.put("icon", p.getIcon());
 								product.put("content", p.getContentLine());
+							} else if(EnumConstants.OBJECT_TYPE.BBS.getCode().equals(getD().getObjectType())) {
+								ZcForumBbs bbs = zcForumBbsService.get(getD().getObjectId());
+								ZcFile file = new ZcFile();
+								file.setObjectType(EnumConstants.OBJECT_TYPE.BBS.getCode());
+								file.setObjectId(bbs.getId());
+								file.setFileType("FT01");
+								ZcFile f = zcFileService.get(file);
+
+								String icon = null;
+								if(f != null) icon = f.getFileHandleUrl();
+
+								product.put("id", bbs.getId());
+								product.put("icon", icon);
+								product.put("content", bbs.getBbsTitle());
 							}
 
 							return product;

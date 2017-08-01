@@ -7,6 +7,7 @@ import jb.pageModel.*;
 import jb.service.*;
 import jb.util.Constants;
 import jb.util.DateUtil;
+import jb.util.EnumConstants;
 import jb.util.PathUtil;
 import jb.util.wx.WeixinUtil;
 import jb.util.wx.bean.Text;
@@ -67,6 +68,9 @@ public class SendWxMessageImpl {
 
     @Autowired
     private ZcOrderServiceI zcOrderService;
+
+    @Autowired
+    private ZcSysMsgLogServiceI zcSysMsgLogService;
 
     /**
      *objectType:bbs_e=帖子加精；bbs_l=帖子加亮；bbs_t=帖子置顶；bbs_o=帖子关闭；bbs_m=帖子移动;bbs_c=帖子回复;bbs_r=帖子打赏;bbs_d=帖子删除
@@ -261,6 +265,22 @@ public class SendWxMessageImpl {
 
                     temp.setData(data);
 
+                    // 插入系统消息表
+                    ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+                    sysMsgLog.setTitle("Sorry,拍卖失败！");
+                    sysMsgLog.setContent(first.getValue());
+                    sysMsgLog.setUrl("api/apiProductController/productDetail?id=" + product.getId());
+
+                    ZcSysMsg sysMsg = new ZcSysMsg();
+                    sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.PRODUCT.getCode());
+                    sysMsg.setObjectId(product.getId());
+                    sysMsg.setUserId(seller.getId());
+                    sysMsg.setIdType(2); // 卖家
+
+                    sysMsgLog.setSysMsg(sysMsg);
+
+                    zcSysMsgLogService.addLogAndMsg(sysMsgLog);
+
                 }
 
                 WeixinUtil.sendTemplateMessage(temp);
@@ -320,6 +340,22 @@ public class SendWxMessageImpl {
 
                 WeixinUtil.sendTemplateMessage(temp);
                 System.out.println("未付款交易关闭提醒sendUnPayTemplateMessage----推送卖家end!");
+
+                // 插入系统消息表
+                ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+                sysMsgLog.setTitle("Sorry,交易失败！");
+                sysMsgLog.setContent(first.getValue());
+                sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+
+                ZcSysMsg sysMsg = new ZcSysMsg();
+                sysMsg.setObjectType(product.getProductType());
+                sysMsg.setObjectId(product.getId());
+                sysMsg.setUserId(seller.getId());
+                sysMsg.setIdType(2); // 卖家
+
+                sysMsgLog.setSysMsg(sysMsg);
+
+                zcSysMsgLogService.addLogAndMsg(sysMsgLog);
                 return true;
             }
         });
@@ -369,6 +405,22 @@ public class SendWxMessageImpl {
 
                 temp.setData(data);
                 WeixinUtil.sendTemplateMessage(temp);
+
+                // 插入系统消息表
+                ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+                sysMsgLog.setTitle("恭喜您,拍卖成功！");
+                sysMsgLog.setContent("尊敬的『" + seller.getNickname() + "』，您的拍品已被『" + buyer.getNickname() + "』拍得。");
+                sysMsgLog.setUrl("api/apiProductController/productDetail?id=" + product.getId());
+
+                ZcSysMsg sysMsg = new ZcSysMsg();
+                sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.PRODUCT.getCode());
+                sysMsg.setObjectId(product.getId());
+                sysMsg.setUserId(seller.getId());
+                sysMsg.setIdType(2); // 卖家
+
+                sysMsgLog.setSysMsg(sysMsg);
+
+                zcSysMsgLogService.addLogAndMsg(sysMsgLog);
                 System.out.println("拍卖结果通知sendDealTemplateMessage----推送给卖家end!");
 
                 System.out.println("拍卖结果通知sendDealTemplateMessage----推送给买家start!");
@@ -404,6 +456,22 @@ public class SendWxMessageImpl {
                 temp.setData(data);
 
                 WeixinUtil.sendTemplateMessage(temp);
+
+                // 插入系统消息表
+                sysMsgLog = new ZcSysMsgLog();
+                sysMsgLog.setTitle("恭喜您,竞拍成功！");
+                sysMsgLog.setContent("『" + buyer.getNickname() + "』您好，恭喜您竞拍成功。");
+                sysMsgLog.setUrl("api/apiOrder/myOrder?type=1");
+
+                sysMsg = new ZcSysMsg();
+                sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.PRODUCT.getCode());
+                sysMsg.setObjectId(product.getId());
+                sysMsg.setUserId(buyer.getId());
+                sysMsg.setIdType(1); // 买家
+
+                sysMsgLog.setSysMsg(sysMsg);
+
+                zcSysMsgLogService.addLogAndMsg(sysMsgLog);
                 System.out.println("拍卖结果通知sendDealTemplateMessage----推送给买家end!");
 
                 return true;
@@ -453,6 +521,22 @@ public class SendWxMessageImpl {
                 temp.setData(data);
 
                 WeixinUtil.sendTemplateMessage(temp);
+
+                // 插入系统消息表
+                ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+                sysMsgLog.setTitle("交易" + h + "小时后付款截止！");
+                sysMsgLog.setContent("尊敬的『"+buyer.getNickname()+"』，您的交易\""+content+"\"离付款还有 "+h+" 小时，请尽快付款。");
+                sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+
+                ZcSysMsg sysMsg = new ZcSysMsg();
+                sysMsg.setObjectType(product.getProductType());
+                sysMsg.setObjectId(product.getId());
+                sysMsg.setUserId(buyer.getId());
+                sysMsg.setIdType(1); // 买家
+
+                sysMsgLog.setSysMsg(sysMsg);
+
+                zcSysMsgLogService.addLogAndMsg(sysMsgLog);
                 System.out.println("付款提醒sendPayTemplateMessage----推送买家end!");
                 return true;
             }
@@ -520,6 +604,28 @@ public class SendWxMessageImpl {
 
                 WeixinUtil.sendTemplateMessage(temp);
                 System.out.println("发货提醒sendDeliverSTemplateMessage----推送卖家end!");
+
+                // 插入系统消息表
+                ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+                if(h == 0) {
+                    sysMsgLog.setTitle("买家已支付！");
+                    sysMsgLog.setContent("尊敬的『"+seller.getNickname()+"』，您的交易买家已支付。");
+                } else {
+                    sysMsgLog.setTitle("交易" + h + "小时前已付款！");
+                    sysMsgLog.setContent("尊敬的『" + seller.getNickname() + "』，您的交易买家已在"+h+"小时前付款，请及时发货！");
+                }
+
+                sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+
+                ZcSysMsg sysMsg = new ZcSysMsg();
+                sysMsg.setObjectType(product.getProductType());
+                sysMsg.setObjectId(product.getId());
+                sysMsg.setUserId(seller.getId());
+                sysMsg.setIdType(2); // 卖家
+
+                sysMsgLog.setSysMsg(sysMsg);
+
+                zcSysMsgLogService.addLogAndMsg(sysMsgLog);
                 return true;
             }
         });
@@ -588,6 +694,22 @@ public class SendWxMessageImpl {
 
         temp.setData(data);
         WeixinUtil.sendTemplateMessage(temp);
+
+        // 插入系统消息表
+        ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+        sysMsgLog.setTitle("买家已发货！");
+        sysMsgLog.setContent("尊敬的『"+seller.getNickname()+"』，买家申请的退货交易已发货。");
+        sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+
+        ZcSysMsg sysMsg = new ZcSysMsg();
+        sysMsg.setObjectType(product.getProductType());
+        sysMsg.setObjectId(product.getId());
+        sysMsg.setUserId(seller.getId());
+        sysMsg.setIdType(2); // 卖家
+
+        sysMsgLog.setSysMsg(sysMsg);
+
+        zcSysMsgLogService.addLogAndMsg(sysMsgLog);
     }
 
     // 卖家订单发货提醒买家
@@ -635,6 +757,22 @@ public class SendWxMessageImpl {
 
         temp.setData(data);
         WeixinUtil.sendTemplateMessage(temp);
+
+        // 插入系统消息表
+        ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+        sysMsgLog.setTitle("卖家已发货！");
+        sysMsgLog.setContent("尊敬的『"+buyer.getNickname()+"』，您的拍品已发货。");
+        sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+
+        ZcSysMsg sysMsg = new ZcSysMsg();
+        sysMsg.setObjectType(product.getProductType());
+        sysMsg.setObjectId(product.getId());
+        sysMsg.setUserId(buyer.getId());
+        sysMsg.setIdType(1); // 买家
+
+        sysMsgLog.setSysMsg(sysMsg);
+
+        zcSysMsgLogService.addLogAndMsg(sysMsgLog);
     }
 
     /**
@@ -680,6 +818,22 @@ public class SendWxMessageImpl {
 
                 WeixinUtil.sendTemplateMessage(temp);
                 System.out.println("交易完成通知sendDealCompleteTemplateMessage----推送卖家end!");
+
+                // 插入系统消息表
+                ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+                sysMsgLog.setTitle("恭喜您，交易完成！");
+                sysMsgLog.setContent("尊敬的『"+seller.getNickname()+"』，买家已确认收货！交易完成。");
+                sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+
+                ZcSysMsg sysMsg = new ZcSysMsg();
+                sysMsg.setObjectType(product.getProductType());
+                sysMsg.setObjectId(product.getId());
+                sysMsg.setUserId(seller.getId());
+                sysMsg.setIdType(2);
+
+                sysMsgLog.setSysMsg(sysMsg);
+
+                zcSysMsgLogService.addLogAndMsg(sysMsgLog);
                 return true;
             }
         });
@@ -796,6 +950,30 @@ public class SendWxMessageImpl {
 
         temp.setData(data);
         WeixinUtil.sendTemplateMessage(temp);
+
+        // 插入系统消息表
+        ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+        ZcSysMsg sysMsg = new ZcSysMsg();
+        sysMsgLog.setTitle("拍卖" + time + "后结束！");
+        if(type == 1) {
+            sysMsgLog.setContent("『" + user.getNickname() + "』您好，" + firstValue);
+            sysMsg.setIdType(2);
+        } else if(type == 2) {
+            sysMsgLog.setContent("『" + user.getNickname() + "』您好，" + firstValue + "目前出价：" + product.getCurrentPrice() + " 元");
+            sysMsg.setIdType(1);
+        } else {
+            sysMsgLog.setContent("『" + user.getNickname() + "』您好，" + firstValue);
+            sysMsg.setIdType(1);
+        }
+        sysMsgLog.setUrl("api/apiProductController/productDetail?id=" + product.getId());
+
+        sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.PRODUCT.getCode());
+        sysMsg.setObjectId(product.getId());
+        sysMsg.setUserId(user.getId());
+
+        sysMsgLog.setSysMsg(sysMsg);
+
+        zcSysMsgLogService.addLogAndMsg(sysMsgLog);
     }
 
     /**
@@ -852,6 +1030,23 @@ public class SendWxMessageImpl {
 
                 WeixinUtil.sendTemplateMessage(temp);
                 System.out.println("退货申请提醒sendBackApplyTemplateMessage----推送卖家end!");
+
+                // 插入系统消息表
+                ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+                sysMsgLog.setTitle("买家申请退货！");
+                sysMsgLog.setContent("『" + seller.getNickname() + "』您好，您的拍品买家申请退货。");
+                sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+
+                ZcSysMsg sysMsg = new ZcSysMsg();
+                sysMsg.setObjectType(product.getProductType());
+                sysMsg.setObjectId(product.getId());
+                sysMsg.setUserId(seller.getId());
+                sysMsg.setIdType(2);
+
+                sysMsgLog.setSysMsg(sysMsg);
+
+                zcSysMsgLogService.addLogAndMsg(sysMsgLog);
+
                 return true;
             }
         });
@@ -899,6 +1094,22 @@ public class SendWxMessageImpl {
 
                 WeixinUtil.sendTemplateMessage(temp);
                 System.out.println("违约保证金不退还通知sendMarginNonTemplateMessage----推送买家end!");
+
+                // 插入系统消息表
+                ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+                sysMsgLog.setTitle("Sorry,交易失败！");
+                sysMsgLog.setContent("尊敬的『"+buyer.getNickname()+"』，您在拍场因未付款交易失败，保证金"+product.getMargin()+"元不予以退回");
+                sysMsgLog.setUrl("api/apiProductController/productDetail?id=" + product.getId());
+
+                ZcSysMsg sysMsg = new ZcSysMsg();
+                sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.PRODUCT.getCode());
+                sysMsg.setObjectId(product.getId());
+                sysMsg.setUserId(buyer.getId());
+                sysMsg.setIdType(1);
+
+                sysMsgLog.setSysMsg(sysMsg);
+
+                zcSysMsgLogService.addLogAndMsg(sysMsgLog);
                 return true;
             }
         });
@@ -948,6 +1159,22 @@ public class SendWxMessageImpl {
 
                 WeixinUtil.sendTemplateMessage(temp);
                 System.out.println("保证金退还通知sendMarginRefundTemplateMessage----推送买家end!");
+
+                // 插入系统消息表
+                ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+                sysMsgLog.setTitle("保证金退回！");
+                sysMsgLog.setContent("尊敬的『" + buyer.getNickname() + "』，您在拍品支付的保证金" + product.getMargin() + "元已退回。");
+                sysMsgLog.setUrl("api/apiProductController/productDetail?id=" + product.getId());
+
+                ZcSysMsg sysMsg = new ZcSysMsg();
+                sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.PRODUCT.getCode());
+                sysMsg.setObjectId(product.getId());
+                sysMsg.setUserId(buyer.getId());
+                sysMsg.setIdType(1);
+
+                sysMsgLog.setSysMsg(sysMsg);
+
+                zcSysMsgLogService.addLogAndMsg(sysMsgLog);
                 return true;
             }
         });
@@ -1017,6 +1244,26 @@ public class SendWxMessageImpl {
 
                 WeixinUtil.sendTemplateMessage(temp);
                 System.out.println("退款通知sendRefundTemplateMessage----推送买家end!");
+
+                // 插入系统消息表
+                ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+                sysMsgLog.setTitle("交易已退款！");
+                if("OC002".equals(order.getOrderCloseReason())) {
+                    sysMsgLog.setContent("尊敬的『"+buyer.getNickname()+"』,您的拍品卖家未发货，货款已退回。");
+                } else {
+                    sysMsgLog.setContent("尊敬的『"+buyer.getNickname()+"』,\""+content+"\"拍品的退货申请处理成功，货款已退回。");
+                }
+                sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+
+                ZcSysMsg sysMsg = new ZcSysMsg();
+                sysMsg.setObjectType(product.getProductType());
+                sysMsg.setObjectId(product.getId());
+                sysMsg.setUserId(buyer.getId());
+                sysMsg.setIdType(1);
+
+                sysMsgLog.setSysMsg(sysMsg);
+
+                zcSysMsgLogService.addLogAndMsg(sysMsgLog);
                 return true;
             }
         });
@@ -1086,6 +1333,28 @@ public class SendWxMessageImpl {
 
                 WeixinUtil.sendTemplateMessage(temp);
                 System.out.println("退货申请结果通知sendBackResultTemplateMessage----推送买家end!");
+
+                // 插入系统消息表
+                ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+                if("RS02".equals(order.getBackStatus())) {
+                    sysMsgLog.setTitle("卖家拒绝退货！");
+                    sysMsgLog.setContent("尊敬的『"+buyer.getNickname()+"』,您的申请退货卖家已拒绝。");
+                } else {
+                    sysMsgLog.setTitle("卖家同意退货！");
+                    sysMsgLog.setContent("尊敬的『"+buyer.getNickname()+"』,您的申请退货卖家已同意。");
+                }
+
+                sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+
+                ZcSysMsg sysMsg = new ZcSysMsg();
+                sysMsg.setObjectType(product.getProductType());
+                sysMsg.setObjectId(product.getId());
+                sysMsg.setUserId(buyer.getId());
+                sysMsg.setIdType(1);
+
+                sysMsgLog.setSysMsg(sysMsg);
+
+                zcSysMsgLogService.addLogAndMsg(sysMsgLog);
                 return true;
             }
         });
@@ -1280,6 +1549,23 @@ public class SendWxMessageImpl {
                 temp.setData(data);
 
                 WeixinUtil.sendTemplateMessage(temp);
+
+                // 插入系统消息表
+                ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+                sysMsgLog.setTitle("买家申请当面交易！");
+                sysMsgLog.setContent("尊敬的『" + seller.getNickname() + "』，您的拍品\"" + content + "\"由拍得者『" + buyer.getNickname() + "』发起当面交易，请您及时处理。");
+
+                sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+
+                ZcSysMsg sysMsg = new ZcSysMsg();
+                sysMsg.setObjectType(product.getProductType());
+                sysMsg.setObjectId(product.getId());
+                sysMsg.setUserId(seller.getId());
+                sysMsg.setIdType(2);
+
+                sysMsgLog.setSysMsg(sysMsg);
+
+                zcSysMsgLogService.addLogAndMsg(sysMsgLog);
                 return true;
             }
         });
@@ -1344,6 +1630,28 @@ public class SendWxMessageImpl {
                 temp.setData(data);
 
                 WeixinUtil.sendTemplateMessage(temp);
+
+
+                // 插入系统消息表
+                ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+                if(h == 0) {
+                    sysMsgLog.setTitle("买家申请中介交易！");
+                } else {
+                    sysMsgLog.setTitle("中介交易" + h + "小时后结束！");
+                }
+
+                sysMsgLog.setContent(firstValue);
+                sysMsgLog.setUrl("api/apiIntermediary/intermediaryDetail?id=" + intermediary.getId());
+
+                ZcSysMsg sysMsg = new ZcSysMsg();
+                sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.BBS.getCode());
+                sysMsg.setObjectId(bbs.getId());
+                sysMsg.setUserId(seller.getId());
+                sysMsg.setIdType(2);
+
+                sysMsgLog.setSysMsg(sysMsg);
+
+                zcSysMsgLogService.addLogAndMsg(sysMsgLog);
                 return true;
             }
         });
@@ -1388,6 +1696,28 @@ public class SendWxMessageImpl {
                 temp.setData(data);
 
                 WeixinUtil.sendTemplateMessage(temp);
+
+                // 插入系统消息表
+                ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+                if(!agree) {
+                    sysMsgLog.setTitle("卖家拒绝当面交易！");
+                    sysMsgLog.setContent("尊敬的『"+buyer.getNickname()+"』,您申请的当面交易卖家已拒绝。");
+                } else {
+                    sysMsgLog.setTitle("卖家同意当面交易！");
+                    sysMsgLog.setContent("尊敬的『"+buyer.getNickname()+"』,您申请的当面交易卖家已同意。");
+                }
+
+                sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+
+                ZcSysMsg sysMsg = new ZcSysMsg();
+                sysMsg.setObjectType(product.getProductType());
+                sysMsg.setObjectId(product.getId());
+                sysMsg.setUserId(buyer.getId());
+                sysMsg.setIdType(1);
+
+                sysMsgLog.setSysMsg(sysMsg);
+
+                zcSysMsgLogService.addLogAndMsg(sysMsgLog);
                 return true;
             }
         });
@@ -1443,6 +1773,34 @@ public class SendWxMessageImpl {
                 temp.setData(data);
 
                 WeixinUtil.sendTemplateMessage(temp);
+
+
+                // 插入系统消息表
+                ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
+                if(agree) {
+                    sysMsgLog.setTitle("卖家同意中介交易！");
+                    sysMsgLog.setContent("尊敬的『"+buyer.getNickname()+"』,您申请的中介交易卖家已同意。");
+                } else {
+                    if(refuse) {
+                        sysMsgLog.setTitle("卖家拒绝当面交易！");
+                        sysMsgLog.setContent("尊敬的『"+buyer.getNickname()+"』,您申请的中介交易卖家已拒绝。");
+                    } else {
+                        sysMsgLog.setTitle("Sorry,中介交易已取消！");
+                        sysMsgLog.setContent("尊敬的『"+buyer.getNickname()+"』,您申请的中介交易卖家未处理，交易已取消。");
+                    }
+                }
+
+                sysMsgLog.setUrl("api/apiIntermediary/intermediaryDetail?id=" + intermediary.getId());
+
+                ZcSysMsg sysMsg = new ZcSysMsg();
+                sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.BBS.getCode());
+                sysMsg.setObjectId(bbs.getId());
+                sysMsg.setUserId(buyer.getId());
+                sysMsg.setIdType(1);
+
+                sysMsgLog.setSysMsg(sysMsg);
+
+                zcSysMsgLogService.addLogAndMsg(sysMsgLog);
                 return true;
             }
         });

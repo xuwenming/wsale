@@ -114,7 +114,7 @@ public class ApiSysMsgController extends BaseController {
 	private List<ZcSysMsgLog> getSysMsgLogs(String sysMsgId) {
 		PageHelper ph = new PageHelper();
 		ph.setPage(1);
-		ph.setRows(10);
+		ph.setRows(20);
 		ph.setSort("addtime");
 		ph.setOrder("desc");
 		ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();

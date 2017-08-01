@@ -12,6 +12,7 @@ import jb.service.ZcProductServiceI;
 import jb.service.impl.order.OrderState;
 import jb.util.Constants;
 import jb.util.DateUtil;
+import jb.util.EnumConstants;
 import jb.util.MyBeanUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -356,6 +357,7 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 			info.setBuyerUserId(im.getUserId());
 			info.setStartingTime(im.getAddtime());
 			info.setHammerTime(im.getAddtime());
+			info.setProductType(EnumConstants.OBJECT_TYPE.BBS.getCode());
 		} else {
 			ZcProduct p = zcProductService.get(order.getProductId(), null);
 			info.setId(p.getId());
@@ -368,6 +370,7 @@ public class ZcOrderServiceImpl extends BaseServiceImpl<ZcOrder> implements ZcOr
 			info.setRealDeadline(p.getRealDeadline());
 			info.setHammerTime(p.getHammerTime());
 			info.setMargin(p.getMargin());
+			info.setProductType(EnumConstants.OBJECT_TYPE.PRODUCT.getCode());
 		}
 		info.setTotalPrice(order.getTotalPrice());
 

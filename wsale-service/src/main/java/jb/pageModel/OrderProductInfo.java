@@ -27,6 +27,7 @@ public class OrderProductInfo implements java.io.Serializable {
 	private Date hammerTime;
 	private Double totalPrice;
 	private Double margin;
+	private String productType;
 
 	public String getId() {
 		return id;
@@ -120,5 +121,13 @@ public class OrderProductInfo implements java.io.Serializable {
 
 	public void setMargin(Double margin) {
 		this.margin = margin;
+	}
+
+	public String getProductType() {
+		return productType;
+	}
+
+	public void setProductType(String productType) {
+		this.productType = productType;
 	}
 }

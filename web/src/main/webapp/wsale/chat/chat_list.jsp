@@ -23,7 +23,7 @@
                             <img class="sysinfo-icon" src="${pageContext.request.contextPath}/wsale/images/sysinfo-icon.png" />
                         </div>
                         <div class="info-right">
-                            <span><img src="${pageContext.request.contextPath}/wsale/images/new-1.png" style="position: absolute;margin-left: -35px;margin-top: 3px;width: 32px;"/></span>
+                            <img src="${pageContext.request.contextPath}/wsale/images/new-1.png" style="position: absolute;margin-left: -35px;margin-top: 3px;width: 32px;"/>
                             <%--<span style="padding: 0 4px;font-size: 14px;color:#fff;background-color:#ff0000;border-radius: 10px;">new</span>--%>
                             <img class="arrow-right" src="${pageContext.request.contextPath}/wsale/images/arrow-r.png" />
                         </div>
@@ -40,7 +40,7 @@
                             <div class="normal-text">
                                 <div>
                                     <span>集东集西</span>
-                                    <span style="padding: 0 5px;margin-left:5px;font-size: 12px;color:#ff0000;  border: 1px solid #ff0000;border-radius: 10px;">官方</span>
+                                    <img src="${pageContext.request.contextPath}/wsale/images/official.png" style="position: absolute;margin-top: -5px;margin-left: 2px; width: 32px;"/>
                                 </div>
                                 <c:if test="${notice_unread_count > 0}">
                                     <span class="infocenter-number unreadCount" style="position: inherit;">${notice_unread_count}</span>

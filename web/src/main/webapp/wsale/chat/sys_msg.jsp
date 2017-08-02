@@ -108,6 +108,8 @@
                 var sysMsg = event.data;
                 if(sysMsg.objectType == 'PRODUCT')
                     href('api/apiProductController/productDetail?id=' + sysMsg.objectId);
+                else if(sysMsg.objectType == 'BBS')
+                    href('api/bbsController/bbsDetail?id=' + sysMsg.objectId);
             });
 
             dom.find(".lazy").lazyload({

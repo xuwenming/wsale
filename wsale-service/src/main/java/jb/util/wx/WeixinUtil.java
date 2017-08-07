@@ -395,7 +395,7 @@ public class WeixinUtil {
 		return createMenu(menu, accessToken);
 	}
 
-	public static int sendTemplateMessage(WxTemplate wxTemplate) {
+	public static String sendTemplateMessage(WxTemplate wxTemplate) {
 		String accessToken = (String)redisUtil.get(Key.build(Namespace.WX_CONFIG, "wx_access_token"));
 		return sendTemplateMessage(wxTemplate, accessToken);
 	}
@@ -406,20 +406,20 @@ public class WeixinUtil {
 	 * @param accessToken 有效的access_token
 	 * @return 0表示成功，其他值表示失败
 	 */
-	public static int sendTemplateMessage(WxTemplate wxTemplate, String accessToken) {
-		int result = 0;
+	public static String sendTemplateMessage(WxTemplate wxTemplate, String accessToken) {
 
 		// 拼装创建菜单的url
 		String requestUrl = TEMPLATE_MESSAGE_URL.replace("ACCESS_TOKEN", accessToken);
 		// 将菜单对象转换成json字符串
 		String json = JSONObject.toJSONString(wxTemplate);
+
+		String result = HttpUtil.httpsRequest(requestUrl, "POST", json);
 		// 调用接口模板消息
-		JSONObject jsonObject = JSONObject.parseObject(HttpUtil.httpsRequest(requestUrl, "POST", json));
+		JSONObject jsonObject = JSONObject.parseObject(result);
 		System.out.println("模板消息json数据：" + json);
 		System.out.println("模板消息返回信息：" + jsonObject);
 		if (null != jsonObject) {
 			if (0 != jsonObject.getIntValue("errcode")) {
-				result = jsonObject.getIntValue("errcode");
 				log.error("模板消息 errcode:{} errmsg:{}", jsonObject.getIntValue("errcode"), jsonObject.getString("errmsg"));
 			}
 		}

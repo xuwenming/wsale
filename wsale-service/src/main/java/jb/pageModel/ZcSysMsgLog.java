@@ -12,7 +12,8 @@ public class ZcSysMsgLog implements java.io.Serializable {
 	private java.lang.String title;
 	private java.lang.String content;
 	private String url;
-	private java.lang.Boolean isRead;	
+	private java.lang.Boolean isRead;
+	private String resultMsg;
 	private Date addtime;			
 
 	private ZcSysMsg sysMsg;
@@ -65,6 +66,15 @@ public class ZcSysMsgLog implements java.io.Serializable {
 	public java.lang.Boolean getIsRead() {
 		return this.isRead;
 	}
+
+	public String getResultMsg() {
+		return resultMsg;
+	}
+
+	public void setResultMsg(String resultMsg) {
+		this.resultMsg = resultMsg;
+	}
+
 	public void setAddtime(Date addtime) {
 		this.addtime = addtime;
 	}

@@ -233,6 +233,9 @@ public class SendWxMessageImpl {
                     data.put("keyword3", keyword3);
 
                     temp.setData(data);
+
+                    WeixinUtil.sendTemplateMessage(temp);
+                    System.out.println("认证成功通知 sendTemplateMessage----end!");
                 } else if("UNSOLD".equals(objectType)) {
                     System.out.println("流拍通知sendTemplateMessage----推送卖家start!");
                     ZcProduct product = zcProductService.get(objectId);
@@ -265,11 +268,15 @@ public class SendWxMessageImpl {
 
                     temp.setData(data);
 
+                    String result = WeixinUtil.sendTemplateMessage(temp);
+                    System.out.println("流拍通知 sendTemplateMessage----end!");
+
                     // 插入系统消息表
                     ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
                     sysMsgLog.setTitle("Sorry,拍卖失败！");
                     sysMsgLog.setContent(first.getValue());
                     sysMsgLog.setUrl("api/apiProductController/productDetail?id=" + product.getId());
+                    sysMsgLog.setResultMsg(result);
 
                     ZcSysMsg sysMsg = new ZcSysMsg();
                     sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.PRODUCT.getCode());
@@ -283,8 +290,6 @@ public class SendWxMessageImpl {
 
                 }
 
-                WeixinUtil.sendTemplateMessage(temp);
-                System.out.println("认证成功通知/流拍通知 sendTemplateMessage----end!");
                 return true;
             }
         });
@@ -338,7 +343,7 @@ public class SendWxMessageImpl {
 
                 temp.setData(data);
 
-                WeixinUtil.sendTemplateMessage(temp);
+                String result = WeixinUtil.sendTemplateMessage(temp);
                 System.out.println("未付款交易关闭提醒sendUnPayTemplateMessage----推送卖家end!");
 
                 // 插入系统消息表
@@ -346,6 +351,7 @@ public class SendWxMessageImpl {
                 sysMsgLog.setTitle("Sorry,交易失败！");
                 sysMsgLog.setContent(first.getValue());
                 sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+                sysMsgLog.setResultMsg(result);
 
                 ZcSysMsg sysMsg = new ZcSysMsg();
                 sysMsg.setObjectType(product.getProductType());
@@ -404,13 +410,14 @@ public class SendWxMessageImpl {
                 data.put("curAmount", curAmount);
 
                 temp.setData(data);
-                WeixinUtil.sendTemplateMessage(temp);
+                String result = WeixinUtil.sendTemplateMessage(temp);
 
                 // 插入系统消息表
                 ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
                 sysMsgLog.setTitle("恭喜您,拍卖成功！");
                 sysMsgLog.setContent("尊敬的『" + seller.getNickname() + "』，您的拍品已被『" + buyer.getNickname() + "』拍得。");
                 sysMsgLog.setUrl("api/apiProductController/productDetail?id=" + product.getId());
+                sysMsgLog.setResultMsg(result);
 
                 ZcSysMsg sysMsg = new ZcSysMsg();
                 sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.PRODUCT.getCode());
@@ -455,13 +462,14 @@ public class SendWxMessageImpl {
 
                 temp.setData(data);
 
-                WeixinUtil.sendTemplateMessage(temp);
+                result = WeixinUtil.sendTemplateMessage(temp);
 
                 // 插入系统消息表
                 sysMsgLog = new ZcSysMsgLog();
                 sysMsgLog.setTitle("恭喜您,竞拍成功！");
                 sysMsgLog.setContent("『" + buyer.getNickname() + "』您好，恭喜您竞拍成功。");
                 sysMsgLog.setUrl("api/apiOrder/myOrder?type=1");
+                sysMsgLog.setResultMsg(result);
 
                 sysMsg = new ZcSysMsg();
                 sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.PRODUCT.getCode());
@@ -520,13 +528,14 @@ public class SendWxMessageImpl {
                 data.put("remark", remark);
                 temp.setData(data);
 
-                WeixinUtil.sendTemplateMessage(temp);
+                String result = WeixinUtil.sendTemplateMessage(temp);
 
                 // 插入系统消息表
                 ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
                 sysMsgLog.setTitle("交易" + h + "小时后付款截止！");
                 sysMsgLog.setContent("尊敬的『"+buyer.getNickname()+"』，您的交易\""+content+"\"离付款还有 "+h+" 小时，请尽快付款。");
                 sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+                sysMsgLog.setResultMsg(result);
 
                 ZcSysMsg sysMsg = new ZcSysMsg();
                 sysMsg.setObjectType(product.getProductType());
@@ -602,7 +611,7 @@ public class SendWxMessageImpl {
 
                 temp.setData(data);
 
-                WeixinUtil.sendTemplateMessage(temp);
+                String result = WeixinUtil.sendTemplateMessage(temp);
                 System.out.println("发货提醒sendDeliverSTemplateMessage----推送卖家end!");
 
                 // 插入系统消息表
@@ -616,6 +625,7 @@ public class SendWxMessageImpl {
                 }
 
                 sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+                sysMsgLog.setResultMsg(result);
 
                 ZcSysMsg sysMsg = new ZcSysMsg();
                 sysMsg.setObjectType(product.getProductType());
@@ -693,13 +703,14 @@ public class SendWxMessageImpl {
         data.put("remark", remark);
 
         temp.setData(data);
-        WeixinUtil.sendTemplateMessage(temp);
+        String result = WeixinUtil.sendTemplateMessage(temp);
 
         // 插入系统消息表
         ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
         sysMsgLog.setTitle("买家已发货！");
         sysMsgLog.setContent("尊敬的『"+seller.getNickname()+"』，买家申请的退货交易已发货。");
         sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+        sysMsgLog.setResultMsg(result);
 
         ZcSysMsg sysMsg = new ZcSysMsg();
         sysMsg.setObjectType(product.getProductType());
@@ -756,13 +767,14 @@ public class SendWxMessageImpl {
         data.put("remark", remark);
 
         temp.setData(data);
-        WeixinUtil.sendTemplateMessage(temp);
+        String result = WeixinUtil.sendTemplateMessage(temp);
 
         // 插入系统消息表
         ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
         sysMsgLog.setTitle("卖家已发货！");
         sysMsgLog.setContent("尊敬的『"+buyer.getNickname()+"』，您的拍品已发货。");
         sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+        sysMsgLog.setResultMsg(result);
 
         ZcSysMsg sysMsg = new ZcSysMsg();
         sysMsg.setObjectType(product.getProductType());
@@ -816,7 +828,7 @@ public class SendWxMessageImpl {
                 data.put("keyword3", keyword3);
                 temp.setData(data);
 
-                WeixinUtil.sendTemplateMessage(temp);
+                String result = WeixinUtil.sendTemplateMessage(temp);
                 System.out.println("交易完成通知sendDealCompleteTemplateMessage----推送卖家end!");
 
                 // 插入系统消息表
@@ -824,6 +836,7 @@ public class SendWxMessageImpl {
                 sysMsgLog.setTitle("恭喜您，交易完成！");
                 sysMsgLog.setContent("尊敬的『"+seller.getNickname()+"』，买家已确认收货！交易完成。");
                 sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+                sysMsgLog.setResultMsg(result);
 
                 ZcSysMsg sysMsg = new ZcSysMsg();
                 sysMsg.setObjectType(product.getProductType());
@@ -949,7 +962,7 @@ public class SendWxMessageImpl {
         data.put("remark", remark);
 
         temp.setData(data);
-        WeixinUtil.sendTemplateMessage(temp);
+        String result = WeixinUtil.sendTemplateMessage(temp);
 
         // 插入系统消息表
         ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
@@ -966,6 +979,7 @@ public class SendWxMessageImpl {
             sysMsg.setIdType(1);
         }
         sysMsgLog.setUrl("api/apiProductController/productDetail?id=" + product.getId());
+        sysMsgLog.setResultMsg(result);
 
         sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.PRODUCT.getCode());
         sysMsg.setObjectId(product.getId());
@@ -1028,7 +1042,7 @@ public class SendWxMessageImpl {
 
                 temp.setData(data);
 
-                WeixinUtil.sendTemplateMessage(temp);
+                String result = WeixinUtil.sendTemplateMessage(temp);
                 System.out.println("退货申请提醒sendBackApplyTemplateMessage----推送卖家end!");
 
                 // 插入系统消息表
@@ -1036,6 +1050,7 @@ public class SendWxMessageImpl {
                 sysMsgLog.setTitle("买家申请退货！");
                 sysMsgLog.setContent("『" + seller.getNickname() + "』您好，您的拍品买家申请退货。");
                 sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+                sysMsgLog.setResultMsg(result);
 
                 ZcSysMsg sysMsg = new ZcSysMsg();
                 sysMsg.setObjectType(product.getProductType());
@@ -1092,7 +1107,7 @@ public class SendWxMessageImpl {
 
                 temp.setData(data);
 
-                WeixinUtil.sendTemplateMessage(temp);
+                String result = WeixinUtil.sendTemplateMessage(temp);
                 System.out.println("违约保证金不退还通知sendMarginNonTemplateMessage----推送买家end!");
 
                 // 插入系统消息表
@@ -1100,6 +1115,7 @@ public class SendWxMessageImpl {
                 sysMsgLog.setTitle("Sorry,交易失败！");
                 sysMsgLog.setContent("尊敬的『"+buyer.getNickname()+"』，您在拍场因未付款交易失败，保证金"+product.getMargin()+"元不予以退回");
                 sysMsgLog.setUrl("api/apiProductController/productDetail?id=" + product.getId());
+                sysMsgLog.setResultMsg(result);
 
                 ZcSysMsg sysMsg = new ZcSysMsg();
                 sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.PRODUCT.getCode());
@@ -1157,7 +1173,7 @@ public class SendWxMessageImpl {
 
                 temp.setData(data);
 
-                WeixinUtil.sendTemplateMessage(temp);
+                String result = WeixinUtil.sendTemplateMessage(temp);
                 System.out.println("保证金退还通知sendMarginRefundTemplateMessage----推送买家end!");
 
                 // 插入系统消息表
@@ -1165,6 +1181,7 @@ public class SendWxMessageImpl {
                 sysMsgLog.setTitle("保证金退回！");
                 sysMsgLog.setContent("尊敬的『" + buyer.getNickname() + "』，您在拍品支付的保证金" + product.getMargin() + "元已退回。");
                 sysMsgLog.setUrl("api/apiProductController/productDetail?id=" + product.getId());
+                sysMsgLog.setResultMsg(result);
 
                 ZcSysMsg sysMsg = new ZcSysMsg();
                 sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.PRODUCT.getCode());
@@ -1242,7 +1259,7 @@ public class SendWxMessageImpl {
 
                 temp.setData(data);
 
-                WeixinUtil.sendTemplateMessage(temp);
+                String result = WeixinUtil.sendTemplateMessage(temp);
                 System.out.println("退款通知sendRefundTemplateMessage----推送买家end!");
 
                 // 插入系统消息表
@@ -1254,6 +1271,7 @@ public class SendWxMessageImpl {
                     sysMsgLog.setContent("尊敬的『"+buyer.getNickname()+"』,\""+content+"\"拍品的退货申请处理成功，货款已退回。");
                 }
                 sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+                sysMsgLog.setResultMsg(result);
 
                 ZcSysMsg sysMsg = new ZcSysMsg();
                 sysMsg.setObjectType(product.getProductType());
@@ -1331,7 +1349,7 @@ public class SendWxMessageImpl {
 
                 temp.setData(data);
 
-                WeixinUtil.sendTemplateMessage(temp);
+                String result = WeixinUtil.sendTemplateMessage(temp);
                 System.out.println("退货申请结果通知sendBackResultTemplateMessage----推送买家end!");
 
                 // 插入系统消息表
@@ -1345,6 +1363,7 @@ public class SendWxMessageImpl {
                 }
 
                 sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+                sysMsgLog.setResultMsg(result);
 
                 ZcSysMsg sysMsg = new ZcSysMsg();
                 sysMsg.setObjectType(product.getProductType());
@@ -1548,7 +1567,7 @@ public class SendWxMessageImpl {
 
                 temp.setData(data);
 
-                WeixinUtil.sendTemplateMessage(temp);
+                String result = WeixinUtil.sendTemplateMessage(temp);
 
                 // 插入系统消息表
                 ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
@@ -1556,6 +1575,7 @@ public class SendWxMessageImpl {
                 sysMsgLog.setContent("尊敬的『" + seller.getNickname() + "』，您的拍品\"" + content + "\"由拍得者『" + buyer.getNickname() + "』发起当面交易，请您及时处理。");
 
                 sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+                sysMsgLog.setResultMsg(result);
 
                 ZcSysMsg sysMsg = new ZcSysMsg();
                 sysMsg.setObjectType(product.getProductType());
@@ -1629,7 +1649,7 @@ public class SendWxMessageImpl {
 
                 temp.setData(data);
 
-                WeixinUtil.sendTemplateMessage(temp);
+                String result = WeixinUtil.sendTemplateMessage(temp);
 
 
                 // 插入系统消息表
@@ -1642,6 +1662,7 @@ public class SendWxMessageImpl {
 
                 sysMsgLog.setContent(firstValue);
                 sysMsgLog.setUrl("api/apiIntermediary/intermediaryDetail?id=" + intermediary.getId());
+                sysMsgLog.setResultMsg(result);
 
                 ZcSysMsg sysMsg = new ZcSysMsg();
                 sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.BBS.getCode());
@@ -1695,7 +1716,7 @@ public class SendWxMessageImpl {
 
                 temp.setData(data);
 
-                WeixinUtil.sendTemplateMessage(temp);
+                String result= WeixinUtil.sendTemplateMessage(temp);
 
                 // 插入系统消息表
                 ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
@@ -1708,6 +1729,7 @@ public class SendWxMessageImpl {
                 }
 
                 sysMsgLog.setUrl("api/apiOrder/orderDetail?id=" + order.getId());
+                sysMsgLog.setResultMsg(result);
 
                 ZcSysMsg sysMsg = new ZcSysMsg();
                 sysMsg.setObjectType(product.getProductType());
@@ -1772,8 +1794,7 @@ public class SendWxMessageImpl {
 
                 temp.setData(data);
 
-                WeixinUtil.sendTemplateMessage(temp);
-
+                String result = WeixinUtil.sendTemplateMessage(temp);
 
                 // 插入系统消息表
                 ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
@@ -1791,6 +1812,7 @@ public class SendWxMessageImpl {
                 }
 
                 sysMsgLog.setUrl("api/apiIntermediary/intermediaryDetail?id=" + intermediary.getId());
+                sysMsgLog.setResultMsg(result);
 
                 ZcSysMsg sysMsg = new ZcSysMsg();
                 sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.BBS.getCode());

@@ -48,6 +48,7 @@ public class TzcSysMsgLog implements java.io.Serializable,IEntity{
 	private String url;
 	//
 	private java.lang.Boolean isRead;
+	private java.lang.String resultMsg;
 	//
 	private java.util.Date addtime;
 	//columns END
@@ -114,7 +115,15 @@ public class TzcSysMsgLog implements java.io.Serializable,IEntity{
 	public void setIsRead(java.lang.Boolean isRead) {
 		this.isRead = isRead;
 	}
-	
+
+	@Column(name = "resultMsg", unique = false, nullable = true, insertable = true, updatable = true, length = 500)
+	public String getResultMsg() {
+		return resultMsg;
+	}
+
+	public void setResultMsg(String resultMsg) {
+		this.resultMsg = resultMsg;
+	}
 
 	@Column(name = "addtime", unique = false, nullable = true, insertable = true, updatable = true, length = 19)
 	public java.util.Date getAddtime() {

@@ -849,13 +849,14 @@ public class ApiProductController extends BaseController {
 				data.put("keyword2", keyword2);
 
 				temp.setData(data);
-				WeixinUtil.sendTemplateMessage(temp);
+				String result = WeixinUtil.sendTemplateMessage(temp);
 
 				// 插入系统消息表
 				ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
 				sysMsgLog.setTitle("有新的出价！");
 				sysMsgLog.setContent("您的拍品，『" + buyer.getNickname() + "』出价￥" + product.getCurrentPrice() + "元，目前领先！");
 				sysMsgLog.setUrl("api/apiProductController/productDetail?id=" + product.getId());
+				sysMsgLog.setResultMsg(result);
 
 				ZcSysMsg sysMsg = new ZcSysMsg();
 				sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.PRODUCT.getCode());
@@ -918,13 +919,14 @@ public class ApiProductController extends BaseController {
 						data.put("remark", remark);
 
 						temp.setData(data);
-						WeixinUtil.sendTemplateMessage(temp);
+						String result = WeixinUtil.sendTemplateMessage(temp);
 
 						// 插入系统消息表
 						ZcSysMsgLog sysMsgLog = new ZcSysMsgLog();
 						sysMsgLog.setTitle("出价被超越！");
 						sysMsgLog.setContent("您的出价￥"+exceed.getBid()+"已被超越！");
 						sysMsgLog.setUrl("api/apiProductController/productDetail?id=" + product.getId());
+						sysMsgLog.setResultMsg(result);
 
 						ZcSysMsg sysMsg = new ZcSysMsg();
 						sysMsg.setObjectType(EnumConstants.OBJECT_TYPE.PRODUCT.getCode());

@@ -7,11 +7,19 @@
     <jsp:include page="../inc.jsp"></jsp:include>
 </head>
 <body>
-    <div data-role="page" class="jqm-demos">
+    <div data-role="page" class="jqm-demos" style="background-color: #f5f5f5;">
 
         <div role="main" class="ui-content jqm-content jqm-fullwidth">
-            <div class="home-content" style="margin:0; ">
-                <div class="fensi-list">
+            <div style="border-bottom:10px solid #f5f5f5; background-color: #fff;">
+                <div>
+                    <ul class="tab-title">
+                        <li class="titletab-active"style="width:20%;margin:0 10px;font-size: 15px;">粉丝</li>
+                        <li style="width:20%;margin:0 10px;font-size: 15px;" onclick="replace('api/userController/shieldors');">屏蔽用户</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="home-content" style="margin:0;">
+                <div class="fensi-list" style="background-color: #fff;">
                 </div>
                 <div class="weui-infinite-scroll">
                     <div class="infinite-preloader"></div>

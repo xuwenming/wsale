@@ -159,6 +159,20 @@
                         </div>
                         <div class="new"></div>
                     </a>
+                    <a href="javascript:href('api/apiShop/myShopSet');" class="faxian-link">
+                        <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/dianpushezhi-icon.png" class="faxian-lefticon" />
+                            <div>认证</div>
+                        </div>
+                        <div>
+                            <span class="grayright-text2">
+                                <c:choose>
+                                    <c:when test="${user.isAuth}">已认证</c:when>
+                                    <c:otherwise>未认证</c:otherwise>
+                                </c:choose>
+
+                            </span>
+                        </div>
+                    </a>
                     <a href="javascript:href('api/userController/myCollect');" class="faxian-link new-link">
                         <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/shoucang-icon.png" class="faxian-lefticon" />
                             <div>收藏</div>
@@ -179,28 +193,14 @@
                             <span style="color:#dc721c; font-size:12px;">${user.fans}</span>
                         </div>
                     </a>
-                    <a href="javascript:href('api/userController/shieldors');" class="faxian-link">
+                    <!--<a href="javascript:href('api/userController/shieldors');" class="faxian-link">
                         <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/pingbiyonghu-icon.png" class="faxian-lefticon" />
                             <div>屏蔽用户</div>
                         </div>
                         <div>
                             <span style="color:#dc721c; font-size:12px;">${user.shieldors}</span>
                         </div>
-                    </a>
-                    <a href="javascript:href('api/apiShop/myShopSet');" class="faxian-link">
-                        <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/dianpushezhi-icon.png" class="faxian-lefticon" />
-                            <div>店铺设置</div>
-                        </div>
-                        <div>
-                            <span class="grayright-text2">
-                                <c:choose>
-                                    <c:when test="${user.isAuth}">已认证</c:when>
-                                    <c:otherwise>未认证</c:otherwise>
-                                </c:choose>
-
-                            </span>
-                        </div>
-                    </a>
+                    </a>-->
                     <a href="javascript:href('api/userController/myTheme');" class="faxian-link">
                         <div class="normal-text"><img src="${pageContext.request.contextPath}/wsale/images/wodezhuti-icon.png" class="faxian-lefticon" />
                             <div>我的主题</div>

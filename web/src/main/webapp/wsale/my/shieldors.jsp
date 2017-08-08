@@ -7,7 +7,7 @@
     <jsp:include page="../inc.jsp"></jsp:include>
 </head>
 <body>
-    <div data-role="page" class="jqm-demos">
+    <div data-role="page" class="jqm-demos" style="background-color: #f5f5f5;">
 
         <div role="main" class="ui-content jqm-content jqm-fullwidth">
             <div class="mask-layer" style="z-index: 1001;"></div>
@@ -18,8 +18,17 @@
                 <a class="bottom-btn guanzhu-ok">确定</a>
                 <a class="bottom-btn guanzhu-cancel">取消</a>
             </div>
+
+            <div style="border-bottom:10px solid #f5f5f5; background-color: #fff;">
+                <div>
+                    <ul class="tab-title">
+                        <li style="width:20%;margin:0 10px;font-size: 15px;" onclick="replace('api/userController/myFans');">粉丝</li>
+                        <li class="titletab-active" style="width:20%;margin:0 10px;font-size: 15px;">屏蔽用户</li>
+                    </ul>
+                </div>
+            </div>
             <div class="home-content" style="margin:0; ">
-                <div class="fensi-list">
+                <div class="fensi-list" style="background-color: #fff;">
 
                 </div>
                 <div class="weui-infinite-scroll">
